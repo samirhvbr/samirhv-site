@@ -6,14 +6,17 @@ use App\Models\AiMemoryStatSnapshot;
 use App\Services\AiMemory\AiMemoryDatabase;
 use App\Services\AiMemory\StatsRepository;
 use Illuminate\Console\Command;
+use Throwable;
 
 /**
- * Grava o retrato diário das estatísticas do ai-memory na tabela durável
- * `ai_memory_stat_snapshots` (MySQL). Idempotente por dia (updateOrCreate em
- * captured_on). Agendado em routes/console.php (diário).
+ * Writes the daily snapshot of ai-memory statistics into the durable
+ * `ai_memory_stat_snapshots` table (MySQL). Idempotent per day (updateOrCreate
+ * on captured_on). Scheduled in routes/console.php (daily).
  *
- * Se o ai-memory estiver indisponível (app fora do servidor, volume/permissão),
- * NÃO grava nada e sai com sucesso — o histórico já existente é preservado.
+ * If ai-memory is unreachable (app moved off the server, layout or permission
+ * changed), it writes NOTHING and exits successfully — the existing history is
+ * preserved. Writing a row of zeros would be worse than writing nothing: the
+ * charts would show a cliff that never happened.
  */
 class SnapshotAiMemoryStats extends Command
 {
@@ -24,12 +27,23 @@ class SnapshotAiMemoryStats extends Command
     public function handle(AiMemoryDatabase $db, StatsRepository $stats): int
     {
         if (! $db->isAvailable()) {
-            $this->warn("ai-memory indisponível em [{$db->path()}] — retrato pulado, histórico preservado.");
+            $this->warn("ai-memory indisponível em [{$db->path()}]: {$db->unavailableReason()} — retrato pulado, histórico preservado.");
 
             return self::SUCCESS;
         }
 
-        $counts = $stats->counts();
+        try {
+            $counts = $stats->counts();
+        } catch (Throwable $e) {
+            // The probe passed and the queries still failed (permission changed
+            // between the two, lock, ai-memory upgrade mid-run). Same rule as
+            // above: preserve the history and report the reason.
+            report($e);
+
+            $this->warn("ai-memory indisponível em [{$db->path()}]: {$db->unavailableReason()} — retrato pulado, histórico preservado.");
+
+            return self::SUCCESS;
+        }
 
         $snapshot = AiMemoryStatSnapshot::updateOrCreate(
             ['captured_on' => today()],

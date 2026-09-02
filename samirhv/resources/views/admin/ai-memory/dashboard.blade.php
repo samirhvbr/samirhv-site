@@ -124,7 +124,7 @@
         {{-- Procedência + "ao vivo": de onde saiu cada número, e quando chegou. --}}
         <div class="aim-source">
             <span>fonte: <b>{{ basename($aimemoryPath ?: 'memory.sqlite') }}</b> (somente leitura)</span>
-            <span>volume <b>{{ $dockerVolume }}</b></span>
+            <span>em <b>{{ $aimemoryPath ? dirname($aimemoryPath) : '(caminho não configurado)' }}</b></span>
             <span>dias agrupados em <b>UTC</b></span>
 
             {{-- O ai-memory é escrito pelos agentes, não por este app: não há evento

@@ -1,163 +1,293 @@
-# Módulo AI-MEMORY (admin) — leitura da memória do ai-memory
+# AI-MEMORY module (admin) — reading the ai-memory index
 
-> **TL;DR** — A aba **AI-MEMORY** do admin lê, **somente leitura**, o banco
-> **SQLite do [ai-memory](https://github.com/akitaonrails/ai-memory)** — a memória
-> de longo prazo dos agentes de código. Esse banco vive num **volume Docker no
-> mesmo servidor de produção**. Por isso o módulo é **acoplado ao host**: se o
-> app sair desse servidor (ou o volume/permissão mudar), a tela para de retornar
-> dados e passa a mostrar um aviso. **Não é bug — é o acoplamento.** As
-> estatísticas de uso são copiadas diariamente para uma tabela MySQL própria
-> (`ai_memory_stat_snapshots`) para **sobreviver a um reset do ai-memory**.
+> **TL;DR** — The admin's **AI-MEMORY** tab reads, **read-only**, the
+> **SQLite index of [ai-memory](https://github.com/akitaonrails/ai-memory)** —
+> the long-term memory of the coding agents. That database lives on the **same
+> production server**, so the module is **host-coupled**: move the app off that
+> server, change the ai-memory layout, or take the PHP-FPM user's access away
+> and the screen stops returning data and shows a notice instead. **That is the
+> coupling, not a bug** — but it must never be an HTTP 500 (see §4.1). Usage
+> statistics are copied daily into an app-owned MySQL table
+> (`ai_memory_stat_snapshots`) so they **survive an ai-memory reset**.
 
 ---
 
-## 1. O que é e por que existe
+## 1. What it is and why it exists
 
-O `ai-memory` é um servidor (binário Rust, distribuído como imagem Docker
-`akitaonrails/ai-memory`) que dá memória de longo prazo aos agentes de código
-(Claude Code, Codex, etc.). Ele:
+`ai-memory` is a server (Rust binary, also shipped as the Docker image
+`akitaonrails/ai-memory`) that gives long-term memory to coding agents (Claude
+Code, Codex, etc.). It:
 
-- guarda a **wiki em Markdown** como fonte da verdade (`<data>/wiki/`), e
-- mantém um **índice derivado em SQLite** (`<data>/db/memory.sqlite`, modo **WAL**)
-  com sessões, observações, páginas, handoffs, embeddings, auditoria e um índice
-  **FTS5** para busca.
+- keeps the **Markdown wiki** as the source of truth (`<data>/wiki/`), and
+- maintains a **derived SQLite index** (`<data>/db/memory.sqlite`, **WAL** mode)
+  holding sessions, observations, pages, handoffs, embeddings, audit rows and an
+  **FTS5** index for search.
 
-O admin do Samirhv abre esse `memory.sqlite` diretamente e mostra Dashboard,
-Projetos, Páginas (wiki), Sessões, Observações, Handoffs e Busca.
+The Samirhv admin opens that `memory.sqlite` directly and renders Dashboard,
+Projects, Pages (wiki), Sessions, Observations, Handoffs and Search.
 
-## 2. O acoplamento de produção (LEIA ISTO)
+## 2. The production coupling (READ THIS)
 
 ```
-┌────────────────────────── servidor de produção ──────────────────────────┐
-│                                                                            │
-│   PHP-FPM (Samirhv/Laravel)  ──lê (RO)──►  /var/lib/docker/volumes/        │
-│        [www-data]                          ai-memory-data/_data/db/        │
-│                                            memory.sqlite (+ -wal, -shm)     │
-│                                                    ▲                        │
-│   container ai-memory  ──escreve (writer)──────────┘                        │
-│        [Docker]                                                            │
-└────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────── production server ──────────────────────────┐
+│                                                                       │
+│   PHP-FPM (Samirhv/Laravel)  ──reads (RO)──►  /opt/ai-memory/data/db/ │
+│        [www-data]                             memory.sqlite           │
+│                                               (+ -wal, -shm)          │
+│                                                    ▲                  │
+│   ai-memory service  ──writes (sole writer)────────┘                  │
+│        [systemd or Docker]                                            │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
-- O caminho no host normalmente é
-  `/var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite`.
-  Confirme com:
-  ```bash
-  docker volume inspect ai-memory-data -f '{{ .Mountpoint }}'   # + /db/memory.sqlite
-  ```
-- Configure em `.env` → `AI_MEMORY_SQLITE_PATH`. Sem isso, usa o default acima.
-- **Se o app for movido para outro servidor, esse arquivo não existe lá.** A tela
-  vai mostrar o aviso "AI-MEMORY indisponível" — e o texto do aviso explica
-  exatamente o porquê. É o comportamento esperado.
+The path depends on how ai-memory was installed, and **it changed on this server
+when 2.0 went in**:
 
-## 3. Somente leitura — e por que NÃO gravamos aqui
+| Install | Data directory | memory.sqlite |
+| --- | --- | --- |
+| 2.x here (operator's choice, `--data-dir`) | `/opt/ai-memory/data` | `/opt/ai-memory/data/db/memory.sqlite` |
+| upstream systemd default | `/var/lib/ai-memory` | `/var/lib/ai-memory/db/memory.sqlite` |
+| 1.x Docker volume | `ai-memory-data` | `/var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite` |
 
-O `ai-memory` é o **único writer legítimo** do arquivo: ele serializa escritas
-por um *writer-actor* e mantém **triggers de FTS5** (`pages_fts`) e **triggers de
-invariante** (workspace×projeto). Gravar por fora corromperia o índice.
+Find the real path on the server:
 
-Garantias no código:
-
-- A conexão `aimemory` (em `config/database.php`) é usada só para `SELECT`.
-- `App\Services\AiMemory\AiMemoryDatabase` aplica **`PRAGMA query_only = 1`** —
-  qualquer `INSERT/UPDATE/DELETE/DDL` nessa conexão **falha**.
-- `isAvailable()` nunca lança: arquivo ausente, `pdo_sqlite` faltando, permissão
-  negada ou lock viram `false`, e a UI degrada.
-
-> Ações de **escrita** do ai-memory (aprovar/rejeitar Auto Improve, gerar
-> embeddings) são **Fase 2** e devem passar pela **API/MCP do ai-memory**, nunca
-> por este SQLite. Ver §7.
-
-## 4. Permissões (a causa nº 1 de "parou de funcionar")
-
-O arquivo pertence ao volume Docker; por padrão o `www-data` **não** tem acesso.
-Opções (a que você preferir), no servidor:
-
-- **Grupo de leitura** (recomendado): dê leitura de grupo ao diretório do volume
-  e coloque o `www-data` nesse grupo. Precisa de `r` no arquivo e `x` (traverse)
-  nos diretórios até ele, incluindo `-wal` e `-shm`.
-- **Bind mount somente-leitura**: monte o `/data` do ai-memory num diretório do
-  host legível pelo `www-data` e aponte `AI_MEMORY_SQLITE_PATH` pra lá.
-
-Teste rápido do ponto de vista do PHP:
 ```bash
-sudo -u www-data test -r "$AI_MEMORY_SQLITE_PATH" && echo OK || echo "sem permissão"
-sudo -u www-data php artisan aimemory:snapshot   # deve gravar um retrato
+ls -l /opt/ai-memory/data/db/memory.sqlite                     # 2.x native install
+systemctl cat ai-memory | grep -- --data-dir                   # whatever the unit says
+docker volume inspect ai-memory-data -f '{{ .Mountpoint }}'    # 1.x, + /db/memory.sqlite
 ```
 
-> **Nota WAL:** um leitor precisa enxergar `memory.sqlite`, `-wal` e `-shm`.
-> Como o ai-memory mantém a conexão viva, o `-shm` existe; garanta leitura nos três.
+Set it in `.env` → `AI_MEMORY_SQLITE_PATH` (the config default is the 2.x path).
+Remember that `deploy.sh` runs `config:cache`, so **a change in `.env` only takes
+effect after `php artisan config:cache`**.
 
-## 5. Histórico durável (`ai_memory_stat_snapshots`)
+## 3. Read-only — and why we never write here
 
-O `memory.sqlite` é um índice **derivado** — pode ser recriado/zerado. Para que a
-**evolução de uso não se perca**, um comando agendado grava um retrato diário no
-**banco do próprio app (MySQL)**:
+`ai-memory` is the **only legitimate writer**: it serialises writes through a
+*writer actor* and maintains **FTS5 triggers** (`pages_fts`) and
+**workspace×project invariant triggers**. Writing from outside would corrupt the
+index. Upstream is explicit about it — even its own CLI never opens the SQLite
+file, it talks to the server.
 
-- Comando: `php artisan aimemory:snapshot` (idempotente por dia — `updateOrCreate`
-  em `captured_on`). Se o ai-memory estiver indisponível, **não grava e preserva**
-  o histórico existente.
-- Agendamento: `routes/console.php` → `Schedule::command('aimemory:snapshot')->dailyAt('03:10')`.
-  Requer o cron do Laravel no servidor: `* * * * * php artisan schedule:run`.
-- O Dashboard mostra os totais **ao vivo** (do ai-memory) e a **evolução
-  histórica** (desta tabela, que sobrevive a reset).
-- Os retratos também alimentam, no Dashboard, os *sparklines* dos totais e a
-  variação ("+N em X dias"): a variação compara o número **vivo** de agora com o
-  retrato mais antigo dentro da janela, e a UI mostra **quantos dias** esse
-  intervalo teve de fato — se faltarem retratos, o rótulo acompanha.
+Guarantees in the code:
 
-### "Ao vivo" (Dashboard)
+- the `aimemory` connection (`config/database.php`) is only ever given `SELECT`;
+- that connection declares **`'pragmas' => ['query_only' => 1]`**, so the
+  connector pins the engine-level guard at connect time, for every consumer and
+  across reconnects: any `INSERT/UPDATE/DELETE/DDL` **fails**;
+- the availability guard is **two layers** (§4.1), so a failure degrades into the
+  notice instead of a 500.
 
-O `memory.sqlite` é escrito pelos **agentes**, não por este app — não existe evento
-nosso para transmitir, então não há o que ganhar com WebSocket/broadcast (seria um
-daemon a mais no servidor para, no fim, também ficar consultando o arquivo).
+> ai-memory **write** actions (approving/rejecting Auto Improve, generating
+> embeddings) are **Phase 2** and must go through ai-memory's read-only HTTP API
+> / MCP, never through this SQLite file. See §7.
 
-O Dashboard resolve isso com **polling curto do navegador**: `dashboard.js` chama
-`GET /admin/ai-memory/live` (mesma sessão/middleware do painel) a cada 15s e troca
-**só os valores** — números, alturas das barras, teto do eixo e a tabela
-equivalente. Nada é recriado no DOM, então não pisca nem pula. Detalhes:
+## 4. Permissions (the #1 cause of "it stopped working")
 
-- **aba escondida não consulta** (`visibilitychange`); ao voltar, atualiza na hora;
-- **pausável** pelo botão "ao vivo" (fica em `localStorage`);
-- **erro seguido espaça as tentativas** (backoff até 2 min) e o ponto fica vermelho;
-- durante a busca, o desenho anterior fica de pé com opacidade menor — sem esqueleto.
+**Read permission on `memory.sqlite` is not enough.** This is the single most
+important fact in this document, and the one that took the module down in
+September 2026.
 
-Para mudar o intervalo: `data-every` (segundos) no elemento `[data-aim-live]`.
+A WAL database is read through two sidecar files next to it: `-wal` (the log) and
+`-shm` (the shared-memory index). When ai-memory has checkpointed and closed its
+last connection, **those files do not exist**, and the *reader* is the one that
+has to create them — which requires **WRITE permission on the directory** that
+holds the database. Without it, the very first SELECT fails with
+`SQLITE_READONLY_DIRECTORY`, which PDO surfaces as the thoroughly misleading:
 
-## 6. Mapa de código
+```
+SQLSTATE[HY000]: General error: 8 attempt to write a readonly database
+```
 
-| Camada | Arquivo |
+...on a plain `SELECT`. Two corollaries worth knowing before you try to be clever:
+
+- **`?mode=ro` does not fix it.** A read-only handle cannot create the sidecars
+  either. That is why the connection is a plain path plus `query_only`.
+- **`chmod` on `-wal`/`-shm` does not stick.** SQLite recreates them with the
+  mode of the *main* database file (measured: exactly its mode, regardless of the
+  creating process's umask), and `wal_checkpoint(TRUNCATE)`/`VACUUM`/last-close
+  delete them. So the mode you have to fix is the one on `memory.sqlite` and on
+  its directory.
+
+Why 2.0 triggered it: since 1.27.0 ai-memory creates data directories `0700` and
+`memory.sqlite` `0600`, owned by the service user, *independently of umask*, and
+leaves existing installations alone (`SECURITY.md`). The old Docker-volume file
+predated that hardening; the fresh `/opt/ai-memory/data/db` install did not.
+
+### 4.1 The two-layer guard (why this is no longer a 500)
+
+1. `AiMemoryDatabase::isAvailable()` probes with **`SELECT count(*) FROM
+   sqlite_master`**. It must be a query that *touches the file*: `SELECT 1` is a
+   constant SQLite answers without ever opening the database, so it stayed green
+   in exactly the broken scenario — that false positive is what produced the 500s.
+2. `AiMemoryController::screen()` also wraps the screen's queries in
+   `try/catch`. If the probe passes and a query still fails (permission changed
+   mid-request, a lock outlived `busy_timeout`, an upgrade renamed a table), the
+   screen degrades to the notice, `report()` logs the exception, and
+   `AiMemoryDatabase::markUnavailable()` short-circuits the rest of the request.
+   HTTP exceptions are rethrown, so `abort_if(..., 404)` still 404s.
+
+`unavailableReason()` names the actual failure and the notice shows it, so the UI
+tells you *which* of these it is. Regression tests:
+`tests/Unit/AiMemory/AiMemoryDatabaseTest.php` (skipped where `pdo_sqlite` is
+absent or the process is root).
+
+### 4.2 Granting access — the shared-group recipe
+
+Run on the server, as root. A **dedicated group** is used instead of the
+service's own group, so this works whether ai-memory runs as `root` or as its own
+system user: the database files stay owned by the service (owner keeps `rw`
+regardless of group), and the group only carries the reader in.
+
+```bash
+DB=/opt/ai-memory/data/db/memory.sqlite     # adjust if the data dir differs
+DBDIR=$(dirname "$DB")
+
+# 1. a group whose only purpose is "may read the ai-memory index"
+groupadd -f aimemory-read
+usermod -aG aimemory-read www-data
+
+# 2. traverse-only on the way in: group gets x, not r (no listing)
+chgrp aimemory-read /opt/ai-memory /opt/ai-memory/data
+chmod 0710          /opt/ai-memory /opt/ai-memory/data
+
+# 3. the db directory: group rwx + SETGID, so every file created in it — by
+#    either process — inherits the group
+chgrp aimemory-read "$DBDIR"
+chmod 2770          "$DBDIR"
+
+# 4. the database itself: group rw. SQLite creates -wal/-shm with this exact
+#    mode, which is what lets both processes maintain them.
+chgrp aimemory-read "$DB"
+chmod 0660          "$DB"
+for f in "$DB"-wal "$DB"-shm; do [ -e "$f" ] && chgrp aimemory-read "$f" && chmod 0660 "$f"; done
+
+# 5. php-fpm only picks up the new group membership on restart
+systemctl restart php8.4-fpm
+```
+
+If ai-memory runs under systemd with `ProtectSystem=strict`, make sure its unit
+has `ReadWritePaths=` covering the data dir (`systemctl cat ai-memory`); the
+upstream template only lists `/var/lib/ai-memory`.
+
+This does hand `www-data` real write capability over that directory, a deliberate
+departure from ai-memory's declared threat model ("single-tenant service, we rely
+on filesystem permissions"). The app's side of the bargain is `query_only` plus
+SELECT-only repositories. If that trade ever stops being acceptable, §7 has the
+two decoupled alternatives.
+
+### 4.3 Diagnosis, from the PHP user's point of view
+
+```bash
+P=/opt/ai-memory/data/db/memory.sqlite
+sudo -u www-data test -r "$P"        && echo "read: OK"  || echo "read: DENIED"
+sudo -u www-data test -w "$(dirname "$P")" && echo "dir write: OK" || echo "dir write: DENIED  <-- the 500"
+ls -la "$(dirname "$P")"; id www-data
+sudo -u www-data php /srv/www/samirhv.com.br/samirhv/artisan aimemory:snapshot   # must write a snapshot
+```
+
+A one-liner that reproduces exactly what the module does (fails the same way the
+page did, succeeds when the permissions are right):
+
+```bash
+sudo -u www-data php -r '$d=new PDO("sqlite:/opt/ai-memory/data/db/memory.sqlite");
+  $d->exec("pragma query_only=1");
+  var_dump($d->query("select count(*) from sqlite_master")->fetchColumn());'
+```
+
+## 5. Durable history (`ai_memory_stat_snapshots`)
+
+`memory.sqlite` is a **derived** index — it can be rebuilt or reset. So that the
+**usage history is not lost**, a scheduled command writes a daily snapshot into
+**the app's own MySQL database**:
+
+- Command: `php artisan aimemory:snapshot` (idempotent per day — `updateOrCreate`
+  on `captured_on`). If ai-memory is unreachable it **writes nothing and keeps**
+  the existing history: a row of zeros would draw a cliff that never happened.
+- Schedule: `routes/console.php` → `Schedule::command('aimemory:snapshot')->dailyAt('03:10')`.
+  Requires Laravel's cron on the server: `* * * * * php artisan schedule:run`.
+- The Dashboard shows **live** totals (from ai-memory) and the **historical
+  evolution** (from this table, which survives a reset).
+- Snapshots also feed the Dashboard *sparklines* and the delta ("+N in X days"):
+  the delta compares the **live** number now against the oldest snapshot inside
+  the window, and the UI states **how many days** that interval really spans — if
+  snapshots are missing, the label says so.
+
+### "Live" (Dashboard)
+
+`memory.sqlite` is written by the **agents**, not by this app — there is no event
+of ours to broadcast, so WebSocket/broadcast would buy nothing (just one more
+daemon on the server, which would end up polling the file anyway).
+
+The Dashboard uses **short browser polling** instead: `dashboard.js` calls
+`GET /admin/ai-memory/live` (same session/middleware as the panel) every 15s and
+swaps **only the values** — numbers, bar heights, axis ceiling and the equivalent
+table. Nothing is recreated in the DOM, so it neither flickers nor jumps.
+Details:
+
+- **a hidden tab does not poll** (`visibilitychange`); it refreshes on return;
+- **pausable** through the "ao vivo" button (kept in `localStorage`);
+- **repeated errors back off** (up to 2 min) and the dot turns red;
+- while fetching, the previous drawing stays up at lower opacity — no skeleton.
+
+To change the interval: `data-every` (seconds) on the `[data-aim-live]` element.
+
+## 6. Code map
+
+| Layer | File |
 | --- | --- |
-| Conexão RO + `isAvailable` + paginação | `app/Services/AiMemory/AiMemoryDatabase.php` |
-| Formatação de tempo (µs → local) | `app/Services/AiMemory/AiMemoryTime.php` |
-| Consultas (1 por tela) | `app/Services/AiMemory/{Stats,Project,Workspace,Page,Session,Observation,Handoff,Search}Repository.php` |
-| Números derivados do Dashboard (sem banco) | `app/Services/AiMemory/DashboardSummary.php` |
-| JSON do "ao vivo" do Dashboard | `AiMemoryController::live()` → rota `admin.ai-memory.live` |
-| Sistema visual do módulo (CSS, `@once`) | `resources/views/admin/ai-memory/_styles.blade.php` |
-| Controller fino | `app/Http/Controllers/Admin/AiMemoryController.php` |
-| Rotas | `routes/admin.php` (grupo `admin.ai-memory.*`) |
+| RO connection + `isAvailable`/`unavailableReason` + pagination | `app/Services/AiMemory/AiMemoryDatabase.php` |
+| Time formatting (µs → local) | `app/Services/AiMemory/AiMemoryTime.php` |
+| Queries (one per screen) | `app/Services/AiMemory/{Stats,Project,Workspace,Page,Session,Observation,Handoff,Search}Repository.php` |
+| Derived Dashboard numbers (no database) | `app/Services/AiMemory/DashboardSummary.php` |
+| Dashboard "live" JSON | `AiMemoryController::live()` → route `admin.ai-memory.live` |
+| Module visual system (CSS, `@once`) | `resources/views/admin/ai-memory/_styles.blade.php` |
+| Thin controller + availability guard | `app/Http/Controllers/Admin/AiMemoryController.php` |
+| Routes | `routes/admin.php` (group `admin.ai-memory.*`) |
 | Views | `resources/views/admin/ai-memory/*.blade.php` |
-| Sub-navegação do módulo (+ CSS, `@once`) | `resources/views/admin/ai-memory/_tabs.blade.php` |
-| Leitura dos gráficos (crosshair/tooltip/teclado) | `public/js/admin/ai-memory/dashboard.js` |
-| Aviso de degradação | `resources/views/admin/ai-memory/_unavailable.blade.php` |
-| Config | `config/aimemory.php`, conexão `aimemory` em `config/database.php` |
-| Histórico | migration `..._create_ai_memory_stat_snapshots_table`, `App\Models\AiMemoryStatSnapshot`, `app/Console/Commands/SnapshotAiMemoryStats.php` |
+| Module sub-navigation (+ CSS, `@once`) | `resources/views/admin/ai-memory/_tabs.blade.php` |
+| Chart reading aids (crosshair/tooltip/keyboard) | `public/js/admin/ai-memory/dashboard.js` |
+| Degradation notice | `resources/views/admin/ai-memory/_unavailable.blade.php` |
+| Config | `config/aimemory.php`, `aimemory` connection in `config/database.php` |
+| Guard regression tests | `tests/Unit/AiMemory/AiMemoryDatabaseTest.php` |
+| History | migration `..._create_ai_memory_stat_snapshots_table`, `App\Models\AiMemoryStatSnapshot`, `app/Console/Commands/SnapshotAiMemoryStats.php` |
 
-### Schema do ai-memory (referência)
-As consultas seguem as migrações do ai-memory
-(`crates/ai-memory-store/migrations/V01..V25`). Pontos que valem lembrar:
-- **timestamps = microssegundos** desde epoch (UTC) → dividir por 1.000.000;
-- **ids = BLOB** (UUIDv7) → nas URLs usamos `lower(hex(id))` (32 chars);
-- `pages`: versão atual `is_latest=1`; histórico via `supersedes`;
-- busca via `pages_fts` (FTS5, colunas `title`+`body`), ordenada por `bm25`;
-- `workspaces`: só `id` e `name` são referenciados no código — nenhuma consulta
-  usa outra coluna (ex.: `created_at`), então não está confirmada por aqui; `projects`,
-  `pages` e `sessions` têm `workspace_id` direto (não só via `project_id`), é isso
-  que `WorkspaceRepository` soma para as contagens da listagem.
+### ai-memory schema (reference)
 
-## 7. Fase 2 (fora do escopo atual)
+The queries follow ai-memory's migrations (`crates/ai-memory-store/migrations/`,
+which reach V58 in 2.0.0). Points worth remembering:
 
-- **Auto Improve** (aprovar/rejeitar propostas) e **gerar embeddings** —
-  **escrita**, portanto via **API/MCP do ai-memory**, nunca neste SQLite.
-- **Knowledge Graph** visual a partir da tabela `links`.
-- Telas dedicadas de Embeddings / Auditoria do ai-memory (Workspaces já saiu da lista — ver `WorkspaceRepository`).
+- **timestamps = microseconds** since the epoch (UTC) → divide by 1,000,000;
+- **ids = BLOB** (UUIDv7) → URLs use `lower(hex(id))` (32 chars);
+- `pages`: current version is `is_latest=1`; history through `supersedes`;
+- search through `pages_fts` (FTS5, columns `title`+`body`), ordered by `bm25`;
+- `workspaces`: only `id` and `name` are referenced in the code; `projects`,
+  `pages` and `sessions` carry `workspace_id` directly (not only through
+  `project_id`), which is what `WorkspaceRepository` sums for its counts;
+- 2.0.0 added no renames — V56/V57/V58 are additive (entity-link validity,
+  experience-pass state). But `pages`/`sessions`/`links`/`users` have been
+  rebuilt by migrations before (`DROP` + `RENAME`), so **`rowid` is not stable
+  across versions** — never persist one;
+- `page_embeddings` and `auto_improve_proposals` may be absent in older
+  versions: `StatsRepository` tolerates *"no such table/column"* for those
+  counts and nothing else (a permission error must not be shown as a zero).
+
+## 7. Phase 2 (out of current scope)
+
+The decoupled options, if reading the file directly ever stops being acceptable
+(app moves off the server, or the write permission of §4.2 becomes unwanted):
+
+- **ai-memory's read-only HTTP API** — `/api/v1/*` is read-only by construction
+  (workspaces, projects, pages, search, recent, briefing, overview, handoffs,
+  graph, sessions, observations), authenticated with a User-level `aim_` API key
+  (`ai-memory api-key add --username <u> --label painel-laravel`). This is the
+  path upstream supports for exactly our use case, and it is what the write
+  actions below would need anyway.
+- **Periodic consistent snapshot** — `ai-memory backup --to <file>` (SQLite
+  online backup API) into a directory owned by `www-data`, with
+  `AI_MEMORY_SQLITE_PATH` pointing at the copy. Costs freshness, needs zero
+  permission on the ai-memory data dir, and the copy has no WAL sidecars at all.
+- **Auto Improve** (approve/reject proposals) and **generating embeddings** are
+  **writes**, therefore API/MCP only — never this SQLite file.
+- Visual **Knowledge Graph** from the `links` table; dedicated Embeddings /
+  ai-memory audit screens.

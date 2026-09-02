@@ -104,30 +104,40 @@ return [
 
         /*
         | ------------------------------------------------------------------
-        | ai-memory (SQLite EXTERNO, SOMENTE LEITURA)  —  exceção deliberada
+        | ai-memory (EXTERNAL SQLite, READ-ONLY)  —  deliberate exception
         | ------------------------------------------------------------------
-        | O CLAUDE.md manda "nunca usar SQLite em nenhum contexto". Essa regra
-        | vale para o ARMAZENAMENTO do app, que continua 100% MySQL/MariaDB
-        | (inclusive a tabela `ai_memory_stat_snapshots`). ESTA conexão NÃO é
-        | armazenamento nosso: é uma janela read-only para o banco do produto
-        | `ai-memory` (github.com/akitaonrails/ai-memory), que roda como
-        | container Docker NO MESMO SERVIDOR e guarda seu índice em SQLite
-        | (WAL) dentro do volume `ai-memory-data`, em `/data/db/memory.sqlite`.
+        | CLAUDE.md says "never use SQLite". That rule is about the app's own
+        | STORAGE, which stays 100% MySQL/MariaDB (including the
+        | `ai_memory_stat_snapshots` table). THIS connection is not our storage:
+        | it is a read-only window into the database of the `ai-memory` product
+        | (github.com/akitaonrails/ai-memory), which runs on the SAME SERVER and
+        | keeps its index in a WAL-mode SQLite file (2.x: /opt/ai-memory/data/db,
+        | 1.x: the Docker volume `ai-memory-data`).
         |
-        | Só emitimos SELECT (App\Services\AiMemory\AiMemoryDatabase aplica
-        | `PRAGMA query_only=1`): o ai-memory é o único writer legítimo — gravar
-        | por fora corromperia o FTS5 e os invariantes dele. Ver docs/AI-MEMORY.md.
+        | We only ever issue SELECT — `query_only` below pins that at engine
+        | level, for every consumer of the connection and across reconnects.
+        | ai-memory is the only legitimate writer: writing from outside would
+        | corrupt its FTS5 index and its invariant triggers.
         |
-        | Se o path não existir/for ilegível (app saiu do servidor, volume
-        | mudou, `www-data` sem permissão), a UI degrada com um aviso que
-        | explica exatamente isso — nada aqui derruba o app.
+        | Do NOT "fix" this into a `file:...?mode=ro` URI. A WAL reader must be
+        | able to create the `-shm`/`-wal` sidecar files when the writer has
+        | checkpointed and closed, and a read-only handle cannot do that — it
+        | fails the first SELECT with SQLITE_READONLY_DIRECTORY ("attempt to
+        | write a readonly database"). What makes this work is filesystem
+        | permission: www-data needs WRITE on the directory that holds
+        | memory.sqlite. See docs/AI-MEMORY.md §4.
+        |
+        | If the path is missing/unreadable (app moved off the server, layout
+        | changed, www-data without permission), the UI degrades with a notice
+        | that explains exactly that — nothing here takes the app down.
         */
         'aimemory' => [
             'driver' => 'sqlite',
-            'database' => env('AI_MEMORY_SQLITE_PATH', '/var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite'),
+            'database' => env('AI_MEMORY_SQLITE_PATH', '/opt/ai-memory/data/db/memory.sqlite'),
             'prefix' => '',
-            'foreign_key_constraints' => false,   // não navegamos FKs; evita overhead e travas
-            'busy_timeout' => 3000,               // ai-memory é o writer; a gente só espera um pouco e lê
+            'foreign_key_constraints' => false,   // we never walk FKs; avoids overhead and locks
+            'busy_timeout' => 3000,               // ai-memory is the writer; we just wait a bit and read
+            'pragmas' => ['query_only' => 1],     // engine-level read-only guard (Illuminate\Database\Connectors\SQLiteConnector::configurePragmas)
         ],
 
     ],

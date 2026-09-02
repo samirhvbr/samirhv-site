@@ -2,51 +2,53 @@
 
 /*
 |--------------------------------------------------------------------------
-| Módulo AI-MEMORY (admin) — configuração e acoplamento de produção
+| AI-MEMORY module (admin) — configuration and production coupling
 |--------------------------------------------------------------------------
 |
-| O admin do Samirhv tem uma tela "AI-MEMORY" que CONSULTA (somente leitura)
-| o banco do produto `ai-memory` (github.com/akitaonrails/ai-memory) — a
-| memória de longo prazo dos agentes de código (Claude Code, Codex, etc.).
+| The Samirhv admin has an "AI-MEMORY" screen that READS (read-only) the
+| database of the `ai-memory` product (github.com/akitaonrails/ai-memory) —
+| the long-term memory of the coding agents (Claude Code, Codex, etc.).
 |
-| >>> LEIA ISTO ANTES DE MOVER O APP DE SERVIDOR <<<
+| >>> READ THIS BEFORE MOVING THE APP TO ANOTHER SERVER <<<
 |
-| O ai-memory roda como CONTAINER DOCKER no MESMO servidor de produção do
-| Samirhv. Ele guarda seu índice num arquivo SQLite (modo WAL) dentro do
-| volume Docker `ai-memory-data`, no caminho interno `/data/db/memory.sqlite`.
-| No host, esse arquivo normalmente aparece em:
+| ai-memory runs on the SAME production server as Samirhv and keeps its index
+| in a WAL-mode SQLite file. The layout depends on the version:
 |
-|     /var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite
+|     2.x  /opt/ai-memory/data/db/memory.sqlite
+|     1.x  /var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite
 |
-| A tela do admin abre esse arquivo DIRETO do filesystem, como um segundo
-| leitor read-only. Por isso o módulo é intrinsecamente ACOPLADO AO HOST:
-| se o app Samirhv for movido para outra máquina (ou o volume/container
-| mudar de nome/caminho, ou o usuário do PHP-FPM perder permissão de leitura
-| sobre o arquivo e seus `-wal`/`-shm`), a tela deixa de retornar dados e
-| passa a exibir o aviso de indisponibilidade. NÃO é bug: é o acoplamento.
-| A explicação completa (permissões, WAL, roteiro Fase 2) está em
-| docs/AI-MEMORY.md.
+| The admin screen opens that file straight off the filesystem, as a second
+| read-only reader. That makes the module HOST-COUPLED: move the Samirhv app to
+| another machine, change the ai-memory layout, or take away the PHP-FPM user's
+| access and the screen stops returning data and shows the notice instead.
+|
+| >>> WHAT "ACCESS" MEANS FOR A WAL DATABASE <<<
+|
+| Read permission on memory.sqlite is NOT enough. A WAL reader also needs WRITE
+| permission on the DIRECTORY that holds the file, because whenever ai-memory
+| has checkpointed and closed its last connection the sidecar files `-shm`/
+| `-wal` are gone and the reader has to create them. Without that, the first
+| SELECT fails with SQLITE_READONLY_DIRECTORY, which PDO reports as the
+| misleading "General error: 8 attempt to write a readonly database".
+| The full recipe (groups, permissions, diagnosis) is in docs/AI-MEMORY.md §4.
 |
 */
 
 return [
 
-    // Caminho absoluto do memory.sqlite NO HOST. Configure em produção via
-    // AI_MEMORY_SQLITE_PATH no .env. Vazio/inexistente => módulo degrada.
-    'path' => env('AI_MEMORY_SQLITE_PATH', '/var/lib/docker/volumes/ai-memory-data/_data/db/memory.sqlite'),
+    // Absolute path of memory.sqlite ON THE HOST. Set it in production via
+    // AI_MEMORY_SQLITE_PATH in .env. Empty/missing => the module degrades.
+    'path' => env('AI_MEMORY_SQLITE_PATH', '/opt/ai-memory/data/db/memory.sqlite'),
 
-    // Nome da conexão declarada em config/database.php (read-only).
+    // Name of the connection declared in config/database.php (read-only).
     'connection' => 'aimemory',
 
-    // Fuso para exibir os timestamps (o ai-memory grava em UTC, microssegundos).
+    // Timezone used to display timestamps (ai-memory stores UTC microseconds).
     'timezone' => env('AI_MEMORY_TIMEZONE', 'America/Sao_Paulo'),
 
-    // Volume Docker de origem — usado só para o texto explicativo da UI/doc.
-    'docker_volume' => env('AI_MEMORY_DOCKER_VOLUME', 'ai-memory-data'),
-
-    // Quantos dias de evolução mostrar nos gráficos do Dashboard.
+    // How many days of history the Dashboard charts show.
     'chart_days' => 30,
 
-    // Teto de linhas por página nas listagens (sessões/observações/páginas).
+    // Row cap per page in the listings (sessions/observations/pages).
     'per_page' => 50,
 ];

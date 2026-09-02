@@ -11,9 +11,9 @@ class StatsRepository
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
     /**
-     * Totais atuais (ao vivo, do próprio ai-memory). Cada COUNT é tolerante:
-     * se uma tabela não existir numa versão mais antiga do ai-memory, vira 0
-     * em vez de derrubar o Dashboard.
+     * Current totals, live from ai-memory itself. Each COUNT tolerates a table
+     * that a given ai-memory version does not have (it becomes 0 instead of
+     * taking the Dashboard down) — but ONLY that: see count().
      */
     public function counts(): array
     {
@@ -45,14 +45,29 @@ class StatsRepository
     {
         try {
             return (int) $this->db->scalar($sql);
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            // Swallow ONLY "this ai-memory version has no such table/column".
+            // Anything else (permission, lock, IO) has to reach the controller
+            // guard, which degrades the whole screen with an explanation —
+            // showing a fabricated zero would also poison the durable history
+            // written by `aimemory:snapshot`.
+            if (! $this->isMissingSchema($e)) {
+                throw $e;
+            }
+
             return 0;
         }
     }
 
+    /** Is this failure just a table/column absent in this ai-memory version? */
+    private function isMissingSchema(Throwable $e): bool
+    {
+        return (bool) preg_match('/no such (table|column)/i', $e->getMessage());
+    }
+
     /**
-     * Agrupa por dia (bucket em UTC, que é como o ai-memory grava) e preenche
-     * os dias sem dados com 0, para o gráfico não ter buracos.
+     * Group by day (UTC buckets, which is how ai-memory stores time) and fill
+     * the empty days with 0 so the chart has no holes.
      */
     private function byDay(string $table, string $column, int $days): array
     {
@@ -70,7 +85,12 @@ class StatsRepository
             ) as $row) {
                 $found[$row->d] = (int) $row->total;
             }
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            // Same rule as count(): only a missing table/column is tolerable.
+            if (! $this->isMissingSchema($e)) {
+                throw $e;
+            }
+
             $found = [];
         }
 

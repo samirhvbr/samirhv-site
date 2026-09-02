@@ -21,9 +21,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Uma instância por requisição: memoiza isAvailable() (um único stat/
-        // SELECT de sonda) e o PRAGMA query_only entre todos os repositórios
-        // do módulo AI-MEMORY.
+        // One instance per request: memoises isAvailable() (a single stat + probe
+        // SELECT) and the degraded state across every repository of the
+        // AI-MEMORY module, so one failure is not retried screen-wide.
         $this->app->singleton(\App\Services\AiMemory\AiMemoryDatabase::class);
     }
 

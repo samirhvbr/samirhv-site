@@ -17,15 +17,18 @@ use App\Services\AiMemory\WorkspaceRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
 /**
- * Módulo AI-MEMORY do admin — SOMENTE LEITURA sobre o SQLite do ai-memory
- * (ver App\Services\AiMemory\AiMemoryDatabase e docs/AI-MEMORY.md).
+ * Admin AI-MEMORY module — READ-ONLY over the ai-memory SQLite index
+ * (see App\Services\AiMemory\AiMemoryDatabase and docs/AI-MEMORY.md).
  *
- * Controller fino: cada método injeta o(s) repositório(s) da sua tela e devolve
- * a view. `screen()` centraliza o guard de disponibilidade — se o banco não
- * estiver acessível, a view recebe `available = false` e mostra a explicação,
- * sem nunca disparar uma query (que falharia).
+ * Thin controller: each method injects the repositories of its screen and
+ * returns the view. `screen()` centralises the availability guard — it probes
+ * first (so no query runs when the database is unreachable) AND catches any
+ * failure of the queries themselves, because the module's contract is an
+ * explanatory notice, never an HTTP 500.
  */
 class AiMemoryController extends Controller
 {
@@ -67,12 +70,21 @@ class AiMemoryController extends Controller
 
         $days = (int) config('aimemory.chart_days', 30);
 
-        return response()->json([
-            'available' => true,
-            'counts' => $stats->counts(),
-            'observationsByDay' => $stats->observationsByDay($days),
-            'sessionsByDay' => $stats->sessionsByDay($days),
-        ]);
+        try {
+            return response()->json([
+                'available' => true,
+                'counts' => $stats->counts(),
+                'observationsByDay' => $stats->observationsByDay($days),
+                'sessionsByDay' => $stats->sessionsByDay($days),
+            ]);
+        } catch (Throwable $e) {
+            // Polled every 15s: a failure here must not fill the log with 500s
+            // nor break the page that is already rendered.
+            report($e);
+            $this->db->markUnavailable($e);
+
+            return response()->json(['available' => false]);
+        }
     }
 
     public function projects(ProjectRepository $projects): View
@@ -217,22 +229,47 @@ class AiMemoryController extends Controller
     }
 
     /**
-     * Renderiza uma tela do módulo com o guard de disponibilidade. Quando o
-     * ai-memory não está acessível, devolve `available = false` (a view mostra
-     * o aviso explicativo) sem executar nenhuma query.
+     * Render a screen of the module behind the availability guard.
+     *
+     * Two layers, because one is not enough:
+     *  1. the probe (`isAvailable()`), which skips the queries altogether when
+     *     the database is unreachable;
+     *  2. this try/catch, for when the probe passes and a query still fails —
+     *     permission changed mid-request, an ai-memory upgrade renamed a table,
+     *     a lock outlived `busy_timeout`. The screen degrades to the notice and
+     *     the exception goes to the log via report().
+     *
+     * HTTP exceptions are rethrown: a 404 from `abort_if()` inside a screen's
+     * closure must stay a 404, not turn into "ai-memory unavailable".
      */
     private function screen(string $view, callable $data): View
     {
-        $base = [
-            'available' => $this->db->isAvailable(),
-            'aimemoryPath' => $this->db->path(),
-            'dockerVolume' => $this->db->dockerVolume(),
-        ];
-
-        if (! $base['available']) {
-            return view($view, $base);
+        if (! $this->db->isAvailable()) {
+            return view($view, $this->baseData());
         }
 
-        return view($view, array_merge($base, $data()));
+        try {
+            return view($view, array_merge($this->baseData(), $data()));
+        } catch (HttpExceptionInterface $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            report($e);
+            $this->db->markUnavailable($e);
+
+            return view($view, $this->baseData());
+        }
+    }
+
+    /**
+     * Variables every screen of the module receives: the availability flag and
+     * the material the notice needs to explain a degradation.
+     */
+    private function baseData(): array
+    {
+        return [
+            'available' => $this->db->isAvailable(),
+            'aimemoryPath' => $this->db->path(),
+            'unavailableReason' => $this->db->unavailableReason(),
+        ];
     }
 }
