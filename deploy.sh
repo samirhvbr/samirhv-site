@@ -189,8 +189,16 @@ www php artisan down --refresh=15
 log "==> Backup do banco via mysqldump..."
 backup_db
 
-# ── 4. Dependências PHP (só se composer.lock mudou, ou vendor ausente) ────────
-if [ ! -d vendor ] || grep -q '^samirhv/composer\.lock$' <<<"$CHANGED"; then
+# ── 4. PHP dependencies (composer.json OR .lock changed, or vendor missing) ───
+# composer.json joined this condition in 0.6.0, over a real defect: the commit
+# that added `autoload.files` (the lroute() helper) does NOT change
+# composer.lock, because it touches no dependency. The deploy skipped
+# `composer install`, the autoloader stayed stale, and every public page would
+# have 500'd with `Call to undefined function lroute()`. It holds for any future
+# composer.json-only change too: a new autoload path, a script, a config key.
+if [ ! -d vendor ] \
+   || grep -q '^samirhv/composer\.lock$' <<<"$CHANGED" \
+   || grep -q '^samirhv/composer\.json$' <<<"$CHANGED"; then
     log "==> Instalando dependências PHP (como $OWNER)..."
     heal_owner vendor
     asowner env COMPOSER_ALLOW_SUPERUSER=1 composer install \
@@ -199,7 +207,7 @@ if [ ! -d vendor ] || grep -q '^samirhv/composer\.lock$' <<<"$CHANGED"; then
     www find bootstrap/cache -maxdepth 1 -type f \
         \( -name 'packages.php' -o -name 'services.php' \) -delete 2>/dev/null || true
 else
-    log "✓ composer.lock inalterado — pulando composer install."
+    log "✓ composer.json/.lock inalterados — pulando composer install."
 fi
 
 # ── 5. Frontend (npm install + build) — se front mudou, ou build ausente ──────
