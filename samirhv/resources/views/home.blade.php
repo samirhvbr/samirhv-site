@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Samirhv')
-@section('description', 'Projetos e ferramentas de Samir Hanna Verza disponibilizados para download.')
+@section('description', __('home.meta_description'))
 
 @section('content')
 
@@ -18,45 +18,44 @@
         <div class="container">
             <div class="s-home-hero__grid">
                 <div class="s-home-hero__copy s-reveal" data-d="1">
-                    <span class="s-kicker">Engenharia independente</span>
-                    <h1 class="s-home-title">Ferramentas que nascem do trabalho real.</h1>
+                    <span class="s-kicker">{{ __('home.kicker') }}</span>
+                    <h1 class="s-home-title">{{ __('home.title') }}</h1>
                     <p class="s-lead s-home-intro">
-                        Apps, utilitários e software de infraestrutura construídos por Samir Hanna Verza.
-                        Projetos diretos, releases verificáveis e downloads sem atrito.
+                        {{ __('home.intro') }}
                     </p>
 
                     <div class="s-home-actions">
                         <a href="#projetos" class="s-btn s-btn--lg">
-                            Explorar projetos <i class="fa-solid fa-arrow-down"></i>
+                            {{ __('home.explore') }} <i class="fa-solid fa-arrow-down"></i>
                         </a>
                         <a href="https://github.com/samirhvbr" target="_blank" rel="noopener" class="s-text-link">
-                            <i class="fa-brands fa-github"></i> Ver código no GitHub
+                            <i class="fa-brands fa-github"></i> {{ __('home.see_code') }}
                         </a>
                     </div>
 
                     <div class="s-home-trust">
-                        <span><i class="fa-solid fa-circle-check"></i> releases versionados</span>
-                        <span><i class="fa-solid fa-shield-halved"></i> hashes publicados</span>
-                        <span><i class="fa-brands fa-linux"></i> foco em Linux</span>
+                        <span><i class="fa-solid fa-circle-check"></i> {{ __('home.trust_versioned') }}</span>
+                        <span><i class="fa-solid fa-shield-halved"></i> {{ __('home.trust_hashes') }}</span>
+                        <span><i class="fa-brands fa-linux"></i> {{ __('home.trust_linux') }}</span>
                     </div>
                 </div>
 
-                <div class="s-release-board s-reveal" data-d="2" aria-label="Catálogo de projetos publicados">
+                <div class="s-release-board s-reveal" data-d="2" aria-label="{{ __('home.board_aria') }}">
                     <div class="s-release-board__bar">
                         <div>
-                            <span class="s-release-board__eyebrow">Catálogo público</span>
-                            <strong>Projetos em produção</strong>
+                            <span class="s-release-board__eyebrow">{{ __('home.board_eyebrow') }}</span>
+                            <strong>{{ __('home.board_title') }}</strong>
                         </div>
-                        <span class="s-live-status"><i></i> online</span>
+                        <span class="s-live-status"><i></i> {{ __('home.board_online') }}</span>
                     </div>
 
                     @if($featuredProject)
                         <a href="{{ $featuredProject->public_url }}" @if($featuredProject->redirectsToSite()) target="_blank" rel="noopener" @endif class="s-release-board__featured">
                             <span class="s-release-board__icon"><i class="{{ $featuredProject->icon ?: 'fa-solid fa-cube' }}"></i></span>
                             <span class="s-release-board__featured-copy">
-                                <small>Projeto em destaque</small>
-                                <strong>{{ $featuredProject->title }}</strong>
-                                <span>{{ Str::limit($featuredProject->description, 105) }}</span>
+                                <small>{{ __('home.board_featured') }}</small>
+                                <strong>{{ \App\Support\Content::project($featuredProject, 'title') }}</strong>
+                                <span>{{ Str::limit(\App\Support\Content::project($featuredProject, 'description'), 105) }}</span>
                             </span>
                             <i class="fa-solid fa-arrow-up-right-from-square s-release-board__arrow"></i>
                         </a>
@@ -66,33 +65,33 @@
                         @foreach($projects->take(4) as $project)
                             <a href="{{ $project->public_url }}" @if($project->redirectsToSite()) target="_blank" rel="noopener" @endif class="s-release-row">
                                 <span class="s-release-row__index">0{{ $loop->iteration }}</span>
-                                <span class="s-release-row__name">{{ $project->title }}</span>
-                                <span class="s-release-row__type">{{ $project->category ?: ($project->redirectsToSite() ? 'site' : 'software') }}</span>
+                                <span class="s-release-row__name">{{ \App\Support\Content::project($project, 'title') }}</span>
+                                <span class="s-release-row__type">{{ \App\Support\Content::category($project->category) ?: ($project->redirectsToSite() ? 'site' : 'software') }}</span>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </a>
                         @endforeach
                     </div>
 
                     <div class="s-release-board__foot">
-                        <span>{{ $projects->count() }} projetos publicados</span>
-                        <a href="{{ route('downloads') }}">abrir central de downloads <i class="fa-solid fa-arrow-right"></i></a>
+                        <span>{{ trans_choice('home.board_count', $projects->count()) }}</span>
+                        <a href="{{ lroute('downloads') }}">{{ __('home.board_open_downloads') }} <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- ═══ PROJETOS ═══ --}}
+    {{-- ═══ PROJECTS ═══ --}}
     <section class="s-projects-section" id="projetos">
         <div class="container">
             <div class="s-heading-row">
                 <div>
-                    <span class="s-section-number">01 / PROJETOS</span>
-                    <h2 class="s-h2">Trabalho publicado</h2>
-                    <p class="s-lead s-muted">Software com propósito claro, pronto para usar ou acompanhar.</p>
+                    <span class="s-section-number">{{ __('home.section_projects') }}</span>
+                    <h2 class="s-h2">{{ __('home.projects_heading') }}</h2>
+                    <p class="s-lead s-muted">{{ __('home.projects_lead') }}</p>
                 </div>
-                <a href="{{ route('downloads') }}" class="s-text-link d-none d-md-inline-flex">
-                    Ver todos os downloads <i class="fa-solid fa-arrow-right"></i>
+                <a href="{{ lroute('downloads') }}" class="s-text-link d-none d-md-inline-flex">
+                    {{ __('home.see_all_downloads') }} <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
 
@@ -101,20 +100,20 @@
                     <a href="{{ $featuredProject->public_url }}" @if($featuredProject->redirectsToSite()) target="_blank" rel="noopener" @endif class="s-portfolio-featured">
                         <div class="s-portfolio-featured__top">
                             <span class="s-project-mark"><i class="{{ $featuredProject->icon ?: 'fa-solid fa-cube' }}"></i></span>
-                            <span class="s-project-state"><i></i> disponível</span>
+                            <span class="s-project-state"><i></i> {{ __('home.available') }}</span>
                         </div>
                         <div class="s-portfolio-featured__content">
-                            <span class="s-project-overline">Projeto principal</span>
-                            <h3>{{ $featuredProject->title }}</h3>
-                            <p>{{ Str::limit($featuredProject->description, 220) }}</p>
+                            <span class="s-project-overline">{{ __('home.main_project') }}</span>
+                            <h3>{{ \App\Support\Content::project($featuredProject, 'title') }}</h3>
+                            <p>{{ Str::limit(\App\Support\Content::project($featuredProject, 'description'), 220) }}</p>
                         </div>
                         <div class="s-portfolio-featured__foot">
                             <div>
-                                @if($featuredProject->category)<span>{{ $featuredProject->category }}</span>@endif
-                                @if(($featuredProject->files_count ?? 0) > 0)<span>{{ $featuredProject->files_count }} builds</span>@endif
-                                @if(($featuredProject->downloads_total ?? 0) > 0)<span>{{ number_format($featuredProject->downloads_total, 0, ',', '.') }} downloads</span>@endif
+                                @if($featuredProject->category)<span>{{ \App\Support\Content::category($featuredProject->category) }}</span>@endif
+                                @if(($featuredProject->files_count ?? 0) > 0)<span>{{ $featuredProject->files_count }} {{ __('home.builds') }}</span>@endif
+                                @if(($featuredProject->downloads_total ?? 0) > 0)<span>{{ lnumber($featuredProject->downloads_total) }} {{ __('home.downloads') }}</span>@endif
                             </div>
-                            <strong>{{ $featuredProject->redirectsToSite() ? 'Visitar projeto' : 'Ver projeto' }} <i class="fa-solid fa-arrow-right"></i></strong>
+                            <strong>{{ $featuredProject->redirectsToSite() ? __('home.visit_project') : __('home.view_project') }} <i class="fa-solid fa-arrow-right"></i></strong>
                         </div>
                     </a>
 
@@ -123,17 +122,17 @@
                             @php
                                 $isLink = $project->redirectsToSite();
                                 $meta = $isLink
-                                    ? 'site externo'
+                                    ? __('home.external_site')
                                     : (($project->downloads_total ?? 0) > 0
-                                        ? number_format($project->downloads_total, 0, ',', '.').' downloads'
-                                        : ($project->hasCustomPage() ? 'documentação' : 'projeto'));
+                                        ? lnumber($project->downloads_total).' '.__('home.downloads')
+                                        : ($project->hasCustomPage() ? __('home.documentation') : __('home.project')));
                             @endphp
                             <a href="{{ $project->public_url }}" @if($isLink) target="_blank" rel="noopener" @endif class="s-portfolio-item">
                                 <span class="s-portfolio-item__icon"><i class="{{ $project->icon ?: 'fa-solid fa-cube' }}"></i></span>
                                 <span class="s-portfolio-item__copy">
-                                    <small>{{ $project->category ?: 'Software' }}</small>
-                                    <strong>{{ $project->title }}</strong>
-                                    <span>{{ Str::limit($project->description, 90) }}</span>
+                                    <small>{{ \App\Support\Content::category($project->category) ?: __('home.software') }}</small>
+                                    <strong>{{ \App\Support\Content::project($project, 'title') }}</strong>
+                                    <span>{{ Str::limit(\App\Support\Content::project($project, 'description'), 90) }}</span>
                                 </span>
                                 <span class="s-portfolio-item__meta">{{ $meta }}</span>
                                 <i class="fa-solid {{ $isLink ? 'fa-arrow-up-right-from-square' : 'fa-arrow-right' }}"></i>
@@ -142,37 +141,37 @@
                     </div>
                 </div>
             @else
-                <div class="s-empty-state">Nenhum projeto publicado ainda.</div>
+                <div class="s-empty-state">{{ __('home.empty') }}</div>
             @endif
 
-            <a href="{{ route('downloads') }}" class="s-btn s-btn--ghost d-md-none" style="width:100%; margin-top:24px;">
-                Ver todos os downloads <i class="fa-solid fa-arrow-right"></i>
+            <a href="{{ lroute('downloads') }}" class="s-btn s-btn--ghost d-md-none" style="width:100%; margin-top:24px;">
+                {{ __('home.see_all_downloads') }} <i class="fa-solid fa-arrow-right"></i>
             </a>
         </div>
     </section>
 
-    {{-- ═══ MÉTODO ═══ --}}
+    {{-- ═══ METHOD ═══ --}}
     <section class="s-method-section">
         <div class="container">
             <div class="s-method-intro">
-                <span class="s-section-number">02 / PRINCÍPIOS</span>
-                <h2 class="s-h2">Software calmo.<br>Engenharia explícita.</h2>
+                <span class="s-section-number">{{ __('home.section_principles') }}</span>
+                <h2 class="s-h2">{!! __('home.principles_heading') !!}</h2>
             </div>
             <div class="s-method-grid">
                 <article>
                     <span>01</span>
-                    <h3>Problema antes da interface</h3>
-                    <p>Cada projeto começa em uma necessidade real de desenvolvimento, operação ou infraestrutura.</p>
+                    <h3>{{ __('home.principle_1') }}</h3>
+                    <p>{{ __('home.principle_1_desc') }}</p>
                 </article>
                 <article>
                     <span>02</span>
-                    <h3>Procedência visível</h3>
-                    <p>Versão, sistema, arquitetura, data e hash aparecem onde a decisão de instalar acontece.</p>
+                    <h3>{{ __('home.principle_2') }}</h3>
+                    <p>{{ __('home.principle_2_desc') }}</p>
                 </article>
                 <article>
                     <span>03</span>
-                    <h3>Sem atrito artificial</h3>
-                    <p>Você entende o projeto, encontra o build correto e baixa sem cadastro ou etapas desnecessárias.</p>
+                    <h3>{{ __('home.principle_3') }}</h3>
+                    <p>{{ __('home.principle_3_desc') }}</p>
                 </article>
             </div>
         </div>
