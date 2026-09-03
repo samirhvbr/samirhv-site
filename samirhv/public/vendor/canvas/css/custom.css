@@ -25,6 +25,24 @@ body { background: var(--s-bg); }
 #logo { margin: 0; }
 .s-logo { font-size: 1.15rem; }
 .s-header-action { min-height: 40px; padding-inline: 17px; }
+
+/* ── Language switcher ──────────────────────────────────────────────────────
+   Two links, not a <select>: with JavaScript off a select does not navigate,
+   and a control that is dead on screen is worse than no control. It hides with
+   the rest of `.header-misc` on a narrow screen (`d-none d-lg-flex`), which is
+   why the footer carries the pair too — on a phone that is the real
+   navigation. */
+.s-lang { display: inline-flex; align-items: center; gap: 2px; font-family: var(--s-mono); font-size: .72rem; }
+.s-lang a {
+    color: var(--s-faint);
+    text-decoration: none;
+    line-height: 1;
+    padding: 6px 7px;
+    border-radius: 7px;
+    transition: color .18s ease, background .18s ease;
+}
+.s-lang a:hover { color: var(--s-ink); background: var(--s-surface-2); }
+.s-lang a[aria-current="page"] { color: var(--s-ink); background: var(--s-surface-2); }
 .primary-menu .menu-link { color: var(--s-muted); }
 .primary-menu .menu-link:hover { color: var(--s-ink); }
 

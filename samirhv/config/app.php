@@ -80,6 +80,23 @@ return [
 
     'locale' => env('APP_LOCALE', 'en'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | The two languages the public site speaks. Single source: App\Support\Locales
+    | reads this shape, the route groups are built from it, and the `hreflang`
+    | pair is derived from it — so a language cannot be half-added.
+    |
+    | `locale` above stays whatever the environment says (pt_BR in production):
+    | it is the BOOT locale, used by queues, artisan and mail, not by a web
+    | request. What a request renders in is decided by the URL, in SetLocale.
+    |
+    */
+
+    'supported_locales' => ['en', 'pt_BR'],
+
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
