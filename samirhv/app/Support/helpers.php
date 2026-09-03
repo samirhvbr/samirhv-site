@@ -25,3 +25,20 @@ if (! function_exists('lroute')) {
             : route($name, $parameters, $absolute);
     }
 }
+
+if (! function_exists('lnumber')) {
+    /**
+     * A whole number with the separators of the page's language.
+     *
+     * `number_format($n, 0, ',', '.')` was hardcoded across the download views:
+     * correct for pt-BR, and wrong in English, where 1.234 reads as one point
+     * two three four. Small, and exactly the kind of thing that makes a
+     * translated page feel translated rather than written.
+     */
+    function lnumber(int|float $value): string
+    {
+        return app()->getLocale() === 'pt_BR'
+            ? number_format($value, 0, ',', '.')
+            : number_format($value, 0, '.', ',');
+    }
+}
