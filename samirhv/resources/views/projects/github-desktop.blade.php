@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'GitHub Desktop para Linux')
-@section('description', 'GitHub Desktop — o cliente Git visual e open-source da GitHub (Electron, TypeScript, React) compilado e empacotado em .deb para Linux.')
+@section('title', __('github_desktop.title'))
+@section('description', __('github_desktop.meta_description'))
 
 @section('content')
 
@@ -10,14 +10,14 @@
         <div class="container s-prose" style="position:relative; z-index:1; max-width:820px;">
 
             <nav style="margin-bottom:30px;">
-                <a href="{{ route('home') }}" class="s-meta" style="color:var(--s-accent-ink-2);"><i class="fa-solid fa-arrow-left" style="margin-right:7px;"></i>Início</a>
+                <a href="{{ lroute('home') }}" class="s-meta" style="color:var(--s-accent-ink-2);"><i class="fa-solid fa-arrow-left" style="margin-right:7px;"></i>{{ __('shell.home') }}</a>
             </nav>
 
             <header class="d-flex align-items-start gap-3" style="margin-bottom:24px;">
                 <span class="s-icon s-icon--lg"><i class="fa-brands fa-github"></i></span>
                 <div>
-                    <span class="s-kicker" style="margin-bottom:8px;">Aplicativo desktop</span>
-                    <h1 class="s-display" style="font-size:clamp(1.9rem,4vw,2.7rem);">GitHub Desktop <span style="color:var(--s-accent-ink-2);">para Linux</span></h1>
+                    <span class="s-kicker" style="margin-bottom:8px;">{{ __('github_desktop.kicker') }}</span>
+                    <h1 class="s-display" style="font-size:clamp(1.9rem,4vw,2.7rem);">{{ __('github_desktop.heading') }} <span style="color:var(--s-accent-ink-2);">{{ __('github_desktop.heading_accent') }}</span></h1>
                 </div>
             </header>
 
@@ -28,17 +28,34 @@
             </div>
 
             <div class="s-body" style="color:var(--s-ink-2); line-height:1.8; margin-bottom:36px;">
-                <p>O <strong style="color:var(--s-ink);">GitHub Desktop</strong> é o cliente Git visual e open-source da GitHub — construído em <strong style="color:var(--s-ink);">Electron</strong> e escrito em <strong style="color:var(--s-ink);">TypeScript</strong> com <strong style="color:var(--s-ink);">React</strong>. Ele deixa o dia a dia com Git mais simples: commits, branches, histórico, pull requests e resolução de conflitos numa interface limpa, sem precisar decorar comandos.</p>
-                <p style="margin-top:1rem;">Oficialmente, a GitHub <strong style="color:var(--s-ink);">não distribui o app para Linux</strong>. Este projeto é um build da comunidade que compila o GitHub Desktop a partir do código-fonte e o empacota como <strong style="color:var(--s-ink);">.deb</strong>, pronto pra instalar em Debian, Ubuntu e derivados.</p>
+                @php
+                    // A sentença inteira é UMA chave, com marcas para as partes em
+                    // negrito. Montar a frase por concatenação é o que produz
+                    // metade em cada idioma quando só um lado é traduzido.
+                    // `{!! !!}` é seguro aqui: as substituições são markup deste
+                    // arquivo e o texto vem de lang/, que é conteúdo do repo —
+                    // nada de entrada de usuário passa por aqui.
+                    $forte = fn (string $texto) => '<strong style="color:var(--s-ink);">'.$texto.'</strong>';
+                @endphp
+                <p>{!! __('github_desktop.intro_what', [
+                    'name' => $forte('GitHub Desktop'),
+                    'electron' => $forte('Electron'),
+                    'typescript' => $forte('TypeScript'),
+                    'react' => $forte('React'),
+                ]) !!}</p>
+                <p style="margin-top:1rem;">{!! __('github_desktop.intro_why', [
+                    'does_not_ship' => $forte(__('github_desktop.does_not_ship')),
+                    'deb' => $forte('.deb'),
+                ]) !!}</p>
             </div>
 
             <div class="s-grid" style="margin-bottom:42px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
                 @php
                     $features = [
-                        ['fa-solid fa-code-commit', 'Commits visuais', 'Stage, commit, branches e merges sem linha de comando.'],
-                        ['fa-solid fa-code-compare', 'Diff lado a lado', 'Veja exatamente o que mudou antes de confirmar.'],
-                        ['fa-solid fa-code-pull-request', 'Pull requests', 'Crie e acompanhe PRs e o status dos checks.'],
-                        ['fa-solid fa-box-open', 'Pacote .deb', 'Instalação nativa em Debian, Ubuntu e derivados.'],
+                        ['fa-solid fa-code-commit', __('github_desktop.feature_commits'), __('github_desktop.feature_commits_desc')],
+                        ['fa-solid fa-code-compare', __('github_desktop.feature_diff'), __('github_desktop.feature_diff_desc')],
+                        ['fa-solid fa-code-pull-request', __('github_desktop.feature_pr'), __('github_desktop.feature_pr_desc')],
+                        ['fa-solid fa-box-open', __('github_desktop.feature_deb'), __('github_desktop.feature_deb_desc')],
                     ];
                 @endphp
                 @foreach($features as [$icon, $title, $desc])
@@ -51,13 +68,13 @@
             </div>
 
             <div class="d-flex gap-3 flex-wrap">
-                <a href="{{ route('downloads') }}" class="s-btn s-btn--lg"><i class="fa-solid fa-download"></i> Baixar (.deb)</a>
-                <a href="https://github.com/samirhvbr/GITHUB_DESKTOP" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github"></i> Código no GitHub</a>
+                <a href="{{ lroute('downloads') }}" class="s-btn s-btn--lg"><i class="fa-solid fa-download"></i> {{ __('github_desktop.download') }}</a>
+                <a href="https://github.com/samirhvbr/GITHUB_DESKTOP" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github"></i> {{ __('github_desktop.source') }}</a>
             </div>
 
             <p class="s-meta" style="margin-top:30px; line-height:1.7;">
                 <i class="fa-solid fa-circle-info" style="color:var(--s-accent-ink-2); margin-right:5px;"></i>
-                Projeto da comunidade, sem vínculo oficial com a GitHub, Inc. As marcas citadas pertencem aos respectivos donos.
+                {{ __('github_desktop.disclaimer') }}
             </p>
 
         </div>
