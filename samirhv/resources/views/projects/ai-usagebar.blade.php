@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'ai-usagebar')
-@section('description', 'Monitor de uso dos seus planos de IA (Claude, Codex, Z.AI, OpenRouter, DeepSeek) na barra do sistema — Linux, macOS e Windows. Como instalar em cada SO.')
+@section('description', __('ai_usagebar.meta_description'))
 
 @push('styles')
 <style>
@@ -54,20 +54,28 @@
         <div class="container s-prose" style="position:relative; z-index:1; max-width:880px;">
 
             <nav style="margin-bottom:32px; font-family:'JetBrains Mono',monospace; font-size:.78rem;">
-                <a href="{{ route('home') }}" style="color:#6366f1; text-decoration:none;"><i class="fa-solid fa-arrow-left me-2"></i>Início</a>
+                <a href="{{ lroute('home') }}" style="color:#6366f1; text-decoration:none;"><i class="fa-solid fa-arrow-left me-2"></i>{{ __('shell.home') }}</a>
             </nav>
 
-            {{-- ── Cabeçalho ────────────────────────────────────────────── --}}
+            {{-- ── Header ───────────────────────────────────────────────── --}}
             <header style="display:flex; align-items:flex-start; gap:18px; margin-bottom:24px;">
                 <span style="width:58px; height:58px; border-radius:14px; background:rgba(99,102,241,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                     <i class="fa-solid fa-gauge-high" style="color:#6366f1; font-size:1.6rem;"></i>
                 </span>
                 <div>
-                    <span class="s-kicker">Monitor de uso de IA</span>
+                    <span class="s-kicker">{{ __('ai_usagebar.kicker') }}</span>
                     <h1 style="font-family:var(--s-sans); font-size:2.2rem; font-weight:700; color:#f1f5f9; letter-spacing:-.02em; margin:4px 0 0;">ai<span style="color:#6366f1;">-</span>usagebar</h1>
                     <p style="margin:9px 0 0; font-family:var(--s-sans); font-size:.9rem; color:#94a3b8; line-height:1.5;">
-                        Projeto de <a href="https://github.com/akitaonrails/ai-usagebar" target="_blank" rel="noopener" style="color:#818cf8; text-decoration:none; font-weight:600;">Fabio Akita</a>.
-                        As integrações de desktop (GNOME · macOS · Windows) mostradas aqui são contribuições do <a href="https://github.com/samirhvbr/ai-usagebar" target="_blank" rel="noopener" style="color:#818cf8; text-decoration:none;">fork do Samir</a>.
+                        @php
+                            // Whole sentences as single keys, with markers for the links.
+                            // The values come from lang/, which is repository content — no
+                            // user input reaches these unescaped echoes.
+                            $aubLink = fn (string $href, string $text, string $extra = '') => '<a href="'.$href.'" target="_blank" rel="noopener" style="color:#818cf8; text-decoration:none;'.$extra.'">'.$text.'</a>';
+                        @endphp
+                        {!! __('ai_usagebar.byline', [
+                            'akita' => $aubLink('https://github.com/akitaonrails/ai-usagebar', 'Fabio Akita', ' font-weight:600;'),
+                            'fork' => $aubLink('https://github.com/samirhvbr/ai-usagebar', __('ai_usagebar.byline_fork')),
+                        ]) !!}
                     </p>
                 </div>
             </header>
@@ -80,26 +88,47 @@
 
             {{-- ── Intro ────────────────────────────────────────────────── --}}
             <div style="font-family:var(--s-sans); font-size:1.02rem; color:#cbd5e1; line-height:1.8; margin-bottom:30px;">
-                <p>O <strong style="color:#f1f5f9;">ai-usagebar</strong> mostra o quanto você já consumiu dos seus planos de IA — <strong style="color:#f1f5f9;">Anthropic Claude</strong>, <strong style="color:#f1f5f9;">OpenAI Codex</strong>, <strong style="color:#f1f5f9;">Z.AI (GLM)</strong>, <strong style="color:#f1f5f9;">OpenRouter</strong> e <strong style="color:#f1f5f9;">DeepSeek</strong> — direto na barra do seu sistema, com as barras de uso da <strong style="color:#f1f5f9;">janela de 5 horas</strong> e <strong style="color:#f1f5f9;">semanal</strong> ao lado do relógio e um menu com o detalhamento completo.</p>
-                <p style="margin-top:1rem;">É um <strong style="color:#f1f5f9;">backend rápido em Rust</strong> com quatro interfaces: o widget <strong style="color:#f1f5f9;">Waybar</strong> e um <strong style="color:#f1f5f9;">TUI de terminal</strong> (multiplataforma), a extensão de <strong style="color:#f1f5f9;">GNOME Shell</strong> (Linux), o app de <strong style="color:#f1f5f9;">menu bar</strong> (macOS) e o app de <strong style="color:#f1f5f9;">bandeja</strong> (Windows). Todas leem o mesmo <code style="color:#a5b4fc;">--json</code> do binário — a lógica de autenticação e de cada provedor mora só no Rust auditável.</p>
+                @php
+                    $aubB = fn (string $text) => '<strong style="color:#f1f5f9;">'.$text.'</strong>';
+                    $aubC = fn (string $text) => '<code style="color:#a5b4fc;">'.$text.'</code>';
+                @endphp
+                <p>{!! __('ai_usagebar.intro_what', [
+                    'name' => $aubB('ai-usagebar'),
+                    'anthropic' => $aubB('Anthropic Claude'),
+                    'codex' => $aubB('OpenAI Codex'),
+                    'zai' => $aubB('Z.AI (GLM)'),
+                    'openrouter' => $aubB('OpenRouter'),
+                    'deepseek' => $aubB('DeepSeek'),
+                    'window' => $aubB(__('ai_usagebar.intro_window')),
+                    'weekly' => $aubB(__('ai_usagebar.intro_weekly')),
+                ]) !!}</p>
+                <p style="margin-top:1rem;">{!! __('ai_usagebar.intro_how', [
+                    'backend' => $aubB(__('ai_usagebar.intro_backend')),
+                    'waybar' => $aubB('Waybar'),
+                    'tui' => $aubB(__('ai_usagebar.intro_tui')),
+                    'gnome' => $aubB('GNOME Shell'),
+                    'menubar' => $aubB(__('ai_usagebar.intro_menubar')),
+                    'tray' => $aubB(__('ai_usagebar.intro_tray')),
+                    'json' => $aubC('--json'),
+                ]) !!}</p>
             </div>
 
             <figure class="aub-shot" style="margin:0 0 40px;">
-                <img src="{{ asset('img/projects/ai-usagebar/linux-1.png') }}" alt="Painel do GNOME mostrando as barras de uso do Claude com o menu suspenso aberto" loading="lazy">
-                <figcaption>Barras de uso ao lado do relógio + menu com Sessão / Semanal / Sonnet / Uso extra.</figcaption>
+                <img src="{{ asset('img/projects/ai-usagebar/linux-1.png') }}" alt="{{ __('ai_usagebar.shot_main_alt') }}" loading="lazy">
+                <figcaption>{{ __('ai_usagebar.shot_main') }}</figcaption>
             </figure>
 
-            {{-- ── Recursos ─────────────────────────────────────────────── --}}
-            <h2 class="aub-h2">Recursos</h2>
+            {{-- ── Features ─────────────────────────────────────────────── --}}
+            <h2 class="aub-h2">{{ __('ai_usagebar.features') }}</h2>
             <div class="row g-3" style="margin:0 0 44px;">
                 @php
                     $features = [
-                        ['fa-solid fa-layer-group', 'Multi-provedor', 'Claude, Codex, Z.AI, OpenRouter e DeepSeek num só lugar.'],
-                        ['fa-solid fa-window-maximize', 'UI nativa por SO', 'Waybar/GNOME no Linux, menu bar no macOS, bandeja no Windows.'],
-                        ['fa-solid fa-terminal', 'TUI multiplataforma', '`ai-usagebar-tui` roda em qualquer terminal, até por SSH.'],
-                        ['fa-solid fa-arrows-rotate', 'Auto-refresh', 'Atualiza a cada 60s no app; cache com flock evita rate-limit.'],
-                        ['fa-solid fa-shield-halved', 'Sem reimplementar auth', 'Lê o OAuth que o `claude`/`codex` já gravaram; chaves por env/config.'],
-                        ['fa-solid fa-feather', 'Drop-in claudebar', 'Mesmos flags e placeholders do claudebar original, em Rust.'],
+                        ['fa-solid fa-layer-group', __('ai_usagebar.feature_multi'), __('ai_usagebar.feature_multi_desc')],
+                        ['fa-solid fa-window-maximize', __('ai_usagebar.feature_native'), __('ai_usagebar.feature_native_desc')],
+                        ['fa-solid fa-terminal', __('ai_usagebar.feature_tui'), __('ai_usagebar.feature_tui_desc')],
+                        ['fa-solid fa-arrows-rotate', __('ai_usagebar.feature_refresh'), __('ai_usagebar.feature_refresh_desc')],
+                        ['fa-solid fa-shield-halved', __('ai_usagebar.feature_auth'), __('ai_usagebar.feature_auth_desc')],
+                        ['fa-solid fa-feather', __('ai_usagebar.feature_dropin'), __('ai_usagebar.feature_dropin_desc')],
                     ];
                 @endphp
                 @foreach($features as [$icon, $title, $desc])
@@ -113,24 +142,32 @@
                 @endforeach
             </div>
 
-            {{-- ── Passo 0: autenticação ────────────────────────────────── --}}
-            <h2 class="aub-h2">Antes de tudo: entre uma vez no provedor</h2>
-            <p class="aub-lead">O ai-usagebar não pede login próprio — ele lê as credenciais que os CLIs oficiais já gravam. Para o Claude, rode o <strong style="color:#e2e8f0;">Claude Code</strong> uma vez; o token se renova sozinho depois.</p>
+            {{-- ── Step 0: authentication ───────────────────────────────── --}}
+            <h2 class="aub-h2">{{ __('ai_usagebar.auth_heading') }}</h2>
+            @php($aubS = fn (string $text) => '<strong style="color:#e2e8f0;">'.$text.'</strong>')
+            <p class="aub-lead">{!! __('ai_usagebar.auth_lead', ['claude_code' => $aubS('Claude Code')]) !!}</p>
             <div class="aub-cmd">
-                <pre class="aub-code"><code><span class="prompt">$</span> claude        <span class="cmt"># Linux/Windows → ~/.claude/.credentials.json  ·  macOS → Keychain (lido sozinho)</span>
+                <pre class="aub-code"><code><span class="prompt">$</span> claude        <span class="cmt"># {{ __('ai_usagebar.cmt_claude_paths') }}</span>
 <span class="prompt">$</span> codex login   <span class="cmt"># OpenAI Codex → ~/.codex/auth.json</span></code></pre>
-                <button class="aub-copy" type="button">copiar ⧉</button>
+                <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
             </div>
             <div class="aub-note">
                 <i class="fa-solid fa-circle-info"></i>
-                <span>Z.AI, OpenRouter e DeepSeek usam <strong>chave de API</strong> (variável de ambiente <code>ZAI_API_KEY</code> / <code>OPENROUTER_API_KEY</code> / <code>DEEPSEEK_API_KEY</code>, ou inline no <code>~/.config/ai-usagebar/config.toml</code>). Dá pra configurar direto pela aba <strong>Vendors</strong> das UIs.</span>
+                <span>{!! __('ai_usagebar.auth_note', [
+                    'api_key' => '<strong>'.__('ai_usagebar.auth_note_key').'</strong>',
+                    'zai' => '<code>ZAI_API_KEY</code>',
+                    'openrouter' => '<code>OPENROUTER_API_KEY</code>',
+                    'deepseek' => '<code>DEEPSEEK_API_KEY</code>',
+                    'config' => '<code>~/.config/ai-usagebar/config.toml</code>',
+                    'vendors' => '<strong>Vendors</strong>',
+                ]) !!}</span>
             </div>
 
-            {{-- ── Instalação por SO ────────────────────────────────────── --}}
-            <h2 class="aub-h2" style="margin-top:44px;">Como instalar</h2>
-            <p class="aub-lead">Escolha o seu sistema. Os comandos são os mesmos do repositório oficial.</p>
+            {{-- ── Installation per OS ──────────────────────────────────── --}}
+            <h2 class="aub-h2" style="margin-top:44px;">{{ __('ai_usagebar.install_heading') }}</h2>
+            <p class="aub-lead">{{ __('ai_usagebar.install_lead') }}</p>
 
-            <div class="os-tabs" role="tablist" aria-label="Sistema operacional">
+            <div class="os-tabs" role="tablist" aria-label="{{ __('ai_usagebar.os_tabs_aria') }}">
                 <button type="button" class="os-tab is-active" data-os-tab="linux"><i class="fa-brands fa-linux"></i> Linux</button>
                 <button type="button" class="os-tab" data-os-tab="macos"><i class="fa-brands fa-apple"></i> macOS</button>
                 <button type="button" class="os-tab" data-os-tab="windows"><i class="fa-brands fa-windows"></i> Windows</button>
@@ -139,41 +176,46 @@
             {{-- ─────────── LINUX ─────────── --}}
             <div class="os-panel" data-os-panel="linux">
 
-                <h3 class="aub-h3"><i class="fa-solid fa-download"></i> 1. Instale o binário</h3>
-                <p class="aub-lead">No <strong style="color:#e2e8f0;">Arch</strong>, use o AUR. Em <strong style="color:#e2e8f0;">outras distros</strong>, use o crates.io (precisa de <code>rustup</code>, ou <code>cargo-binstall</code> para baixar pronto).</p>
+                <h3 class="aub-h3"><i class="fa-solid fa-download"></i> {{ __('ai_usagebar.linux_binary') }}</h3>
+                <p class="aub-lead">{!! __('ai_usagebar.linux_binary_lead', [
+                    'arch' => $aubS(__('ai_usagebar.linux_binary_arch')),
+                    'others' => $aubS(__('ai_usagebar.linux_binary_others')),
+                    'rustup' => '<code>rustup</code>',
+                    'binstall' => '<code>cargo-binstall</code>',
+                ]) !!}</p>
                 <div class="aub-cmd">
-                    <pre class="aub-code"><code><span class="cmt"># Arch (AUR) — escolha um:</span>
-<span class="prompt">$</span> yay -S ai-usagebar-bin     <span class="cmt"># binário pronto das Releases (~5s)</span>
-<span class="prompt">$</span> yay -S ai-usagebar         <span class="cmt"># compila do fonte (~30-60s)</span>
+                    <pre class="aub-code"><code><span class="cmt"># {{ __('ai_usagebar.cmt_arch_pick') }}</span>
+<span class="prompt">$</span> yay -S ai-usagebar-bin     <span class="cmt"># {{ __('ai_usagebar.cmt_prebuilt') }}</span>
+<span class="prompt">$</span> yay -S ai-usagebar         <span class="cmt"># {{ __('ai_usagebar.cmt_from_source_fast') }}</span>
 
-<span class="cmt"># Outras distros (crates.io):</span>
-<span class="prompt">$</span> cargo install ai-usagebar  <span class="cmt"># compila do fonte (precisa de rustup)</span>
-<span class="prompt">$</span> cargo binstall ai-usagebar <span class="cmt"># baixa o binário pronto (precisa de cargo-binstall)</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+<span class="cmt"># {{ __('ai_usagebar.cmt_other_distros') }}</span>
+<span class="prompt">$</span> cargo install ai-usagebar  <span class="cmt"># {{ __('ai_usagebar.cmt_from_source_rustup') }}</span>
+<span class="prompt">$</span> cargo binstall ai-usagebar <span class="cmt"># {{ __('ai_usagebar.cmt_binstall') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
-                <p class="aub-lead">Instala <code>ai-usagebar</code> + <code>ai-usagebar-tui</code>. Teste na hora:</p>
+                <p class="aub-lead">{!! __('ai_usagebar.linux_test_lead', ['bin' => '<code>ai-usagebar</code>', 'tui' => '<code>ai-usagebar-tui</code>']) !!}</p>
                 <div class="aub-cmd">
-                    <pre class="aub-code"><code><span class="prompt">$</span> ai-usagebar --vendor anthropic --pretty   <span class="cmt"># deve imprimir as barras</span>
-<span class="prompt">$</span> ai-usagebar-tui                            <span class="cmt"># TUI com abas — funciona sozinho, sem Waybar</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <pre class="aub-code"><code><span class="prompt">$</span> ai-usagebar --vendor anthropic --pretty   <span class="cmt"># {{ __('ai_usagebar.cmt_should_print') }}</span>
+<span class="prompt">$</span> ai-usagebar-tui                            <span class="cmt"># {{ __('ai_usagebar.cmt_tui_standalone') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
 
-                <h3 class="aub-h3"><i class="fa-brands fa-gnome"></i> 2a. Extensão de GNOME Shell</h3>
+                <h3 class="aub-h3"><i class="fa-brands fa-gnome"></i> {{ __('ai_usagebar.linux_gnome') }}</h3>
                 <div class="aub-cmd">
                     <pre class="aub-code"><code><span class="prompt">$</span> cd gnome-extension
-<span class="prompt">$</span> ./install.sh          <span class="cmt"># symlink em ~/.local/share + compila o schema GSettings</span>
-<span class="cmt"># Recarregue o GNOME Shell: FAÇA LOGOUT / LOGIN (não use gnome-shell --replace)</span>
+<span class="prompt">$</span> ./install.sh          <span class="cmt"># {{ __('ai_usagebar.cmt_symlink_schema') }}</span>
+<span class="cmt"># {{ __('ai_usagebar.cmt_reload_gnome') }}</span>
 <span class="prompt">$</span> gnome-extensions enable ai-usagebar@akitaonrails.github.io
-<span class="prompt">$</span> gnome-extensions prefs  ai-usagebar@akitaonrails.github.io   <span class="cmt"># barras, cores, login de Vendors</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+<span class="prompt">$</span> gnome-extensions prefs  ai-usagebar@akitaonrails.github.io   <span class="cmt"># {{ __('ai_usagebar.cmt_prefs_vendors') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
                 <div class="aub-shots">
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/linux-3.png') }}" alt="Preferências do GNOME — aba Vendors" loading="lazy"><figcaption>Preferências → aba Vendors (login/config por provedor).</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/linux-4.png') }}" alt="Barras no painel do GNOME" loading="lazy"><figcaption>As barras aparecem no painel superior, ao lado do relógio.</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/linux-3.png') }}" alt="{{ __('ai_usagebar.shot_gnome_prefs_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_gnome_prefs') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/linux-4.png') }}" alt="{{ __('ai_usagebar.shot_gnome_panel_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_gnome_panel') }}</figcaption></figure>
                 </div>
 
-                <h3 class="aub-h3"><i class="fa-solid fa-bars-staggered"></i> 2b. Widget do Waybar (Wayland)</h3>
-                <p class="aub-lead">Um módulo só, com scroll para alternar entre provedores e clique para abrir o TUI. Adicione ao seu <code>~/.config/waybar/config</code>:</p>
+                <h3 class="aub-h3"><i class="fa-solid fa-bars-staggered"></i> {{ __('ai_usagebar.linux_waybar') }}</h3>
+                <p class="aub-lead">{!! __('ai_usagebar.linux_waybar_lead', ['config' => '<code>~/.config/waybar/config</code>']) !!}</p>
                 <div class="aub-cmd">
                     <pre class="aub-code"><code>"custom/aibar": {
     "exec": "ai-usagebar --format '{vendor_short} {session_pct}% · {session_reset}'",
@@ -185,15 +227,15 @@
     "on-scroll-up":   "ai-usagebar --cycle-next",
     "on-scroll-down": "ai-usagebar --cycle-prev"
 }</code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
                 <div class="aub-note amber">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>Mantenha <code>interval: 300</code>. Os endpoints da Anthropic e da OpenAI são não-documentados e aplicam rate-limit abaixo de ~300s. O cache interno de 60s deixa várias telas conviverem sem estourar a API.</span>
+                    <span>{!! __('ai_usagebar.linux_waybar_warn', ['interval' => '<code>interval: 300</code>']) !!}</span>
                 </div>
                 <div class="aub-shots">
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/waybar.png') }}" alt="Widget do Waybar mostrando o uso do Claude com o tooltip" loading="lazy"><figcaption>Widget no Waybar com o tooltip de detalhamento (Pango).</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/tui-openai.png') }}" alt="TUI mostrando a aba da OpenAI" loading="lazy"><figcaption>`ai-usagebar-tui` — abas por provedor (aqui, OpenAI Codex).</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/waybar.png') }}" alt="{{ __('ai_usagebar.shot_waybar_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_waybar') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/tui-openai.png') }}" alt="{{ __('ai_usagebar.shot_tui_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_tui') }}</figcaption></figure>
                 </div>
 
             </div>
@@ -201,36 +243,39 @@
             {{-- ─────────── macOS ─────────── --}}
             <div class="os-panel" data-os-panel="macos" style="display:none;">
 
-                <h3 class="aub-h3"><i class="fa-solid fa-list-check"></i> 1. Pré-requisitos</h3>
+                <h3 class="aub-h3"><i class="fa-solid fa-list-check"></i> {{ __('ai_usagebar.prereqs') }}</h3>
                 <div class="aub-cmd">
-                    <pre class="aub-code"><code><span class="prompt">$</span> xcode-select --install     <span class="cmt"># Command Line Tools (para o swiftc)</span>
-<span class="prompt">$</span> cargo install ai-usagebar   <span class="cmt"># backend em ~/.cargo/bin (precisa de rustup)</span>
-<span class="prompt">$</span> claude                      <span class="cmt"># login uma vez — credenciais vão pro Keychain (lido sozinho)</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <pre class="aub-code"><code><span class="prompt">$</span> xcode-select --install     <span class="cmt"># {{ __('ai_usagebar.cmt_clt_swiftc') }}</span>
+<span class="prompt">$</span> cargo install ai-usagebar   <span class="cmt"># {{ __('ai_usagebar.cmt_backend_cargo') }}</span>
+<span class="prompt">$</span> claude                      <span class="cmt"># {{ __('ai_usagebar.cmt_login_keychain') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
 
-                <h3 class="aub-h3"><i class="fa-solid fa-hammer"></i> 2. Compile e rode o app de menu bar</h3>
+                <h3 class="aub-h3"><i class="fa-solid fa-hammer"></i> {{ __('ai_usagebar.macos_build') }}</h3>
                 <div class="aub-cmd">
                     <pre class="aub-code"><code><span class="prompt">$</span> git clone https://github.com/samirhvbr/ai-usagebar.git
 <span class="prompt">$</span> cd ai-usagebar/macos
-<span class="prompt">$</span> ./build.sh                  <span class="cmt"># swiftc -O → ./ai-usagebar-menubar (sem projeto do Xcode)</span>
-<span class="prompt">$</span> ./ai-usagebar-menubar &      <span class="cmt"># aparece na menu bar (sem ícone no Dock)</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+<span class="prompt">$</span> ./build.sh                  <span class="cmt"># {{ __('ai_usagebar.cmt_swiftc_noxcode') }}</span>
+<span class="prompt">$</span> ./ai-usagebar-menubar &      <span class="cmt"># {{ __('ai_usagebar.cmt_menubar_nodock') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
 
-                <h3 class="aub-h3"><i class="fa-solid fa-power-off"></i> 3. (Opcional) iniciar no login</h3>
+                <h3 class="aub-h3"><i class="fa-solid fa-power-off"></i> {{ __('ai_usagebar.macos_login') }}</h3>
                 <div class="aub-cmd">
-                    <pre class="aub-code"><code><span class="prompt">$</span> ./install-agent.sh          <span class="cmt"># LaunchAgent com RunAtLoad — volta a cada login</span></code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <pre class="aub-code"><code><span class="prompt">$</span> ./install-agent.sh          <span class="cmt"># {{ __('ai_usagebar.cmt_launchagent') }}</span></code></pre>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
                 <div class="aub-note">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Abra as <strong>Preferências</strong> pela menu bar (ou <strong>⌘,</strong>): barras, cores por severidade, provedor e intervalo — aplicam ao vivo. A menu bar roda no macOS 10.15+; a janela de Preferências precisa do macOS 12+.</span>
+                    <span>{!! __('ai_usagebar.macos_note', [
+                        'preferences' => '<strong>'.__('ai_usagebar.macos_note_prefs').'</strong>',
+                        'shortcut' => '<strong>⌘,</strong>',
+                    ]) !!}</span>
                 </div>
                 <div class="aub-shots">
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-1.jpeg') }}" alt="Menu suspenso do app na barra de menus do macOS" loading="lazy"><figcaption>Menu suspenso na menu bar — Sessão / Semanal / Sonnet / Extra.</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-2.jpeg') }}" alt="Preferências do app no macOS com cores e Vendors" loading="lazy"><figcaption>Preferências — cores por severidade e seção Vendors.</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-3.jpeg') }}" alt="Detalhe das preferências do app no macOS" loading="lazy"><figcaption>Ajustes de barras, provedor e intervalo.</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-1.jpeg') }}" alt="{{ __('ai_usagebar.shot_macos_menu_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_macos_menu') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-2.jpeg') }}" alt="{{ __('ai_usagebar.shot_macos_prefs_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_macos_prefs') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/macosx-3.jpeg') }}" alt="{{ __('ai_usagebar.shot_macos_detail_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_macos_detail') }}</figcaption></figure>
                 </div>
 
             </div>
@@ -238,54 +283,74 @@
             {{-- ─────────── WINDOWS ─────────── --}}
             <div class="os-panel" data-os-panel="windows" style="display:none;">
 
-                <h3 class="aub-h3"><i class="fa-solid fa-list-check"></i> 1. Pré-requisitos</h3>
-                <p class="aub-lead">Precisa do <strong style="color:#e2e8f0;">toolchain Rust</strong> e do <strong style="color:#e2e8f0;">.NET 8 SDK</strong>:</p>
+                <h3 class="aub-h3"><i class="fa-solid fa-list-check"></i> {{ __('ai_usagebar.prereqs') }}</h3>
+                <p class="aub-lead">{!! __('ai_usagebar.windows_prereqs_lead', [
+                    'rust' => $aubS(__('ai_usagebar.windows_prereqs_rust')),
+                    'dotnet' => $aubS(__('ai_usagebar.windows_prereqs_dotnet')),
+                ]) !!}</p>
                 <div class="aub-cmd">
                     <pre class="aub-code"><code><span class="prompt">></span> winget install Rustlang.Rustup
 <span class="prompt">></span> winget install Microsoft.DotNet.SDK.8</code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
 
-                <h3 class="aub-h3"><i class="fa-solid fa-hammer"></i> 2. Compile e rode o app de bandeja</h3>
+                <h3 class="aub-h3"><i class="fa-solid fa-hammer"></i> {{ __('ai_usagebar.windows_build') }}</h3>
                 <div class="aub-cmd">
                     <pre class="aub-code"><code><span class="prompt">></span> git clone https://github.com/samirhvbr/ai-usagebar.git
 <span class="prompt">></span> cd ai-usagebar
 <span class="prompt">></span> cargo build --release                    <span class="cmt"># → target\release\ai-usagebar.exe</span>
 <span class="prompt">></span> cd windows-tray
-<span class="prompt">></span> dotnet build -c Debug                     <span class="cmt"># rápido (usa o runtime instalado)</span>
+<span class="prompt">></span> dotnet build -c Debug                     <span class="cmt"># {{ __('ai_usagebar.cmt_dotnet_debug') }}</span>
 <span class="prompt">></span> start "" "bin\Debug\net8.0-windows\ai-usagebar-tray.exe"</code></pre>
-                    <button class="aub-copy" type="button">copiar ⧉</button>
+                    <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
                 <div class="aub-note">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Procure o pontinho colorido na <strong>bandeja</strong> (clique no <code>^</code> para mostrar ícones ocultos): clique esquerdo → painel, direito → menu (Refresh, <strong>seletor de Vendor</strong>, iniciar com o Windows…). As credenciais ficam em <code>%USERPROFILE%\.claude\.credentials.json</code> / <code>%USERPROFILE%\.codex\auth.json</code> — rode o <code>claude</code>/<code>codex</code> uma vez para gerá-las.</span>
+                    <span>{!! __('ai_usagebar.windows_note', [
+                        'tray' => '<strong>'.__('ai_usagebar.windows_note_tray').'</strong>',
+                        'caret' => '<code>^</code>',
+                        'vendor_selector' => '<strong>'.__('ai_usagebar.windows_note_vendor').'</strong>',
+                        'claude_path' => '<code>%USERPROFILE%\.claude\.credentials.json</code>',
+                        'codex_path' => '<code>%USERPROFILE%\.codex\auth.json</code>',
+                        'claude' => '<code>claude</code>',
+                        'codex' => '<code>codex</code>',
+                    ]) !!}</span>
                 </div>
                 <div class="aub-note amber">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>O widget do <strong>Waybar é exclusivo do Wayland</strong> e não se aplica ao Windows. Já o <code>ai-usagebar-tui</code> e o <code>ai-usagebar --json/--pretty</code> rodam nativamente. Para um pacote portátil (sem instalar o .NET): <code>dotnet publish -c Release</code>.</span>
+                    <span>{!! __('ai_usagebar.windows_warn', [
+                        'waybar' => '<strong>'.__('ai_usagebar.windows_warn_waybar').'</strong>',
+                        'tui' => '<code>ai-usagebar-tui</code>',
+                        'json' => '<code>ai-usagebar --json/--pretty</code>',
+                        'publish' => '<code>dotnet publish -c Release</code>',
+                    ]) !!}</span>
                 </div>
                 <div class="aub-shots">
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/panel-anthropic.png') }}" alt="Painel do app de bandeja no Windows mostrando o uso do Claude" loading="lazy"><figcaption>Painel da bandeja (clique esquerdo) com o uso do Claude.</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/vendor-menu.png') }}" alt="Menu de seleção de provedor do app de bandeja no Windows" loading="lazy"><figcaption>Menu (clique direito) — seletor de Vendor.</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/tray-tooltip.png') }}" alt="Tooltip do ícone da bandeja no Windows" loading="lazy"><figcaption>Tooltip do ícone da bandeja.</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/panel-anthropic.png') }}" alt="{{ __('ai_usagebar.shot_win_panel_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_panel') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/vendor-menu.png') }}" alt="{{ __('ai_usagebar.shot_win_menu_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_menu') }}</figcaption></figure>
+                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/tray-tooltip.png') }}" alt="{{ __('ai_usagebar.shot_win_tooltip_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_tooltip') }}</figcaption></figure>
                 </div>
-                <p class="aub-lead" style="margin-top:14px; font-size:.82rem;"><i class="fa-solid fa-hands-clapping" style="color:#6366f1; margin-right:6px;"></i>App de bandeja do Windows por <a href="https://github.com/EaeDave/ai-usagebar" target="_blank" rel="noopener" style="color:#818cf8;">EaeDave</a> (MIT), incluído aqui com crédito.</p>
+                <p class="aub-lead" style="margin-top:14px; font-size:.82rem;"><i class="fa-solid fa-hands-clapping" style="color:#6366f1; margin-right:6px;"></i>{!! __('ai_usagebar.windows_credit', ['author' => $aubLink('https://github.com/EaeDave/ai-usagebar', 'EaeDave')]) !!}</p>
 
             </div>
 
             {{-- ── CTA ──────────────────────────────────────────────────── --}}
             <div class="d-flex gap-3 flex-wrap" style="margin-top:44px;">
                 <a href="https://github.com/akitaonrails/ai-usagebar" target="_blank" rel="noopener" class="button button-rounded button-large m-0" style="background:#6366f1; border-color:#6366f1; color:#fff; font-family:var(--s-sans); font-weight:600; padding:14px 30px; box-shadow:0 4px 24px rgba(99,102,241,0.35);">
-                    <i class="fa-brands fa-github me-2"></i>Repositório de Fabio Akita
+                    <i class="fa-brands fa-github me-2"></i>{{ __('ai_usagebar.cta_repo') }}
                 </a>
                 <a href="https://github.com/samirhvbr/ai-usagebar/blob/master/DESKTOP.md" target="_blank" rel="noopener" class="button button-rounded button-large button-border m-0" style="border-color:rgba(99,102,241,0.45); color:#a5b4fc; font-family:var(--s-sans); font-weight:600; padding:14px 30px;">
-                    <i class="fa-solid fa-book me-2"></i>Guia desktop (fork)
+                    <i class="fa-solid fa-book me-2"></i>{{ __('ai_usagebar.cta_guide') }}
                 </a>
             </div>
 
             <p style="margin-top:30px; font-family:'JetBrains Mono',monospace; font-size:.72rem; color:#64748b; line-height:1.7;">
                 <i class="fa-solid fa-circle-info me-1" style="color:#6366f1;"></i>
-                ai-usagebar é um projeto de <a href="https://github.com/akitaonrails/ai-usagebar" target="_blank" rel="noopener" style="color:#818cf8;">Fabio Akita</a> — open-source (MIT), port em Rust do <a href="https://github.com/mryll/claudebar" target="_blank" rel="noopener" style="color:#818cf8;">claudebar</a> com suporte a mais provedores. As integrações nativas de desktop (GNOME/macOS/Windows) mostradas aqui vêm do <a href="https://github.com/samirhvbr/ai-usagebar" target="_blank" rel="noopener" style="color:#818cf8;">fork do Samir</a>. Alguns endpoints são não-documentados; as marcas citadas pertencem aos respectivos donos.
+                {!! __('ai_usagebar.footnote', [
+                    'akita' => $aubLink('https://github.com/akitaonrails/ai-usagebar', 'Fabio Akita'),
+                    'claudebar' => $aubLink('https://github.com/mryll/claudebar', 'claudebar'),
+                    'fork' => $aubLink('https://github.com/samirhvbr/ai-usagebar', __('ai_usagebar.byline_fork')),
+                ]) !!}
             </p>
 
         </div>
