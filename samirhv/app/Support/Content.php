@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 
 /**
@@ -61,13 +62,27 @@ final class Content
     }
 
     /**
-     * `Lang::has()` and not `__()`: a missing key makes `__()` return the key
-     * itself, which would put "content.projects.foo.title" on the page. Here a
-     * miss has to mean "use what the database says".
+     * Two things this must not do, both of them defaults.
+     *
+     * NOT `__()`: a missing key makes it return the key itself, which would put
+     * "content.projects.foo.title" on the page. Here a miss has to mean "use
+     * what the database says".
+     *
+     * NOT the translator's locale FALLBACK either, and this one was a real
+     * defect. `lang/pt_BR/content.php` is deliberately empty — the database
+     * already holds Portuguese — so with `fallback_locale = en`, a plain
+     * `Lang::has()` answered TRUE for a Portuguese request and handed back the
+     * ENGLISH string. The Portuguese page rendered English prose: the leak, in
+     * reverse. Both calls pass the locale explicitly and `$fallback = false`.
+     * Covered by ContentTranslationTest.
      */
     private static function lookup(string $key, string $fallback): string
     {
-        return Lang::has($key) ? (string) __($key) : $fallback;
+        $locale = App::getLocale();
+
+        return Lang::has($key, $locale, false)
+            ? (string) Lang::get($key, [], $locale, false)
+            : $fallback;
     }
 
     /** A stable array key from free text: lowercase, no accents, underscores. */
