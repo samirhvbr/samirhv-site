@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', $project->title)
-@section('description', Str::limit($project->description, 150) ?: 'Download de '.$project->title)
+@section('title', \App\Support\Content::project($project, 'title'))
+@section('description', Str::limit(\App\Support\Content::project($project, 'description'), 150) ?: __('project.meta_download', ['project' => \App\Support\Content::project($project, 'title')]))
 
 @push('styles')
 <style>
@@ -29,7 +29,7 @@
         <div class="container s-project-shell" style="position:relative; z-index:1;">
 
             <nav style="margin-bottom:30px;">
-                <a href="{{ route('downloads') }}" class="s-meta s-backlink"><i class="fa-solid fa-arrow-left"></i>Downloads</a>
+                <a href="{{ lroute('downloads') }}" class="s-meta s-backlink"><i class="fa-solid fa-arrow-left"></i>{{ __('downloads.title') }}</a>
             </nav>
 
             @php
@@ -68,22 +68,22 @@
                     </header>
 
                     @if($project->description)
-                        <div class="s-project-description">{{ $project->description }}</div>
+                        <div class="s-project-description">{{ \App\Support\Content::project($project, 'description') }}</div>
                     @endif
                 </div>
 
-                <aside class="s-panel s-project-action-panel" aria-label="Opções de acesso">
-                    <span class="s-project-action-panel__label">Acesso</span>
+                <aside class="s-panel s-project-action-panel" aria-label="{{ __('project.access_aria') }}">
+                    <span class="s-project-action-panel__label">{{ __('project.access') }}</span>
 
                     @if($project->external_url)
                         <div class="s-project-action-panel__option">
                             <span class="s-project-action-panel__icon"><i class="fa-solid fa-globe"></i></span>
                             <div>
-                                <h2>Versão online</h2>
-                                <p>Abra no navegador, sem instalar e sempre na versão mais recente.</p>
+                                <h2>{{ __('project.online_version') }}</h2>
+                                <p>{{ __('project.online_version_desc') }}</p>
                             </div>
                             <a href="{{ $project->external_url }}" target="_blank" rel="noopener" class="s-btn">
-                                Abrir aplicação <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                {{ __('project.open_app') }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
                         </div>
                     @endif
@@ -92,42 +92,42 @@
                         <div class="s-project-action-panel__option{{ $project->external_url ? ' has-divider' : '' }}">
                             <span class="s-project-action-panel__icon"><i class="fa-solid fa-download"></i></span>
                             <div>
-                                <h2>Aplicativo desktop</h2>
-                                <p>Builds nativos com versão, arquitetura e hash para conferência.</p>
+                                <h2>{{ __('project.desktop_app') }}</h2>
+                                <p>{{ __('project.desktop_app_desc') }}</p>
                             </div>
                             <a href="#arquivos" class="s-btn s-btn--ghost">
-                                Escolher download <i class="fa-solid fa-arrow-down"></i>
+                                {{ __('project.choose_download') }} <i class="fa-solid fa-arrow-down"></i>
                             </a>
                         </div>
                     @else
                         <div class="s-project-action-panel__status{{ $project->external_url ? ' has-divider' : '' }}">
-                            <span><i></i> Aplicativo desktop</span>
-                            <strong>Em preparação</strong>
+                            <span><i></i> {{ __('project.desktop_app') }}</span>
+                            <strong>{{ __('project.in_preparation') }}</strong>
                         </div>
                     @endif
                 </aside>
             </div>
 
-            {{-- Seção "Os modelos por trás" — só na ShvIA (história híbrida: on-prem + nuvem BYOK). --}}
+            {{-- The "models behind it" section — ShvIA only (the hybrid story: on-prem + BYOK cloud). --}}
             @includeWhen($project->slug === 'shvia', 'partials.shvia-models')
 
             @if(session('download_unavailable'))
                 <div class="s-card" style="padding:14px 18px; margin-bottom:24px; border-color:rgba(248,113,113,0.3); background:rgba(248,113,113,0.08);">
-                    <span class="s-body" style="color:#fca5a5; font-size:0.9rem;">O arquivo <strong>{{ session('download_unavailable') }}</strong> está indisponível no momento.</span>
+                    <span class="s-body" style="color:#fca5a5; font-size:0.9rem;">{!! __('project.unavailable', ['file' => '<strong>'.e(session('download_unavailable')).'</strong>']) !!}</span>
                 </div>
             @endif
 
             @if($download['has_any'])
 
-                {{-- ─── Recomendado para você ─── --}}
+                {{-- ─── Recommended for you ─── --}}
                 @php($rec = $download['recommended'])
                 <div class="s-panel s-download-recommendation">
                     <div class="s-download-recommendation__head">
                         <div>
-                            <span class="s-meta" style="color:var(--s-accent-ink-2); text-transform:uppercase; letter-spacing:.06em;">Download recomendado</span>
-                            <h2 class="s-download-recommendation__title">Baixar para {{ \App\Support\OsDetector::label($rec['os']) }}@if($rec['file'] && $rec['file']->arch) · {{ $rec['file']->arch }}@endif</h2>
+                            <span class="s-meta" style="color:var(--s-accent-ink-2); text-transform:uppercase; letter-spacing:.06em;">{{ __('project.recommended') }}</span>
+                            <h2 class="s-download-recommendation__title">{{ __('project.download_for', ['os' => \App\Support\OsDetector::label($rec['os'])]) }}@if($rec['file'] && $rec['file']->arch) · {{ $rec['file']->arch }}@endif</h2>
                         </div>
-                        <a href="#arquivos" class="s-meta s-backlink">trocar de sistema <i class="fa-solid fa-arrow-down"></i></a>
+                        <a href="#arquivos" class="s-meta s-backlink">{{ __('project.change_system') }} <i class="fa-solid fa-arrow-down"></i></a>
                     </div>
 
                     @if($rec['fallback_note'])
@@ -140,23 +140,23 @@
                             @php($cmd = $rec['file']->install_command['install'])
                             <div style="margin-top:12px; background:#0a0a12; border:1px solid var(--s-line); border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:10px;">
                                 <code style="flex:1; min-width:0; font-family:var(--s-mono); font-size:.78rem; color:var(--s-accent-ink-2); overflow-x:auto; white-space:nowrap;">$ {{ $cmd }}</code>
-                                <button type="button" class="dl-copy" data-copy="{{ $cmd }}" title="Copiar comando" style="flex-shrink:0;">copiar ⧉</button>
+                                <button type="button" class="dl-copy" data-copy="{{ $cmd }}" title="{{ __('project.copy_command') }}" style="flex-shrink:0;">{{ __('project.copy') }} ⧉</button>
                             </div>
                         @endif
                     @else
-                        <div class="s-body s-muted" style="font-size:.9rem;">Nenhum build disponível ainda.</div>
+                        <div class="s-body s-muted" style="font-size:.9rem;">{{ __('project.no_build') }}</div>
                     @endif
                 </div>
 
-                {{-- ─── Arquivos (abas por SO) ─── --}}
-                <h2 id="arquivos" class="s-h3" style="font-size:1.15rem; margin-bottom:16px;">Arquivos</h2>
+                {{-- ─── Files (tabs per OS) ─── --}}
+                <h2 id="arquivos" class="s-h3" style="font-size:1.15rem; margin-bottom:16px;">{{ __('project.files') }}</h2>
 
-                <div class="s-ostabs" role="tablist" aria-label="Sistemas operacionais" style="margin-bottom:18px;">
+                <div class="s-ostabs" role="tablist" aria-label="{{ __('project.os_tabs_aria') }}" style="margin-bottom:18px;">
                     @foreach(\App\Support\OsDetector::OSES as $os)
                         @php($tab = $download['tabs'][$os])
                         <button type="button" role="tab" id="tab-{{ $os }}" aria-controls="panel-{{ $os }}" aria-selected="{{ $os === $download['default_os'] ? 'true' : 'false' }}" class="s-ostab{{ $os === $download['default_os'] ? ' is-active' : '' }}" data-os-tab="{{ $os }}" @if($tab['count'] === 0) disabled @endif>
                             {{ $tab['label'] }}
-                            <span class="cnt">{{ $tab['count'] > 0 ? $tab['count'] : 'em breve' }}</span>
+                            <span class="cnt">{{ $tab['count'] > 0 ? $tab['count'] : __('project.soon') }}</span>
                         </button>
                     @endforeach
                 </div>
@@ -165,7 +165,7 @@
                     @php($tab = $download['tabs'][$os])
                     <div id="panel-{{ $os }}" role="tabpanel" aria-labelledby="tab-{{ $os }}" data-os-panel="{{ $os }}" @if($os !== $download['default_os']) style="display:none" @endif>
                         @if($tab['count'] === 0)
-                            <p class="s-meta">Build de {{ $tab['label'] }} em breve.</p>
+                            <p class="s-meta">{{ __('project.build_soon', ['os' => $tab['label']]) }}</p>
                         @else
                             @foreach($tab['versions'] as $group)
                                 @if($group['is_latest'])
@@ -176,7 +176,7 @@
                             @php($olderCount = max(0, count($tab['versions']) - 1))
                             @if($olderCount > 0)
                                 <button type="button" class="toggle-older" data-older-os="{{ $os }}" aria-expanded="false">
-                                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Versões anteriores ({{ $olderCount }})
+                                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i> {{ __('project.older_versions', ['count' => $olderCount]) }}
                                 </button>
                                 <div data-older-wrap="{{ $os }}" style="display:none;">
                                     @foreach($tab['versions'] as $group)
@@ -191,7 +191,11 @@
                 @endforeach
 
                 <div class="s-meta" style="margin-top:28px; padding-top:18px; border-top:1px solid var(--s-line); line-height:1.9;">
-                    Confira a integridade após baixar — Linux/macOS: <span style="color:var(--s-ink-2);">sha256sum arquivo</span> · Windows: <span style="color:var(--s-ink-2);">Get-FileHash .\arquivo -Algorithm SHA256</span>
+                    @php($mono = fn (string $cmd) => '<span style="color:var(--s-ink-2);">'.$cmd.'</span>')
+                    {!! __('project.verify', [
+                        'unix' => $mono('sha256sum FILE'),
+                        'windows' => $mono('Get-FileHash .\FILE -Algorithm SHA256'),
+                    ]) !!}
                 </div>
 
             @endif

@@ -1,8 +1,9 @@
-{{-- Seção "Os modelos por trás" — exclusiva da página /p/shvia.
-     Conta a história REAL (híbrida) da ShvIA: modelos locais on-prem (o prompt não
-     sai da Blue3) + provedores de nuvem opcionais via BYOK (o dado sai da Blue3, com
-     mascaramento LGPD). Os logos carregam informação (on-prem vs nuvem), não são
-     enfeite (anti-referência do site: "marquee de ícones de tecnologia"). --}}
+{{-- The "models behind it" section — only on /p/shvia.
+     Tells ShvIA's REAL (hybrid) story: local on-prem models (the prompt never
+     leaves Blue3) plus optional cloud providers via BYOK (data does leave
+     Blue3, with LGPD masking). The logos carry information (on-prem vs cloud);
+     they are not decoration — this site's anti-reference is the "marquee of
+     technology icons". --}}
 @push('styles')
 <style>
     .shm{ margin-top:clamp(2.5rem,5vw,4rem); padding-top:clamp(2rem,4vw,3rem); border-top:1px solid var(--s-line); }
@@ -10,7 +11,7 @@
     .shm__lead{ font-size:1rem; line-height:1.7; color:var(--s-ink-2); margin:0; max-width:60ch; text-wrap:pretty; }
     .shm__lead b{ color:var(--s-ink); font-weight:600; }
 
-    /* ── On-prem: o momento "committed" (tinta índigo, o diferencial real) ── */
+    /* ── On-prem: the "committed" moment (indigo ink, the real differentiator) ── */
     .shm-onprem{ position:relative; overflow:hidden; margin-top:clamp(1.6rem,3vw,2.2rem);
         background:var(--s-surface); border:1px solid var(--s-line-2); border-radius:var(--s-r-lg);
         padding:clamp(1.15rem,2.2vw,1.6rem); }
@@ -31,7 +32,7 @@
     .shm-onprem__sub{ margin-top:.4rem; font-size:.9rem; line-height:1.5; color:var(--s-muted); }
     .shm-onprem__sub code{ font-family:var(--s-mono); font-size:.82em; color:var(--s-accent-ink-2); }
 
-    /* ── Nuvem: restrained. A fileira de provedores carrega informação. ── */
+    /* ── Cloud: restrained. The provider row carries information. ── */
     .shm-cloud{ margin-top:clamp(1.5rem,3vw,2rem); }
     .shm-cloud__head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px 16px; flex-wrap:wrap; margin-bottom:.95rem; }
     .shm-cloud__label{ font-family:var(--s-mono); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--s-muted); }
@@ -55,14 +56,13 @@
 @endpush
 
 <section class="shm" aria-labelledby="shm-title">
-    <h2 id="shm-title" class="shm__title">Os modelos por trás</h2>
+    <h2 id="shm-title" class="shm__title">{{ __('shvia_models.title') }}</h2>
+    @php($b = fn (string $key) => '<b>'.__('shvia_models.'.$key).'</b>')
     <p class="shm__lead">
-        A ShvIA é <b>híbrida</b>. Por padrão, responde com modelos <b>locais</b>, rodando
-        dentro da Blue3 — o prompt não sai da rede. Quando o trabalho pede um modelo de
-        fronteira, você conecta um provedor de <b>nuvem</b> com a sua própria chave.
+        {!! __('shvia_models.lead', ['hybrid' => $b('hybrid'), 'local' => $b('local'), 'cloud' => $b('cloud')]) !!}
     </p>
 
-    {{-- On-prem — o diferencial real, com peso visual. --}}
+    {{-- On-prem — the real differentiator, given visual weight. --}}
     <div class="shm-onprem">
         <div class="shm-onprem__top">
             <span class="shm-glyph" aria-hidden="true">
@@ -71,18 +71,18 @@
                     <path d="M8 2.5c.83 0 1.5.72 1.5 1.6v1.44c.8-.2 1.63-.3 2.5-.3s1.7.1 2.5.3V4.1c0-.88.67-1.6 1.5-1.6s1.5.72 1.5 1.6v2.9c0 .53.26 1 .72 1.28C19.6 9.06 20.5 10.3 20.5 11.8v6.1c0 1.16-.9 2.1-2 2.1h-1v-3a1.25 1.25 0 0 0-2.5 0v3h-2v-3a1.25 1.25 0 0 0-2.5 0v3h-1c-1.1 0-2-.94-2-2.1v-6.1c0-1.5.9-2.74 2.28-3.62.46-.28.72-.75.72-1.28V4.1C6.5 3.22 7.17 2.5 8 2.5Z"/>
                 </svg>
             </span>
-            <span class="shm-label">Local · on-prem</span>
-            <span class="shm-pill">o prompt não sai da Blue3</span>
+            <span class="shm-label">{{ __('shvia_models.onprem_label') }}</span>
+            <span class="shm-pill">{{ __('shvia_models.onprem_pill') }}</span>
         </div>
         <div class="shm-onprem__models">Anna · Shana · Dev</div>
-        <p class="shm-onprem__sub">Modelos da Blue3 servidos por <code>Ollama</code> na infraestrutura interna — sem custo por token, sem dado saindo da rede.</p>
+        <p class="shm-onprem__sub">{!! __('shvia_models.onprem_sub', ['ollama' => '<code>Ollama</code>']) !!}</p>
     </div>
 
-    {{-- Nuvem — opcional, BYOK. Fileira estática que informa QUAIS provedores. --}}
+    {{-- Cloud — optional, BYOK. A static row that states WHICH providers. --}}
     <div class="shm-cloud">
         <div class="shm-cloud__head">
-            <span class="shm-cloud__label">Nuvem · opcional</span>
-            <span class="shm-cloud__note">com a sua própria chave (BYOK)</span>
+            <span class="shm-cloud__label">{{ __('shvia_models.cloud_label') }}</span>
+            <span class="shm-cloud__note">{{ __('shvia_models.cloud_note') }}</span>
         </div>
         <div class="shm-chips">
             <span class="shm-chip">
@@ -105,10 +105,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12c0-3 1.7-5.2 4-5.2 3.4 0 5 5.2 5 5.2s1.6 5.2 5 5.2c2.3 0 4-2.2 4-5.2s-1.7-5.2-4-5.2c-3.4 0-5 5.2-5 5.2s-1.6 5.2-5 5.2C4.7 17.2 3 15 3 12Z"/></svg>
                 Meta Llama
             </span>
-            <span class="shm-chip shm-chip--more">+ outros</span>
+            <span class="shm-chip shm-chip--more">{{ __('shvia_models.cloud_more') }}</span>
         </div>
         <p class="shm-caption">
-            Ao usar nuvem, o <b>dado sai da Blue3</b> — sempre com mascaramento de PII para a LGPD, e só aparece pra quem configura a própria chave.
+            {!! __('shvia_models.cloud_caption', ['data_leaves' => $b('data_leaves')]) !!}
         </p>
     </div>
 </section>
