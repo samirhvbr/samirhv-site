@@ -24,8 +24,16 @@ class AnalyticsService
         return "DATE(`{$column}` - INTERVAL ".self::OFFSET_HOURS.' HOUR)';
     }
 
-    /** Início do dia local de hoje, como instante UTC (para WHERE created_at >= ...). */
-    private function todayStart(): Carbon
+    /**
+     * Início do dia local de hoje, como instante UTC (para WHERE created_at >= ...).
+     *
+     * Público porque é a definição de "hoje" do painel inteiro. Toda tela que
+     * escreveu a sua própria — `whereDate(created_at, today())`,
+     * `now()->startOfDay()` — escreveu uma em UTC, já que config/app.php fixa o
+     * fuso da aplicação em UTC, e passou a discordar desta entre 21h e a
+     * meia-noite. Uma definição, num lugar.
+     */
+    public function todayStart(): Carbon
     {
         return Carbon::today(self::TZ)->utc();
     }

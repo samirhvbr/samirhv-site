@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\AuthEvent;
 use App\Models\User;
+use App\Services\AnalyticsService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -17,6 +19,8 @@ use Illuminate\View\View;
 class AccessAuditController extends Controller
 {
     private const TABS = ['actions', 'logins'];
+
+    public function __construct(private readonly AnalyticsService $analytics) {}
 
     public function index(Request $request): View
     {
@@ -52,25 +56,17 @@ class AccessAuditController extends Controller
     {
         $filters += ['event' => null, 'user' => null, 'ip' => null, 'days' => null];
 
-        $query = ActivityLog::with('user')->latest();
-        if (filled($filters['event'])) {
-            $query->where('event', $filters['event']);
-        }
+        $query = $this->applyFilters(ActivityLog::with('user')->latest(), $filters);
+
         if (filled($filters['user'])) {
             $query->where('user_id', $filters['user']);
-        }
-        if (filled($filters['ip'])) {
-            $query->where('ip_address', 'like', $filters['ip'].'%');
-        }
-        if (filled($filters['days'])) {
-            $query->where('created_at', '>=', now()->subDays((int) $filters['days']));
         }
 
         $logs = $query->paginate(50)->withQueryString();
 
         $stats = [
             'total' => ActivityLog::count(),
-            'today' => ActivityLog::where('created_at', '>=', now()->startOfDay())->count(),
+            'today' => ActivityLog::where('created_at', '>=', $this->analytics->todayStart())->count(),
             'admins' => ActivityLog::whereNotNull('user_id')->distinct()->count('user_id'),
             'ips' => ActivityLog::whereNotNull('ip_address')->distinct()->count('ip_address'),
         ];
@@ -91,20 +87,11 @@ class AccessAuditController extends Controller
     {
         $filters += ['event' => null, 'ip' => null, 'days' => null];
 
-        $query = AuthEvent::with('user')->latest('created_at');
-        if (filled($filters['event'])) {
-            $query->where('event', $filters['event']);
-        }
-        if (filled($filters['ip'])) {
-            $query->where('ip_address', 'like', $filters['ip'].'%');
-        }
-        if (filled($filters['days'])) {
-            $query->where('created_at', '>=', now()->subDays((int) $filters['days']));
-        }
+        $query = $this->applyFilters(AuthEvent::with('user')->latest('created_at'), $filters);
 
         $logs = $query->paginate(50)->withQueryString();
 
-        $today = now()->startOfDay();
+        $today = $this->analytics->todayStart();
         $stats = [
             'logins' => AuthEvent::where('event', 'login')->count(),
             'logins_today' => AuthEvent::where('event', 'login')->where('created_at', '>=', $today)->count(),
@@ -113,5 +100,33 @@ class AccessAuditController extends Controller
         ];
 
         return compact('logs', 'stats', 'filters');
+    }
+
+    /**
+     * Os filtros que as duas abas têm em comum: `event`, `ip` e `days`.
+     *
+     * Eram trinta linhas espelhadas em `actionsTab()` e `loginsTab()`, sobre
+     * tabelas diferentes mas com colunas de mesmo nome. Duas cópias do mesmo
+     * filtro divergem no dia em que alguém corrige uma delas.
+     *
+     * `user` fica de fora de propósito: só `activity_logs` tem essa coluna.
+     *
+     * @param  array<string, mixed>  $filters  já validado em index()
+     */
+    private function applyFilters(Builder $query, array $filters): Builder
+    {
+        if (filled($filters['event'])) {
+            $query->where('event', $filters['event']);
+        }
+
+        if (filled($filters['ip'])) {
+            $query->where('ip_address', 'like', $filters['ip'].'%');
+        }
+
+        if (filled($filters['days'])) {
+            $query->where('created_at', '>=', now()->subDays((int) $filters['days']));
+        }
+
+        return $query;
     }
 }
