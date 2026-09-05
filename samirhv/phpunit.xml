@@ -23,7 +23,15 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
+        <!-- MySQL, per the project rule; sqlite is never this app's storage.
+             DB_DATABASE names a database that does not exist, deliberately: the
+             suite is written to need no database, and without this line a test
+             that touched one would silently read and WRITE the development
+             database named in .env. A loud connection error is the correct
+             failure. A test that genuinely needs a database should create it
+             and say so. -->
         <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="samirhv_testing"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
