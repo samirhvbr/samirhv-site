@@ -1,2 +1,8 @@
 User-agent: *
 Disallow:
+
+# The sitemap spec requires an absolute url here, so this line names production
+# and is wrong in local and staging — where no crawler reads it anyway. Serving
+# robots.txt from a route to fix that would trade a PHP boot on every crawl for
+# cosmetic correctness in an environment nobody crawls.
+Sitemap: https://samirhv.com.br/sitemap.xml

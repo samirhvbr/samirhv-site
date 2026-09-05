@@ -25,6 +25,10 @@
         @foreach($alternates as $altLocale => $altUrl)
             <link rel="alternate" hreflang="{{ str_replace('_', '-', $altLocale) }}" href="{{ $altUrl }}">
         @endforeach
+        {{-- x-default is the address that NEGOTIATES: the bare url decides the
+             language from the visitor's browser, which is precisely what
+             Google reads x-default to mean. --}}
+        <link rel="alternate" hreflang="x-default" href="{{ $alternates[\App\Support\Locales::BARE] ?? url()->current() }}">
         <link rel="canonical" href="{{ $alternates[app()->getLocale()] ?? url()->current() }}">
     @endif
 
