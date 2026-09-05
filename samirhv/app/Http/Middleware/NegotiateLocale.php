@@ -10,17 +10,16 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Sends a visitor who arrived at a BARE url to the language they asked for.
  *
- * This site privileges neither language. The bare paths are Portuguese because
- * they were Portuguese before English existed and every published link points
- * at them; that is a URL fact, not a statement that Portuguese is the default.
- * So: a browser asking for English is forwarded to the `/en` twin, a browser
- * asking for Portuguese is served where it stands, and a browser that asks for
- * nothing gets English — because silence has to resolve to something, and
- * English is the one that travels.
+ * The bare paths are English, which is the site's canonical language. So: a
+ * browser asking for Portuguese is forwarded to the `/pt-br` twin, a browser
+ * asking for English is served where it stands, and a browser that asks for
+ * nothing is also served where it stands — silence resolves to English, and
+ * English is what the bare url already is, so silence now costs no redirect
+ * at all.
  *
- * Never applied to a `/en` url: an explicit address wins over any preference,
- * including the cookie. Someone who was handed an English link gets English,
- * whatever their browser or their last visit says.
+ * Never applied to a `/pt-br` url: an explicit address wins over any
+ * preference, including the cookie. Someone who was handed a Portuguese link
+ * gets Portuguese, whatever their browser or their last visit says.
  *
  * 302, never 301: language is a negotiation, not a change of address. And
  * `Vary` is mandatory — without it a shared cache can hand the first visitor's
@@ -51,7 +50,7 @@ class NegotiateLocale
         }
 
         $name = $request->route()?->getName();
-        if ($name === null || str_starts_with($name, Locales::PREFIXED.'.')) {
+        if ($name === null || Locales::fromRouteName($name) !== Locales::BARE) {
             return null;
         }
 
@@ -62,9 +61,8 @@ class NegotiateLocale
 
         /* Only a route that HAS a twin is negotiable. Asking Locales for a
            "best effort" url here was a defect: `/lang/{locale}` has no twin, so
-           the switcher itself got redirected to `/en` and never wrote its
-           cookie — the control existed and did nothing. Caught by
-           LocaleNegotiationTest. */
+           the switcher itself got redirected and never wrote its cookie — the
+           control existed and did nothing. Caught by LocaleNegotiationTest. */
         $target = Locales::alternates($request)[$wanted] ?? null;
 
         // A redirect to the address you are already on is an infinite loop,

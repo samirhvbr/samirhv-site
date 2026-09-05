@@ -81,21 +81,17 @@ return [
     'locale' => env('APP_LOCALE', 'en'),
 
     /*
-    |--------------------------------------------------------------------------
-    | Supported Locales
-    |--------------------------------------------------------------------------
+    | The languages the public site speaks are NOT configured here. They are
+    | App\Support\Locales::SUPPORTED, a class constant, because the route table
+    | is built from them at `route:cache` time — reading them from config would
+    | make the route table depend on config-cache ordering during a deploy. A
+    | `supported_locales` key used to sit here claiming to be the source; nothing
+    | ever read it, so editing it did nothing at all.
     |
-    | The two languages the public site speaks. Single source: App\Support\Locales
-    | reads this shape, the route groups are built from it, and the `hreflang`
-    | pair is derived from it — so a language cannot be half-added.
-    |
-    | `locale` above stays whatever the environment says (pt_BR in production):
-    | it is the BOOT locale, used by queues, artisan and mail, not by a web
-    | request. What a request renders in is decided by the URL, in SetLocale.
-    |
+    | `locale` above is the BOOT locale, used by queues, artisan and mail, not by
+    | a web request. What a request renders in is decided by the URL, in
+    | SetLocale.
     */
-
-    'supported_locales' => ['en', 'pt_BR'],
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

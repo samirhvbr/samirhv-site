@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Sets the application locale from the URL, and only from the URL.
  *
- * Every public route is registered twice: bare (Portuguese) and under the `en`
- * prefix (English). The route NAME carries which one was matched, so the URL
- * that the visitor is looking at is the single authority on the language the
- * page renders in.
+ * Every public route is registered once per language: bare (English) and under
+ * the language's segment (`/pt-br`). The route NAME carries which one was
+ * matched, so the URL that the visitor is looking at is the single authority on
+ * the language the page renders in.
  *
  * Deliberately NOT consulted here: the cookie and `Accept-Language`. If either
  * could change what a URL renders, the same address would serve two languages
@@ -41,12 +41,14 @@ class SetLocale
         return $next($request);
     }
 
+    /**
+     * A route with no known language prefix renders in the bare language. That
+     * covers `/login`, `/d/{file}`, `/lang/*` and all of `admin.*` — none of
+     * which call `__()` today; the admin hardcodes its Portuguese and is out of
+     * scope on purpose. Worth knowing before translating it.
+     */
     private function fromRoute(Request $request): string
     {
-        $name = $request->route()?->getName() ?? '';
-
-        return str_starts_with($name, Locales::PREFIXED.'.')
-            ? Locales::PREFIXED
-            : Locales::BARE;
+        return Locales::fromRouteName($request->route()?->getName());
     }
 }
