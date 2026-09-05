@@ -53,6 +53,17 @@ class AiMemoryDatabaseTest extends TestCase
 
     protected function tearDown(): void
     {
+        /* setUp() skips before it ever assigns $dir when pdo_sqlite is absent
+           or the process is root — and PHPUnit still runs tearDown after a
+           skip. Reading a typed property that was never initialised turns a
+           clean skip into an Error, which is how eight tests reported as
+           skipped AND errored on any machine without pdo_sqlite. */
+        if (! isset($this->dir)) {
+            parent::tearDown();
+
+            return;
+        }
+
         // Make the tree writable again before deleting it.
         @chmod($this->dir.'/db', 0o755);
         @chmod($this->dbPath, 0o644);
