@@ -13,18 +13,18 @@
 #   - Idempotente: sai cedo se não há nada novo no branch.
 #   - Lock impede dois deploys simultâneos.
 #   - Backup do banco (mysqldump) ANTES de mexer em schema.
-#   - Pula composer/npm quando os arquivos relevantes não mudaram.
+#   - Pula o composer quando os arquivos relevantes não mudaram.
 #   - Em erro: sai do modo manutenção, tenta rollback da última migration e
 #     (se configurado) avisa no Telegram.
 #
 # Diferenças em relação à INTRANET (refletem a realidade deste projeto):
-#   - npm install  (este repo NÃO tem package-lock.json -> npm ci não serve).
+#   - Sem passo de frontend: o tema é o Canvas, servido estático de
+#     public/vendor/canvas/. Não há Vite, não há bundle, não há npm.
 #   - Backup via mysqldump genérico (não há o comando custom mariadb:backup).
-#   - Sem assets:manifest (este projeto usa o @vite padrão do Laravel).
 #
 # MODELO DE OWNERSHIP (igual INTRANET):
-#   - git/composer/npm rodam como o DONO do tree (b3sys) — todos tocam
-#     .git/vendor/node_modules/public. Evita "dubious ownership" e
+#   - git/composer rodam como o DONO do tree (b3sys) — ambos tocam
+#     .git/vendor/public. Evita "dubious ownership" e
 #     "Permission denied".
 #   - artisan de RUNTIME (down/backup/migrate/caches/up) roda como www-data —
 #     esses escrevem em storage/ e bootstrap/cache/, território do web server.
@@ -208,17 +208,6 @@ if [ ! -d vendor ] \
         \( -name 'packages.php' -o -name 'services.php' \) -delete 2>/dev/null || true
 else
     log "✓ composer.json/.lock inalterados — pulando composer install."
-fi
-
-# ── 5. Frontend (npm install + build) — se front mudou, ou build ausente ──────
-if [ ! -d node_modules ] || [ ! -d public/build ] \
-        || grep -qE '^samirhv/(package\.json|vite\.config\.js|resources/)' <<<"$CHANGED"; then
-    log "==> Frontend: npm install + build (como $OWNER)..."
-    heal_owner node_modules
-    asowner npm install --no-audit --no-fund
-    asowner npm run build
-else
-    log "✓ Frontend inalterado — pulando npm install + build."
 fi
 
 # ── 6. Migrations: lista pendentes, tenta migrate, rollback se falhar ─────────
