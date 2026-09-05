@@ -17,6 +17,10 @@
 | keeps the old translation until someone edits this file. A `title_en` column
 | would follow automatically, but it would need a field in the admin CRUD, and
 | the admin is out of scope.
+|
+| The Portuguese source for all of this is database/seeders/ProjectsSeeder.php,
+| which is authoritative: it was checked against each application's own
+| repository on 2026-09-05. Change a description there and change it here.
 */
 
 return [
@@ -28,7 +32,7 @@ return [
 
         'github-desktop' => [
             'title' => 'GitHub Desktop',
-            'description' => "GitHub Desktop is GitHub's open-source visual Git client — Electron, TypeScript and React. Commits, branches, history, pull requests and conflict resolution in a clean interface, with no commands to memorise.\n\nGitHub does not distribute the app for Linux. This is a community build that compiles from source and packages it as a .deb for Debian, Ubuntu and derivatives — and also produces .exe/.msi installers for Windows.",
+            'description' => "GitHub Desktop is GitHub's open-source visual Git client — Electron, TypeScript and React. Commits, branches, history, pull requests and conflict resolution in a clean interface, with no commands to memorise.\n\nGitHub does not distribute the app for Linux. This is a fork that compiles from source and packages for all three platforms: .deb, .rpm, AppImage and .pkg.tar.zst on Linux, .exe and .msi on Windows, .dmg on macOS. The fork adds a multi-repository panel — every repository of yours on one screen, with batch pull and push.",
         ],
 
         'ai-usagebar' => [
@@ -38,22 +42,15 @@ return [
                full anywhere public and only its first 160 characters could be
                read back. The English below says the same thing, from the page
                content itself. Replace it if the database text changes. */
-            'description' => 'Monitor how much of your AI plans you have used — Anthropic Claude, OpenAI Codex, Z.AI, OpenRouter and DeepSeek — straight in your system bar (Waybar/GNOME on Linux, the menu bar on macOS, the tray on Windows), plus a cross-platform terminal TUI.',
+            'description' => 'Monitor how much of your AI plans you have used — fourteen providers, among them Anthropic Claude, OpenAI Codex, Z.AI, OpenRouter, DeepSeek, Kimi, xAI/Grok, MiniMax and ShvIA itself — straight in your system bar (Waybar/GNOME on Linux, the menu bar on macOS), plus a terminal TUI that runs on all three systems.',
         ],
 
-        /* TODO — sshvterm has no `title`/`description` entry yet.
-           It is a link-only project, so it has no /p/ page and its description is
-           only ever rendered truncated; the full database text is not readable
-           from the public HTML, and guessing the cut-off tail would be inventing
-           copy about a product. Until it is filled in, the fallback renders the
-           Portuguese description on the English page.
-
-           What to translate (the Portuguese, truncated at 160 chars as the list
-           shows it): "Cliente SSH/SFTP desktop e multiplataforma, com sync
-           zero-knowledge. Tem um agente de IA que opera o terminal — propõe e
-           executa comandos no PTY visível, sob um…" */
+        /* Filled in from the seeder, which is now the readable source for this
+           text — it was the missing tail of a truncated list entry that made
+           this a TODO for two releases. */
         'sshvterm' => [
             'title' => 'SShvTerm',
+            'description' => "A cross-platform desktop SSH/SFTP client with zero-knowledge sync: hosts, keys and passwords are encrypted on your own machine and the server never sees the contents — and that sync server can be one you host yourself.\n\nIt carries an AI agent that operates the terminal — proposing and running commands in the visible PTY, under an allow · ask · deny policy you control (Anthropic, OpenAI, xAI/Grok and more), with your own key. Windows, macOS and Linux. Download from the official site.",
         ],
     ],
 
