@@ -327,12 +327,14 @@
 
             </div>
 
+            @include('partials.app-changelog', ['slug' => 'ai-usagebar'])
+
             {{-- ── CTA ──────────────────────────────────────────────────── --}}
             <div class="d-flex gap-3 flex-wrap" style="margin-top:44px;">
                 <a href="https://github.com/akitaonrails/ai-usagebar" target="_blank" rel="noopener" class="button button-rounded button-large m-0" style="background:#6366f1; border-color:#6366f1; color:#fff; font-family:var(--s-sans); font-weight:600; padding:14px 30px; box-shadow:0 4px 24px rgba(99,102,241,0.35);">
                     <i class="fa-brands fa-github me-2"></i>{{ __('ai_usagebar.cta_repo') }}
                 </a>
-                <a href="https://github.com/samirhvbr/ai-usagebar/blob/master/DESKTOP.md" target="_blank" rel="noopener" class="button button-rounded button-large button-border m-0" style="border-color:rgba(99,102,241,0.45); color:#a5b4fc; font-family:var(--s-sans); font-weight:600; padding:14px 30px;">
+                <a href="https://github.com/samirhvbr/ai-usagebar" target="_blank" rel="noopener" class="button button-rounded button-large button-border m-0" style="border-color:rgba(99,102,241,0.45); color:#a5b4fc; font-family:var(--s-sans); font-weight:600; padding:14px 30px;">
                     <i class="fa-solid fa-book me-2"></i>{{ __('ai_usagebar.cta_guide') }}
                 </a>
             </div>
@@ -375,7 +377,10 @@
             navigator.clipboard.writeText(block.innerText.trim()).then(function () {
                 var original = btn.textContent;
                 btn.classList.add('copied');
-                btn.textContent = 'copiado ✓';
+                // Vinha fixo em português e aparecia assim na página inglesa —
+                // um vazamento de idioma dentro do <script>, onde o teste de
+                // vazamento não olhava.
+                btn.textContent = @json(__('ai_usagebar.copied'));
                 setTimeout(function () { btn.classList.remove('copied'); btn.textContent = original; }, 1400);
             });
         });

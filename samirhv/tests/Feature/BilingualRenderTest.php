@@ -121,6 +121,28 @@ class BilingualRenderTest extends TestCase
             ->assertSee('/lang/en?to='.urlencode(self::EN), false);
     }
 
+    /**
+     * The changelog is curated in lang/, so it renders through the same
+     * machinery as the rest of the page — including its dates, which is where
+     * a half-translated section shows itself first.
+     */
+    public function test_the_changelog_renders_in_the_page_language(): void
+    {
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('What changed')
+            ->assertSee('v0.4.1')
+            ->assertSee('03 Aug 2026')
+            ->assertDontSee('O que mudou');
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSee('O que mudou')
+            ->assertSee('v0.4.1')
+            ->assertSee('03 ago 2026')
+            ->assertDontSee('What changed');
+    }
+
     /** `Route::view` stores `view` and `status` as route defaults; neither is a URL parameter. */
     public function test_the_alternate_urls_carry_no_internal_query_string(): void
     {

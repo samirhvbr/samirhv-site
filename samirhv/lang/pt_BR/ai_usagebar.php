@@ -87,11 +87,13 @@ return [
     'windows_warn_waybar' => 'widget do Waybar é exclusivo do Wayland',
 
     'cta_repo' => 'Repositório de Fabio Akita',
-    'cta_guide' => 'Guia desktop (fork)',
+    'cta_guide' => 'Este fork no GitHub',
 
-    'footnote' => 'ai-usagebar é um projeto de :akita — open-source (MIT), port em Rust do :claudebar com suporte a mais provedores. As integrações nativas de desktop (GNOME/macOS/Windows) mostradas aqui vêm do :fork. Alguns endpoints são não-documentados; as marcas citadas pertencem aos respectivos donos.',
+    'footnote' => 'ai-usagebar é um projeto de :akita — open-source (MIT), port em Rust do :claudebar com suporte a mais provedores. As integrações nativas de desktop de GNOME e macOS mostradas aqui nasceram no :fork e foram adotadas pelo upstream. Alguns endpoints são não-documentados; as marcas citadas pertencem aos respectivos donos.',
 
     'copy' => 'copiar',
+
+    'copied' => 'copiado ✓',
 
     'cmt_claude_paths' => 'Linux/Windows → ~/.claude/.credentials.json  ·  macOS → Keychain (lido sozinho)',
     'cmt_arch_pick' => 'Arch (AUR) — escolha um:',

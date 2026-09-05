@@ -91,11 +91,13 @@ return [
     'windows_warn_waybar' => 'Waybar widget is Wayland-only',
 
     'cta_repo' => "Fabio Akita's repository",
-    'cta_guide' => 'Desktop guide (fork)',
+    'cta_guide' => 'This fork on GitHub',
 
-    'footnote' => 'ai-usagebar is a project by :akita — open source (MIT), a Rust port of :claudebar with support for more providers. The native desktop integrations (GNOME/macOS/Windows) shown here come from :fork. Some endpoints are undocumented; trademarks mentioned belong to their respective owners.',
+    'footnote' => 'ai-usagebar is a project by :akita — open source (MIT), a Rust port of :claudebar with support for more providers. The native GNOME and macOS desktop integrations shown here were written in :fork and adopted upstream. Some endpoints are undocumented; trademarks mentioned belong to their respective owners.',
 
     'copy' => 'copy',
+
+    'copied' => 'copied ✓',
 
     // The `# comments` inside the command blocks.
     'cmt_claude_paths' => 'Linux/Windows → ~/.claude/.credentials.json  ·  macOS → Keychain (read automatically)',

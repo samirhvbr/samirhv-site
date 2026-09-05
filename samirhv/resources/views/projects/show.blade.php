@@ -111,6 +111,8 @@
             {{-- The "models behind it" section — ShvIA only (the hybrid story: on-prem + BYOK cloud). --}}
             @includeWhen($project->slug === 'shvia', 'partials.shvia-models')
 
+            @include('partials.app-changelog', ['slug' => $project->slug])
+
             @if(session('download_unavailable'))
                 <div class="s-card" style="padding:14px 18px; margin-bottom:24px; border-color:rgba(248,113,113,0.3); background:rgba(248,113,113,0.08);">
                     <span class="s-body" style="color:#fca5a5; font-size:0.9rem;">{!! __('project.unavailable', ['file' => '<strong>'.e(session('download_unavailable')).'</strong>']) !!}</span>

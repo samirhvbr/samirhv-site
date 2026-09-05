@@ -80,7 +80,9 @@
                 @endforeach
             </div>
 
-            <div class="d-flex gap-3 flex-wrap">
+            @include('partials.app-changelog', ['slug' => 'github-desktop'])
+
+            <div class="d-flex gap-3 flex-wrap" style="margin-top:44px;">
                 <a href="{{ lroute('downloads') }}" class="s-btn s-btn--lg"><i class="fa-solid fa-download"></i> {{ __('github_desktop.download') }}</a>
                 <a href="https://github.com/samirhvbr/github-desktop" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github"></i> {{ __('github_desktop.source') }}</a>
             </div>
