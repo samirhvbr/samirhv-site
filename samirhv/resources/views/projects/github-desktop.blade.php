@@ -21,8 +21,17 @@
                 </div>
             </header>
 
+            @php
+                /* Conferidos no fork em 05/09/2026: app/src/lib/fork-version.ts
+                   (ForkVersion) e app/package.json (a release do upstream em que
+                   o fork se baseia). São números independentes e o usuário
+                   confunde os dois. */
+                $forkVersion = '0.4.1';
+                $upstreamVersion = 'GitHub Desktop 3.6.3';
+            @endphp
+
             <div class="d-flex flex-wrap" style="gap:8px; margin-bottom:32px;">
-                @foreach(['Electron', 'TypeScript', 'React', '.deb / Debian'] as $tech)
+                @foreach(['Electron', 'TypeScript', 'React', 'Linux · Windows · macOS', 'MIT'] as $tech)
                     <span class="s-tag">{{ $tech }}</span>
                 @endforeach
             </div>
@@ -45,17 +54,21 @@
                 ]) !!}</p>
                 <p style="margin-top:1rem;">{!! __('github_desktop.intro_why', [
                     'does_not_ship' => $forte(__('github_desktop.does_not_ship')),
-                    'deb' => $forte('.deb'),
+                    'multirepo' => $forte(__('github_desktop.intro_multirepo')),
                 ]) !!}</p>
             </div>
 
             <div class="s-grid" style="margin-bottom:42px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
                 @php
+                    // O painel multi-repositório vem primeiro: é o que este fork
+                    // acrescenta, e o resto da lista o upstream já entrega.
                     $features = [
+                        ['fa-solid fa-layer-group', __('github_desktop.feature_multirepo'), __('github_desktop.feature_multirepo_desc')],
+                        ['fa-solid fa-arrows-rotate', __('github_desktop.feature_batch'), __('github_desktop.feature_batch_desc')],
                         ['fa-solid fa-code-commit', __('github_desktop.feature_commits'), __('github_desktop.feature_commits_desc')],
                         ['fa-solid fa-code-compare', __('github_desktop.feature_diff'), __('github_desktop.feature_diff_desc')],
                         ['fa-solid fa-code-pull-request', __('github_desktop.feature_pr'), __('github_desktop.feature_pr_desc')],
-                        ['fa-solid fa-box-open', __('github_desktop.feature_deb'), __('github_desktop.feature_deb_desc')],
+                        ['fa-solid fa-box-open', __('github_desktop.feature_packages'), __('github_desktop.feature_packages_desc')],
                     ];
                 @endphp
                 @foreach($features as [$icon, $title, $desc])
@@ -69,10 +82,26 @@
 
             <div class="d-flex gap-3 flex-wrap">
                 <a href="{{ lroute('downloads') }}" class="s-btn s-btn--lg"><i class="fa-solid fa-download"></i> {{ __('github_desktop.download') }}</a>
-                <a href="https://github.com/samirhvbr/GITHUB_DESKTOP" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github"></i> {{ __('github_desktop.source') }}</a>
+                <a href="https://github.com/samirhvbr/github-desktop" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github"></i> {{ __('github_desktop.source') }}</a>
             </div>
 
+            {{-- Duas consequências operacionais que o usuário descobre depois de
+                 instalar se ninguém contar antes: qual dos dois números é a
+                 versão, e que o app não se atualiza sozinho. --}}
             <p class="s-meta" style="margin-top:30px; line-height:1.7;">
+                <i class="fa-solid fa-code-branch" style="color:var(--s-accent-ink-2); margin-right:5px;"></i>
+                {!! __('github_desktop.versions', [
+                    'fork' => $forte('fork '.$forkVersion),
+                    'upstream' => $forte($upstreamVersion),
+                ]) !!}
+            </p>
+
+            <p class="s-meta" style="margin-top:12px; line-height:1.7;">
+                <i class="fa-solid fa-circle-exclamation" style="color:var(--s-accent-ink-2); margin-right:5px;"></i>
+                {{ __('github_desktop.autoupdate') }}
+            </p>
+
+            <p class="s-meta" style="margin-top:12px; line-height:1.7;">
                 <i class="fa-solid fa-circle-info" style="color:var(--s-accent-ink-2); margin-right:5px;"></i>
                 {{ __('github_desktop.disclaimer') }}
             </p>

@@ -54,15 +54,36 @@ class ContentTranslationTest extends TestCase
         $this->assertSame('Descrição em português', Content::project($novo, 'description'));
     }
 
-    /** A slug WITH an entry but WITHOUT that field — sshvterm has no description. */
+    /**
+     * A slug WITH an entry but WITHOUT that field.
+     *
+     * The fixture is declared here rather than pointed at a real project: this
+     * used to name `sshvterm`, which had a title and no description, and the
+     * test broke the day that description was written — asserting a fact about
+     * the content instead of a fact about the fallback.
+     */
     public function test_a_partial_entry_falls_back_field_by_field(): void
     {
         App::setLocale('en');
+        app('translator')->addLines(['content.projects.so-o-titulo.title' => 'Title Only'], 'en');
 
-        $sshvterm = $this->project('sshvterm', 'SShvTerm', 'Cliente SSH/SFTP desktop');
+        $parcial = $this->project('so-o-titulo', 'Só o título', 'Descrição sem tradução');
 
-        $this->assertSame('SShvTerm', Content::project($sshvterm, 'title'));
-        $this->assertSame('Cliente SSH/SFTP desktop', Content::project($sshvterm, 'description'));
+        $this->assertSame('Title Only', Content::project($parcial, 'title'));
+        $this->assertSame('Descrição sem tradução', Content::project($parcial, 'description'));
+    }
+
+    /** Every project in the catalogue is fully translated — no field left behind. */
+    public function test_every_catalogued_project_has_a_title_and_a_description(): void
+    {
+        $entries = (require lang_path('en/content.php'))['projects'];
+
+        $this->assertNotEmpty($entries);
+
+        foreach ($entries as $slug => $fields) {
+            $this->assertArrayHasKey('title', $fields, $slug);
+            $this->assertArrayHasKey('description', $fields, $slug);
+        }
     }
 
     /** Never the key itself: `__()` returns the key on a miss, `Lang::has` does not. */
