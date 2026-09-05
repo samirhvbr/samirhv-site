@@ -214,6 +214,10 @@ class AiMemoryController extends Controller
 
     public function search(Request $request, SearchRepository $search): View
     {
+        // O termo vai para o índice FTS5 do ai-memory; limitar o tamanho aqui
+        // é o mesmo cuidado que os outros filtros deste controller já têm.
+        $request->validate(['q' => ['nullable', 'string', 'max:200']]);
+
         $q = trim($request->string('q')->toString());
 
         return $this->screen('admin.ai-memory.search', fn () => [

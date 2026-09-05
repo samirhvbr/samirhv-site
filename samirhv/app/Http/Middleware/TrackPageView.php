@@ -61,7 +61,19 @@ class TrackPageView
                 'browser' => $info['browser'],
                 'os' => $info['os'],
                 'referer' => mb_substr((string) $request->headers->get('referer'), 0, 1024) ?: null,
-                'locale' => mb_substr((string) $request->getPreferredLanguage(), 0, 35) ?: null,
+                /* O idioma em que a página foi RENDERIZADA, não o que o
+                   navegador pediu. Era `getPreferredLanguage()`, e num site
+                   bilíngue isso mede a coisa errada: um brasileiro lendo a
+                   versão em inglês era gravado como pt-BR, então o relatório
+                   dizia que ninguém lia em inglês. Como a rota decide o idioma
+                   (ver SetLocale), este valor é exatamente a página que a
+                   pessoa viu.
+
+                   Nota sobre os relatórios: `/` e `/pt-br` são linhas distintas
+                   em page_views, e continuam sendo — são duas páginas, com dois
+                   textos e dois endereços. Esta coluna é o que separa uma da
+                   outra sem depender do path. */
+                'locale' => mb_substr(app()->getLocale(), 0, 35) ?: null,
             ]);
         } catch (\Throwable $e) {
             // Analytics nunca pode quebrar a entrega da página — só registra no log.

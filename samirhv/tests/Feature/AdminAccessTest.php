@@ -71,28 +71,31 @@ class AdminAccessTest extends TestCase
         }
     }
 
+    /** A signed-in user who is not an admin is refused, not redirected. */
     public function test_a_signed_in_non_admin_is_refused(): void
     {
         $mortal = $this->user(isAdmin: false);
 
         foreach ($this->adminRoutes() as $name => $url) {
-            $this->actingAs($mortal)->get($url)->assertRedirect(route('login'), "[$name] let a non-admin through.");
+            $this->actingAs($mortal)->get($url)->assertForbidden();
         }
     }
 
     /**
-     * EnsureIsAdmin ends the session rather than answering 403. Documented
-     * here because it surprises: a valid user is signed OUT for navigating to
-     * a page they may not see. Harmless while the site has one user, and it is
-     * the behaviour the middleware is written to have.
+     * Refusing a page must not end a valid session.
+     *
+     * EnsureIsAdmin used to call Auth::logout() here, so a legitimate user was
+     * signed OUT for navigating to a page they may not see. Nothing triggers it
+     * while the site has one user, which is exactly why it would have surfaced
+     * later as "it logs me out on its own".
      */
-    public function test_refusing_a_non_admin_also_ends_their_session(): void
+    public function test_refusing_a_non_admin_leaves_their_session_alone(): void
     {
         $mortal = $this->user(isAdmin: false);
 
-        $this->actingAs($mortal)->get('/admin')->assertRedirect(route('login'));
+        $this->actingAs($mortal)->get('/admin')->assertForbidden();
 
-        $this->assertGuest();
+        $this->assertAuthenticated();
     }
 
     public function test_an_admin_owing_a_password_change_is_sent_to_the_profile(): void

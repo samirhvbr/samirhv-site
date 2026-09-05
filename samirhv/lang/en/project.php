@@ -29,6 +29,8 @@ return [
     'copy' => 'copy',
 
     'files' => 'Files',
+
+    'about_this_build' => 'What this build is, and what it packages',
     'os_tabs_aria' => 'Operating systems',
     'soon' => 'soon',
     'build_soon' => 'A :os build is coming.',

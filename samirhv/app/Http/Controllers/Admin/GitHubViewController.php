@@ -112,6 +112,10 @@ class GitHubViewController extends Controller
      */
     public function suggestions(Request $request): JsonResponse
     {
+        // Termo limitado: chega cru de um campo de busca, e um `q` de megabytes
+        // não é ataque, é só trabalho desperdiçado a cada tecla.
+        $request->validate(['q' => ['nullable', 'string', 'max:100']]);
+
         try {
             $repos = Cache::remember(
                 'github/user_repositories',

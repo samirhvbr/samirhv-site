@@ -47,6 +47,12 @@ class DownloadController extends Controller
                     'referer' => mb_substr((string) $request->headers->get('referer'), 0, 1024) ?: null,
                     'method' => $request->method(),
                     'is_bot' => $isBot,
+                    /* Aqui, ao contrário do PageView, fica a preferência do
+                       NAVEGADOR de propósito: `/d/{file}` não é gêmea por
+                       idioma — é um endpoint de entrega, com um endereço só —
+                       então `app()->getLocale()` seria sempre o idioma nu e não
+                       diria nada. O que o navegador pede é o único sinal de
+                       idioma que existe num download. */
                     'locale' => mb_substr((string) $request->getPreferredLanguage(), 0, 35) ?: null,
                 ]);
             } catch (\Throwable $e) {

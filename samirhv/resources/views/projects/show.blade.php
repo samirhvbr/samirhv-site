@@ -156,6 +156,16 @@
             {{-- The "models behind it" section — ShvIA only (the hybrid story: on-prem + BYOK cloud). --}}
             @includeWhen($project->slug === 'shvia', 'partials.shvia-models')
 
+            @if($project->slug === 'github-desktop')
+                {{-- A página estática descreve o build com detalhe que não cabe
+                     numa lista de arquivos; sem este link ela ficava sem entrada
+                     nenhuma a partir do site. --}}
+                <p class="s-meta" style="margin-top:26px;">
+                    <i class="fa-solid fa-circle-info" style="color:var(--s-accent-ink-2); margin-right:6px;"></i>
+                    <a href="{{ lroute('project.github-desktop') }}" class="s-text-link">{{ __('project.about_this_build') }}</a>
+                </p>
+            @endif
+
             @include('partials.app-changelog', ['slug' => $project->slug])
 
             @if(session('download_unavailable'))

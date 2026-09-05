@@ -31,6 +31,8 @@ return [
     'copy' => 'copiar',
 
     'files' => 'Arquivos',
+
+    'about_this_build' => 'O que é este build, e o que ele empacota',
     'os_tabs_aria' => 'Sistemas operacionais',
     'soon' => 'em breve',
     'build_soon' => 'Build de :os em breve.',
