@@ -35,6 +35,24 @@ class AnalyticsService
         return Carbon::today(self::TZ)->subDays($days)->utc();
     }
 
+    /**
+     * Downloads legítimos de HOJE, no fuso local.
+     *
+     * Público e usado por todas as telas que mostram esse número, porque ele
+     * aparece em três lugares e chegou a ser calculado de duas formas: aqui,
+     * com a virada do dia em America/Sao_Paulo, e nos controllers, com
+     * `whereDate(created_at, today())` — que é a data em UTC, já que
+     * config/app.php fixa o fuso da aplicação em UTC. Entre 21h e meia-noite
+     * as duas contas discordam, e o painel de auditoria mostra as duas na
+     * mesma tela. Uma definição só, num lugar só.
+     */
+    public function downloadsToday(): int
+    {
+        return (int) DownloadLog::where('is_bot', false)
+            ->where('created_at', '>=', $this->todayStart())
+            ->count();
+    }
+
     /** Cartões do topo (de HOJE, fuso local). Acessos = visitantes únicos sem bot. */
     public function cards(): array
     {
@@ -43,7 +61,7 @@ class AnalyticsService
         return [
             'visits_today' => (int) PageView::where('is_bot', false)->where('created_at', '>=', $t)->distinct('ip')->count('ip'),
             'logins_today' => (int) User::whereNotNull('last_login_at')->where('last_login_at', '>=', $t)->count(),
-            'downloads_today' => (int) DownloadLog::where('is_bot', false)->where('created_at', '>=', $t)->count(),
+            'downloads_today' => $this->downloadsToday(),
             'bots_today' => (int) PageView::where('is_bot', true)->where('created_at', '>=', $t)->count(),
         ];
     }

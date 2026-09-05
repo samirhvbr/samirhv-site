@@ -45,7 +45,7 @@ class AuditController extends Controller
 
         // Cards de resumo (visão geral, independem dos filtros).
         $stats = [
-            'today' => DownloadLog::where('is_bot', false)->whereDate('created_at', today())->count(),
+            'today' => $analytics->downloadsToday(),
             'week' => DownloadLog::where('is_bot', false)->where('created_at', '>=', now()->subDays(7))->count(),
             'month' => DownloadLog::where('is_bot', false)->where('created_at', '>=', now()->subDays(30))->count(),
             'unique_ips' => DownloadLog::where('is_bot', false)->where('created_at', '>=', now()->subDays(30))->distinct('ip')->count('ip'),

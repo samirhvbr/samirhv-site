@@ -6,18 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\DownloadLog;
 use App\Models\Project;
 use App\Models\ProjectFile;
+use App\Services\AnalyticsService;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index(AnalyticsService $analytics): View
     {
         $stats = [
             'projects' => Project::count(),
             'files' => ProjectFile::count(),
             'downloads_total' => (int) ProjectFile::sum('downloads_count'),
-            'downloads_today' => DownloadLog::where('is_bot', false)
-                ->whereDate('created_at', today())->count(),
+            'downloads_today' => $analytics->downloadsToday(),
         ];
 
         $recentDownloads = DownloadLog::with('file.project')
