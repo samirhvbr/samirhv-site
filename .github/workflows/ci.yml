@@ -1,0 +1,68 @@
+name: CI
+
+# Runs on anything that reaches the default branch and on every PR aimed at it.
+# The suite needs no database and no built assets (see the README), so this is
+# a checkout, composer install and two commands.
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests and code style
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: samirhv
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          # The version production runs. composer.json allows 8.3+, but a suite
+          # green on an older minor than the server proves less than it looks.
+          php-version: '8.4'
+          extensions: mbstring, pdo_mysql, gd, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache composer packages
+        uses: actions/cache@v4
+        with:
+          path: samirhv/vendor
+          key: composer-${{ runner.os }}-php8.4-${{ hashFiles('samirhv/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php8.4-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare the environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Check code style
+        # --test reports, never rewrites: CI states the problem, a person fixes it.
+        run: vendor/bin/pint --test
+
+      - name: Run the test suite
+        run: php artisan test
+
+      - name: Check that every Blade template compiles
+        # `php -l` never opens a Blade file, so a broken directive would reach
+        # production through a green suite if the view is not covered by a test.
+        run: |
+          php artisan view:cache
+          php artisan view:clear
