@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.7.1 - The findings the 0.7.0 review left on the table
+
+A sweep through the medium and low priority findings of the review that
+produced 0.7.0.
+
+### Things that were declared and never happened
+
+- `TrackPageView` skipped thirteen path prefixes for routes that do not exist
+  in this app — Breeze scaffold. `bootstrap/app.php` declared a JSON exception
+  renderer for `api/*` routes that were never registered. `EnsurePasswordChanged`
+  exempted a route its middleware group never sees.
+- `admin.github-view.repos.status` got the polling client its own docblock
+  described, so a syncing repository card stops freezing until a page reload.
+
 ## 0.7.0 - English becomes the site's own language, and the catalogue tells the truth about the apps
 
 ### The URL decides the language, and the bare URL is now English

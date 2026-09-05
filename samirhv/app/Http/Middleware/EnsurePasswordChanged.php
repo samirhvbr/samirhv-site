@@ -9,12 +9,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Força a troca de senha quando o usuário tem must_change_password = true
- * (ex.: senha inicial do seeder). Isenta as rotas de perfil/troca de senha e
- * logout para não criar loop de redirect.
+ * (ex.: senha inicial do seeder). Isenta as rotas de perfil/troca de senha
+ * para não criar loop de redirect.
+ *
+ * `logout` estava na lista e nunca foi consultado: este middleware só roda no
+ * grupo `admin` (routes/admin.php) e a rota `logout` vive fora dele, em
+ * routes/web.php. A isenção era resto de uma intenção de aplicar o middleware
+ * globalmente, que não é o que acontece. Sair continua funcionando com a senha
+ * pendente, porque o middleware nunca chega a rodar ali.
  */
 class EnsurePasswordChanged
 {
-    private const ALLOWED_ROUTES = ['admin.profile', 'admin.profile.password', 'logout'];
+    private const ALLOWED_ROUTES = ['admin.profile', 'admin.profile.password'];
 
     public function handle(Request $request, Closure $next): Response
     {

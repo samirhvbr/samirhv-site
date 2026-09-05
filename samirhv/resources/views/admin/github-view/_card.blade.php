@@ -31,7 +31,19 @@
             <span class="gh-add-n">+{{ number_format((int) $stats['total_additions'], 0, ',', '.') }}</span>
             <span class="gh-del-n">−{{ number_format((int) $stats['total_deletions'], 0, ',', '.') }}</span>
         </span>
-        <span class="gh-badge gh-badge--{{ $repo->sync_status }}">
+        {{-- Um repo em 'syncing' termina no worker, não nesta requisição: sem
+             polling o cartão diz "syncing" até alguém recarregar a página. O
+             endpoint de status existia desde o port e não tinha cliente — este
+             é o cliente. Só cartões em 'syncing' declaram a url, então uma tela
+             de repos sincronizados não faz uma requisição sequer. --}}
+        <span class="gh-badge gh-badge--{{ $repo->sync_status }}"
+              role="status"
+              @if($repo->isSyncing())
+                  data-gh-sync
+                  data-url="{{ route('admin.github-view.repos.status', ['owner' => $repo->owner, 'name' => $repo->name]) }}"
+                  data-every="5"
+              @endif
+        >
             @switch($repo->sync_status)
                 @case('synced')<i class="fa-solid fa-circle-check"></i> synced @break
                 @case('syncing')<i class="fa-solid fa-rotate"></i> syncing @break

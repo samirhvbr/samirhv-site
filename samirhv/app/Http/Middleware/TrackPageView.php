@@ -17,12 +17,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TrackPageView
 {
-    /** Prefixos que NÃO são "visita de conteúdo" (1º segmento do path). */
+    /**
+     * Prefixos que NÃO são "visita de conteúdo" (1º segmento do path).
+     *
+     * Só o que este app realmente serve. A lista carregava treze prefixos do
+     * scaffold do Breeze — `register`, `forgot-password`, `two-factor`,
+     * `dashboard`, `locale`… — para rotas que nunca existiram aqui: não há
+     * cadastro público (ver LoginController) e o seletor de idioma mora em
+     * `/lang`, não em `/locale`. Prefixo que não casa com nada não filtra
+     * nada; só faz a próxima pessoa acreditar que a rota existe.
+     */
     private const SKIP_PREFIXES = [
-        'admin', 'login', 'register', 'logout', 'password', 'forgot-password',
-        'reset-password', 'confirm-password', 'verify-email', 'email', 'two-factor',
-        'api', 'd', 'up', 'build', 'assets', 'storage', 'js', 'css', 'images',
-        'img', 'fonts', 'vendor', 'dashboard', 'locale',
+        'admin', 'login', 'logout', 'lang', 'd', 'en', 'up',
+        'js', 'img', 'vendor', 'storage',
     ];
 
     /** Paths exatos a ignorar. */

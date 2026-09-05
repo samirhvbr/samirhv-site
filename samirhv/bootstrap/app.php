@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Middleware\EnsureIsAdmin;
+use App\Http\Middleware\EnsurePasswordChanged;
 use App\Http\Middleware\NegotiateLocale;
 use App\Http\Middleware\SetLocale;
-use App\Http\Middleware\EnsurePasswordChanged;
 use App\Http\Middleware\TrackPageView;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -38,7 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
-        );
+        /* Nada aqui. O `shouldRenderJsonWhen(is('api/*'))` do scaffold foi
+           removido: este app não tem routes/api.php nem registra rotas `api`,
+           então a regra nunca decidiu coisa alguma. O único endpoint JSON é
+           `admin.github-view.repos.status`, que é `admin/*` e responde JSON
+           por retornar JsonResponse — não por causa desta configuração. */
     })->create();

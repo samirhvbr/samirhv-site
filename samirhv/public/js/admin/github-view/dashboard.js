@@ -133,7 +133,72 @@
     });
   }
 
+  // Acompanha um repo que está sincronizando até ele parar.
+  //
+  // O endpoint `admin.github-view.repos.status` existe desde o port do
+  // github-visualize e o docblock dele sempre disse "o JS pergunta enquanto
+  // está 'syncing'" — só que esse JS nunca foi escrito. Sem ele o cartão
+  // congela em "syncing" até um F5.
+  //
+  // Regras: só cartões em 'syncing' entram (o Blade só põe data-url neles),
+  // para de perguntar assim que o status muda, e desiste depois de alguns
+  // erros seguidos em vez de bater no servidor para sempre.
+  function initSyncBadge(badge) {
+    var url = badge.dataset.url;
+    var every = (parseInt(badge.dataset.every, 10) || 5) * 1000;
+    var failures = 0;
+    var timer = null;
+
+    function stop() {
+      if (timer) window.clearTimeout(timer);
+      timer = null;
+    }
+
+    function settle(status) {
+      stop();
+      badge.className = "gh-badge gh-badge--" + status;
+      badge.innerHTML =
+        status === "synced"
+          ? '<i class="fa-solid fa-circle-check"></i> synced'
+          : status === "failed"
+            ? '<i class="fa-solid fa-circle-exclamation"></i> failed'
+            : '<i class="fa-solid fa-clock"></i> ' + status;
+      delete badge.dataset.ghSync;
+    }
+
+    function tick() {
+      // Uma aba escondida não precisa perguntar nada.
+      if (document.hidden) {
+        timer = window.setTimeout(tick, every);
+        return;
+      }
+
+      fetch(url, { headers: { Accept: "application/json" }, credentials: "same-origin" })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          failures = 0;
+          if (!data.syncing) {
+            settle(data.sync_status || "synced");
+            return;
+          }
+          timer = window.setTimeout(tick, every);
+        })
+        .catch(function () {
+          // Três falhas seguidas: a sessão caiu, o repo sumiu ou a rede foi
+          // embora. Insistir não conserta nenhuma das três.
+          if (++failures >= 3) return stop();
+          timer = window.setTimeout(tick, every * failures);
+        });
+    }
+
+    timer = window.setTimeout(tick, every);
+  }
+
   function init() {
+    document.querySelectorAll("[data-gh-sync]").forEach(initSyncBadge);
     document.querySelectorAll("[data-gh-bars]").forEach(function (root) {
       initBarScale(root);
       initReveal(root);
