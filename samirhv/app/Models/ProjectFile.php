@@ -43,10 +43,39 @@ class ProjectFile extends Model
         return $query->where('is_available', true);
     }
 
-    /** O arquivo está realmente no disco de downloads? */
+    /**
+     * Índice dos arquivos presentes no disco, montado UMA vez por request.
+     *
+     * @var array<string, true>|null
+     */
+    private static ?array $mirrored = null;
+
+    /**
+     * O arquivo está realmente no disco de downloads?
+     *
+     * Era um `exists()` por arquivo — ou seja, uma syscall por linha renderizada.
+     * Uma página /p/{slug} com 20 builds fazia 20 idas ao disco, e como não é
+     * query nenhuma delas aparece no log de queries: o custo era invisível.
+     * Agora é uma listagem recursiva só, memoizada pelo request.
+     *
+     * A memoização é por processo (PHP-FPM: um request). Quem ESCREVE no disco
+     * chama `forgetMirrored()` para não ler um índice anterior à própria escrita.
+     */
     public function getIsMirroredAttribute(): bool
     {
-        return $this->filename && Storage::disk('downloads')->exists($this->filename);
+        if (! $this->filename) {
+            return false;
+        }
+
+        self::$mirrored ??= array_fill_keys(Storage::disk('downloads')->allFiles(), true);
+
+        return isset(self::$mirrored[$this->filename]);
+    }
+
+    /** Invalida o índice acima. Chamado por quem grava ou apaga no disco. */
+    public static function forgetMirrored(): void
+    {
+        self::$mirrored = null;
     }
 
     /** Tamanho legível (B/KB/MB/GB). */

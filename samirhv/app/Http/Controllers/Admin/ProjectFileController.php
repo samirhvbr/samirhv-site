@@ -115,6 +115,7 @@ class ProjectFileController extends Controller
         $label = $file->label;
         // Remove o binário do disco e a linha (soft delete preserva o histórico de logs).
         Storage::disk(FileIngestService::DISK)->delete($file->filename);
+        ProjectFile::forgetMirrored();   // o índice do request acabou de ficar velho
         $file->delete();
 
         $this->audit->record('file.delete', $file->id, "Arquivo removido: {$label} — projeto {$project->title}");

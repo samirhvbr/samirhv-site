@@ -17,6 +17,9 @@ use Illuminate\View\View;
  */
 class AuditController extends Controller
 {
+    /** Teto de opções no select de arquivos. Ver o comentário em index(). */
+    private const FILTER_OPTIONS_LIMIT = 500;
+
     public function index(Request $request, AnalyticsService $analytics): View
     {
         $filters = $request->validate([
@@ -51,9 +54,19 @@ class AuditController extends Controller
             'unique_ips' => DownloadLog::where('is_bot', false)->where('created_at', '>=', now()->subDays(30))->distinct('ip')->count('ip'),
         ];
 
-        // Opções dos selects de filtro.
+        /* Opções dos selects de filtro.
+           Os arquivos são carregados por projeto e limitados: era
+           `ProjectFile::with('project')->get()`, ou seja, TODA linha da tabela
+           trazida para dentro de um <select>, crescendo sem teto conforme se
+           publica build. O limite é generoso o bastante para o select continuar
+           completo na prática e existe para que a página não pare de abrir no
+           dia em que não estiver. */
         $projects = Project::orderBy('title')->get(['id', 'title']);
-        $files = ProjectFile::with('project')->orderBy('label')->get(['id', 'label', 'project_id']);
+        $files = ProjectFile::with('project:id,title')
+            ->orderBy('project_id')
+            ->orderBy('label')
+            ->limit(self::FILTER_OPTIONS_LIMIT)
+            ->get(['id', 'label', 'project_id']);
 
         // Métricas do AnalyticsService.
         $cards = $analytics->cards();

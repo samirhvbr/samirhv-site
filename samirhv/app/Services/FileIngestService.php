@@ -47,6 +47,10 @@ class FileIngestService
         // Grava sobrescrevendo se já existir (mesmo identity → update da linha).
         Storage::disk(self::DISK)->putFileAs((string) $project->id, $fileForStore, $safeName);
 
+        /* O índice de "está no disco?" do ProjectFile é montado uma vez por
+           request; acabamos de mudar o disco, então ele está velho. */
+        ProjectFile::forgetMirrored();
+
         // SO/arquitetura/tipo: inferidos do nome; o que o Admin enviar sobrescreve.
         $inferred = FilenameInspector::inspect($originalName);
 

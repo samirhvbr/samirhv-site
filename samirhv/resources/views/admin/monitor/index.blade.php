@@ -8,6 +8,7 @@
     </a>
 @endsection
 
+
 @push('styles')
 <style>
     .mon-ver{font-family:'JetBrains Mono',monospace;font-size:.86rem;color:#e2e8f0}
@@ -28,10 +29,26 @@
     .mon-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;font-size:.76rem;color:var(--dim)}
     .mon-legend b{color:var(--muted);font-weight:600}
     .table-scroll{overflow-x:auto}
+    .mon-throttle{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;
+        border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius-md);
+        background:var(--panel);font-size:.82rem;color:var(--muted)}
+    .mon-throttle i{color:var(--accent)}
+    .mon-throttle__why{color:var(--dim);font-size:.74rem}
 </style>
 @endpush
 
 @section('content')
+
+    @isset($refreshFloor)
+        @if($refreshFloor)
+            <div class="mon-throttle" role="status">
+                <i class="fa-solid fa-hourglass-half"></i>
+                Checagem no GitHub feita há pouco — a tela abaixo é a última leitura.
+                Dá para verificar de novo em {{ $refreshFloor }}s.
+                <span class="mon-throttle__why">A API sem autenticação dá 60 requisições por hora, e cada projeto rastreado gasta uma.</span>
+            </div>
+        @endif
+    @endisset
 
     @php
         // Rótulo/estilo de cada status (montados no controller).

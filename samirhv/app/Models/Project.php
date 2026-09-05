@@ -6,6 +6,7 @@ use App\Support\SemVer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Project extends Model
 {
@@ -21,6 +22,25 @@ class Project extends Model
         'is_published' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    /** Chave do menu de projetos, compartilhado com todo layout público. */
+    public const NAV_CACHE_KEY = 'nav.projects';
+
+    /**
+     * Qualquer escrita num projeto invalida o menu.
+     *
+     * Num evento do model, e não nos três métodos do ProjectController, porque
+     * o seeder e `php artisan files:add` também escrevem — e um menu que só se
+     * atualiza quando a mudança veio pelo admin é pior que menu sem cache.
+     */
+    protected static function booted(): void
+    {
+        $forget = fn () => Cache::forget(self::NAV_CACHE_KEY);
+
+        static::saved($forget);
+        static::deleted($forget);
+        static::restored($forget);
+    }
 
     public function getRouteKeyName(): string
     {

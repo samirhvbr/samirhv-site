@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Services\GithubReleaseChecker;
 use App\Support\SemVer;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 /**
@@ -19,6 +21,11 @@ use Illuminate\View\View;
  */
 class MonitorController extends Controller
 {
+    /** Piso entre duas checagens reais no GitHub, em segundos. */
+    private const REFRESH_EVERY = 300;
+
+    private const REFRESH_KEY = 'monitor:last-refresh';
+
     public function __construct(private readonly GithubReleaseChecker $github) {}
 
     public function index(Request $request): View
@@ -28,10 +35,28 @@ class MonitorController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        // "Verificar agora": fura o cache dos repos antes de recomputar.
+        /* "Verificar agora": fura o cache dos repos antes de recomputar.
+           Cada projeto rastreado vira UMA chamada HTTP síncrona dentro deste
+           request, e a API do GitHub sem autenticação dá 60 requisições por
+           hora por IP (ver GithubReleaseChecker). Com alguns forks, dois
+           cliques seguidos no botão já comem uma fatia do teto e o resultado é
+           uma tela inteira de `rate_limit` — que parece defeito nosso.
+           Daí o piso: refurar o cache no máximo uma vez a cada 5 minutos, e
+           dizer que foi isso que aconteceu em vez de silenciosamente não
+           atualizar. O cache normal continua servindo a tela. */
+        $refreshFloor = null;
+
         if ($request->boolean('refresh')) {
-            $projects->filter->hasUpstream()
-                ->each(fn (Project $p) => $this->github->refresh($p->upstream_repo));
+            $lastRefresh = Cache::get(self::REFRESH_KEY);
+
+            if ($lastRefresh instanceof CarbonInterface && $lastRefresh->diffInSeconds(now()) < self::REFRESH_EVERY) {
+                $refreshFloor = (int) ceil(self::REFRESH_EVERY - $lastRefresh->diffInSeconds(now()));
+            } else {
+                $projects->filter->hasUpstream()
+                    ->each(fn (Project $p) => $this->github->refresh($p->upstream_repo));
+
+                Cache::put(self::REFRESH_KEY, now(), now()->addSeconds(self::REFRESH_EVERY));
+            }
         }
 
         $rows = $projects->map(fn (Project $p) => $this->buildRow($p));
@@ -43,7 +68,7 @@ class MonitorController extends Controller
             'errors' => $tracked->where('status', 'error')->count(),
         ];
 
-        return view('admin.monitor.index', compact('rows', 'summary'));
+        return view('admin.monitor.index', compact('rows', 'summary', 'refreshFloor'));
     }
 
     /** @return array<string,mixed> */

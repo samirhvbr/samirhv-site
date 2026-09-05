@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -63,22 +64,44 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['admin.layouts.app', 'layouts.app'], function ($view) {
             static $version = null;
             if ($version === null) {
-                $raw = @file_get_contents(base_path('../version.md'));
+                $path = base_path('../version.md');
+                $raw = is_readable($path) ? file_get_contents($path) : false;
+
+                /* Antes era `@file_get_contents` puro: com o caminho errado o
+                   rodapé simplesmente não mostrava versão nenhuma, sem uma
+                   linha de log em lugar algum. Memoizado, então isto avisa uma
+                   vez por processo, não uma vez por request. */
+                if ($raw === false) {
+                    Log::warning('version.md ilegível; o rodapé vai sem versão.', ['path' => $path]);
+                }
+
                 $version = $raw !== false ? trim($raw) : '';
             }
             $view->with('appVersion', $version);
         });
     }
 
-    /** Injeta os projetos publicados no menu "Projetos" do layout público. */
+    /**
+     * Injeta os projetos publicados no menu "Projetos" do layout público.
+     *
+     * Em cache: era uma query em TODA página pública para uma lista que muda
+     * quando um projeto é editado, o que é raro. O `Project` invalida a chave
+     * sozinho ao salvar ou apagar (ver Project::booted), então o TTL longo aqui
+     * não atrasa uma publicação — ele só cobre o caso de a invalidação não
+     * acontecer, por exemplo uma linha alterada direto no banco.
+     */
     private function shareNavProjects(): void
     {
         View::composer('layouts.app', function ($view) {
             try {
-                $projects = Project::published()
-                    ->orderBy('sort_order')
-                    ->orderByDesc('created_at')
-                    ->get(['id', 'title', 'slug', 'icon', 'category', 'external_url', 'redirect_to_site']);
+                $projects = Cache::remember(
+                    Project::NAV_CACHE_KEY,
+                    now()->addHours(6),
+                    fn () => Project::published()
+                        ->orderBy('sort_order')
+                        ->orderByDesc('created_at')
+                        ->get(['id', 'title', 'slug', 'icon', 'category', 'external_url', 'redirect_to_site']),
+                );
             } catch (\Throwable $e) {
                 $projects = collect(); // DB indisponível/migração pendente: menu não quebra a página.
             }
