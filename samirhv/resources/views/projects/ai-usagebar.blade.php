@@ -81,7 +81,7 @@
             </header>
 
             <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px; font-family:'JetBrains Mono',monospace; font-size:.7rem;">
-                @foreach(['Rust', 'Waybar', 'GNOME Shell', 'macOS menu bar', 'Windows tray', 'TUI', 'MIT'] as $tech)
+                @foreach(['Rust', 'Waybar', 'GNOME Shell', 'macOS menu bar', 'TUI', 'MIT'] as $tech)
                     <span style="color:#a5b4fc; background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); border-radius:6px; padding:4px 11px;">{{ $tech }}</span>
                 @endforeach
             </div>
@@ -108,7 +108,6 @@
                     'tui' => $aubB(__('ai_usagebar.intro_tui')),
                     'gnome' => $aubB('GNOME Shell'),
                     'menubar' => $aubB(__('ai_usagebar.intro_menubar')),
-                    'tray' => $aubB(__('ai_usagebar.intro_tray')),
                     'json' => $aubC('--json'),
                 ]) !!}</p>
             </div>
@@ -283,14 +282,19 @@
             {{-- ─────────── WINDOWS ─────────── --}}
             <div class="os-panel" data-os-panel="windows" style="display:none;">
 
+                {{-- Esta aba descrevia um app de bandeja e mandava o leitor rodar
+                     `cd windows-tray`. Esse diretório não existe: era um componente
+                     de terceiro (EaeDave) trazido para dentro do fork em 2026-06-30
+                     e que não sobreviveu ao rebase da 0.16.0 — e o upstream também
+                     não o tem. O que roda em Windows hoje é o binário Rust: o TUI e
+                     a saída JSON. É isso que está documentado aqui. --}}
+
                 <h3 class="aub-h3"><i class="fa-solid fa-list-check"></i> {{ __('ai_usagebar.prereqs') }}</h3>
                 <p class="aub-lead">{!! __('ai_usagebar.windows_prereqs_lead', [
                     'rust' => $aubS(__('ai_usagebar.windows_prereqs_rust')),
-                    'dotnet' => $aubS(__('ai_usagebar.windows_prereqs_dotnet')),
                 ]) !!}</p>
                 <div class="aub-cmd">
-                    <pre class="aub-code"><code><span class="prompt">></span> winget install Rustlang.Rustup
-<span class="prompt">></span> winget install Microsoft.DotNet.SDK.8</code></pre>
+                    <pre class="aub-code"><code><span class="prompt">></span> winget install Rustlang.Rustup</code></pre>
                     <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
 
@@ -298,18 +302,14 @@
                 <div class="aub-cmd">
                     <pre class="aub-code"><code><span class="prompt">></span> git clone https://github.com/samirhvbr/ai-usagebar.git
 <span class="prompt">></span> cd ai-usagebar
-<span class="prompt">></span> cargo build --release                    <span class="cmt"># → target\release\ai-usagebar.exe</span>
-<span class="prompt">></span> cd windows-tray
-<span class="prompt">></span> dotnet build -c Debug                     <span class="cmt"># {{ __('ai_usagebar.cmt_dotnet_debug') }}</span>
-<span class="prompt">></span> start "" "bin\Debug\net8.0-windows\ai-usagebar-tray.exe"</code></pre>
+<span class="prompt">></span> cargo build --release                    <span class="cmt"># → target\release\</span>
+<span class="prompt">></span> .\target\release\ai-usagebar-tui.exe     <span class="cmt"># {{ __('ai_usagebar.cmt_win_tui') }}</span>
+<span class="prompt">></span> .\target\release\ai-usagebar.exe --pretty <span class="cmt"># {{ __('ai_usagebar.cmt_win_json') }}</span></code></pre>
                     <button class="aub-copy" type="button">{{ __('ai_usagebar.copy') }} ⧉</button>
                 </div>
                 <div class="aub-note">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>{!! __('ai_usagebar.windows_note', [
-                        'tray' => '<strong>'.__('ai_usagebar.windows_note_tray').'</strong>',
-                        'caret' => '<code>^</code>',
-                        'vendor_selector' => '<strong>'.__('ai_usagebar.windows_note_vendor').'</strong>',
                         'claude_path' => '<code>%USERPROFILE%\.claude\.credentials.json</code>',
                         'codex_path' => '<code>%USERPROFILE%\.codex\auth.json</code>',
                         'claude' => '<code>claude</code>',
@@ -322,15 +322,8 @@
                         'waybar' => '<strong>'.__('ai_usagebar.windows_warn_waybar').'</strong>',
                         'tui' => '<code>ai-usagebar-tui</code>',
                         'json' => '<code>ai-usagebar --json/--pretty</code>',
-                        'publish' => '<code>dotnet publish -c Release</code>',
                     ]) !!}</span>
                 </div>
-                <div class="aub-shots">
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/panel-anthropic.png') }}" alt="{{ __('ai_usagebar.shot_win_panel_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_panel') }}</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/vendor-menu.png') }}" alt="{{ __('ai_usagebar.shot_win_menu_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_menu') }}</figcaption></figure>
-                    <figure class="aub-shot"><img src="{{ asset('img/projects/ai-usagebar/tray-tooltip.png') }}" alt="{{ __('ai_usagebar.shot_win_tooltip_alt') }}" loading="lazy"><figcaption>{{ __('ai_usagebar.shot_win_tooltip') }}</figcaption></figure>
-                </div>
-                <p class="aub-lead" style="margin-top:14px; font-size:.82rem;"><i class="fa-solid fa-hands-clapping" style="color:#6366f1; margin-right:6px;"></i>{!! __('ai_usagebar.windows_credit', ['author' => $aubLink('https://github.com/EaeDave/ai-usagebar', 'EaeDave')]) !!}</p>
 
             </div>
 
