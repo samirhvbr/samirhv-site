@@ -6,8 +6,20 @@
     <meta name="robots" content="noindex,nofollow">
     <title>Entrar — Samirhv</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
+    {{-- The font was pulled with `@import` from inside the <style> below. An
+         @import is discovered only after the stylesheet that contains it has
+         been parsed, and it blocks rendering while it resolves — the two
+         requests run one after the other instead of together. A <link> with its
+         preconnects starts the connection immediately and in parallel.
+
+         This is the ONLY page on the site that loads a Google font, which is
+         also why the public layout no longer preconnects to one. --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
         * { box-sizing: border-box; }
         body {
             margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;

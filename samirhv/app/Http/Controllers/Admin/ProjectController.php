@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Services\AuditLogger;
-use App\Services\GithubReleaseChecker;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -32,9 +29,9 @@ class ProjectController extends Controller
         return view('admin.projects.create', ['project' => new Project]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(ProjectRequest $request): RedirectResponse
     {
-        $data = $this->validateData($request);
+        $data = $request->normalized();
 
         $project = Project::create($data);
 
@@ -57,9 +54,9 @@ class ProjectController extends Controller
         return view('admin.projects.edit', compact('project'));
     }
 
-    public function update(Request $request, Project $project): RedirectResponse
+    public function update(ProjectRequest $request, Project $project): RedirectResponse
     {
-        $data = $this->validateData($request, $project);
+        $data = $request->normalized();
 
         $wasPublished = $project->is_published;
         $project->update($data);
@@ -82,62 +79,5 @@ class ProjectController extends Controller
         $this->audit->record('project.delete', $project->id, "Projeto removido: {$title}");
 
         return redirect()->route('admin.projects.index')->with('status', 'Projeto removido.');
-    }
-
-    private function validateData(Request $request, ?Project $project = null): array
-    {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => [
-                'nullable', 'string', 'max:255', 'alpha_dash',
-                'unique:projects,slug'.($project ? ','.$project->id : ''),
-            ],
-            'description' => ['nullable', 'string', 'max:5000'],
-            'external_url' => ['nullable', 'url:http,https', 'max:2048'],
-            'redirect_to_site' => ['nullable', 'boolean'],
-            'upstream_repo' => ['nullable', 'string', 'max:140'],
-            'category' => ['nullable', 'string', 'max:60'],
-            'icon' => ['nullable', 'string', 'max:60'],
-            'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
-            'is_published' => ['nullable', 'boolean'],
-        ]);
-
-        $data['slug'] = $this->uniqueSlug($data['slug'] ?? Str::slug($data['title']), $project);
-        $data['sort_order'] = $data['sort_order'] ?? 0;
-        $data['is_published'] = $request->boolean('is_published');
-        $data['external_url'] = ($data['external_url'] ?? null) ?: null;
-        // Só faz sentido redirecionar quando há site externo.
-        $data['redirect_to_site'] = $data['external_url'] ? $request->boolean('redirect_to_site') : false;
-
-        // Normaliza o upstream para "owner/repo" (aceita URL do GitHub). Se veio
-        // preenchido mas não dá para extrair, é erro de formato — não engole.
-        $rawRepo = $data['upstream_repo'] ?? null;
-        $data['upstream_repo'] = GithubReleaseChecker::normalizeRepo($rawRepo);
-        if (filled($rawRepo) && $data['upstream_repo'] === null) {
-            throw ValidationException::withMessages([
-                'upstream_repo' => 'Formato inválido. Use "owner/repo" ou a URL do repositório no GitHub.',
-            ]);
-        }
-
-        return $data;
-    }
-
-    /** Garante um slug único (acrescenta -2, -3… se já existir). */
-    private function uniqueSlug(string $slug, ?Project $project): string
-    {
-        $base = Str::slug($slug) ?: 'projeto';
-        $slug = $base;
-        $i = 2;
-
-        while (
-            Project::withTrashed()
-                ->where('slug', $slug)
-                ->when($project, fn ($q) => $q->whereKeyNot($project->id))
-                ->exists()
-        ) {
-            $slug = $base.'-'.$i++;
-        }
-
-        return $slug;
     }
 }

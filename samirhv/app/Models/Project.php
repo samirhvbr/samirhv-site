@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
@@ -40,6 +41,32 @@ class Project extends Model
         static::saved($forget);
         static::deleted($forget);
         static::restored($forget);
+    }
+
+    /**
+     * Um slug livre, derivado de `$from`, acrescentando -2, -3… se preciso.
+     *
+     * Vive no model e não no controller porque é regra do domínio: qualquer
+     * caminho que crie um projeto — o admin, o seeder, um command — precisa da
+     * mesma garantia. Considera os apagados (`withTrashed`), senão restaurar um
+     * projeto colidiria com um slug entregue depois dele.
+     */
+    public static function uniqueSlug(string $from, ?self $ignoring = null): string
+    {
+        $base = Str::slug($from) ?: 'projeto';
+        $slug = $base;
+        $i = 2;
+
+        while (
+            static::withTrashed()
+                ->where('slug', $slug)
+                ->when($ignoring, fn ($q) => $q->whereKeyNot($ignoring->id))
+                ->exists()
+        ) {
+            $slug = $base.'-'.$i++;
+        }
+
+        return $slug;
     }
 
     public function getRouteKeyName(): string
