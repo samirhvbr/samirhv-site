@@ -1,0 +1,18 @@
+/* Project download page — extracted from resources/views/projects/show.blade.php in 0.7.1.
+   Was an inline <style> block, re-sent in every HTML response and
+   impossible to allow under a `style-src 'self'` policy. */
+
+.dl-file{ display:flex; align-items:center; gap:14px; background:var(--s-surface); border:1px solid var(--s-line); border-radius:10px; padding:13px 16px; }
+.dl-name{ font-family:var(--s-mono); font-size:.82rem; color:var(--s-ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.dl-badge{ font-family:var(--s-mono); font-size:.64rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--s-accent-ink-2); background:var(--s-accent-soft); border:1px solid var(--s-line-2); border-radius:5px; padding:2px 7px; }
+.dl-badge-arch{ color:var(--s-muted); background:rgba(150,155,185,0.08); border-color:var(--s-line); }
+.dl-meta{ font-family:var(--s-mono); font-size:.68rem; color:var(--s-muted); }
+.dl-copy{ font-family:var(--s-mono); font-size:.68rem; color:var(--s-accent-ink-2); background:none; border:none; cursor:pointer; padding:0; }
+.dl-copy:hover{ color:var(--s-ink-2); }
+.dl-copy.copied{ color:var(--s-ok); }
+.dl-btn-off{ display:inline-block; background:var(--s-surface-2); color:var(--s-faint); cursor:not-allowed; border-radius:var(--s-r-sm); padding:9px 16px; font-family:var(--s-sans); font-weight:600; font-size:.82rem; flex-shrink:0; }
+.toggle-older{ font-family:var(--s-mono); font-size:.74rem; color:var(--s-muted); background:none; border:none; cursor:pointer; padding:10px 0; display:flex; align-items:center; gap:8px; }
+.toggle-older:hover{ color:var(--s-ink-2); }
+.toggle-older i{ transition:transform .15s; }
+.toggle-older.open i{ transform:rotate(90deg); }
+@media (max-width:560px){ .s-ostabs{ overflow-x:auto; } }

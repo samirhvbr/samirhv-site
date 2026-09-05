@@ -1,0 +1,27 @@
+/* Version monitor screen — extracted from resources/views/admin/monitor/index.blade.php in 0.7.1.
+   Was an inline <style> block, re-sent in every HTML response and
+   impossible to allow under a `style-src 'self'` policy. */
+
+.mon-ver{font-family:'JetBrains Mono',monospace;font-size:.86rem;color:#e2e8f0}
+.mon-ver.dim{color:var(--dim)}
+.mon-up{display:inline-flex;align-items:center;gap:7px}
+.mon-up a{color:#a5b4fc;text-decoration:none}
+.mon-up a:hover{text-decoration:underline}
+.mon-src{font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.mon-when{font-size:.72rem;color:var(--dim)}
+.mon-proj{display:flex;align-items:center;gap:10px}
+.mon-proj i{width:18px;text-align:center;color:var(--accent);opacity:.8}
+.mon-proj .repo{font-size:.7rem;color:var(--dim);font-family:'JetBrains Mono',monospace}
+.mon-proj .repo a{color:var(--dim);text-decoration:none}
+.mon-proj .repo a:hover{color:#a5b4fc}
+.mon-row-untracked td{opacity:.5}
+.mon-note{font-size:.78rem;color:var(--dim);margin-top:2px}
+.mon-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;font-size:.76rem;color:var(--dim)}
+.mon-legend b{color:var(--muted);font-weight:600}
+.table-scroll{overflow-x:auto}
+.mon-throttle{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;
+    border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius-md);
+    background:var(--panel);font-size:.82rem;color:var(--muted)}
+.mon-throttle i{color:var(--accent)}
+.mon-throttle__why{color:var(--dim);font-size:.74rem}

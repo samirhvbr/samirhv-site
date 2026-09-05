@@ -185,10 +185,7 @@
 @endsection
 
 @push('styles')
-<style>
-    #edit-modal{width:min(560px,92vw);max-width:none;border:none;color:var(--txt);margin:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-    #edit-modal::backdrop{background:rgba(6,6,12,.68)}
-</style>
+    <link rel="stylesheet" href="{{ vasset('css/admin/project-files.css') }}">
 @endpush
 
 @push('scripts')

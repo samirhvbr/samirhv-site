@@ -1,0 +1,13 @@
+/* AI-MEMORY search screen — extracted from resources/views/admin/ai-memory/search.blade.php in 0.7.1.
+   Was an inline <style> block, re-sent in every HTML response and
+   impossible to allow under a `style-src 'self'` policy. */
+
+.aim-hit{padding:16px 0;border-bottom:1px solid var(--hair)}
+.aim-hit:last-child{border-bottom:none}
+.aim-hit__top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+.aim-hit__title{color:#f1f5f9;font-weight:600;font-size:.95rem;text-decoration:none}
+.aim-hit__title:hover{color:#c7d2fe}
+.aim-hit__snip{color:var(--muted);font-size:.85rem;line-height:1.6;margin:8px 0 0;max-width:80ch}
+.aim-hit__snip mark{background:rgba(99,102,241,.28);color:#e0e7ff;border-radius:3px;padding:0 3px}
+.aim-hit .aim-path{margin-top:5px;max-width:100%}
+.aim-tips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}

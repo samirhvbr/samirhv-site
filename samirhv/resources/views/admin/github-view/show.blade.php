@@ -3,31 +3,7 @@
 @section('title', $repository->fullName().' · GitHub View')
 
 @push('styles')
-<style>
-    .gh-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-    .gh-back{ color:var(--dim); text-decoration:none; font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; }
-    .gh-back:hover{ color:var(--muted); }
-    .gh-title{ font-size:1.7rem; font-weight:700; color:var(--txt); margin:5px 0 0; }
-    .gh-desc{ color:var(--muted); font-size:.9rem; margin:5px 0 0; }
-    .gh-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .gh-actions form{ margin:0; }
-    .gh-btn{ display:inline-flex; align-items:center; gap:7px; border-radius:var(--radius-sm); padding:8px 13px; font:inherit;
-        font-weight:600; font-size:.8rem; cursor:pointer; text-decoration:none; border:1px solid var(--line); background:transparent; color:var(--txt); }
-    .gh-btn:hover{ background:var(--accent-soft); border-color:var(--line-hover); }
-    .gh-btn--danger{ color:var(--danger); border-color:rgba(239,68,68,.3); }
-    .gh-btn--danger:hover{ background:rgba(239,68,68,.08); }
-    .gh-window{ display:flex; align-items:center; justify-content:flex-end; gap:6px; margin-top:22px; font-size:.75rem; }
-    .gh-window a{ border:1px solid var(--line); border-radius:var(--radius-sm); padding:5px 11px; color:var(--muted); text-decoration:none; }
-    .gh-window a:hover{ border-color:var(--line-hover); }
-    .gh-window a.is-active{ border-color:var(--accent); background:var(--accent-soft); color:#c7d2fe; }
-    .gh-hm__head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-    .gh-hm__count{ font-size:1.9rem; font-weight:700; color:var(--txt); margin:2px 0 0; }
-    .gh-hm__legend{ display:flex; align-items:center; gap:9px; color:var(--muted); font-size:.72rem; }
-    .gh-hm__ramp{ display:inline-block; width:96px; height:9px; border-radius:999px;
-        background:linear-gradient(to right,#2d1b4e,#7e22ce,#c026d3,#ec4899,#f97316,#facc15); }
-    .gh-hm__canvas{ width:100%; margin-top:16px; display:block; }
-    .gh-empty{ text-align:center; color:var(--muted); padding:40px 20px; }
-</style>
+    <link rel="stylesheet" href="{{ vasset('css/admin/github-view-show.css') }}">
 @endpush
 
 @section('content')
@@ -91,5 +67,5 @@
 @endsection
 
 @push('scripts')
-<script type="module" src="{{ asset('js/admin/github-view/heatmap.js') }}"></script>
+<script type="module" src="{{ vasset('js/admin/github-view/heatmap.js') }}"></script>
 @endpush

@@ -5,54 +5,7 @@
      they are not decoration — this site's anti-reference is the "marquee of
      technology icons". --}}
 @push('styles')
-<style>
-    .shm{ margin-top:clamp(2.5rem,5vw,4rem); padding-top:clamp(2rem,4vw,3rem); border-top:1px solid var(--s-line); }
-    .shm__title{ font-family:var(--s-sans); font-weight:700; font-size:clamp(1.35rem,2.4vw,1.7rem); letter-spacing:-0.02em; color:var(--s-ink); margin:0 0 .85rem; text-wrap:balance; }
-    .shm__lead{ font-size:1rem; line-height:1.7; color:var(--s-ink-2); margin:0; max-width:60ch; text-wrap:pretty; }
-    .shm__lead b{ color:var(--s-ink); font-weight:600; }
-
-    /* ── On-prem: the "committed" moment (indigo ink, the real differentiator) ── */
-    .shm-onprem{ position:relative; overflow:hidden; margin-top:clamp(1.6rem,3vw,2.2rem);
-        background:var(--s-surface); border:1px solid var(--s-line-2); border-radius:var(--s-r-lg);
-        padding:clamp(1.15rem,2.2vw,1.6rem); }
-    .shm-onprem::before{ content:''; position:absolute; inset:0; background:var(--s-accent-soft); opacity:.55; pointer-events:none; }
-    .shm-onprem > *{ position:relative; }
-    .shm-onprem__top{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:.95rem; }
-    .shm-glyph{ width:40px; height:40px; border-radius:11px; background:var(--s-accent-soft-2);
-        border:1px solid var(--s-line-2); color:var(--s-accent-ink-2);
-        display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .shm-glyph svg{ width:23px; height:23px; }
-    .shm-label{ font-family:var(--s-mono); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--s-ink-2); }
-    .shm-pill{ display:inline-flex; align-items:center; gap:7px; margin-left:auto;
-        font-family:var(--s-sans); font-size:.8rem; font-weight:600; color:#7ee0b0;
-        background:rgba(52,211,153,.10); border:1px solid rgba(52,211,153,.30);
-        border-radius:var(--s-r-pill); padding:5px 13px; }
-    .shm-pill::before{ content:''; width:7px; height:7px; border-radius:50%; background:var(--s-ok); box-shadow:0 0 0 3px rgba(52,211,153,.16); }
-    .shm-onprem__models{ font-family:var(--s-sans); font-weight:700; font-size:1.15rem; color:var(--s-ink); letter-spacing:-0.01em; }
-    .shm-onprem__sub{ margin-top:.4rem; font-size:.9rem; line-height:1.5; color:var(--s-muted); }
-    .shm-onprem__sub code{ font-family:var(--s-mono); font-size:.82em; color:var(--s-accent-ink-2); }
-
-    /* ── Cloud: restrained. The provider row carries information. ── */
-    .shm-cloud{ margin-top:clamp(1.5rem,3vw,2rem); }
-    .shm-cloud__head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px 16px; flex-wrap:wrap; margin-bottom:.95rem; }
-    .shm-cloud__label{ font-family:var(--s-mono); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--s-muted); }
-    .shm-cloud__note{ font-family:var(--s-sans); font-size:.82rem; color:var(--s-ink-2); }
-    .shm-chips{ display:flex; flex-wrap:wrap; gap:10px; }
-    .shm-chip{ display:inline-flex; align-items:center; gap:9px; padding:8px 14px 8px 11px;
-        border:1px solid var(--s-line); border-radius:10px; background:rgba(150,155,185,.04);
-        color:var(--s-ink-2); font-family:var(--s-sans); font-weight:500; font-size:.9rem;
-        transition:border-color .2s ease, background .2s ease, transform .15s ease, color .2s ease; }
-    .shm-chip svg{ width:20px; height:20px; color:var(--s-muted); transition:color .2s ease; flex-shrink:0; }
-    .shm-chip:hover{ border-color:var(--s-line-2); background:var(--s-surface-2); transform:translateY(-1px); color:var(--s-ink); }
-    .shm-chip:hover svg{ color:var(--s-ink); }
-    .shm-chip--more{ font-family:var(--s-mono); font-size:.76rem; color:var(--s-muted); padding:8px 13px; }
-    .shm-caption{ display:flex; align-items:flex-start; gap:8px; margin-top:1.05rem; font-size:.85rem; line-height:1.5; color:var(--s-muted); max-width:62ch; }
-    .shm-caption::before{ content:''; margin-top:.4em; width:7px; height:7px; border-radius:50%; background:var(--s-warn); opacity:.85; flex-shrink:0; }
-    .shm-caption b{ color:var(--s-ink-2); font-weight:600; }
-
-    @media (max-width:560px){ .shm-pill{ margin-left:0; } }
-    @media (prefers-reduced-motion: reduce){ .shm-chip{ transition:none; } .shm-chip:hover{ transform:none; } }
-</style>
+    <link rel="stylesheet" href="{{ vasset('css/site/shvia-models.css') }}">
 @endpush
 
 <section class="shm" aria-labelledby="shm-title">

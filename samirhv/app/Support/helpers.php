@@ -42,3 +42,31 @@ if (! function_exists('lnumber')) {
             : number_format($value, 0, '.', ',');
     }
 }
+
+if (! function_exists('vasset')) {
+    /**
+     * `asset()` com cache-busting pelo mtime do arquivo.
+     *
+     * O tema é estático e servido direto pelo nginx, sem bundler e sem
+     * manifest, então um CSS editado continuaria sendo servido do cache do
+     * navegador até alguém dar Ctrl+F5 — o que é exatamente o que acontece
+     * depois de um deploy que só mexeu em estilo. O mtime resolve isso sem
+     * introduzir um passo de build.
+     *
+     * Memoiza por processo: são poucos arquivos e um `stat` por link em cada
+     * request seria trocar um problema por outro.
+     */
+    function vasset(string $path): string
+    {
+        static $stamps = [];
+
+        if (! array_key_exists($path, $stamps)) {
+            $full = public_path($path);
+            $stamps[$path] = is_file($full) ? (string) filemtime($full) : null;
+        }
+
+        $url = asset($path);
+
+        return $stamps[$path] === null ? $url : $url.'?v='.$stamps[$path];
+    }
+}

@@ -60,10 +60,10 @@
          and no public page loads a Google font — the only @import lives in the
          standalone login view. Two handshakes opened for nothing. --}}
 
-    <link rel="stylesheet" href="{{ asset('vendor/canvas/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/canvas/css/font-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/canvas/css/blog-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/canvas/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ vasset('vendor/canvas/style.css') }}">
+    <link rel="stylesheet" href="{{ vasset('vendor/canvas/css/font-icons.css') }}">
+    <link rel="stylesheet" href="{{ vasset('vendor/canvas/css/blog-theme.css') }}">
+    <link rel="stylesheet" href="{{ vasset('vendor/canvas/css/custom.css') }}">
 
     @stack('styles')
 
@@ -267,9 +267,9 @@
 
     </div><!-- #wrapper end -->
 
-    <script src="{{ asset('vendor/canvas/js/plugins.min.js') }}"></script>
-    <script src="{{ asset('vendor/canvas/js/functions.bundle.js') }}"></script>
-    <script defer src="{{ asset('js/site.js') }}"></script>
+    <script src="{{ vasset('vendor/canvas/js/plugins.min.js') }}"></script>
+    <script src="{{ vasset('vendor/canvas/js/functions.bundle.js') }}"></script>
+    <script defer src="{{ vasset('js/site.js') }}"></script>
 
     @stack('scripts')
 

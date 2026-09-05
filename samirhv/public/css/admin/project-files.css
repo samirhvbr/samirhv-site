@@ -1,0 +1,6 @@
+/* Project files screen — extracted from resources/views/admin/projects/files.blade.php in 0.7.1.
+   Was an inline <style> block, re-sent in every HTML response and
+   impossible to allow under a `style-src 'self'` policy. */
+
+#edit-modal{width:min(560px,92vw);max-width:none;border:none;color:var(--txt);margin:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#edit-modal::backdrop{background:rgba(6,6,12,.68)}

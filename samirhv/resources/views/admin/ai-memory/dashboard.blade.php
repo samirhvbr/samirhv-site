@@ -327,5 +327,5 @@
 @endsection
 
 @push('scripts')
-<script defer src="{{ asset('js/admin/ai-memory/dashboard.js') }}"></script>
+<script defer src="{{ vasset('js/admin/ai-memory/dashboard.js') }}"></script>
 @endpush
