@@ -19,35 +19,50 @@ subjects.
 - The unprefixed paths (`/`, `/downloads`, `/p/{slug}`) are English. Portuguese
   moved to the `/pt-br` prefix. A visitor whose browser asks for Portuguese is
   still sent there; anyone else — including a browser that states no preference
-  — stays on English.
-- Every Portuguese URL that was published before this release answers with a
-  301 to its `/pt-br` address, except where the path is shared with an English
-  page.
+  — now stays where it is instead of being redirected.
+- Every `/en/…` address published since 0.6.0 answers with a 301 to its bare
+  twin, and `/projetos/github-desktop` 301s to `/pt-br/projects/github-desktop`.
+  Three URLs cannot be redirected and are not: `/`, `/downloads` and `/p/{slug}`
+  were Portuguese and are now English at the same address.
 - `/sitemap.xml` lists both languages of every public page with reciprocal
-  `xhtml:link` alternates, and `robots.txt` points at it.
-- Project cards link to the project page in the language being read, instead of
-  always producing the Portuguese URL.
+  `xhtml:link` alternates and `x-default`, and `robots.txt` points at it.
+- Project cards link to the project page in the language being read.
+- **Security:** the language switcher's `to` parameter accepted a
+  protocol-relative URL — `?to=//evil.example` passed the `starts_with('/')`
+  guard and emitted a cross-origin `Location`. It is now rebuilt from its path
+  component instead of validated.
+- The admin panel stays Portuguese, by decision.
 
 ### The catalogue is checked against the applications themselves
 
 - Descriptions, feature lists and version numbers were verified against each
-  application's own repository, and the claims that had drifted were corrected.
-- Every application has a changelog on its page, in both languages.
+  application's own repository. ai-usagebar named five providers and has
+  fourteen; the GitHub Desktop fork claimed two artifact types and builds six,
+  and its multi-repository panel went unmentioned; SShvTerm said nothing about
+  its zero-knowledge sync or its self-hostable server.
+- The ai-usagebar guide stopped documenting a Windows tray app that is no
+  longer in the tree — its install steps told the reader to enter a directory
+  that does not exist.
+- Every application has a changelog on its page, curated from its own
+  changelog, in both languages.
+- The seeder fills `upstream_repo`, which it never did — a fresh seed left the
+  Monitor tracking nothing.
 
 ### Repository hygiene
 
 - This `CHANGELOG.md`, which the project's own rules required and which
   `tools/release.sh` already tried to read.
 - Vite and Tailwind, installed and never used, were removed — along with the
-  `npm install && npm run build` that ran on every production deploy to
-  produce a bundle no page loaded.
+  `npm install && npm run build` that ran on every production deploy to produce
+  a bundle no page loaded.
 - "Downloads today" is counted in one timezone in all three places that show
-  it; two of them were counting in UTC on a screen that also showed the
-  correct number.
+  it; two of them counted in UTC on a screen that also showed the correct
+  number.
 - The access audit validates its filters, like the audit screen next to it.
-- The three security controls of the admin panel have tests.
-- The READMEs describe the download hub instead of the blog that was removed
-  in 0.2.0.
+- The admin panel's three security controls have tests, and the suite goes from
+  36 passing to 75. `phpunit.xml` now names a database that does not exist, so a
+  test that touches one fails instead of writing to the development database.
+- The READMEs describe the download hub instead of the blog removed in 0.2.0.
 
 ## 0.6.0 - The site learns to speak English
 
