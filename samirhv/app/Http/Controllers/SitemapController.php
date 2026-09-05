@@ -43,14 +43,7 @@ class SitemapController extends Controller
             $urls[] = $this->entry($name, [], $priority);
         }
 
-        /* A pure-link project's page 302s straight to an external site, so
-           listing it would put a redirecting url in the sitemap — a Search
-           Console warning, and a page with nothing of ours to index. */
-        $projects = Project::published()
-            ->orderBy('sort_order')
-            ->get(['slug', 'external_url', 'redirect_to_site', 'updated_at']);
-
-        foreach ($projects as $project) {
+        foreach ($this->projects() as $project) {
             if ($project->redirectsToSite()) {
                 continue;
             }
@@ -67,6 +60,31 @@ class SitemapController extends Controller
             .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n"
             .implode('', $urls)
             .'</urlset>'."\n";
+    }
+
+    /**
+     * The published project pages, or none of them.
+     *
+     * A pure-link project is skipped: its page 302s straight to an external
+     * site, so listing it would put a redirecting url in the sitemap — a
+     * Search Console warning, and a page with nothing of ours to index.
+     *
+     * The try/catch mirrors AppServiceProvider::shareNavProjects(): a database
+     * that is down or mid-migration should cost a crawler the project pages,
+     * not a 500 on the file that tells it the site has two languages. The
+     * static pages are known from the route table and need no query at all.
+     *
+     * @return iterable<int, Project>
+     */
+    private function projects(): iterable
+    {
+        try {
+            return Project::published()
+                ->orderBy('sort_order')
+                ->get(['slug', 'external_url', 'redirect_to_site', 'updated_at']);
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     /** One `<url>` per language, each carrying every language's alternate. */
