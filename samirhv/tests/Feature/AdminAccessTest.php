@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
@@ -127,7 +128,7 @@ class AdminAccessTest extends TestCase
 
         $this->assertNotNull($limiter, 'The `login` rate limiter is not registered.');
 
-        $request = \Illuminate\Http\Request::create('/login', 'POST', ['email' => 'a@b.test']);
+        $request = Request::create('/login', 'POST', ['email' => 'a@b.test']);
         $limit = $limiter($request);
         $limit = is_array($limit) ? $limit[0] : $limit;
 

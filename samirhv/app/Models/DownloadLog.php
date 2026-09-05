@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\UserAgentParser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -37,7 +38,7 @@ class DownloadLog extends Model
         if (trim($ua) === '') {
             return '—';
         }
-        $info = app(\App\Services\UserAgentParser::class)->parse($ua, $this->ip);
+        $info = app(UserAgentParser::class)->parse($ua, $this->ip);
 
         return $info['is_bot'] ? 'Bot' : $info['browser'].' · '.$info['os'];
     }

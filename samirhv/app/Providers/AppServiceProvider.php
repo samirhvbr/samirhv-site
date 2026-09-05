@@ -4,15 +4,16 @@ namespace App\Providers;
 
 use App\Models\AuthEvent;
 use App\Models\Project;
+use App\Services\AiMemory\AiMemoryDatabase;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         // One instance per request: memoises isAvailable() (a single stat + probe
         // SELECT) and the degraded state across every repository of the
         // AI-MEMORY module, so one failure is not retried screen-wide.
-        $this->app->singleton(\App\Services\AiMemory\AiMemoryDatabase::class);
+        $this->app->singleton(AiMemoryDatabase::class);
     }
 
     public function boot(): void

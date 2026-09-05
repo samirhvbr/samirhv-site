@@ -33,7 +33,7 @@ class PageRepository
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
-            "SELECT lower(hex(p.id)) AS id_hex, p.title, p.path, p.tier, p.body, p.frontmatter_json,
+            'SELECT lower(hex(p.id)) AS id_hex, p.title, p.path, p.tier, p.body, p.frontmatter_json,
                     p.is_latest, p.pinned, p.created_at, p.updated_at,
                     lower(hex(p.workspace_id)) AS workspace_hex,
                     lower(hex(p.project_id)) AS project_hex,
@@ -43,7 +43,7 @@ class PageRepository
                JOIN projects pr ON pr.id = p.project_id
                JOIN workspaces w ON w.id = p.workspace_id
                LEFT JOIN users u ON u.id = p.author_id
-              WHERE lower(hex(p.id)) = ?",
+              WHERE lower(hex(p.id)) = ?',
             [strtolower($hexId)]
         );
     }
@@ -55,12 +55,12 @@ class PageRepository
     public function history(object $page): array
     {
         return $this->db->select(
-            "SELECT lower(hex(id)) AS id_hex, title, is_latest, created_at, updated_at
+            'SELECT lower(hex(id)) AS id_hex, title, is_latest, created_at, updated_at
                FROM pages
               WHERE lower(hex(workspace_id)) = ?
                 AND lower(hex(project_id)) = ?
                 AND path = ?
-              ORDER BY created_at DESC",
+              ORDER BY created_at DESC',
             [$page->workspace_hex, $page->project_hex, $page->path]
         );
     }

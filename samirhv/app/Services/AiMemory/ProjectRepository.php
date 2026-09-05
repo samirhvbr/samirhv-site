@@ -11,7 +11,7 @@ class ProjectRepository
     public function all(): array
     {
         return $this->db->select(
-            "SELECT lower(hex(p.id)) AS id_hex,
+            'SELECT lower(hex(p.id)) AS id_hex,
                     p.name,
                     p.repo_path,
                     w.name AS workspace,
@@ -22,7 +22,7 @@ class ProjectRepository
                     (SELECT MAX(started_at) FROM sessions s WHERE s.project_id = p.id) AS last_session_at
                FROM projects p
                JOIN workspaces w ON w.id = p.workspace_id
-              ORDER BY (last_session_at IS NULL), last_session_at DESC, p.name"
+              ORDER BY (last_session_at IS NULL), last_session_at DESC, p.name'
         );
     }
 
@@ -30,7 +30,7 @@ class ProjectRepository
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
-            "SELECT lower(hex(p.id)) AS id_hex,
+            'SELECT lower(hex(p.id)) AS id_hex,
                     p.name,
                     p.repo_path,
                     w.name AS workspace,
@@ -40,7 +40,7 @@ class ProjectRepository
                     (SELECT COUNT(*) FROM observations o WHERE o.project_id = p.id) AS observations
                FROM projects p
                JOIN workspaces w ON w.id = p.workspace_id
-              WHERE lower(hex(p.id)) = ?",
+              WHERE lower(hex(p.id)) = ?',
             [strtolower($hexId)]
         );
     }

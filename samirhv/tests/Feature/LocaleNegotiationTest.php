@@ -14,6 +14,7 @@ use Tests\TestCase;
 class LocaleNegotiationTest extends TestCase
 {
     private const EN = '/projects/github-desktop';
+
     private const PT = '/pt-br/projects/github-desktop';
 
     public function test_a_browser_asking_for_english_stays_on_the_bare_url(): void

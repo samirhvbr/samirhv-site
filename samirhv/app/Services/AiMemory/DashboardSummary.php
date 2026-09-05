@@ -2,6 +2,7 @@
 
 namespace App\Services\AiMemory;
 
+use App\Models\AiMemoryStatSnapshot;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -54,7 +55,7 @@ class DashboardSummary
      * fato (os retratos são diários, mas podem faltar) — a UI mostra o real,
      * nunca um "7 dias" que não aconteceu. Null quando não há retrato útil.
      *
-     * @param  Collection<int,\App\Models\AiMemoryStatSnapshot>  $history
+     * @param  Collection<int,AiMemoryStatSnapshot>  $history
      * @return array{value:int,days:int}|null
      */
     public function delta(Collection $history, string $metric, int $live, int $days = 7): ?array

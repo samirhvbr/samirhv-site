@@ -26,6 +26,7 @@ class SyncRepositoryJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private const INITIAL_COMMIT_LIMIT = 2000;
+
     private const WORKFLOW_RUN_LIMIT = 300;
 
     public function __construct(public readonly Repository $repository) {}

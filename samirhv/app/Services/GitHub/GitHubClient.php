@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Http;
 class GitHubClient
 {
     private const GRAPHQL_URL = 'https://api.github.com/graphql';
+
     private const REST_URL = 'https://api.github.com';
+
     private const PAGE_SIZE = 100;
 
     /**

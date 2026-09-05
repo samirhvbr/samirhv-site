@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Log;
 class GithubReleaseChecker
 {
     private const CACHE_PREFIX = 'monitor:gh:';
+
     private const TTL_OK = 3600;      // 1h — resultado bom
+
     private const TTL_ERROR = 300;    // 5min — evita insistir num erro
 
     /**

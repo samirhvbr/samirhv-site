@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class AuditLogger
 {
     /**
-     * @param  string  $event        Identificador do evento (ex.: project.create).
+     * @param  string  $event  Identificador do evento (ex.: project.create).
      * @param  int|string|null  $subjectId  Id do alvo.
      * @param  string  $description  Texto livre, sem segredos.
      * @param  string|null  $subjectType  Tipo do alvo (default: project).

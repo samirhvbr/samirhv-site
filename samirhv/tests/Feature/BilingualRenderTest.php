@@ -15,6 +15,7 @@ use Tests\TestCase;
 class BilingualRenderTest extends TestCase
 {
     private const EN = '/projects/github-desktop';
+
     private const PT = '/pt-br/projects/github-desktop';
 
     /** Sent on bare requests to prove the page is not negotiated away. */

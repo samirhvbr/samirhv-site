@@ -100,7 +100,7 @@ class RepositorySuggestions
 
     /**
      * @param  array<string,mixed>  $repo
-     * @return array{0: string, 1: string}  owner e name em minúsculas
+     * @return array{0: string, 1: string} owner e name em minúsculas
      */
     private function split(array $repo): array
     {

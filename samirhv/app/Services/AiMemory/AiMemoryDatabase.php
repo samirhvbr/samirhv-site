@@ -194,7 +194,7 @@ class AiMemoryDatabase
         $dir = $path !== '' ? dirname($path) : '';
 
         if (str_contains($message, 'attempt to write a readonly database')) {
-            return "O banco está em modo WAL e o usuário do PHP-FPM (www-data) não tem permissão de "
+            return 'O banco está em modo WAL e o usuário do PHP-FPM (www-data) não tem permissão de '
                 ."ESCRITA no diretório [{$dir}]. Um leitor de WAL precisa poder criar os arquivos "
                 .'`-shm`/`-wal` quando eles não existem — só leitura no `memory.sqlite` não basta. '
                 .'Ver docs/AI-MEMORY.md §4.';

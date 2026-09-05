@@ -130,7 +130,7 @@ class RepositoryOverview
 
     /**
      * @param  array<int, int>  $ids
-     * @return array<int, array<string, int>>  [repo_id][data'Y-m-d'] = contagem
+     * @return array<int, array<string, int>> [repo_id][data'Y-m-d'] = contagem
      */
     private function dailyCounts(array $ids): array
     {
@@ -153,7 +153,7 @@ class RepositoryOverview
 
     /**
      * @param  array<int, int>  $ids
-     * @return array<int, ?string>  [repo_id] = conclusion do run mais recente
+     * @return array<int, ?string> [repo_id] = conclusion do run mais recente
      */
     private function latestCiConclusions(array $ids): array
     {

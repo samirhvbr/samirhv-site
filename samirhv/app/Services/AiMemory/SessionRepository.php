@@ -68,7 +68,7 @@ class SessionRepository
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
-            "SELECT lower(hex(s.id)) AS id_hex, s.agent_kind, s.cwd, s.started_at, s.ended_at,
+            'SELECT lower(hex(s.id)) AS id_hex, s.agent_kind, s.cwd, s.started_at, s.ended_at,
                     pr.name AS project, w.name AS workspace,
                     lower(hex(s.project_id)) AS project_hex,
                     lower(hex(s.summary_page_id)) AS summary_page_hex,
@@ -78,7 +78,7 @@ class SessionRepository
                JOIN projects pr ON pr.id = s.project_id
                JOIN workspaces w ON w.id = s.workspace_id
                LEFT JOIN pages sp ON sp.id = s.summary_page_id
-              WHERE lower(hex(s.id)) = ?",
+              WHERE lower(hex(s.id)) = ?',
             [strtolower($hexId)]
         );
     }
@@ -87,10 +87,10 @@ class SessionRepository
     public function observations(string $sessionHex): array
     {
         return $this->db->select(
-            "SELECT lower(hex(id)) AS id_hex, kind, title, importance, created_at
+            'SELECT lower(hex(id)) AS id_hex, kind, title, importance, created_at
                FROM observations
               WHERE lower(hex(session_id)) = ?
-              ORDER BY created_at ASC",
+              ORDER BY created_at ASC',
             [strtolower($sessionHex)]
         );
     }

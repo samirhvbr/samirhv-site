@@ -50,12 +50,12 @@ class ObservationRepository
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
-            "SELECT lower(hex(o.id)) AS id_hex, o.kind, o.title, o.body, o.importance, o.created_at,
+            'SELECT lower(hex(o.id)) AS id_hex, o.kind, o.title, o.body, o.importance, o.created_at,
                     pr.name AS project, lower(hex(o.session_id)) AS session_hex, s.agent_kind
                FROM observations o
                JOIN projects pr ON pr.id = o.project_id
                LEFT JOIN sessions s ON s.id = o.session_id
-              WHERE lower(hex(o.id)) = ?",
+              WHERE lower(hex(o.id)) = ?',
             [strtolower($hexId)]
         );
     }

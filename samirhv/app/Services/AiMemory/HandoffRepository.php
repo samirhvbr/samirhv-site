@@ -35,13 +35,13 @@ class HandoffRepository
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
-            "SELECT lower(hex(h.id)) AS id_hex, h.from_agent, h.to_agent, h.state, h.cwd, h.summary,
+            'SELECT lower(hex(h.id)) AS id_hex, h.from_agent, h.to_agent, h.state, h.cwd, h.summary,
                     h.open_questions, h.next_steps, h.files_touched,
                     h.created_at, h.accepted_by, h.accepted_at,
                     pr.name AS project
                FROM handoffs h
                JOIN projects pr ON pr.id = h.project_id
-              WHERE lower(hex(h.id)) = ?",
+              WHERE lower(hex(h.id)) = ?',
             [strtolower($hexId)]
         );
     }
