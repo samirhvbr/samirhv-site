@@ -2,17 +2,37 @@
 <html dir="ltr" lang="{{ \App\Support\Locales::tag() }}">
 <head>
 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    {{-- charset first, and in the short form: a parser sniffs the encoding from
+         the first bytes of the head, and the http-equiv spelling this used to
+         carry is not what every parser looks for. --}}
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('description', __('shell.meta_description'))">
     <meta name="author" content="Samir Hanna Verza">
     <meta name="theme-color" content="#0b0b11">
 
+    @php $ogImage = asset('img/og-card.png'); @endphp
+    <meta property="og:site_name" content="Samirhv">
     <meta property="og:title" content="@yield('title', 'Samirhv') | {{ __('shell.title_suffix') }}">
     <meta property="og:description" content="@yield('description', __('shell.meta_description'))">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:locale" content="{{ str_replace('-', '_', \App\Support\Locales::tag()) }}">
+    @foreach(\App\Support\Locales::SUPPORTED as $ogAlt)
+        @if($ogAlt !== app()->getLocale())
+            <meta property="og:locale:alternate" content="{{ str_replace('-', '_', \App\Support\Locales::tag($ogAlt)) }}">
+        @endif
+    @endforeach
+
+    {{-- The card declared summary_large_image and supplied no image, so every
+         share degraded to a card with no picture. It has one now; the generator
+         is tools/make-og-card.php. --}}
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ __('shell.og_image_alt') }}">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     {{-- Language pair. hreflang must be RECIPROCAL (each page points at itself
          and at its sibling) or Google discards the whole set without reporting
@@ -32,10 +52,13 @@
         <link rel="canonical" href="{{ $alternates[app()->getLocale()] ?? url()->current() }}">
     @endif
 
+    <title>@yield('title', 'Samirhv') — {{ __('shell.title_suffix') }}</title>
+
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- No preconnect here. It pointed at Google Fonts on every public page,
+         and no public page loads a Google font — the only @import lives in the
+         standalone login view. Two handshakes opened for nothing. --}}
 
     <link rel="stylesheet" href="{{ asset('vendor/canvas/style.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/canvas/css/font-icons.css') }}">
@@ -44,13 +67,38 @@
 
     @stack('styles')
 
-    <title>@yield('title', 'Samirhv') — {{ __('shell.title_suffix') }}</title>
+    {{-- Structured data. A search engine reading a download page cannot tell an
+         application from a blog post out of prose alone; this says which it is.
+         JSON_UNESCAPED_* keeps accented titles readable in the source, and
+         JSON_HEX_TAG closes the `</script>` escape. --}}
+    @php
+        $siteLd = [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => 'Samirhv',
+            'url' => \App\Support\Locales::homeUrl(app()->getLocale()),
+            'inLanguage' => \App\Support\Locales::tag(),
+            'description' => __('shell.meta_description'),
+            'author' => [
+                '@type' => 'Person',
+                'name' => 'Samir Hanna Verza',
+                'url' => 'https://github.com/samirhvbr',
+            ],
+        ];
+    @endphp
+    <script type="application/ld+json">
+        {!! json_encode($siteLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+    </script>
+
+    @stack('head')
 
     {{-- Matomo Analytics (self-hosted) — só renderiza com MATOMO_* configurado. --}}
     @include('partials.matomo')
 </head>
 
 <body class="stretched dark">
+
+    <a class="s-skip" href="#content">{{ __('shell.skip_to_content') }}</a>
 
     <div id="wrapper">
 
@@ -78,8 +126,16 @@
                                 @php $navProjects = $navProjects ?? collect(); @endphp
                                 @if($navProjects->isNotEmpty())
                                 <li class="menu-item s-dd-parent">
-                                    <a class="menu-link" href="#" onclick="return false;"><div>{{ __('shell.projects') }} <i class="bi-chevron-down s-caret"></i></div></a>
-                                    <ul class="s-dd">
+                                    {{-- Was `<a href="#" onclick="return false;">`: an anchor that
+                                         navigates nowhere, announced as a link, with no way to open
+                                         the menu from a keyboard — the submenu only appeared on
+                                         :hover. A button says what it does, carries the expanded
+                                         state, and works without JavaScript because the CSS also
+                                         opens on :focus-within. --}}
+                                    <button type="button" class="menu-link s-dd-trigger" aria-expanded="false" aria-controls="nav-projects" data-dd-trigger>
+                                        <div>{{ __('shell.projects') }} <i class="bi-chevron-down s-caret" aria-hidden="true"></i></div>
+                                    </button>
+                                    <ul class="s-dd" id="nav-projects">
                                         @foreach($navProjects as $navp)
                                         <li>
                                             @if($navp->redirectsToSite())
@@ -131,7 +187,9 @@
             <div class="header-wrap-clone"></div>
         </header>
 
-        @yield('content')
+        <main id="content" tabindex="-1">
+            @yield('content')
+        </main>
 
         <!-- Footer -->
         <footer id="footer" class="dark">
@@ -211,6 +269,7 @@
 
     <script src="{{ asset('vendor/canvas/js/plugins.min.js') }}"></script>
     <script src="{{ asset('vendor/canvas/js/functions.bundle.js') }}"></script>
+    <script defer src="{{ asset('js/site.js') }}"></script>
 
     @stack('scripts')
 

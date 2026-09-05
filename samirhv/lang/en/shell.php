@@ -13,6 +13,7 @@ return [
     'home_aria' => 'Samirhv — home',
     'menu_open' => 'Open menu',
     'nav_main' => 'Main navigation',
+    'skip_to_content' => 'Skip to content',
 
     'home' => 'Home',
     'projects' => 'Projects',
@@ -21,6 +22,7 @@ return [
 
     'title_suffix' => 'Projects',
     'meta_description' => 'Projects and tools by Samir Hanna Verza, available to download.',
+    'og_image_alt' => 'The samirhv wordmark over a dark grid, with the names of the four applications: ShvIA, GitHub Desktop, ai-usagebar and SShvTerm.',
 
     'tagline' => 'Projects and tools by Samir Hanna Verza, available to download. Technology, development and Linux.',
     'nav' => 'Navigation',

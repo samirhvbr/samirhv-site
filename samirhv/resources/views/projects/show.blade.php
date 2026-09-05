@@ -3,6 +3,51 @@
 @section('title', \App\Support\Content::project($project, 'title'))
 @section('description', Str::limit(\App\Support\Content::project($project, 'description'), 150) ?: __('project.meta_download', ['project' => \App\Support\Content::project($project, 'title')]))
 
+@push('head')
+{{-- A download page is a SoftwareApplication, and saying so is the difference
+     between a search result that shows the version and platforms and one that
+     shows a paragraph of prose. Every value comes from the row that is already
+     loaded; nothing is invented, and a field with no data is omitted rather
+     than guessed. --}}
+@php
+    $ldOs = collect($download['available'] ?? [])
+        ->map(fn ($os) => ['linux' => 'Linux', 'windows' => 'Windows', 'macos' => 'macOS'][$os] ?? $os)
+        ->values()->all();
+
+    $ldVersion = $project->localVersion();
+
+    $ld = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'SoftwareApplication',
+        'name' => \App\Support\Content::project($project, 'title'),
+        'description' => \App\Support\Content::project($project, 'description'),
+        'url' => url()->current(),
+        'inLanguage' => \App\Support\Locales::tag(),
+        'applicationCategory' => \App\Support\Content::category($project->category) ?: null,
+        'operatingSystem' => $ldOs ? implode(', ', $ldOs) : null,
+        'softwareVersion' => $ldVersion ?: null,
+        'downloadUrl' => ($rec = $download['recommended']['file'] ?? null) ? route('download.track', $rec) : null,
+        'sameAs' => $project->upstream_url ?: null,
+        'author' => [
+            '@type' => 'Person',
+            'name' => 'Samir Hanna Verza',
+            'url' => 'https://github.com/samirhvbr',
+        ],
+        /* Everything here is free. Stating it explicitly is what stops a
+           rich result from rendering with no price at all. */
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => '0',
+            'priceCurrency' => 'BRL',
+            'availability' => 'https://schema.org/InStock',
+        ],
+    ], fn ($v) => $v !== null && $v !== '');
+@endphp
+<script type="application/ld+json">
+    {!! json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+</script>
+@endpush
+
 @push('styles')
 <style>
     .dl-file{ display:flex; align-items:center; gap:14px; background:var(--s-surface); border:1px solid var(--s-line); border-radius:10px; padding:13px 16px; }

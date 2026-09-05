@@ -374,8 +374,15 @@ a.s-card:hover, .s-card--hover:hover {
     z-index: var(--z-dropdown);
   }
   .s-dd::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 14px; }
-  .s-dd-parent:hover > .s-dd { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) scale(1); }
-  .s-dd-parent:hover .s-caret { transform: rotate(180deg); }
+  /* Hover was the ONLY way in, so the menu did not exist for a keyboard. Three
+     openers now: the pointer, focus landing anywhere inside, and the explicit
+     state the trigger button toggles. */
+  .s-dd-parent:hover > .s-dd,
+  .s-dd-parent:focus-within > .s-dd,
+  .s-dd-parent > [aria-expanded="true"] + .s-dd { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) scale(1); }
+  .s-dd-parent:hover .s-caret,
+  .s-dd-parent:focus-within .s-caret,
+  .s-dd-parent > [aria-expanded="true"] .s-caret { transform: rotate(180deg); }
 }
 @media (max-width: 991.98px) {
   .s-dd { padding-left: 16px; }
@@ -458,3 +465,21 @@ a.s-card:hover, .s-card--hover:hover {
 .s-stack { display: flex; flex-direction: column; }
 .s-hero-min { min-height: min(760px, 100vh); }
 .s-accent-ink { color: var(--s-accent-ink-2); }
+
+/* ── Skip link ───────────────────────────────────────────────────────────── */
+/* Off-screen until it takes focus, which is the first Tab on every page.
+   Positioned, not display:none — a hidden element cannot receive focus. */
+.s-skip {
+  position: absolute; left: -9999px; top: 0; z-index: 10000;
+  background: var(--s-accent, #6366f1); color: #fff;
+  padding: 12px 20px; border-radius: 0 0 10px 0;
+  font-family: var(--s-sans); font-weight: 600; font-size: .9rem; text-decoration: none;
+}
+.s-skip:focus { left: 0; }
+
+/* The dropdown trigger is a button now; strip the browser's button chrome so
+   it matches the anchors beside it. */
+.primary-menu .menu-link.s-dd-trigger {
+  background: none; border: 0; padding: inherit; font: inherit; cursor: pointer; color: var(--s-muted);
+}
+.primary-menu .menu-link.s-dd-trigger:hover { color: var(--s-ink); }
