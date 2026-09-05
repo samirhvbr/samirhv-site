@@ -69,10 +69,22 @@ class Project extends Model
         return $this->isLink() && ! $this->redirect_to_site;
     }
 
-    /** URL pública do projeto: o site externo (se redireciona) ou a página /p/{slug}. */
+    /**
+     * URL pública do projeto: o site externo (se redireciona) ou a página /p/{slug}.
+     *
+     * `lroute()`, não `route()`: cada idioma tem a sua rota, e `route()` devolve
+     * sempre a inglesa. Todo card de projeto numa página /pt-br apontava para a
+     * página em inglês — e o NegotiateLocale trazia o visitante de volta com um
+     * 302, então o defeito se escondia atrás de um redirect a mais por clique.
+     *
+     * Cuidado: `lroute()` lê `app()->getLocale()`, que fora de um request HTTP é
+     * o locale de boot. Num command, num job ou no sitemap isto devolve a url do
+     * locale de boot, não a do idioma pretendido — por isso o SitemapController
+     * monta as duas urls a partir do nome da rota em vez de usar este accessor.
+     */
     public function getPublicUrlAttribute(): string
     {
-        return $this->redirectsToSite() ? $this->external_url : route('project.show', $this);
+        return $this->redirectsToSite() ? $this->external_url : lroute('project.show', $this);
     }
 
     /** É fork de um OSS com upstream rastreável no monitor? */
