@@ -153,12 +153,51 @@ EXISTING_N="$(grep -c . "$EXISTING" || true)"
 already() { grep -Fxq "$1" "$EXISTING" || grep -Fxq "v$1" "$EXISTING"; }
 
 # --- one version --------------------------------------------------------------
-CREATED=0; SKIPPED=0; FAILED=0; CONSEC_FAIL=0
+CREATED=0; SKIPPED=0; FAILED=0; CONSEC_FAIL=0; REFRESHED=0
+# Refresh the notes of a Release that already exists, when the CHANGELOG has
+# moved on since it was published.
+#
+# Why this is needed at all: the versioning rules ENCOURAGE splitting a release
+# across several commits that share one version. The Release is created by the
+# first of them, so its notes are whatever the CHANGELOG entry said at that
+# moment — a first draft — and every later commit of the same version silently
+# leaves the published notes behind. That is how 0.7.1 shipped with a stub.
+#
+# Only ever touches the body, and only when it actually differs. Never the tag,
+# never the target, never the assets.
+refresh_notes() {
+  local ver="$1"
+  local nf; nf="$(mktemp)"
+
+  if ! notes_for "$ver" "" "$nf"; then rm -f "$nf"; return 0; fi
+
+  local current; current="$(gh release view "$ver" --repo "$REPO" --json body --jq .body 2>/dev/null || true)"
+
+  # Compare ignoring trailing whitespace, which GitHub normalises on its own.
+  if [ "$(printf '%s' "$current" | sed -e 's/[[:space:]]*$//')" = "$(sed -e 's/[[:space:]]*$//' "$nf")" ]; then
+    rm -f "$nf"; return 0
+  fi
+
+  if [ "$DRY" = "1" ]; then
+    printf '  %-14s WOULD REFRESH notes from CHANGELOG.md\n' "$ver"
+    rm -f "$nf"; return 0
+  fi
+
+  if gh release edit "$ver" --repo "$REPO" --notes-file "$nf" >/dev/null 2>&1; then
+    printf '  %-14s notes refreshed from CHANGELOG.md\n' "$ver"
+    REFRESHED=$((REFRESHED+1))
+  fi
+  rm -f "$nf"
+}
+
 publish() {
   local ver="$1" sha="$2" is_last="$3"
   if already "$ver"; then
     [ "${QUIET:-0}" = "1" ] || printf '  %-14s %s  already published — skipped\n' "$ver" "${sha:0:7}"
-    SKIPPED=$((SKIPPED+1)); return 0
+    SKIPPED=$((SKIPPED+1))
+    # The badge is already self-healed elsewhere; the notes were not.
+    [ "$is_last" = "1" ] && refresh_notes "$ver"
+    return 0
   fi
   if [ "$DRY" = "1" ]; then
     [ "${QUIET:-0}" = "1" ] || printf '  %-14s %s  WOULD CREATE\n' "$ver" "${sha:0:7}"
@@ -243,7 +282,7 @@ fi
 if [ "$QUIET" = "1" ]; then
   printf '%-34s %-12s versions=%-5s todo=%-5s have=%s\n' "$REPO" "$CURRENT" "$((CREATED+SKIPPED))" "$CREATED" "$SKIPPED"
 else
-  printf '\ncreated/would-create: %s   skipped: %s   failed: %s\n' "$CREATED" "$SKIPPED" "$FAILED"
+  printf '\ncreated/would-create: %s   skipped: %s   notes refreshed: %s   failed: %s\n' "$CREATED" "$SKIPPED" "$REFRESHED" "$FAILED"
 fi
 [ "$DRY" = 1 ] || git fetch --tags --quiet 2>/dev/null || true
 [ "$FAILED" -eq 0 ]
