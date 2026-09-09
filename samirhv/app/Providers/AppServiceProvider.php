@@ -90,19 +90,30 @@ class AppServiceProvider extends ServiceProvider
      * sozinho ao salvar ou apagar (ver Project::booted), então o TTL longo aqui
      * não atrasa uma publicação — ele só cobre o caso de a invalidação não
      * acontecer, por exemplo uma linha alterada direto no banco.
+     *
+     * O que vai para o cache são os atributos crus — um array de arrays — e não
+     * a Collection de models. `cache.serializable_classes` é `false` (padrão do
+     * Laravel 13, contra gadget chain caso a APP_KEY vaze), então todo OBJETO
+     * guardado aqui volta como __PHP_Incomplete_Class: a Collection era gravada
+     * inteira e, na volta, a primeira chamada do layout — `isNotEmpty()` — dava
+     * 500 em toda página pública. `hydrate()` remonta os models, com os casts.
      */
     private function shareNavProjects(): void
     {
         View::composer('layouts.app', function ($view) {
             try {
-                $projects = Cache::remember(
+                $rows = Cache::remember(
                     Project::NAV_CACHE_KEY,
                     now()->addHours(6),
                     fn () => Project::published()
                         ->orderBy('sort_order')
                         ->orderByDesc('created_at')
-                        ->get(['id', 'title', 'slug', 'icon', 'category', 'external_url', 'redirect_to_site']),
+                        ->get(['id', 'title', 'slug', 'icon', 'category', 'external_url', 'redirect_to_site'])
+                        ->map->getAttributes()
+                        ->all(),
                 );
+
+                $projects = Project::hydrate($rows);
             } catch (\Throwable $e) {
                 $projects = collect(); // DB indisponível/migração pendente: menu não quebra a página.
             }
