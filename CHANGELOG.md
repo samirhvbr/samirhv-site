@@ -12,6 +12,38 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.7.4 - Nothing goes into the cache that has to come back as an object
+
+The public home page was answering 500 on every request:
+
+> The script tried to call a method on an incomplete object […] the class
+> definition "Illuminate\Database\Eloquent\Collection" […] was loaded
+> _before_ unserialize() gets called
+
+`config/cache.php` carries Laravel 13's `serializable_classes => false`: the
+framework refuses to unserialize any PHP class out of cache storage, so that a
+leaked `APP_KEY` cannot be turned into a gadget chain. Writing an object still
+works — it is the read that hands back a `__PHP_Incomplete_Class`. Two places in
+this app were storing objects, and neither of them knew it.
+
+**The projects menu.** The `layouts.app` view composer cached the published
+projects as an Eloquent Collection under `nav.projects`, for six hours, on every
+public page. The read after the first write turned it into a broken object and
+`$navProjects->isNotEmpty()` in the layout took the site down with it — home,
+project pages, downloads, every URL that renders the shell. It now caches the
+raw attributes, an array of arrays, and rehydrates the models with
+`Project::hydrate()` on the way out: same query, same menu, same invalidation.
+
+**The monitor's refresh floor.** `monitor:last-refresh` stored `now()`, a Carbon
+instance, and the check reading it back was `instanceof CarbonInterface` —
+always false against an incomplete object. The 5-minute floor between two real
+GitHub checks never fired, so every click on "Verificar agora" went straight to
+an API that allows 60 unauthenticated requests per hour, which is the one thing
+that block exists to prevent. The key now holds a Unix timestamp.
+
+Nothing else in the app cached an object: the sitemap caches a string, and the
+release checker and the repository suggestions cache arrays of scalars.
+
 ## 0.7.3 - the git hooks are regenerated from repodocs
 
 Both hooks of the standard are rewritten from repodocs, and `tools/release.sh`

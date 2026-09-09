@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Services\GithubReleaseChecker;
 use App\Support\SemVer;
-use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
@@ -47,15 +46,22 @@ class MonitorController extends Controller
         $refreshFloor = null;
 
         if ($request->boolean('refresh')) {
+            /* Um timestamp, e não o Carbon: `cache.serializable_classes` é
+               `false`, então objeto guardado no cache volta como
+               __PHP_Incomplete_Class. O `instanceof CarbonInterface` que estava
+               aqui dava sempre falso e o piso nunca pegava — cada clique em
+               "Verificar agora" ia direto ao GitHub, que é exatamente o que
+               este bloco existe para impedir. */
             $lastRefresh = Cache::get(self::REFRESH_KEY);
+            $elapsed = is_int($lastRefresh) ? now()->getTimestamp() - $lastRefresh : null;
 
-            if ($lastRefresh instanceof CarbonInterface && $lastRefresh->diffInSeconds(now()) < self::REFRESH_EVERY) {
-                $refreshFloor = (int) ceil(self::REFRESH_EVERY - $lastRefresh->diffInSeconds(now()));
+            if ($elapsed !== null && $elapsed < self::REFRESH_EVERY) {
+                $refreshFloor = self::REFRESH_EVERY - $elapsed;
             } else {
                 $projects->filter->hasUpstream()
                     ->each(fn (Project $p) => $this->github->refresh($p->upstream_repo));
 
-                Cache::put(self::REFRESH_KEY, now(), now()->addSeconds(self::REFRESH_EVERY));
+                Cache::put(self::REFRESH_KEY, now()->getTimestamp(), now()->addSeconds(self::REFRESH_EVERY));
             }
         }
 
