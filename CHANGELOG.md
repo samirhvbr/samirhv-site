@@ -12,6 +12,25 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.8.0 - Tura Notes joins the catalogue
+
+Tura Notes is a local-first Markdown note-taking app — you pick a folder, the
+`.md` files inside it are your notes, and there is no proprietary format and no
+account. It is published openly at `samirhvbr/tura-notes`, but the signed and
+notarised macOS `.dmg` is **not** attached to the GitHub Release: the Developer
+ID certificate lives in a keychain rather than in a CI secret, so the machine
+that holds it is the machine that packages. This site is that build's
+distribution channel, which is why the project belongs here and not only on
+GitHub. Its `build-local.sh --publish` uploads through `php artisan files:add`,
+so the file arrives on the private downloads disk, hashed and counted, like any
+other.
+
+The seeder carries it in second place, after ShvIA, with the Portuguese
+description; `lang/en/content.php` carries the English, and the new category
+"Notas em Markdown" is translated alongside it. Its mark is in
+`public/img/projects/tura-notes/`, which is the convention the previous entry
+introduced.
+
 ## 0.8.0 - A project can have a logo instead of a glyph
 
 The catalogue drew a Font Awesome icon inside a rounded square, in four

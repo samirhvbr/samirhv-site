@@ -8,9 +8,10 @@ use Illuminate\Database\Seeder;
 /**
  * Projetos curados da vitrine, na ordem oficial:
  *   1. ShvIA (híbrido: site + app desktop)
- *   2. GitHub Desktop (download)
- *   3. ai-usagebar (documentação: página curada de instalação)
- *   4. SShvTerm (projeto-link: mora no site oficial)
+ *   2. Tura Notes (download: o .dmg assinado que o CI do repo não publica)
+ *   3. GitHub Desktop (download)
+ *   4. ai-usagebar (documentação: página curada de instalação)
+ *   5. SShvTerm (projeto-link: mora no site oficial)
  *
  * updateOrCreate por slug: idempotente E autoritativo — rodar de novo
  * sincroniza título/descrição/ordem/flags com o que está aqui no código.
@@ -40,7 +41,31 @@ class ProjectsSeeder extends Seeder
             ]
         );
 
-        // 2) Download: build da comunidade do GitHub Desktop (a GitHub não publica p/ Linux).
+        // 2) Download: app local-first de notas em Markdown. Repositório público
+        //    (samirhvbr/tura-notes), mas o .dmg assinado + notarizado NÃO sai no
+        //    GitHub Release — o certificado Developer ID mora num keychain, não
+        //    num secret de CI, então quem empacota é a máquina que o tem. É por
+        //    isso que este projeto está aqui: o site é o canal de macOS.
+        Project::updateOrCreate(
+            ['slug' => 'tura-notes'],
+            [
+                'title' => 'Tura Notes',
+                'description' => "Aplicativo de notas em Markdown local-first para Linux, macOS e Windows. Você escolhe uma pasta; essa pasta é o seu workspace; os arquivos .md dentro dela são as suas notas.\n\nOs arquivos são seus, não do aplicativo: não há formato proprietário, não há conta e não há nuvem nossa. Cada nota continua legível por um terminal, pelo VS Code, por git, rsync ou qualquer outro editor — e trabalhar offline não é um modo, é o caso normal. Busca incremental, propriedades YAML, tags, wiki links, backlinks e um servidor MCP para agentes de IA, com permissões por escopo.\n\nO .dmg do macOS é assinado e notarizado pela Apple e sai daqui. Os pacotes de Linux (.deb, AppImage, AUR) ficam nos Releases do GitHub.",
+                'category' => 'Notas em Markdown',
+                'icon' => 'fa-solid fa-feather-pointed',
+                'page_view' => null,
+                'external_url' => null,
+                // Não é fork: o upstream é este repositório. O monitor rastreia
+                // fork vs. upstream, e apontá-lo para o próprio repo faria a tela
+                // comparar o projeto com ele mesmo.
+                'upstream_repo' => null,
+                'redirect_to_site' => false,
+                'is_published' => true,
+                'sort_order' => 2,
+            ]
+        );
+
+        // 3) Download: build da comunidade do GitHub Desktop (a GitHub não publica p/ Linux).
         Project::updateOrCreate(
             ['slug' => 'github-desktop'],
             [
@@ -53,11 +78,11 @@ class ProjectsSeeder extends Seeder
                 'upstream_repo' => 'desktop/desktop',
                 'redirect_to_site' => false,
                 'is_published' => true,
-                'sort_order' => 2,
+                'sort_order' => 3,
             ]
         );
 
-        // 3) Documentação: página curada 'projects.ai-usagebar' (instalação por SO). Sem binários
+        // 4) Documentação: página curada 'projects.ai-usagebar' (instalação por SO). Sem binários
         //    hospedados aqui — instala via AUR/crates.io/build. Autoria de Fabio Akita.
         Project::updateOrCreate(
             ['slug' => 'ai-usagebar'],
@@ -71,11 +96,11 @@ class ProjectsSeeder extends Seeder
                 'upstream_repo' => 'akitaonrails/ai-usagebar',
                 'redirect_to_site' => false,
                 'is_published' => true,
-                'sort_order' => 3,
+                'sort_order' => 4,
             ]
         );
 
-        // 4) Projeto-link puro: mora no site oficial (redirect ligado). Fica por último.
+        // 5) Projeto-link puro: mora no site oficial (redirect ligado). Fica por último.
         Project::updateOrCreate(
             ['slug' => 'sshvterm'],
             [
@@ -88,10 +113,10 @@ class ProjectsSeeder extends Seeder
                 'upstream_repo' => null, // repositórios privados: nada a rastrear no monitor
                 'redirect_to_site' => true, // link puro: abre o site direto
                 'is_published' => true,
-                'sort_order' => 4,
+                'sort_order' => 5,
             ]
         );
 
-        $this->command?->info('Projetos sincronizados: ShvIA (1) · GitHub Desktop (2) · ai-usagebar (3) · SShvTerm (4).');
+        $this->command?->info('Projetos sincronizados: ShvIA (1) · Tura Notes (2) · GitHub Desktop (3) · ai-usagebar (4) · SShvTerm (5).');
     }
 }

@@ -20,7 +20,8 @@
 |
 | The Portuguese source for all of this is database/seeders/ProjectsSeeder.php,
 | which is authoritative: it was checked against each application's own
-| repository on 2026-09-05. Change a description there and change it here.
+| repository on 2026-09-05, and Tura Notes against samirhvbr/tura-notes on
+| 2026-09-11. Change a description there and change it here.
 */
 
 return [
@@ -28,6 +29,11 @@ return [
         'shvia' => [
             'title' => 'ShvIA',
             'description' => "Blue3's internal AI assistant for operational support and corporate knowledge lookup. Chat across multiple models, voice dictation and read-aloud, and a Code mode for development work.\n\nUse it online in the browser (always the latest version) or download the desktop app for Windows, macOS and Linux.",
+        ],
+
+        'tura-notes' => [
+            'title' => 'Tura Notes',
+            'description' => "A local-first Markdown note-taking app for Linux, macOS and Windows. You pick a folder; that folder is your workspace; the .md files inside it are your notes.\n\nThe files belong to you, not to the application: no proprietary format, no account, and no cloud of ours. Every note stays readable from a terminal, from VS Code, from git, rsync or any other editor — and working offline is not a mode, it is the normal case. Incremental search, YAML properties, tags, wiki links, backlinks, and an MCP server for AI agents with scoped permissions.\n\nThe macOS .dmg is signed and notarised by Apple and is served from here. The Linux packages (.deb, AppImage, AUR) live on the GitHub Releases.",
         ],
 
         'github-desktop' => [
@@ -59,6 +65,7 @@ return [
         'aplicativo_desktop' => 'Desktop application',
         'monitor_de_uso_de_ia' => 'AI usage monitor',
         'cliente_ssh' => 'SSH client',
+        'notas_em_markdown' => 'Markdown notes',
     ],
 
     /* File labels, keyed by the label itself (lowercased, unaccented,
