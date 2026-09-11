@@ -74,6 +74,46 @@ class Project extends Model
         return 'slug';
     }
 
+    /**
+     * Marcas de projeto presentes em public/img/projects/, lidas UMA vez.
+     *
+     * @var array<string, true>|null
+     */
+    private static ?array $marks = null;
+
+    /**
+     * URL da marca do projeto (o logo de verdade), ou null para cair no ícone.
+     *
+     * CONVENÇÃO, NÃO COLUNA: a marca é `public/img/projects/<slug>/mark.svg`.
+     * Uma coluna `mark` precisaria de campo no CRUD do admin, e o admin está
+     * fora de escopo — o mesmo motivo pelo qual a tradução das descrições mora
+     * em lang/ e não no banco (ver App\Support\Content). Um projeto sem
+     * arquivo continua renderizando o `icon` do Font Awesome, que é o que
+     * todos faziam antes disto existir.
+     *
+     * A varredura é uma só por request, e não um `is_file()` por card: a
+     * vitrine renderiza o mesmo projeto no home, na lista e na página dele.
+     */
+    public function getMarkUrlAttribute(): ?string
+    {
+        if (self::$marks === null) {
+            self::$marks = [];
+            foreach (glob(public_path('img/projects/*/mark.svg')) ?: [] as $file) {
+                self::$marks[basename(dirname($file))] = true;
+            }
+        }
+
+        return isset(self::$marks[$this->slug])
+            ? asset('img/projects/'.$this->slug.'/mark.svg')
+            : null;
+    }
+
+    /** Invalida a varredura acima. Quem grava marca nova no disco — e o teste. */
+    public static function forgetMarks(): void
+    {
+        self::$marks = null;
+    }
+
     /** Tem um site externo associado (projeto-link ou híbrido). */
     public function isLink(): bool
     {

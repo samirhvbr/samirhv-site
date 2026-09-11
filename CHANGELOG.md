@@ -12,6 +12,29 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.8.0 - A project can have a logo instead of a glyph
+
+The catalogue drew a Font Awesome icon inside a rounded square, in four
+templates — the home page's featured card and its list, the downloads card and
+the project header — and each held its own copy of the markup. So a project with
+an actual logo had to be taught to four places, or would show a generic glyph in
+three of them.
+
+`partials/project-mark` is now the single place that decides what goes inside
+that square. It takes the square's own classes from the caller, because those
+four are different sizes and radii and none of that changes; what it owns is the
+content and the fall-through — logo, then icon, then nothing at all, since an
+empty bordered box is worse than no box.
+
+`Project::$mark_url` answers from a convention on disk,
+`public/img/projects/<slug>/mark.svg`, rather than from a new column. Same
+reason the English prose lives in `lang/` and not in the database: a column
+would need a field in the admin CRUD, and the admin is out of scope. A project
+with no file keeps its icon, which is what every project did before this
+existed. The directory is scanned once per request rather than once per card,
+because the same project is drawn on the home page, in the list and on its own
+page; `forgetMarks()` is what makes that memoization testable.
+
 ## 0.7.4 - Nothing goes into the cache that has to come back as an object
 
 The public home page was answering 500 on every request:

@@ -75,9 +75,7 @@
             <div class="s-project-overview">
                 <div class="s-project-overview__main">
                     <header class="s-project-header">
-                        @if($project->icon)
-                            <span class="s-icon s-icon--lg"><i class="{{ $project->icon }}"></i></span>
-                        @endif
+                        @include('partials.project-mark', ['project' => $project, 'class' => 's-icon s-icon--lg'])
                         <div style="min-width:0;">
                             @if($project->category)
                                 <span class="s-tag s-tag--accent">{{ $project->category }}</span>

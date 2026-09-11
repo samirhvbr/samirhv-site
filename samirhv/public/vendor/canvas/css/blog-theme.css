@@ -252,6 +252,17 @@ a.s-card:hover, .s-card--hover:hover {
 }
 .s-icon--lg { width: 58px; height: 58px; border-radius: 14px; font-size: 1.45rem; }
 
+/* Um projeto com marca própria: o SVG OCUPA o quadrado em vez de ficar dentro
+   dele. Sem isto, o logo do Tura — que já é um quadrado arredondado, com fundo
+   teal — aparecia como um selo pequeno centralizado numa moldura índigo, duas
+   bordas arredondadas concêntricas e duas cores de fundo brigando.
+   Modificador e não regra nova: os quatro quadrados da vitrine têm tamanhos e
+   raios diferentes (.s-icon, .s-icon--lg, .s-project-mark,
+   .s-portfolio-item__icon) e cada um continua mandando no seu — aqui só se
+   apaga o preenchimento e se manda a imagem herdar o raio de quem a contém. */
+.s-mark--image { background: transparent; border-color: transparent; padding: 0; overflow: hidden; }
+.s-mark--image img { width: 100%; height: 100%; display: block; border-radius: inherit; object-fit: cover; }
+
 /* ── Painel terminal / agente (imagery de produto, ESTÁTICO) ────────────── */
 .s-term {
   background: #0c0c15;

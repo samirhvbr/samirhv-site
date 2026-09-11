@@ -99,7 +99,7 @@
                 <div class="s-portfolio-layout">
                     <a href="{{ $featuredProject->public_url }}" @if($featuredProject->redirectsToSite()) target="_blank" rel="noopener" @endif class="s-portfolio-featured">
                         <div class="s-portfolio-featured__top">
-                            <span class="s-project-mark"><i class="{{ $featuredProject->icon ?: 'fa-solid fa-cube' }}"></i></span>
+                            @include('partials.project-mark', ['project' => $featuredProject, 'class' => 's-project-mark', 'fallback' => 'fa-solid fa-cube'])
                             <span class="s-project-state"><i></i> {{ __('home.available') }}</span>
                         </div>
                         <div class="s-portfolio-featured__content">
@@ -128,7 +128,7 @@
                                         : ($project->hasCustomPage() ? __('home.documentation') : __('home.project')));
                             @endphp
                             <a href="{{ $project->public_url }}" @if($isLink) target="_blank" rel="noopener" @endif class="s-portfolio-item">
-                                <span class="s-portfolio-item__icon"><i class="{{ $project->icon ?: 'fa-solid fa-cube' }}"></i></span>
+                                @include('partials.project-mark', ['project' => $project, 'class' => 's-portfolio-item__icon', 'fallback' => 'fa-solid fa-cube'])
                                 <span class="s-portfolio-item__copy">
                                     <small>{{ \App\Support\Content::category($project->category) ?: __('home.software') }}</small>
                                     <strong>{{ \App\Support\Content::project($project, 'title') }}</strong>

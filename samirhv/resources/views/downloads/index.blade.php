@@ -41,9 +41,7 @@
                     @endphp
                     <article class="s-card s-download-card">
                         <div class="s-download-card__top">
-                            @if($project->icon)
-                                <span class="s-icon"><i class="{{ $project->icon }}"></i></span>
-                            @endif
+                            @include('partials.project-mark', ['project' => $project])
                             <div class="s-download-card__body">
                                 <div class="s-download-card__title-row">
                                     <h2 class="s-h3" style="font-size:1.25rem;">
