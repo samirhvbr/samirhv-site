@@ -12,6 +12,33 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.8.2 - The deploy runs from a copy, because it rewrites itself
+
+The entry below added a step and the deploy did not run it. It reported
+`✅ Deploy concluido` anyway, which is the part that matters: the run looked
+clean, `migrate` was followed straight by the cache rebuild, and `/p/tura-notes`
+was still a 404 afterwards.
+
+`deploy.sh` runs `git merge` on the repository that contains it, so it rewrites
+itself halfway through its own execution. Bash does not load a script into
+memory before running it — it reads as it executes, straight from the file. Swap
+the file underneath it and what runs after the merge is no longer reliably the
+file that started running. A skipped step is the good outcome; the bad one is
+bash resuming mid-command and executing half a line. Reproduced at the real
+file's geometry — merge near byte 6800, insertion near byte 9800 — where the line
+immediately after the rewrite was swallowed and the script still exited 0.
+
+So the script now copies itself into `/run` and re-execs from there, before the
+lock and after the root check, so a run without `sudo` still gets the root
+message rather than a permission error. `bash "$copy"` rather than executing it,
+because `/run` is usually mounted `noexec`. An `EXIT` trap removes the copy on
+every path out, including `fail`.
+
+THE CONSEQUENCE, WRITTEN DOWN: a change to `deploy.sh` now takes effect on the
+FOLLOWING deploy, never the one that delivered it — the running process executes
+the version it started with, whole. That is the trade being made: a predictable
+effect one deploy later instead of an unpredictable one now.
+
 ## 0.8.1 - The deploy syncs the project catalogue, not just the schema
 
 `deploy.sh` ran `migrate` and never `db:seed`, so the catalogue reached the

@@ -140,6 +140,40 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+# ── Imunidade à auto-modificação ─────────────────────────────────────────────
+# Este script roda `git merge` no repositório que o contém: ele reescreve a SI
+# MESMO no meio da própria execução. E o bash não carrega o script inteiro antes
+# de rodar — ele lê conforme executa, direto do arquivo. Trocar o arquivo embaixo
+# dele faz com que o que roda depois do merge não seja, de forma confiável, o
+# arquivo que começou a rodar.
+#
+# Isto não é teórico: em 0.8.1 o deploy trouxe um passo novo (sincronizar o
+# catálogo, logo abaixo do migrate), NÃO o executou, e ainda assim terminou com
+# "✅ Deploy concluído". Um passo pulado em silêncio é o caso BOM; o caso ruim é
+# o bash retomar a leitura no meio de um comando e executar meia linha.
+#
+# A cópia corta o problema na raiz: o processo passa a ler um arquivo que o git
+# não alcança. Depois do root check, para que quem rodar sem sudo continue vendo
+# a mensagem de root e não um erro de permissão no /run; antes do lock, para não
+# herdar o descritor pelo exec.
+#
+# `bash "$copia"` e não `"$copia"` direto: /run costuma ser montado com noexec.
+#
+# A CONSEQUÊNCIA, ESCRITA: uma alteração NESTE arquivo passa a valer no deploy
+# SEGUINTE, nunca no que a trouxe — o processo em curso roda a versão com que
+# começou, inteira. É a troca desejada: efeito previsível um deploy depois, em
+# vez de efeito imprevisível no deploy atual.
+if [ "${DEPLOY_PINNED:-0}" != "1" ]; then
+    PINNED=$(mktemp /run/samirhv-deploy.XXXXXX)
+    cp -- "${BASH_SOURCE[0]}" "$PINNED"
+    export DEPLOY_PINNED=1 DEPLOY_PINNED_FILE="$PINNED"
+    exec bash "$PINNED" "$@"
+fi
+
+# Rodando da cópia. Apaga por qualquer saída — inclusive a do `fail`, que faz
+# exit 1. Não colide com o `trap ... ERR` lá embaixo: são sinais diferentes.
+trap 'rm -f "${DEPLOY_PINNED_FILE:-}"' EXIT
+
 # ── Lock ─────────────────────────────────────────────────────────────────────
 exec 9>"$LOCK"
 flock -n 9 || { printf '❌ outro deploy já está rodando (lock: %s)\n' "$LOCK" >&2; exit 1; }
