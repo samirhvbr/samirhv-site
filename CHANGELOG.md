@@ -12,6 +12,33 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.8.1 - The deploy syncs the project catalogue, not just the schema
+
+`deploy.sh` ran `migrate` and never `db:seed`, so the catalogue reached the
+server as code and never as rows — `migrate` creates tables, not content. The
+entry below is what made it visible: Tura Notes shipped with its seeder entry,
+its English translation and its mark, all of it live on the server, and
+`/p/tura-notes` answered 404. The row did not exist, and nothing in the deploy
+was ever going to create it. The same hole was waiting for every project added
+after it.
+
+Step 7 now runs `db:seed --class=ProjectsSeeder --force`, after the migrations
+and before the caches are rebuilt. Naming the class is not a detail: the bare
+`db:seed` runs `DatabaseSeeder`, which also calls `AdminUserSeeder` — and that
+one re-hashes the admin password whenever `ADMIN_PASSWORD` is present in `.env`,
+and sets `must_change_password`. On every deploy.
+
+A failing seeder warns, notifies and lets the deploy continue. Stopping between
+the migration and the cache rebuild would leave the new code running against the
+routes and views compiled from the previous commit, which is worse than a
+catalogue one deploy behind.
+
+THE COST, WRITTEN DOWN: `ProjectsSeeder` is authoritative — `updateOrCreate` by
+slug — so a title, description, category, icon, order or flag edited in the
+admin returns to what the code says at the next deploy. That is the intent its
+own docblock already declares, and the download FILES stay the admin's: nothing
+in this step touches them.
+
 ## 0.8.0 - Tura Notes joins the catalogue
 
 Tura Notes is a local-first Markdown note-taking app — you pick a folder, the

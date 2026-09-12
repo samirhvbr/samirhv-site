@@ -226,7 +226,35 @@ if ! www php artisan migrate --force; then
     fail "migrate falhou"
 fi
 
-# ── 7. Caches de produção ────────────────────────────────────────────────────
+# ── 7. Catálogo de projetos: o código é a fonte, o banco é a cópia ───────────
+# O `migrate` acima cria tabela, não conteúdo — então um projeto novo chegava ao
+# servidor como código e nunca como linha. Foi o que aconteceu com o Tura Notes
+# em 0.8.0: seeder, tradução e marca no ar, e /p/tura-notes em 404 até alguém
+# rodar o seeder na mão.
+#
+# `--class=ProjectsSeeder`, e NUNCA `db:seed` puro: o puro roda o DatabaseSeeder,
+# que também chama o AdminUserSeeder — e esse re-hasheia a senha do admin sempre
+# que ADMIN_PASSWORD está no .env, marcando must_change_password. A cada deploy.
+# (À mão vale o mesmo, com um motivo a mais: o DatabaseSeeder usa
+# WithoutModelEvents, que silencia o `saved()` do Project e portanto não invalida
+# o cache 'nav.projects'. Aqui dentro isso não pesa, porque o optimize:clear do
+# passo 8 limpa esse cache logo abaixo.)
+#
+# O CUSTO, ESCRITO: o seeder é autoritativo (updateOrCreate por slug), então
+# título, descrição, categoria, ícone, ordem e flags editados pelo admin voltam
+# ao que está no código no próximo deploy. É a intenção declarada no docblock do
+# seeder; os ARQUIVOS de download continuam sendo do admin, e nada aqui os toca.
+#
+# Falhar não aborta o deploy: catálogo desatualizado é menos grave que parar
+# entre o migrate e a reconstrução dos caches, que deixaria o código novo rodando
+# com as rotas e as views compiladas do commit anterior.
+log "==> Sincronizando catálogo de projetos..."
+if ! www php artisan db:seed --class=ProjectsSeeder --force; then
+    log "⚠️  ProjectsSeeder falhou — o site segue com o catálogo que já estava no banco."
+    notify "⚠️ <b>samirhv</b>: ProjectsSeeder falhou no deploy — catálogo não sincronizado."
+fi
+
+# ── 8. Caches de produção ────────────────────────────────────────────────────
 log "==> Reconstruindo caches..."
 www php artisan optimize:clear
 www php artisan config:cache
@@ -234,7 +262,7 @@ www php artisan route:cache
 www php artisan view:cache
 www php artisan event:cache 2>/dev/null || true
 
-# ── 8. Sai do modo manutenção ────────────────────────────────────────────────
+# ── 9. Sai do modo manutenção ────────────────────────────────────────────────
 log "==> Desativando modo de manutenção..."
 www php artisan up
 
