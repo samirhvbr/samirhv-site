@@ -12,6 +12,37 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - A project whose files live elsewhere stops being promised as a download
+
+The access panel on /p/{slug} has two blocks and both of them described ShvIA.
+"Online version · nothing to install, always the latest" is exactly right for a
+product whose site is the other half of the thing you can also download. It is
+wrong for SShvTerm, whose site is where the INSTALLERS are, and it undersells
+meuip.rs, whose site is the entire product. So the three strings can be
+overridden per slug through `project.sites.<slug>`, and a project with no entry
+keeps the generic ones — opt-in, rather than a table every project has to fill
+in. The keys exist in both languages by construction, because `Lang::has()`
+falls back to English and a slug translated only once would put an English
+sentence on the Portuguese page.
+
+The second block was worse. With no files uploaded it rendered "Desktop
+application — in preparation", which is true of Tura Notes before its first
+`files:add` and false of a project that will never ship a binary from here.
+`Project::distributesFilesHere()` is the distinction, and it needs no new column
+because the answer is already in the data: a project with an external site and
+no files here distributes somewhere else. A hybrid with files (ShvIA) and a
+project with no site at all (Tura Notes, GitHub Desktop) both keep the promise,
+and it comes back on its own the day a link project starts hosting a binary here.
+
+The downloads list is the other half of the same subject. Its card branched on
+`redirect_to_site`, so a project that stopped redirecting fell through to the
+download branch and advertised "Files coming soon" with a "View files" button
+over a project that has no files here. It now shows the site's host and a button
+into the project's own page — the page is the thing that was missing, and sending
+someone off-site straight from a list is what stopped anyone reading it. The
+"use online" tag narrows to a hybrid that genuinely has files here: over a
+desktop SSH client, or over a GitHub repository, it describes neither.
+
 ## 0.9.0 - A project page can carry a section of its own
 
 `/p/{slug}` renders a header, a description, an access panel, a changelog and a

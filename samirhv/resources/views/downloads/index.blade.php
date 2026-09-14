@@ -48,8 +48,12 @@
                                         <a href="{{ $project->public_url }}" @if($project->redirectsToSite()) target="_blank" rel="noopener" @endif style="color:inherit;">{{ \App\Support\Content::project($project, 'title') }}</a>
                                     </h2>
                                     @if($project->category)<span class="s-tag">{{ \App\Support\Content::category($project->category) }}</span>@endif
-                                    {{-- "use online" only for the hybrid case (a site AND downloads here); a pure link gets the "Visit site" button below. --}}
-                                    @if($project->isHybrid())
+                                    {{-- "use online" is only true of a hybrid that ALSO has files here — the
+                                         ShvIA case, where the site is the other half of a thing you can download.
+                                         A project whose files live elsewhere gets the site in its footer row
+                                         instead: "use online" over a desktop SSH client, or over a GitHub
+                                         repository, describes neither. --}}
+                                    @if($project->isHybrid() && $project->distributesFilesHere())
                                         <a href="{{ $project->external_url }}" target="_blank" rel="noopener" class="s-tag s-tag--accent" style="text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> {{ __('downloads.use_online') }}</a>
                                     @endif
                                 </div>
@@ -69,6 +73,19 @@
                                 </div>
                                 <a href="{{ $project->external_url }}" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--sm m-0">
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i> {{ __('downloads.visit_site') }}
+                                </a>
+                            @elseif(! $project->distributesFilesHere())
+                                {{-- Lives on its own site (SShvTerm, meuip.rs, ai-memory), but has a
+                                     page here: the description, its own section and its changelog. The
+                                     button goes to that page and NOT straight out — sending someone
+                                     off-site from a list is what this card used to do, and it is why
+                                     nobody ever read what the project was. --}}
+                                <div class="s-release-meta">
+                                    <span class="s-release-meta__os">{{ __('downloads.official_site') }}</span>
+                                    <span>{{ preg_replace('#^www\.#', '', parse_url($project->external_url, PHP_URL_HOST) ?? '') }}</span>
+                                </div>
+                                <a href="{{ lroute('project.show', $project) }}" class="s-btn s-btn--sm m-0">
+                                    <i class="fa-solid fa-arrow-right"></i> {{ __('downloads.see_project') }}
                                 </a>
                             @elseif($project->hasCustomPage())
                                 {{-- Documentation (e.g. ai-usagebar): no binaries here — installed via a package manager, with a guide per OS. --}}

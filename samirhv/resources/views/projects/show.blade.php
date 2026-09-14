@@ -109,14 +109,22 @@
                     <span class="s-project-action-panel__label">{{ __('project.access') }}</span>
 
                     @if($project->external_url)
+                        {{-- The site block, worded per project when the generic wording lies.
+                             "Online version · always the latest" is true of ShvIA, whose site
+                             IS the product's other half. It is false of SShvTerm, whose site is
+                             where the INSTALLERS are, and it undersells meuip.rs, whose site is
+                             the whole product. A `project.sites.<slug>` entry overrides any of
+                             the three strings; a project with no entry keeps the generic ones,
+                             so this stays opt-in rather than a table everyone must fill in. --}}
+                        @php($site = fn (string $field, string $default) => \Illuminate\Support\Facades\Lang::has($k = "project.sites.{$project->slug}.{$field}") ? __($k) : __($default))
                         <div class="s-project-action-panel__option">
                             <span class="s-project-action-panel__icon"><i class="fa-solid fa-globe"></i></span>
                             <div>
-                                <h2>{{ __('project.online_version') }}</h2>
-                                <p>{{ __('project.online_version_desc') }}</p>
+                                <h2>{{ $site('title', 'project.online_version') }}</h2>
+                                <p>{{ $site('desc', 'project.online_version_desc') }}</p>
                             </div>
                             <a href="{{ $project->external_url }}" target="_blank" rel="noopener" class="s-btn">
-                                {{ __('project.open_app') }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                {{ $site('cta', 'project.open_app') }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
                         </div>
                     @endif
@@ -132,7 +140,7 @@
                                 {{ __('project.choose_download') }} <i class="fa-solid fa-arrow-down"></i>
                             </a>
                         </div>
-                    @else
+                    @elseif($project->distributesFilesHere())
                         <div class="s-project-action-panel__status{{ $project->external_url ? ' has-divider' : '' }}">
                             <span><i></i> {{ __('project.desktop_app') }}</span>
                             <strong>{{ __('project.in_preparation') }}</strong>

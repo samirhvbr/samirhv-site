@@ -22,6 +22,7 @@ return [
     'official_site' => 'Official site',
     'visit_site' => 'Visit site',
 
+    'see_project' => 'See the project',
     'cross_platform' => 'Cross-platform',
     'via_package_manager' => 'installs via package manager',
     'install' => 'Install',

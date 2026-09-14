@@ -24,6 +24,7 @@ return [
     'official_site' => 'Site oficial',
     'visit_site' => 'Acessar site',
 
+    'see_project' => 'Ver o projeto',
     'cross_platform' => 'Multiplataforma',
     'via_package_manager' => 'instala por gerenciador',
     'install' => 'Instalar',

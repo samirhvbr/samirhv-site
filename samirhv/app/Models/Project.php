@@ -141,6 +141,26 @@ class Project extends Model
     }
 
     /**
+     * Este site é um canal de distribuição deste projeto?
+     *
+     * Existe por causa de uma frase: "Aplicativo desktop — em preparação". Ela é
+     * verdadeira num projeto de download que ainda não subiu binário (Tura Notes
+     * antes do primeiro `files:add`) e é MENTIRA num projeto que mora no site
+     * dele — o meuip.rs não é um app desktop em preparação, e os instaladores do
+     * SShvTerm não estão a caminho daqui: estão no sshvterm.com, hoje.
+     *
+     * A regra não precisa de coluna nova porque a resposta já está nos dados: um
+     * projeto com site externo e NENHUM arquivo aqui distribui em outro lugar. Ter
+     * arquivo aqui (híbrido, como o ShvIA) ou não ter site nenhum (Tura Notes,
+     * GitHub Desktop) mantém a promessa de pesquisa — e ela volta a aparecer
+     * sozinha no dia em que um projeto-link passar a hospedar binário aqui.
+     */
+    public function distributesFilesHere(): bool
+    {
+        return ! $this->isLink() || $this->hasFiles();
+    }
+
+    /**
      * Clicar no projeto deve ir direto pro site externo? Só quando tem external_url
      * E a flag redirect_to_site está ligada (link puro, ex: SShvTerm). Um híbrido
      * (ShvIA) tem external_url mas a flag desligada → abre a página /p/{slug}.

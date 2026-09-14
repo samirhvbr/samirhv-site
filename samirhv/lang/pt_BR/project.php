@@ -21,6 +21,32 @@ return [
     'choose_download' => 'Escolher download',
     'in_preparation' => 'Em preparação',
 
+    /*
+    | Texto por projeto do bloco "site" do painel de acesso. Tradução do bloco
+    | de mesmo nome em lang/en/project.php — as chaves têm de existir nos dois
+    | arquivos, senão a página em português renderiza o inglês (o `Lang::has()`
+    | da view cai no idioma de fallback; ver App\Support\Content).
+    */
+    'sites' => [
+        'meuip' => [
+            'title' => 'O serviço',
+            'desc' => 'Roda no navegador e no terminal. Nada para instalar, sem conta e sem chave.',
+            'cta' => 'Abrir o meuip.rs',
+        ],
+
+        'sshvterm' => [
+            'title' => 'Site oficial',
+            'desc' => 'É de lá que saem os instaladores de Windows, macOS e Linux, com as notas de cada versão.',
+            'cta' => 'Ir para o sshvterm.com',
+        ],
+
+        'ai-memory' => [
+            'title' => 'Código e instalação',
+            'desc' => 'Um binário em Rust, compilado do fonte ou instalado por pacote. O README tem o passo a passo de cada sistema.',
+            'cta' => 'Abrir no GitHub',
+        ],
+    ],
+
     'unavailable' => 'O arquivo :file está indisponível no momento.',
 
     'recommended' => 'Download recomendado',
