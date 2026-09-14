@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - The project sections are asserted in both languages
+
+Four sections, two languages, and every string in a `lang/` file: the failure
+mode is not an exception, it is a page that renders fine and says the wrong
+thing. A key written in `lang/en` and forgotten in `lang/pt_BR` falls back to
+English, so the Portuguese page carries an English sentence mid-paragraph — the
+leak `App\Support\Content` documents, in reverse. A key renamed in the view and
+not in the file makes `__()` return the key, so "ai_memory.f_team_desc" is
+printed as body text. A `:placeholder` with no argument renders the literal
+colon-word. None of the three is an error anywhere.
+
+`ProjectSectionTest` renders all four partials in both languages and asserts
+against each. It needs no database, and that is not luck: the sections take no
+`$project` and read everything from `lang/`, which is what lets them be tested in
+a suite that deliberately has none. The key-leak assertion compares against the
+real key list rather than a pattern, because the meuip section prints
+"meuip.rs/asn" as content and a pattern loose enough to catch "meuip.lead"
+catches that too — the first version of this test failed on exactly that.
+
+It also pins `Project::distributesFilesHere()` in its three shapes: a link
+project with no files here, a download project, and a hybrid that has both.
+
 ## 0.9.0 - Tura Notes gets a changelog, and a description that names its Linux packages
 
 Tura Notes joined the catalogue in 0.8.0 and has had an empty "What changed"
