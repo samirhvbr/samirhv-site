@@ -5,12 +5,12 @@
 |
 | CURATED, not mirrored. Each entry is written from the application's own
 | changelog — CHANGELOG.md for most of them, VERSION.md for the GitHub Desktop
-| fork — and rewritten for someone deciding whether to use it,
+| fork and for meuip.rs — and rewritten for someone deciding whether to use it,
 | not for someone maintaining it. An entry that only means something inside the
 | repository does not belong on a product page.
 |
-| Checked against every repository on 2026-09-05, and the two whose pages arrived in
-| 0.9.0 — SShvTerm and ai-memory — on 2026-09-14. The date on an entry
+| Checked against every repository on 2026-09-05, and the three whose pages arrived in
+| 0.9.0 — SShvTerm, ai-memory and meuip.rs — on 2026-09-14. The date on an entry
 | is the date of the release, not of the check.
 |
 | ai-memory's entries are the UPSTREAM project's (akitaonrails/ai-memory), the
@@ -247,6 +247,24 @@ return [
             ],
         ],
 
+        'meuip' => [
+            [
+                'version' => '0.2.10',
+                'date' => '2026-09-08',
+                'notes' => [
+                    'The exposed .git directory is closed, and the v1 code that was still executing in production alongside the rewrite is gone.',
+                ],
+            ],
+            [
+                'version' => '0.2.0',
+                'date' => '2026-08-24',
+                'notes' => [
+                    'The page gets a dark theme that does not flash on load, a copyable address with an IPv4/IPv6 badge, context chips, a copy button on every curl command, and coordinates that open a map.',
+                    'Keyboard focus is visible again, and animation honours a system that asks for less of it.',
+                    'Measured against production, endpoint by endpoint: the plain-text API answers exactly as before. A visual pass that changed what curl returns would have broken the point of the service.',
+                ],
+            ],
+        ],
     ],
 
     /* Facts that belong beside the list rather than inside an entry. */
@@ -256,5 +274,6 @@ return [
         'github-desktop' => 'The fork version and the upstream GitHub Desktop release it is based on are different numbers. The entries above are the fork\'s.',
         'ai-memory' => 'These are ai-memory\'s own releases. ai-memory-web — the web panel shown above — is a separate project on its own version line, currently 0.1.x.',
         'sshvterm' => 'SShvTerm releases often, and not every version changes something you can see; the list above is the ones that do. The installers and the full notes are on sshvterm.com.',
+        'meuip' => 'The v2.0 rewrite and the live traceroute came before this version line and are in the git history rather than in the numbering. The entries above start where the house versioning does.',
     ],
 ];

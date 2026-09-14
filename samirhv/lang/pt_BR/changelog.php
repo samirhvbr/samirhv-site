@@ -8,8 +8,8 @@
 | mantém. Entrada que só quer dizer alguma coisa dentro do repositório não entra
 | numa página de produto.
 |
-| Conferido contra cada repositório em 05/09/2026, e os dois cujas páginas chegaram
-| na 0.9.0 — SShvTerm e ai-memory — em 14/09/2026. A data da
+| Conferido contra cada repositório em 05/09/2026, e os três cujas páginas chegaram
+| na 0.9.0 — SShvTerm, ai-memory e meuip.rs — em 14/09/2026. A data da
 | entrada é a do lançamento, não a da conferência.
 |
 | As entradas do ai-memory são as do projeto UPSTREAM (akitaonrails/ai-memory),
@@ -246,6 +246,24 @@ return [
             ],
         ],
 
+        'meuip' => [
+            [
+                'version' => '0.2.10',
+                'date' => '2026-09-08',
+                'notes' => [
+                    'O diretório .git exposto foi fechado, e o código da v1 que ainda executava em produção ao lado da reescrita saiu de lá.',
+                ],
+            ],
+            [
+                'version' => '0.2.0',
+                'date' => '2026-08-24',
+                'notes' => [
+                    'A página ganha tema escuro que não pisca ao carregar, endereço copiável com selo de IPv4/IPv6, chips de contexto, botão de copiar em cada comando curl e coordenadas que abrem um mapa.',
+                    'O foco do teclado volta a ser visível, e a animação respeita um sistema que pede menos dela.',
+                    'Aferido contra a produção, endpoint por endpoint: a API de texto puro responde exatamente como antes. Uma passada visual que mudasse o que o curl devolve teria quebrado o propósito do serviço.',
+                ],
+            ],
+        ],
     ],
 
     /* Fatos que ficam ao lado da lista, não dentro de uma entrada. */
@@ -255,5 +273,6 @@ return [
         'github-desktop' => 'A versão do fork e a release do GitHub Desktop em que ele se baseia são números diferentes. As entradas acima são as do fork.',
         'ai-memory' => 'Estas são as versões do próprio ai-memory. O ai-memory-web — o painel web mostrado acima — é um projeto separado, com linha de versão própria, hoje na 0.1.x.',
         'sshvterm' => 'O SShvTerm lança com frequência, e nem toda versão muda algo que você vê; a lista acima é a das que mudam. Os instaladores e as notas completas estão no sshvterm.com.',
+        'meuip' => 'A reescrita da v2.0 e o traceroute ao vivo vieram antes desta linha de versão e estão no histórico do git, não na numeração. As entradas acima começam onde começa o versionamento da casa.',
     ],
 ];

@@ -13,6 +13,7 @@ use Illuminate\Database\Seeder;
  *   4. ai-usagebar (documentação: página curada de instalação)
  *   5. SShvTerm (projeto de site: os instaladores moram no sshvterm.com)
  *   6. ai-memory (projeto de site: explicação + galeria do painel web)
+ *   7. meuip.rs (projeto de site: o produto É o endereço)
  *
  * updateOrCreate por slug: idempotente E autoritativo — rodar de novo
  * sincroniza título/descrição/ordem/flags com o que está aqui no código.
@@ -147,6 +148,25 @@ class ProjectsSeeder extends Seeder
             ]
         );
 
-        $this->command?->info('Projetos sincronizados: ShvIA (1) · Tura Notes (2) · GitHub Desktop (3) · ai-usagebar (4) · SShvTerm (5) · ai-memory (6).');
+        // 7) Projeto de site: o produto É o endereço. Não há binário para hospedar
+        //    aqui e não haverá — o `distributesFilesHere()` do model é o que impede
+        //    a página de prometer um "app desktop em preparação" que não existe.
+        Project::updateOrCreate(
+            ['slug' => 'meuip'],
+            [
+                'title' => 'meuip.rs',
+                'description' => "Serviço \"qual é o meu IP\" da Blue3: mostra o endereço público de quem chega, com ASN, provedor, país e região — e responde no formato de quem perguntou. O `curl` recebe o endereço puro e uma quebra de linha; o navegador recebe a página inteira.\n\nTem também um looking glass: um traceroute executado no servidor e transmitido ao vivo para a página, para quando é a sua própria rede que bloqueia ICMP. Sem conta, sem chave de API e sem cookie.",
+                'category' => 'Ferramenta de rede',
+                'icon' => 'fa-solid fa-network-wired',
+                'page_view' => null,
+                'external_url' => 'https://meuip.rs',
+                'upstream_repo' => null, // repositório privado: nada a rastrear no monitor
+                'redirect_to_site' => false,
+                'is_published' => true,
+                'sort_order' => 7,
+            ]
+        );
+
+        $this->command?->info('Projetos sincronizados: ShvIA (1) · Tura Notes (2) · GitHub Desktop (3) · ai-usagebar (4) · SShvTerm (5) · ai-memory (6) · meuip.rs (7).');
     }
 }

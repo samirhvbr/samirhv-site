@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - meuip.rs joins the catalogue
+
+Blue3's "what is my IP" service: it shows the caller's public address with ASN,
+provider, country and region, and answers in the shape the caller asked in. `curl
+meuip.rs` returns the bare address and a newline, parseable with nothing to
+strip; the same url in a browser returns the whole page. That is the product, and
+it is why the section shows the terminal block and the routing table rather than
+describing them — a service you curl is explained by the shape of its answer.
+
+It also runs a looking glass: a traceroute executed on the server and streamed to
+the page hop by hop, for the case where it is your own network that blocks ICMP,
+with a continuous mtr-style reading when you ask for it.
+
+There is no binary to host here and there never will be, which is what
+`distributesFilesHere()` is for — without it the page would have advertised a
+desktop application in preparation for a web service.
+
+The changelog has two entries, and that is the honest number. The v2.0 rewrite
+and the traceroute came before the repository adopted the house versioning, so
+they live in the git history rather than in the numbering; the side note says so
+instead of back-dating versions that were never released.
+
 ## 0.9.0 - ai-memory joins the catalogue, with the screens of its web panel
 
 Two projects, one page, and the page never lets them blur. ai-memory is Fabio

@@ -63,6 +63,11 @@ return [
             'title' => 'SShvTerm',
             'description' => "A cross-platform desktop SSH/SFTP client with zero-knowledge sync: hosts, keys and passwords are encrypted on your own machine and the server never sees the contents — and that sync server can be one you host yourself.\n\nIt carries an AI agent that operates the terminal — proposing and running commands in the visible PTY, under an allow · ask · deny policy you control (Anthropic, OpenAI, xAI/Grok and more), with your own key. Windows, macOS and Linux. Download from the official site.",
         ],
+
+        'meuip' => [
+            'title' => 'meuip.rs',
+            'description' => "Blue3's \"what is my IP\" service: it shows the caller's public address, with ASN, provider, country and region — and answers in the shape the caller asked in. `curl` gets the bare address and a newline; a browser gets the whole page.\n\nIt also carries a looking glass: a traceroute run on the server and streamed live to the page, for when it is your own network that blocks ICMP. No account, no API key and no cookie.",
+        ],
     ],
 
     'categories' => [
@@ -72,6 +77,7 @@ return [
         'cliente_ssh' => 'SSH client',
         'notas_em_markdown' => 'Markdown notes',
         'memoria_de_agentes' => 'Agent memory',
+        'ferramenta_de_rede' => 'Network tool',
     ],
 
     /* File labels, keyed by the label itself (lowercased, unaccented,
