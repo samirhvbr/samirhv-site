@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - Tura Notes gets a changelog, and a description that names its Linux packages
+
+Tura Notes joined the catalogue in 0.8.0 and has had an empty "What changed"
+section ever since — the partial renders nothing at all when an app has no
+entries, so the gap was invisible rather than broken, which is how it survived
+two releases. Five curated entries now: in-app updates with signed feeds per
+format, the Linux installers, the signed and notarised macOS build, the rename
+to Tura Notes with the data paths deliberately unchanged, and PDF text imported
+as Markdown.
+
+The description was one release out of date in the part that matters to whoever
+is deciding where to download from. It said the Linux packages live on the GitHub
+Releases, which was true until `tools/build-linux.sh` arrived in 1.0.3 and gave
+.deb, AppImage and .rpm the same `files:add` path the .dmg already used. Both
+channels are wired now, and the description says both.
+
+Not in this release, and worth writing down: no file has actually been ingested
+yet, so `/p/tura-notes` still shows "in preparation". The pipeline is complete on
+both sides — `build-local.sh --publish` on macOS, `tools/build-linux.sh
+--publish` on Linux — and publishing is a run on the machine that holds the
+signing key, not a change to this repository.
+
 ## 0.9.0 - meuip.rs joins the catalogue
 
 Blue3's "what is my IP" service: it shows the caller's public address with ASN,

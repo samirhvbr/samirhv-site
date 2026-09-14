@@ -9,8 +9,8 @@
 | not for someone maintaining it. An entry that only means something inside the
 | repository does not belong on a product page.
 |
-| Checked against every repository on 2026-09-05, and the three whose pages arrived in
-| 0.9.0 — SShvTerm, ai-memory and meuip.rs — on 2026-09-14. The date on an entry
+| Checked against every repository on 2026-09-05, and the four added in 0.9.0 —
+| tura-notes, ai-memory, sshvterm, meuip — on 2026-09-14. The date on an entry
 | is the date of the release, not of the check.
 |
 | ai-memory's entries are the UPSTREAM project's (akitaonrails/ai-memory), the
@@ -151,6 +151,48 @@ return [
                 'date' => '2026-09-04',
                 'notes' => [
                     'The radar preset: the console look as an eleventh theme.',
+                ],
+            ],
+        ],
+
+        'tura-notes' => [
+            [
+                'version' => '1.1.0',
+                'date' => '2026-09-12',
+                'notes' => [
+                    'The app looks for its own updates — shortly after startup, every six hours, or when you ask. A version you are not ready for can be dismissed, and installing is an explicit act that waits for the workspace to close before it restarts anything.',
+                    'The update feeds are signed, one per format (macOS, AppImage, .deb and .rpm), and a payload whose signature does not match is refused. Arch packages stay with pacman, which is the right updater on that system.',
+                ],
+            ],
+            [
+                'version' => '1.0.3',
+                'date' => '2026-09-12',
+                'notes' => [
+                    'Linux installers come out of the same local pipeline as the macOS one: .deb and AppImage by default, .rpm when asked for, with the dependencies checked before anything compiles.',
+                    'Publishing reads the hash back from the server and compares it. A truncated upload leaves a file that exists and that the page links happily — it has to fail here, not in your browser.',
+                ],
+            ],
+            [
+                'version' => '1.0.1',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'The macOS build is signed with a Developer ID and notarised by Apple, with the ticket stapled into the image, so a downloaded .dmg opens offline with no warning.',
+                    'Publishing refuses an unsigned or unstapled image outright. The rule is enforced by the tool now instead of remembered by whoever runs it.',
+                ],
+            ],
+            [
+                'version' => '1.0.0',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'The Tura Notes identity: the ribbon-T logo, icons for each platform and a welcome screen that carries them.',
+                    'The application identifier, the executable and the data paths are unchanged, so an existing install keeps its notes and its settings across the rename.',
+                ],
+            ],
+            [
+                'version' => '0.20.27',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'Import the text of a PDF as Markdown: the extraction opens in an editable preview and only an explicit save writes a note. The PDF itself and its images stay outside the workspace.',
                 ],
             ],
         ],

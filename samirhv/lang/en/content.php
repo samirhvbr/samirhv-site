@@ -33,7 +33,7 @@ return [
 
         'tura-notes' => [
             'title' => 'Tura Notes',
-            'description' => "A local-first Markdown note-taking app for Linux, macOS and Windows. You pick a folder; that folder is your workspace; the .md files inside it are your notes.\n\nThe files belong to you, not to the application: no proprietary format, no account, and no cloud of ours. Every note stays readable from a terminal, from VS Code, from git, rsync or any other editor — and working offline is not a mode, it is the normal case. Incremental search, YAML properties, tags, wiki links, backlinks, and an MCP server for AI agents with scoped permissions.\n\nThe macOS .dmg is signed and notarised by Apple and is served from here. The Linux packages (.deb, AppImage, AUR) live on the GitHub Releases.",
+            'description' => "A local-first Markdown note-taking app for Linux, macOS and Windows. You pick a folder; that folder is your workspace; the .md files inside it are your notes.\n\nThe files belong to you, not to the application: no proprietary format, no account, and no cloud of ours. Every note stays readable from a terminal, from VS Code, from git, rsync or any other editor — and working offline is not a mode, it is the normal case. Incremental search, YAML properties, tags, wiki links, backlinks, and an MCP server for AI agents with scoped permissions.\n\nThe macOS .dmg is signed and notarised by Apple and is served from here. The Linux packages (.deb, AppImage, .rpm) come out of the same local build pipeline and are published both here and on the GitHub Releases, which is also where the AUR package lives.",
         ],
 
         'github-desktop' => [

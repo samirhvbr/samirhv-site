@@ -8,8 +8,8 @@
 | mantém. Entrada que só quer dizer alguma coisa dentro do repositório não entra
 | numa página de produto.
 |
-| Conferido contra cada repositório em 05/09/2026, e os três cujas páginas chegaram
-| na 0.9.0 — SShvTerm, ai-memory e meuip.rs — em 14/09/2026. A data da
+| Conferido contra cada repositório em 05/09/2026, e os quatro que entraram na
+| 0.9.0 — tura-notes, ai-memory, sshvterm, meuip — em 14/09/2026. A data da
 | entrada é a do lançamento, não a da conferência.
 |
 | As entradas do ai-memory são as do projeto UPSTREAM (akitaonrails/ai-memory),
@@ -150,6 +150,48 @@ return [
                 'date' => '2026-09-04',
                 'notes' => [
                     'O preset radar: o visual de console como um décimo primeiro tema.',
+                ],
+            ],
+        ],
+
+        'tura-notes' => [
+            [
+                'version' => '1.1.0',
+                'date' => '2026-09-12',
+                'notes' => [
+                    'O aplicativo procura as próprias atualizações — logo depois de abrir, a cada seis horas ou quando você pedir. Uma versão que você não quer agora pode ser dispensada, e instalar é um ato explícito, que espera o workspace fechar antes de reiniciar qualquer coisa.',
+                    'Os feeds de atualização são assinados, um por formato (macOS, AppImage, .deb e .rpm), e um pacote cuja assinatura não confere é recusado. Os pacotes de Arch continuam com o pacman, que é o atualizador certo naquele sistema.',
+                ],
+            ],
+            [
+                'version' => '1.0.3',
+                'date' => '2026-09-12',
+                'notes' => [
+                    'Os instaladores de Linux saem da mesma linha de build local que o do macOS: .deb e AppImage por padrão, .rpm quando pedido, com as dependências conferidas antes de qualquer compilação.',
+                    'A publicação lê o hash de volta do servidor e compara. Um upload truncado deixa um arquivo que existe e que a página linka sem reclamar — ele tem de falhar aqui, não no seu navegador.',
+                ],
+            ],
+            [
+                'version' => '1.0.1',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'O build de macOS é assinado com um Developer ID e notarizado pela Apple, com o ticket grampeado na imagem, então o .dmg baixado abre offline e sem aviso nenhum.',
+                    'A publicação recusa de saída uma imagem sem assinatura ou sem o ticket. A regra passou a ser imposta pela ferramenta, em vez de lembrada por quem a executa.',
+                ],
+            ],
+            [
+                'version' => '1.0.0',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'A identidade Tura Notes: o logo do T em fita, ícones para cada plataforma e uma tela de boas-vindas que os carrega.',
+                    'O identificador do aplicativo, o executável e os caminhos de dados continuam os mesmos, então quem já tinha instalado mantém as notas e as configurações através da troca de nome.',
+                ],
+            ],
+            [
+                'version' => '0.20.27',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'Importar o texto de um PDF como Markdown: a extração abre numa prévia editável e só um salvar explícito grava a nota. O PDF em si e as imagens dele ficam fora do workspace.',
                 ],
             ],
         ],

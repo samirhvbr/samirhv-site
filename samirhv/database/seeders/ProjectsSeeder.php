@@ -47,12 +47,14 @@ class ProjectsSeeder extends Seeder
         //    (samirhvbr/tura-notes), mas o .dmg assinado + notarizado NÃO sai no
         //    GitHub Release — o certificado Developer ID mora num keychain, não
         //    num secret de CI, então quem empacota é a máquina que o tem. É por
-        //    isso que este projeto está aqui: o site é o canal de macOS.
+        //    isso que este projeto está aqui: o site é o canal de macOS — e, desde
+        //    o `tools/build-linux.sh` da 1.0.3, também de .deb, AppImage e .rpm,
+        //    que sobem pelo mesmo `files:add` que o .dmg.
         Project::updateOrCreate(
             ['slug' => 'tura-notes'],
             [
                 'title' => 'Tura Notes',
-                'description' => "Aplicativo de notas em Markdown local-first para Linux, macOS e Windows. Você escolhe uma pasta; essa pasta é o seu workspace; os arquivos .md dentro dela são as suas notas.\n\nOs arquivos são seus, não do aplicativo: não há formato proprietário, não há conta e não há nuvem nossa. Cada nota continua legível por um terminal, pelo VS Code, por git, rsync ou qualquer outro editor — e trabalhar offline não é um modo, é o caso normal. Busca incremental, propriedades YAML, tags, wiki links, backlinks e um servidor MCP para agentes de IA, com permissões por escopo.\n\nO .dmg do macOS é assinado e notarizado pela Apple e sai daqui. Os pacotes de Linux (.deb, AppImage, AUR) ficam nos Releases do GitHub.",
+                'description' => "Aplicativo de notas em Markdown local-first para Linux, macOS e Windows. Você escolhe uma pasta; essa pasta é o seu workspace; os arquivos .md dentro dela são as suas notas.\n\nOs arquivos são seus, não do aplicativo: não há formato proprietário, não há conta e não há nuvem nossa. Cada nota continua legível por um terminal, pelo VS Code, por git, rsync ou qualquer outro editor — e trabalhar offline não é um modo, é o caso normal. Busca incremental, propriedades YAML, tags, wiki links, backlinks e um servidor MCP para agentes de IA, com permissões por escopo.\n\nO .dmg do macOS é assinado e notarizado pela Apple e sai daqui. Os pacotes de Linux (.deb, AppImage, .rpm) saem da mesma linha de build local e são publicados aqui e nos Releases do GitHub, onde também fica o pacote do AUR.",
                 'category' => 'Notas em Markdown',
                 'icon' => 'fa-solid fa-feather-pointed',
                 'page_view' => null,
