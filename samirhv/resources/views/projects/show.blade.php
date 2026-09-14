@@ -77,10 +77,15 @@
                     <header class="s-project-header">
                         @include('partials.project-mark', ['project' => $project, 'class' => 's-icon s-icon--lg'])
                         <div style="min-width:0;">
+                            {{-- Both through Content, like every other surface that renders
+                                 them. These two echoed the raw database column, which is
+                                 written in Portuguese in the admin: the English /p/{slug}
+                                 printed "Assistente IA" under an English description, and
+                                 the leak test never looked at this page. --}}
                             @if($project->category)
-                                <span class="s-tag s-tag--accent">{{ $project->category }}</span>
+                                <span class="s-tag s-tag--accent">{{ \App\Support\Content::category($project->category) }}</span>
                             @endif
-                            <h1 class="s-display">{{ $project->title }}</h1>
+                            <h1 class="s-display">{{ \App\Support\Content::project($project, 'title') }}</h1>
 
                             @if($download['has_any'])
                                 <div class="s-meta s-project-release-meta">

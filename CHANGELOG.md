@@ -12,6 +12,27 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - The English project page printed its category in Portuguese
+
+`App\Support\Content` exists because a project's title, description and
+category are written in the admin, in Portuguese, and are content rather than
+interface. Every surface that renders them goes through it — the downloads list,
+the structured data in the page head, the meta description. Two did not: the
+`<h1>` and the category tag of `/p/{slug}`, which echoed the database column
+straight out.
+
+The category is the one that showed. The English page rendered an English
+description under a tag reading "Assistente IA", and `/projects/tura-notes` put
+"Notas em Markdown" above prose about Markdown notes. The title survived only
+because every project is currently named the same in both languages; the day one
+is not, it would have leaked the same way, which is why both go through Content
+now rather than only the one that was visibly wrong.
+
+BilingualRenderTest never saw it. It is written against
+`/projects/github-desktop`, which is a `Route::view` with no database row — so
+the page with no database prose is the page the leak test reads, and the pages
+that have some were never checked.
+
 ## 0.8.2 - The deploy runs from a copy, because it rewrites itself
 
 The entry below added a step and the deploy did not run it. It reported
