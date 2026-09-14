@@ -14,6 +14,11 @@
 */
 
 return [
+    /* ── A linha extra do painel de acesso (partials/projects/ai-memory-access) ── */
+    'access_web_title' => 'O painel web',
+    'access_web_desc' => 'O ai-memory-web, nosso: o painel somente-leitura sobre o índice, cujas telas estão abaixo.',
+    'access_web_cta' => 'Abrir o ai-memory-web',
+
     /* ── O ai-memory ──────────────────────────────────────────────── */
     'title' => 'A memória que o seu agente não tem',
     'lead' => 'O seu agente de programação já toma notas. Elas vivem numa máquina só, pertencem àquele agente só e somem no instante em que você troca de ferramenta. O :name é o que fica do outro lado desse muro: uma memória compartilhada que mais de vinte harnesses — :claude, :codex, Cursor, Gemini CLI, OpenCode e outros — leem e escrevem.',

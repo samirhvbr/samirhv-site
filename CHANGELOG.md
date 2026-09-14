@@ -12,6 +12,38 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.1 - The ai-memory access panel offers both repositories
+
+The panel had one row, `external_url`, pointing at akitaonrails/ai-memory — the
+product the page explains, and the right link for someone who wants to install
+it. What it left out is the half that is ours: samirhvbr/ai-memory-web, the
+read-only panel whose nine captures fill the rest of the page. A reader who
+scrolled through those screens and then went looking for the repository that
+produced them was being offered the wrong two links.
+
+It could not go in a column. `external_url` holds the first one and
+`upstream_repo` holds akitaonrails/ai-memory too — that is what the version
+monitor compares our fork against, and it means "the OSS this is a fork of",
+not "a second link".
+
+So the panel gained the same convention the page section already uses:
+`partials/projects/<slug>-access.blade.php`, picked up by one `@includeIf`
+inside the aside. The partial owns its url and its copy together, which is the
+point — putting the address in the two lang files would have given it two homes
+that can drift apart, and a lang file is for translations rather than for
+addresses.
+
+Both buttons said "Open on GitHub", for two different repositories. They name
+their destination now — "Open ai-memory", "Open ai-memory-web" — which is what
+the meuip.rs and SShvTerm rows already do ("Open meuip.rs", "Go to
+sshvterm.com").
+
+`ProjectSectionTest` covers access rows alongside sections: the same key-leak and
+placeholder assertions, plus one that the partial actually carries the panel's
+option class. Included with no wrapper of its own, a partial that forgot it would
+render as unstyled text hanging off the bottom of the box, and only looking would
+find it.
+
 ## 1.0.0 - The catalogue takes its official order
 
 ShvIA, ai-memory, ai-usagebar, GitHub Desktop, Tura Notes, SShvTerm, meuip.rs.

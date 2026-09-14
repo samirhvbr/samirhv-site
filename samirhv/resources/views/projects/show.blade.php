@@ -146,6 +146,16 @@
                             <strong>{{ __('project.in_preparation') }}</strong>
                         </div>
                     @endif
+
+                    {{-- A project can add access rows of its own:
+                         partials/projects/<slug>-access.blade.php. The same convention as
+                         the page section below, for the same reason — ai-memory has two
+                         repositories to offer, the upstream it explains and the web panel
+                         we wrote, and neither `external_url` nor `upstream_repo` is free to
+                         hold the second one. A partial owns its url and its copy together,
+                         so the address lives in one file instead of being repeated in two
+                         lang files where they could drift apart. --}}
+                    @includeIf('partials.projects.'.$project->slug.'-access')
                 </aside>
             </div>
 

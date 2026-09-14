@@ -14,6 +14,11 @@
 */
 
 return [
+    /* ── The extra access row (partials/projects/ai-memory-access) ── */
+    'access_web_title' => 'The web panel',
+    'access_web_desc' => 'ai-memory-web, ours: the read-only panel over the index, whose screens are below.',
+    'access_web_cta' => 'Open ai-memory-web',
+
     /* ── ai-memory itself ─────────────────────────────────────────── */
     'title' => 'The memory your agent does not have',
     'lead' => 'Your coding agent already takes notes. They live on one machine, belong to that one agent, and are gone the moment you switch tools. :name is what sits on the other side of that wall: one shared memory that more than twenty harnesses — :claude, :codex, Cursor, Gemini CLI, OpenCode and others — read from and write to.',

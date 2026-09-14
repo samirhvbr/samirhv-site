@@ -43,7 +43,7 @@ return [
         'ai-memory' => [
             'title' => 'Código e instalação',
             'desc' => 'Um binário em Rust, compilado do fonte ou instalado por pacote. O README tem o passo a passo de cada sistema.',
-            'cta' => 'Abrir no GitHub',
+            'cta' => 'Abrir o ai-memory',
         ],
     ],
 

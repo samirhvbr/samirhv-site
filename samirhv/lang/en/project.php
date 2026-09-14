@@ -49,7 +49,7 @@ return [
         'ai-memory' => [
             'title' => 'Source and installation',
             'desc' => 'One Rust binary, built from source or installed from a package. The README has the steps for each system.',
-            'cta' => 'Open on GitHub',
+            'cta' => 'Open ai-memory',
         ],
     ],
 

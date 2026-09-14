@@ -41,6 +41,24 @@ class ProjectSectionTest extends TestCase
         'shvia' => 'shvia_models',
     ];
 
+    /**
+     * The optional extra rows of the access panel, under the same convention:
+     * partials/projects/<slug>-access.blade.php. Same key shape as above.
+     *
+     * They are listed apart from SECTIONS because they are a row inside an
+     * `<aside>` rather than a `<section>` — the copy assertions apply to both,
+     * the structural one does not.
+     */
+    private const ACCESS_ROWS = [
+        'ai-memory-access' => 'ai_memory',
+    ];
+
+    /** Every partial this file asserts, section or access row. */
+    private function allPartials(): array
+    {
+        return self::SECTIONS + self::ACCESS_ROWS;
+    }
+
     private function render(string $slug, string $locale): string
     {
         App::setLocale($locale);
@@ -61,6 +79,25 @@ class ProjectSectionTest extends TestCase
     }
 
     /**
+     * An access row has to be a row of the panel it is dropped into.
+     *
+     * `show.blade.php` includes it inside the `<aside>` with no wrapper of its
+     * own, so a partial that forgot the panel's option class would render as
+     * unstyled text hanging off the bottom of the box — visible only by looking.
+     */
+    public function test_every_access_row_renders_as_a_panel_option(): void
+    {
+        foreach (array_keys(self::ACCESS_ROWS) as $slug) {
+            foreach (['en', 'pt_BR'] as $locale) {
+                $html = $this->render($slug, $locale);
+
+                $this->assertStringContainsString('s-project-action-panel__option', $html, "[$locale/$slug] is not a panel option.");
+                $this->assertStringContainsString('rel="noopener"', $html, "[$locale/$slug] opens an external link without rel=noopener.");
+            }
+        }
+    }
+
+    /**
      * A key that reached the page as text.
      *
      * `__('ai_memory.nope')` returns the string "ai_memory.nope", which Blade
@@ -69,7 +106,7 @@ class ProjectSectionTest extends TestCase
      */
     public function test_no_translation_key_reaches_the_page_as_text(): void
     {
-        foreach (self::SECTIONS as $slug => $file) {
+        foreach ($this->allPartials() as $slug => $file) {
             /* The real key list, not a regular expression for one: the meuip
                section prints "meuip.rs/asn" as content, and a pattern loose
                enough to catch "meuip.lead" catches that too. */
@@ -92,7 +129,7 @@ class ProjectSectionTest extends TestCase
     /** An unreplaced `:placeholder` left in the middle of a sentence. */
     public function test_no_placeholder_is_left_unreplaced(): void
     {
-        foreach (array_keys(self::SECTIONS) as $slug) {
+        foreach (array_keys($this->allPartials()) as $slug) {
             foreach (['en', 'pt_BR'] as $locale) {
                 $html = $this->render($slug, $locale);
                 $text = strip_tags($html);
