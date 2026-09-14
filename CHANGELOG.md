@@ -12,6 +12,33 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - ai-memory joins the catalogue, with the screens of its web panel
+
+Two projects, one page, and the page never lets them blur. ai-memory is Fabio
+Akita's (akitaonrails/ai-memory): long-term memory for coding agents, where what
+a session learned — decisions, approaches that failed, questions still open — is
+written to markdown and comes back to the next agent, even a different one.
+ai-memory-web is ours (samirhvbr/ai-memory-web): a read-only Laravel panel over
+the same SQLite index, and the only reason this page can show anything at all.
+ai-memory is a daemon and a CLI, and a daemon has no screenshots.
+
+So the section explains the first and shows the second, each half linking its own
+repository and the closing block naming both again side by side. Getting that
+attribution wrong in either direction would be taking credit for someone else's
+project, which is the one mistake a page like this cannot make.
+
+The nine captures come from the panel's own `docs/screenshots/`. They are
+resized to 1600px and palette-reduced on the way in — 5.2 MB of originals
+becomes 764 KB, on a page that renders them at a third of that width. The
+captures show the Portuguese AI-MEMORY integration in this site's admin, which is
+where the standalone app was extracted from; the note under the gallery says so,
+because a reader who opens the repository and finds an English interface should
+not have to wonder which one is real.
+
+The changelog lists ai-memory's own releases, not the panel's. Interleaving two
+version lines reads as one line that skips numbers, so ai-memory-web is named in
+the side note instead.
+
 ## 0.9.0 - SShvTerm gets the page it was only a link to
 
 SShvTerm was a pure link: `redirect_to_site` on, so clicking its card 302'd

@@ -51,6 +51,11 @@ return [
             'description' => 'Monitor how much of your AI plans you have used — fourteen providers, among them Anthropic Claude, OpenAI Codex, Z.AI, OpenRouter, DeepSeek, Kimi, xAI/Grok, MiniMax and ShvIA itself — straight in your system bar (Waybar/GNOME on Linux, the menu bar on macOS), plus a terminal TUI that runs on all three systems.',
         ],
 
+        'ai-memory' => [
+            'title' => 'ai-memory',
+            'description' => "Long-term memory for coding agents. What a session learned — decisions, approaches that failed, questions still open — is written to markdown and comes back to the next agent, even a different one: quit Claude Code mid-task, open Codex in the same directory, and carry on from where you stopped.\n\nA project by Fabio Akita (akitaonrails/ai-memory), written in Rust, MIT licence. This page also shows ai-memory-web, the web panel that opens that archive for reading — nine screens over the same index, never writing to it.",
+        ],
+
         /* Filled in from the seeder, which is now the readable source for this
            text — it was the missing tail of a truncated list entry that made
            this a TODO for two releases. */
@@ -66,6 +71,7 @@ return [
         'monitor_de_uso_de_ia' => 'AI usage monitor',
         'cliente_ssh' => 'SSH client',
         'notas_em_markdown' => 'Markdown notes',
+        'memoria_de_agentes' => 'Agent memory',
     ],
 
     /* File labels, keyed by the label itself (lowercased, unaccented,
