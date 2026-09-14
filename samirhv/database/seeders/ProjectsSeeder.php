@@ -8,12 +8,18 @@ use Illuminate\Database\Seeder;
 /**
  * Projetos curados da vitrine, na ordem oficial:
  *   1. ShvIA (híbrido: site + app desktop)
- *   2. Tura Notes (download: o .dmg assinado que o CI do repo não publica)
- *   3. GitHub Desktop (download)
- *   4. ai-usagebar (documentação: página curada de instalação)
- *   5. SShvTerm (projeto de site: os instaladores moram no sshvterm.com)
- *   6. ai-memory (projeto de site: explicação + galeria do painel web)
+ *   2. ai-memory (projeto de site: explicação + galeria do painel web)
+ *   3. ai-usagebar (documentação: página curada de instalação)
+ *   4. GitHub Desktop (download)
+ *   5. Tura Notes (download: o .dmg assinado que o CI do repo não publica)
+ *   6. SShvTerm (projeto de site: os instaladores moram no sshvterm.com)
  *   7. meuip.rs (projeto de site: o produto É o endereço)
+ *
+ * A ORDEM DESTE ARQUIVO É A ORDEM DA TELA, e é por isso que os blocos são
+ * movidos junto com o `sort_order` em vez de só renumerados no lugar. O menu, a
+ * home e a lista de downloads leem todos `orderBy('sort_order')`, então quem
+ * quiser conferir a vitrine lê este arquivo de cima para baixo. Renumerar sem
+ * mover deixaria as duas ordens divergentes, e a errada seria a que se lê.
  *
  * updateOrCreate por slug: idempotente E autoritativo — rodar de novo
  * sincroniza título/descrição/ordem/flags com o que está aqui no código.
@@ -43,7 +49,62 @@ class ProjectsSeeder extends Seeder
             ]
         );
 
-        // 2) Download: app local-first de notas em Markdown. Repositório público
+        // 2) Projeto de site: o upstream é de terceiro (Fabio Akita) e mora no
+        //    GitHub, então é para lá que o painel de acesso aponta. O que esta
+        //    página acrescenta ao README é o ai-memory-web — o painel de leitura,
+        //    nosso (samirhvbr/ai-memory-web) — com as telas dele.
+        Project::updateOrCreate(
+            ['slug' => 'ai-memory'],
+            [
+                'title' => 'ai-memory',
+                'description' => "Memória de longo prazo para agentes de programação. O que uma sessão aprendeu — decisões, tentativas que falharam, perguntas em aberto — fica gravado em markdown e volta para o próximo agente, mesmo que seja outro: saia do Claude Code no meio da tarefa, abra o Codex na mesma pasta e continue de onde parou.\n\nProjeto de Fabio Akita (akitaonrails/ai-memory), escrito em Rust, licença MIT. Esta página mostra também o ai-memory-web, o painel web que abre esse acervo para leitura — nove telas sobre o mesmo índice, sem nunca escrever nele.",
+                'category' => 'Memória de agentes',
+                'icon' => 'fa-solid fa-brain',
+                'page_view' => null,
+                'external_url' => 'https://github.com/akitaonrails/ai-memory',
+                'upstream_repo' => 'akitaonrails/ai-memory',
+                'redirect_to_site' => false,
+                'is_published' => true,
+                'sort_order' => 2,
+            ]
+        );
+
+        // 3) Documentação: página curada 'projects.ai-usagebar' (instalação por SO). Sem binários
+        //    hospedados aqui — instala via AUR/crates.io/build. Autoria de Fabio Akita.
+        Project::updateOrCreate(
+            ['slug' => 'ai-usagebar'],
+            [
+                'title' => 'ai-usagebar',
+                'description' => "Monitor de uso dos seus planos de IA — quatorze provedores, entre eles Anthropic Claude, OpenAI Codex, Z.AI, OpenRouter, DeepSeek, Kimi, xAI/Grok, MiniMax e a própria ShvIA — direto na barra do sistema (Waybar/GNOME no Linux, menu bar no macOS) e num TUI de terminal que roda nos três sistemas.\n\nProjeto de Fabio Akita (akitaonrails/ai-usagebar), escrito em Rust, licença MIT. As integrações nativas de GNOME e macOS mostradas aqui nasceram neste fork e foram adotadas pelo upstream. Veja como instalar em cada sistema.",
+                'category' => 'Monitor de uso de IA',
+                'icon' => 'fa-solid fa-gauge-high',
+                'page_view' => 'projects.ai-usagebar',
+                'external_url' => null,
+                'upstream_repo' => 'akitaonrails/ai-usagebar',
+                'redirect_to_site' => false,
+                'is_published' => true,
+                'sort_order' => 3,
+            ]
+        );
+
+        // 4) Download: build da comunidade do GitHub Desktop (a GitHub não publica p/ Linux).
+        Project::updateOrCreate(
+            ['slug' => 'github-desktop'],
+            [
+                'title' => 'GitHub Desktop',
+                'description' => "GitHub Desktop é o cliente Git visual e open-source da GitHub — Electron, TypeScript e React. Commits, branches, histórico, pull requests e resolução de conflitos numa interface limpa, sem decorar comandos.\n\nA GitHub não distribui o app para Linux. Este é um fork que compila do código-fonte e empacota para as três plataformas: .deb, .rpm, AppImage e .pkg.tar.zst no Linux, .exe e .msi no Windows, .dmg no macOS. O fork acrescenta um painel multi-repositório — todos os seus repositórios numa tela, com pull e push em lote.",
+                'category' => 'Aplicativo Desktop',
+                'icon' => 'fa-brands fa-github',
+                'page_view' => null,
+                'external_url' => null,
+                'upstream_repo' => 'desktop/desktop',
+                'redirect_to_site' => false,
+                'is_published' => true,
+                'sort_order' => 4,
+            ]
+        );
+
+        // 5) Download: app local-first de notas em Markdown. Repositório público
         //    (samirhvbr/tura-notes), mas o .dmg assinado + notarizado NÃO sai no
         //    GitHub Release — o certificado Developer ID mora num keychain, não
         //    num secret de CI, então quem empacota é a máquina que o tem. É por
@@ -65,46 +126,11 @@ class ProjectsSeeder extends Seeder
                 'upstream_repo' => null,
                 'redirect_to_site' => false,
                 'is_published' => true,
-                'sort_order' => 2,
+                'sort_order' => 5,
             ]
         );
 
-        // 3) Download: build da comunidade do GitHub Desktop (a GitHub não publica p/ Linux).
-        Project::updateOrCreate(
-            ['slug' => 'github-desktop'],
-            [
-                'title' => 'GitHub Desktop',
-                'description' => "GitHub Desktop é o cliente Git visual e open-source da GitHub — Electron, TypeScript e React. Commits, branches, histórico, pull requests e resolução de conflitos numa interface limpa, sem decorar comandos.\n\nA GitHub não distribui o app para Linux. Este é um fork que compila do código-fonte e empacota para as três plataformas: .deb, .rpm, AppImage e .pkg.tar.zst no Linux, .exe e .msi no Windows, .dmg no macOS. O fork acrescenta um painel multi-repositório — todos os seus repositórios numa tela, com pull e push em lote.",
-                'category' => 'Aplicativo Desktop',
-                'icon' => 'fa-brands fa-github',
-                'page_view' => null,
-                'external_url' => null,
-                'upstream_repo' => 'desktop/desktop',
-                'redirect_to_site' => false,
-                'is_published' => true,
-                'sort_order' => 3,
-            ]
-        );
-
-        // 4) Documentação: página curada 'projects.ai-usagebar' (instalação por SO). Sem binários
-        //    hospedados aqui — instala via AUR/crates.io/build. Autoria de Fabio Akita.
-        Project::updateOrCreate(
-            ['slug' => 'ai-usagebar'],
-            [
-                'title' => 'ai-usagebar',
-                'description' => "Monitor de uso dos seus planos de IA — quatorze provedores, entre eles Anthropic Claude, OpenAI Codex, Z.AI, OpenRouter, DeepSeek, Kimi, xAI/Grok, MiniMax e a própria ShvIA — direto na barra do sistema (Waybar/GNOME no Linux, menu bar no macOS) e num TUI de terminal que roda nos três sistemas.\n\nProjeto de Fabio Akita (akitaonrails/ai-usagebar), escrito em Rust, licença MIT. As integrações nativas de GNOME e macOS mostradas aqui nasceram neste fork e foram adotadas pelo upstream. Veja como instalar em cada sistema.",
-                'category' => 'Monitor de uso de IA',
-                'icon' => 'fa-solid fa-gauge-high',
-                'page_view' => 'projects.ai-usagebar',
-                'external_url' => null,
-                'upstream_repo' => 'akitaonrails/ai-usagebar',
-                'redirect_to_site' => false,
-                'is_published' => true,
-                'sort_order' => 4,
-            ]
-        );
-
-        // 5) Projeto de site: os binários moram no sshvterm.com, a explicação mora aqui.
+        // 6) Projeto de site: os binários moram no sshvterm.com, a explicação mora aqui.
         //
         //    ERA um link puro (`redirect_to_site => true`): clicar no card saía do
         //    site sem nunca mostrar o que o produto faz. Um cliente SSH com sync
@@ -125,26 +151,6 @@ class ProjectsSeeder extends Seeder
                 'external_url' => 'https://sshvterm.com',
                 'upstream_repo' => null, // repositórios privados: nada a rastrear no monitor
                 'redirect_to_site' => false, // projeto de site: abre /p/sshvterm, com o link no painel
-                'is_published' => true,
-                'sort_order' => 5,
-            ]
-        );
-
-        // 6) Projeto de site: o upstream é de terceiro (Fabio Akita) e mora no
-        //    GitHub, então é para lá que o painel de acesso aponta. O que esta
-        //    página acrescenta ao README é o ai-memory-web — o painel de leitura,
-        //    nosso (samirhvbr/ai-memory-web) — com as telas dele.
-        Project::updateOrCreate(
-            ['slug' => 'ai-memory'],
-            [
-                'title' => 'ai-memory',
-                'description' => "Memória de longo prazo para agentes de programação. O que uma sessão aprendeu — decisões, tentativas que falharam, perguntas em aberto — fica gravado em markdown e volta para o próximo agente, mesmo que seja outro: saia do Claude Code no meio da tarefa, abra o Codex na mesma pasta e continue de onde parou.\n\nProjeto de Fabio Akita (akitaonrails/ai-memory), escrito em Rust, licença MIT. Esta página mostra também o ai-memory-web, o painel web que abre esse acervo para leitura — nove telas sobre o mesmo índice, sem nunca escrever nele.",
-                'category' => 'Memória de agentes',
-                'icon' => 'fa-solid fa-brain',
-                'page_view' => null,
-                'external_url' => 'https://github.com/akitaonrails/ai-memory',
-                'upstream_repo' => 'akitaonrails/ai-memory',
-                'redirect_to_site' => false,
                 'is_published' => true,
                 'sort_order' => 6,
             ]
@@ -169,6 +175,6 @@ class ProjectsSeeder extends Seeder
             ]
         );
 
-        $this->command?->info('Projetos sincronizados: ShvIA (1) · Tura Notes (2) · GitHub Desktop (3) · ai-usagebar (4) · SShvTerm (5) · ai-memory (6) · meuip.rs (7).');
+        $this->command?->info('Projetos sincronizados: ShvIA (1) · ai-memory (2) · ai-usagebar (3) · GitHub Desktop (4) · Tura Notes (5) · SShvTerm (6) · meuip.rs (7).');
     }
 }

@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.0 - The catalogue takes its official order
+
+ShvIA, ai-memory, ai-usagebar, GitHub Desktop, Tura Notes, SShvTerm, meuip.rs.
+One `sort_order` drives every surface — the nav menu, the home showcase, the
+downloads list, the admin list, the monitor and the sitemap all read
+`orderBy('sort_order')` — so this is a change to the seeder and to nothing else.
+
+The blocks were MOVED, not renumbered in place. The seeder is the readable
+source for what the catalogue is, and someone checking the order reads it top to
+bottom; renumbering without moving would leave the file's order and the screen's
+order disagreeing, and the file is the one a person reads. The reason is written
+into the file itself so the next edit keeps the pair together.
+
+The order is not alphabetical and not chronological. It is the two AI tools
+first, then the two Git/desktop applications, then the two things that live on
+their own sites — a reader scanning the menu meets things that belong together.
+
+WHY 1.0.0. The owner's call, and 0.9.0 is what earned it: the catalogue is
+complete, every project in it has a page rather than a redirect, every page has a
+changelog, and both languages are asserted rather than hoped for. The number says
+the site is finished being assembled, not that it stops changing.
+
 ## 0.9.0 - The project sections are asserted in both languages
 
 Four sections, two languages, and every string in a `lang/` file: the failure
