@@ -1,0 +1,110 @@
+/* Project sections — the per-project story rendered between the description and
+   the changelog on /p/{slug}, from partials/projects/<slug>.blade.php.
+
+   ONE STYLESHEET FOR ALL OF THEM, and that is the point. The two pages that
+   came before this file (ai-usagebar, github-desktop) each carry their own
+   inline styles, and the result is three slightly different cards, three
+   slightly different code blocks and three slightly different captions on the
+   same site. These classes are the shared vocabulary: a new project section
+   writes markup and adds no CSS.
+
+   Everything is token-based (--s-*), so a theme change reaches these sections
+   the same way it reaches the rest of the page. */
+
+.ps { margin-top:clamp(2.5rem,5vw,4rem); padding-top:clamp(2rem,4vw,3rem); border-top:1px solid var(--s-line); }
+.ps + .ps { margin-top:clamp(2rem,4vw,3rem); }
+
+.ps__title { font-family:var(--s-sans); font-weight:700; font-size:clamp(1.35rem,2.4vw,1.7rem); letter-spacing:-0.02em; color:var(--s-ink); margin:0 0 .85rem; text-wrap:balance; }
+.ps__lead { font-size:1rem; line-height:1.7; color:var(--s-ink-2); margin:0; max-width:64ch; text-wrap:pretty; }
+.ps__lead + .ps__lead { margin-top:.9rem; }
+.ps__lead b { color:var(--s-ink); font-weight:600; }
+.ps__lead code, .ps-note code { font-family:var(--s-mono); font-size:.85em; color:var(--s-accent-ink-2); }
+
+.ps__sub { font-family:var(--s-mono); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--s-muted); margin:clamp(1.6rem,3vw,2.2rem) 0 .95rem; }
+
+/* ── Feature cards ─────────────────────────────────────────────────────── */
+.ps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin-top:clamp(1.4rem,2.6vw,1.9rem); }
+.ps-card { background:var(--s-surface); border:1px solid var(--s-line); border-radius:var(--s-r); padding:18px 20px; }
+.ps-card > i { color:var(--s-accent-ink-2); font-size:1.05rem; }
+.ps-card h3 { font-family:var(--s-sans); font-size:.98rem; font-weight:600; color:var(--s-ink); margin:11px 0 5px; }
+.ps-card p { font-size:.87rem; line-height:1.65; color:var(--s-muted); margin:0; }
+.ps-card p b { color:var(--s-ink-2); font-weight:600; }
+.ps-card code { font-family:var(--s-mono); font-size:.82em; color:var(--s-accent-ink-2); }
+
+/* ── Callout: one fact given weight (the on-prem block's cousin) ───────── */
+.ps-callout { position:relative; overflow:hidden; margin-top:clamp(1.5rem,3vw,2rem);
+    background:var(--s-surface); border:1px solid var(--s-line-2); border-radius:var(--s-r-lg);
+    padding:clamp(1.15rem,2.2vw,1.6rem); }
+.ps-callout::before { content:''; position:absolute; inset:0; background:var(--s-accent-soft); opacity:.55; pointer-events:none; }
+.ps-callout > * { position:relative; }
+.ps-callout__top { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:.85rem; }
+.ps-glyph { width:40px; height:40px; border-radius:11px; background:var(--s-accent-soft-2);
+    border:1px solid var(--s-line-2); color:var(--s-accent-ink-2);
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.05rem; }
+.ps-callout__label { font-family:var(--s-mono); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--s-ink-2); }
+.ps-callout h3 { font-family:var(--s-sans); font-weight:700; font-size:1.12rem; color:var(--s-ink); letter-spacing:-0.01em; margin:0 0 .45rem; }
+.ps-callout p { font-size:.94rem; line-height:1.65; color:var(--s-ink-2); margin:0; max-width:72ch; }
+.ps-callout p + p { margin-top:.7rem; }
+.ps-callout p b { color:var(--s-ink); font-weight:600; }
+
+/* ── Endpoint / key-value table (meuip.rs) ─────────────────────────────── */
+.ps-table-wrap { overflow-x:auto; margin-top:clamp(1.4rem,2.6vw,1.9rem); border:1px solid var(--s-line); border-radius:var(--s-r); background:var(--s-surface); }
+.ps-table { width:100%; border-collapse:collapse; min-width:420px; }
+.ps-table th, .ps-table td { text-align:left; padding:11px 16px; border-bottom:1px solid var(--s-line); vertical-align:top; }
+.ps-table tr:last-child th, .ps-table tr:last-child td { border-bottom:0; }
+.ps-table thead th { font-family:var(--s-mono); font-size:.68rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--s-muted); background:rgba(150,155,185,.04); }
+.ps-table td.cmd { font-family:var(--s-mono); font-size:.78rem; color:var(--s-accent-ink-2); white-space:nowrap; }
+.ps-table td { font-size:.88rem; color:var(--s-ink-2); line-height:1.55; }
+
+/* ── Terminal block ────────────────────────────────────────────────────── */
+.ps-code { margin-top:clamp(1.4rem,2.6vw,1.9rem); background:var(--s-bg); border:1px solid var(--s-line); border-radius:var(--s-r); padding:16px 18px; overflow-x:auto; }
+.ps-code pre { margin:0; font-family:var(--s-mono); font-size:.79rem; line-height:1.85; color:var(--s-ink-2); }
+.ps-code .prompt { color:var(--s-accent-ink-2); user-select:none; }
+.ps-code .out { color:var(--s-muted); }
+
+/* ── Screenshot gallery ────────────────────────────────────────────────────
+   TWO COLUMNS, NOT THREE, and `align-self:start`. These are screenshots of a
+   dense admin panel: at a third of the width the table rows stop being legible
+   and the gallery turns into nine grey rectangles that prove nothing. Two
+   columns keep each capture readable at the size it is rendered.
+
+   `align-self:start` because the captures have wildly different aspect ratios
+   (3.4:1 for the workspaces strip, 1:1 for the projects list). Stretching them
+   to a common height would either crop the content or letterbox it; letting
+   each keep its own height costs a ragged bottom edge, which is the cheaper of
+   the three. */
+.ps-shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:26px 22px; margin-top:clamp(1.4rem,2.6vw,1.9rem); }
+.ps-shot { margin:0; align-self:start; }
+.ps-shot img { width:100%; height:auto; display:block; border-radius:var(--s-r); border:1px solid var(--s-line); background:var(--s-bg); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+.ps-shot figcaption { font-size:.85rem; line-height:1.55; color:var(--s-muted); margin-top:10px; }
+.ps-shot figcaption b { display:block; color:var(--s-ink); font-weight:600; font-family:var(--s-sans); font-size:.92rem; margin-bottom:3px; }
+.ps-shot--wide { grid-column:1 / -1; }
+
+/* ── Chips and the closing note ────────────────────────────────────────── */
+.ps-chips { display:flex; flex-wrap:wrap; gap:9px; margin-top:clamp(1.2rem,2.4vw,1.6rem); }
+.ps-chip { display:inline-flex; align-items:center; gap:8px; padding:7px 13px;
+    border:1px solid var(--s-line); border-radius:9px; background:rgba(150,155,185,.04);
+    color:var(--s-ink-2); font-family:var(--s-sans); font-weight:500; font-size:.86rem; }
+.ps-chip i { color:var(--s-muted); font-size:.85em; }
+
+.ps-note { display:flex; align-items:flex-start; gap:9px; margin-top:clamp(1.2rem,2.4vw,1.6rem); font-size:.86rem; line-height:1.65; color:var(--s-muted); max-width:68ch; }
+.ps-note > i { margin-top:.25em; color:var(--s-accent-ink-2); flex-shrink:0; }
+.ps-note a { color:var(--s-accent-ink-2); }
+.ps-note b { color:var(--s-ink-2); font-weight:600; }
+
+/* ── Repository links ──────────────────────────────────────────────────── */
+.ps-repos { display:flex; flex-wrap:wrap; gap:12px; margin-top:clamp(1.4rem,2.6vw,1.9rem); }
+.ps-repo { display:flex; align-items:center; gap:12px; text-decoration:none;
+    background:var(--s-surface); border:1px solid var(--s-line); border-radius:var(--s-r);
+    padding:13px 17px; min-width:min(100%,280px); flex:1 1 280px;
+    transition:border-color .2s ease, background .2s ease, transform .15s ease; }
+.ps-repo:hover { border-color:var(--s-line-2); background:var(--s-surface-2); transform:translateY(-1px); }
+.ps-repo > i { color:var(--s-ink-2); font-size:1.2rem; flex-shrink:0; }
+.ps-repo span { display:block; min-width:0; }
+.ps-repo strong { display:block; font-family:var(--s-mono); font-size:.82rem; font-weight:600; color:var(--s-ink); overflow:hidden; text-overflow:ellipsis; }
+.ps-repo small { display:block; font-size:.8rem; color:var(--s-muted); line-height:1.45; margin-top:2px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .ps-repo { transition:none; }
+    .ps-repo:hover { transform:none; }
+}

@@ -141,8 +141,14 @@
                 </aside>
             </div>
 
-            {{-- The "models behind it" section — ShvIA only (the hybrid story: on-prem + BYOK cloud). --}}
-            @includeWhen($project->slug === 'shvia', 'partials.shvia-models')
+            {{-- The project's own section, when it has one: partials/projects/<slug>.blade.php.
+                 A convention and not a list, for the same reason the project mark is one
+                 (Project::getMarkUrlAttribute): adding a section should be adding a file, not
+                 editing this file too. `@includeIf` renders nothing when there is no partial,
+                 which is every project that only needs a description and its files. The slug
+                 comes from route-model binding and is `Str::slug`-shaped, so it cannot carry
+                 a separator into the view name. --}}
+            @includeIf('partials.projects.'.$project->slug)
 
             @if($project->slug === 'github-desktop')
                 {{-- A página estática descreve o build com detalhe que não cabe

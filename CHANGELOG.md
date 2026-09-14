@@ -12,6 +12,33 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - A project page can carry a section of its own
+
+`/p/{slug}` renders a header, a description, an access panel, a changelog and a
+list of files. That is enough for a download and not enough for a product: the
+ShvIA page needed a section about the models behind it, and `show.blade.php`
+grew an `@includeWhen($project->slug === 'shvia', ...)` to get one. A second
+project would have made it two lines in a file that has nothing to do with
+either project, and a fourth would have made it a list nobody remembers to
+update — the same failure mode `Project::getMarkUrlAttribute()` already avoids
+by treating the project mark as a file on disk rather than a column.
+
+So the section is a convention now: `partials/projects/<slug>.blade.php`, picked
+up by a single `@includeIf` between the description and the changelog. Adding a
+section is adding a file; `show.blade.php` is not touched again.
+`partials/shvia-models.blade.php` moved to `partials/projects/shvia.blade.php`
+and is the first thing the convention renders, so the mechanism is exercised by
+the section it replaced.
+
+The slug comes from route-model binding and is `Str::slug`-shaped, so it cannot
+carry a path separator into a view name.
+
+`public/css/site/project-sections.css` is the other half. The two curated pages
+that came before it — ai-usagebar and github-desktop — each carry their own
+inline styles, which is why the site has three slightly different cards, three
+code blocks and three caption styles. The new sections share one vocabulary of
+token-based classes, so writing one is writing markup and no CSS.
+
 ## 0.9.0 - The English project page printed its category in Portuguese
 
 `App\Support\Content` exists because a project's title, description and

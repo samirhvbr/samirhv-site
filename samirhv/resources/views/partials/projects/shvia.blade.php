@@ -1,4 +1,8 @@
-{{-- The "models behind it" section — only on /p/shvia.
+{{-- The "models behind it" section — /p/shvia.
+     Rendered by the convention in projects/show.blade.php: a project whose slug
+     has a partial in this folder gets it between the description and the
+     changelog. Nothing registers it; the filename is the registration.
+
      Tells ShvIA's REAL (hybrid) story: local on-prem models (the prompt never
      leaves Blue3) plus optional cloud providers via BYOK (data does leave
      Blue3, with LGPD masking). The logos carry information (on-prem vs cloud);
