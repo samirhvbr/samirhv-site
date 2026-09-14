@@ -4,16 +4,14 @@
 | What changed in each application, per version.
 |
 | CURATED, not mirrored. Each entry is written from the application's own
-| changelog — CHANGELOG.md for ai-usagebar, ShvIA and SShvTerm, VERSION.md for
-| the GitHub Desktop fork — and rewritten for someone deciding whether to
-| download it, not for someone maintaining it. An entry that only means
-| something inside the repository does not belong on a product page.
+| changelog — CHANGELOG.md for most of them, VERSION.md for the GitHub Desktop
+| fork — and rewritten for someone deciding whether to use it, not for someone
+| maintaining it. An entry that only means something inside the repository does
+| not belong on a product page.
 |
-| Checked against every repository on 2026-09-05. The date on an entry is the
-| date of the release, not of the check.
-|
-| SShvTerm has no entry: it is a link-only project with no page here, so there
-| is nowhere to render one. Its changelog lives on its own site.
+| Checked against every repository on 2026-09-05, and SShvTerm — whose page
+| arrived in 0.9.0 — on 2026-09-14. The date on an entry is the date of the
+| release, not of the check.
 |
 | To update: read the app's changelog, add the new version at the TOP of its
 | list, and translate the entry in lang/pt_BR/changelog.php. Key sets are
@@ -151,6 +149,53 @@ return [
                 ],
             ],
         ],
+
+        'sshvterm' => [
+            [
+                'version' => '2.0.78',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'Nothing visible changed, and that is the entry: the five largest files in the app now carry a size ceiling that fails the build when they grow. They had been growing for thirty versions, and the cost was the kind of bug you do see — a fix applied to one path and not to its twin.',
+                ],
+            ],
+            [
+                'version' => '2.0.77',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'The VPN screens stop stating things they cannot know. A refused WireGuard change now says why instead of the switch snapping back on its own, and a vault it could not read says exactly that rather than printing "no host with VPN configured" — a claim expensive enough to make someone re-import a .conf holding a private key.',
+                    'The markdown that renders the agent\'s replies no longer rewrites the commands it is showing you.',
+                ],
+            ],
+            [
+                'version' => '2.0.76',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'Secret detection runs on its own; rewriting what it found waits for your click. Finding and changing are two decisions, and only one of them is the app\'s to make.',
+                ],
+            ],
+            [
+                'version' => '2.0.75',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'The redaction can be re-run over what is already stored. The earlier fix stopped new leaks and removed none of the old ones, which left the sessions recorded before it exactly as they were.',
+                ],
+            ],
+            [
+                'version' => '2.0.74',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'The leak at the boundary between two chunks of terminal output was closed in one of the three places that write the session log. The other two write the same log, and now they close it too.',
+                ],
+            ],
+            [
+                'version' => '2.0.73',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'Six failures that reached you as "unrecognised error" now say what went wrong.',
+                ],
+            ],
+        ],
+
     ],
 
     /* Facts that belong beside the list rather than inside an entry. */
@@ -158,5 +203,6 @@ return [
         'ai-usagebar' => 'Later work in this fork — the ShvIA and MiniMax providers, and the API status panel — has shipped but has not been given a version of its own yet.',
         'shvia' => 'ShvIA is three products with three version lines: the web platform above, the desktop app, and the public site. The patch number climbs fast by design — it increments on every new screen, migration or visible change.',
         'github-desktop' => 'The fork version and the upstream GitHub Desktop release it is based on are different numbers. The entries above are the fork\'s.',
+        'sshvterm' => 'SShvTerm releases often, and not every version changes something you can see; the list above is the ones that do. The installers and the full notes are on sshvterm.com.',
     ],
 ];

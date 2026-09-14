@@ -12,6 +12,33 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 0.9.0 - SShvTerm gets the page it was only a link to
+
+SShvTerm was a pure link: `redirect_to_site` on, so clicking its card 302'd
+straight to sshvterm.com and this site never said what the product is. That is a
+reasonable arrangement for something self-evident. It is a bad one for a desktop
+SSH client whose two differentiators — sync the server cannot read, and an agent
+that runs commands under an allow · ask · deny policy you wrote — are invisible
+from the name and do not fit in a showcase card.
+
+So the redirect is off and `/p/sshvterm` renders: the description, a section of
+its own, and its changelog. The official site is still the download channel, and
+the access panel is what sends you there — worded for what it actually is
+("Official site · the installers for Windows, macOS and Linux are served from
+there") rather than the generic "online version, always the latest", which would
+have been a lie about a desktop app.
+
+`partials/projects/sshvterm.blade.php` is written from what the product itself
+publishes at sshvterm.com, checked on 2026-09-14. Nothing in it comes from the
+private repository: a catalogue page that described unreleased internals would be
+publishing them.
+
+The changelog entries are curated the way every app's are — six releases that
+change something a user can see, out of a version line that moves several times a
+day. 2.0.78 is in the list precisely because it changes nothing visible: it is
+the ceiling that stops the five largest files from growing, and leaving it out
+would have labelled 2.0.77 "current" when it is not.
+
 ## 0.9.0 - A project whose files live elsewhere stops being promised as a download
 
 The access panel on /p/{slug} has two blocks and both of them described ShvIA.

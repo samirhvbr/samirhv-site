@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
  *   2. Tura Notes (download: o .dmg assinado que o CI do repo não publica)
  *   3. GitHub Desktop (download)
  *   4. ai-usagebar (documentação: página curada de instalação)
- *   5. SShvTerm (projeto-link: mora no site oficial)
+ *   5. SShvTerm (projeto de site: os instaladores moram no sshvterm.com)
  *
  * updateOrCreate por slug: idempotente E autoritativo — rodar de novo
  * sincroniza título/descrição/ordem/flags com o que está aqui no código.
@@ -100,7 +100,16 @@ class ProjectsSeeder extends Seeder
             ]
         );
 
-        // 5) Projeto-link puro: mora no site oficial (redirect ligado). Fica por último.
+        // 5) Projeto de site: os binários moram no sshvterm.com, a explicação mora aqui.
+        //
+        //    ERA um link puro (`redirect_to_site => true`): clicar no card saía do
+        //    site sem nunca mostrar o que o produto faz. Um cliente SSH com sync
+        //    zero-knowledge e um agente sob política allow·ask·deny não se explica
+        //    num card de vitrine, e quem chegava pelo /downloads não tinha onde ler
+        //    isso. Agora abre /p/sshvterm — descrição, a seção de
+        //    partials/projects/sshvterm.blade.php, changelog — e o botão do painel
+        //    de acesso é que leva ao site oficial, que continua sendo o canal de
+        //    download.
         Project::updateOrCreate(
             ['slug' => 'sshvterm'],
             [
@@ -111,7 +120,7 @@ class ProjectsSeeder extends Seeder
                 'page_view' => null,
                 'external_url' => 'https://sshvterm.com',
                 'upstream_repo' => null, // repositórios privados: nada a rastrear no monitor
-                'redirect_to_site' => true, // link puro: abre o site direto
+                'redirect_to_site' => false, // projeto de site: abre /p/sshvterm, com o link no painel
                 'is_published' => true,
                 'sort_order' => 5,
             ]

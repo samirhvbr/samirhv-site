@@ -4,12 +4,13 @@
 | O que mudou em cada aplicativo, por versão. Tradução de lang/en/changelog.php.
 |
 | CURADO, não espelhado. Cada entrada é escrita a partir do changelog do próprio
-| aplicativo e reescrita para quem está decidindo se baixa, não para quem o
+| aplicativo e reescrita para quem está decidindo se vai usar, não para quem o
 | mantém. Entrada que só quer dizer alguma coisa dentro do repositório não entra
 | numa página de produto.
 |
-| Conferido contra cada repositório em 05/09/2026. A data da entrada é a do
-| lançamento, não a da conferência.
+| Conferido contra cada repositório em 05/09/2026, e o SShvTerm — cuja página
+| chegou na 0.9.0 — em 14/09/2026. A data da entrada é a do lançamento, não a
+| da conferência.
 |
 | Para atualizar: leia o changelog do app, acrescente a versão nova no TOPO da
 | lista dele e traduza a entrada em lang/en/changelog.php. Os conjuntos de
@@ -147,6 +148,53 @@ return [
                 ],
             ],
         ],
+
+        'sshvterm' => [
+            [
+                'version' => '2.0.78',
+                'date' => '2026-09-11',
+                'notes' => [
+                    'Nada visível mudou, e é essa a entrada: os cinco maiores arquivos do aplicativo passam a ter um teto de tamanho que quebra o build quando eles crescem. Eles vinham crescendo havia trinta versões, e o custo era do tipo que você vê — correção aplicada num caminho e não no irmão dele.',
+                ],
+            ],
+            [
+                'version' => '2.0.77',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'As telas de VPN param de afirmar o que não têm como saber. Uma mudança de WireGuard recusada agora diz por quê, em vez de a chave voltar sozinha, e um cofre que não pôde ser lido diz exatamente isso, em vez de escrever "nenhum host com VPN configurada" — uma afirmação cara o bastante para fazer alguém reimportar um .conf que carrega uma chave privada.',
+                    'O markdown que renderiza as respostas do agente não reescreve mais os comandos que está mostrando para você.',
+                ],
+            ],
+            [
+                'version' => '2.0.76',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'A detecção de segredo roda sozinha; reescrever o que ela achou espera o seu clique. Achar e alterar são duas decisões, e só uma delas é do aplicativo.',
+                ],
+            ],
+            [
+                'version' => '2.0.75',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'A redação pode ser reexecutada sobre o que já está gravado. A correção anterior estancou os vazamentos novos e não removeu nenhum dos velhos, o que deixou as sessões registradas antes dela exatamente como estavam.',
+                ],
+            ],
+            [
+                'version' => '2.0.74',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'O vazamento na emenda entre dois pedaços da saída do terminal foi fechado num dos três lugares que gravam o log da sessão. Os outros dois gravam o mesmo log, e agora também fecham.',
+                ],
+            ],
+            [
+                'version' => '2.0.73',
+                'date' => '2026-09-10',
+                'notes' => [
+                    'Seis falhas que chegavam até você como "erro não reconhecido" passam a dizer o que deu errado.',
+                ],
+            ],
+        ],
+
     ],
 
     /* Fatos que ficam ao lado da lista, não dentro de uma entrada. */
@@ -154,5 +202,6 @@ return [
         'ai-usagebar' => 'O trabalho posterior deste fork — os provedores ShvIA e MiniMax, e o painel de status das APIs — já está entregue, mas ainda não ganhou uma versão própria.',
         'shvia' => 'O ShvIA são três produtos com três linhas de versão: a plataforma web acima, o app desktop e o site público. O número de correção sobe rápido de propósito — ele avança a cada tela nova, migração ou mudança visível.',
         'github-desktop' => 'A versão do fork e a release do GitHub Desktop em que ele se baseia são números diferentes. As entradas acima são as do fork.',
+        'sshvterm' => 'O SShvTerm lança com frequência, e nem toda versão muda algo que você vê; a lista acima é a das que mudam. Os instaladores e as notas completas estão no sshvterm.com.',
     ],
 ];
