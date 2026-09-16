@@ -30,6 +30,10 @@
                 <i class="fa-solid fa-folder-open"></i><span>Projetos</span>
             </a>
 
+            <a href="{{ route('admin.tura.index') }}" class="nav-link {{ str_starts_with((string) $r, 'admin.tura') ? 'active' : '' }}">
+                <i class="fa-solid fa-feather-pointed"></i><span>Tura — credenciais</span>
+            </a>
+
             <div class="nav-section">Monitoramento</div>
             <a href="{{ route('admin.monitor.index') }}" class="nav-link {{ $r === 'admin.monitor.index' ? 'active' : '' }}">
                 <i class="fa-solid fa-code-compare"></i><span>Monitor</span>

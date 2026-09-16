@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MonitorController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectFileController;
+use App\Http\Controllers\Admin\TuraCredentialController;
 use Illuminate\Support\Facades\Route;
 
 // Já carregado dentro do grupo 'web' (ver bootstrap/app.php). Aqui só auth + admin.
@@ -31,6 +32,12 @@ Route::prefix('admin')->name('admin.')
         Route::patch('/projetos/{project}/arquivos/{file}/disponivel', [ProjectFileController::class, 'toggleAvailable'])->name('projects.files.available');
         Route::put('/projetos/{project}/arquivos/{file}', [ProjectFileController::class, 'update'])->name('projects.files.update');
         Route::delete('/projetos/{project}/arquivos/{file}', [ProjectFileController::class, 'destroy'])->name('projects.files.destroy');
+
+        // Tura Notes — credenciais de sincronização. Fala com o notes-server
+        // deste host através do wrapper tura-credential (ver TuraCredentials).
+        Route::get('/tura', [TuraCredentialController::class, 'index'])->name('tura.index');
+        Route::post('/tura', [TuraCredentialController::class, 'store'])->name('tura.store');
+        Route::delete('/tura', [TuraCredentialController::class, 'destroy'])->name('tura.destroy');
 
         // Monitor de versões (forks OSS: nossa versão × upstream no GitHub)
         Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor.index');

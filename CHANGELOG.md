@@ -12,6 +12,45 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.4 - The admin mints Tura sync credentials
+
+Enrolling a device on the Tura sync server meant an ssh session, a CLI and
+carrying a file off the server by hand. `/admin/tura` does it instead: a label,
+one button, and the `.secret` downloads once — into the password manager, and
+into the application's **Arquivo de credencial** field, which is the format it
+expects anyway.
+
+**There is no user and password, and that is not an omission.** The server keeps
+only a BLAKE3 digest of the secret, so it has to be minted there; a password
+someone chose would be a string the server has never seen. The screen says so,
+along with the reason for one credential per device: two devices sharing one
+cannot be told apart, so revoking the one you lost cuts off the one you kept.
+
+Reaching the server needed a wrapper, not a sudoers line on `notes-server`.
+`/var/lib/notes-server` is 0700 owned by `notes`, so `www-data` cannot run the
+CLI at all — and `token create` writes the secret to a new 0600 file owned by
+whoever ran it, which `www-data` then cannot read. Granting it the CLI buys a
+file nobody can open. `tura-credential`, in the Tura repository, returns the
+secret over the pipe and removes the file; here it is one `sudo -n`, and `-n`
+so a password request fails immediately instead of hanging a PHP-FPM worker
+that has no terminal to type into.
+
+The secret comes back as a **download**, never as HTML. Rendered into a page it
+would sit in history, in the cache and in any screenshot, and none of that
+raises an error — it leaks quietly. `TuraCredentialTest` asserts the body is the
+secret with no markup around it.
+
+When the wrapper is not installed the screen explains, the same posture as the
+AI-MEMORY module: it is a 500 on an admin page that tells you nothing about what
+to install. The four things that are usually missing are listed in the order
+they are usually missing, starting with "the server was never deployed".
+
+Eight cases. Among them, one that exists because the first version of this
+screen failed it: every style class the two views use must exist in the admin
+CSS. `btn btn-primary` and `btn-danger` are another project's classes — the
+button renders, the page returns 200, the suite passes, and what appears is
+unstyled text. The only way to see it is to look, or to assert it.
+
 ## 1.0.3 - preserve the refined S essencial brand concept
 
 Store the selected geometric S exploration under `brand/s-essencial`, with editable SVG sources, PNG/ICO exports, a presentation board and the unchanged reference. The concept remains parked; no production templates, styles, favicon links or public assets change.

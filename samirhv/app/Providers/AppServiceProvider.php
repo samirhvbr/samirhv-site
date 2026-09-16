@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\AuthEvent;
 use App\Models\Project;
 use App\Services\AiMemory\AiMemoryDatabase;
+use App\Services\TuraCredentials;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -27,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
         // SELECT) and the degraded state across every repository of the
         // AI-MEMORY module, so one failure is not retried screen-wide.
         $this->app->singleton(AiMemoryDatabase::class);
+        // O wrapper e o usuário vêm de config/tura.php; ver TuraCredentials.
+        $this->app->singleton(TuraCredentials::class, fn () => new TuraCredentials(
+            (string) config('tura.wrapper'),
+            (string) config('tura.run_as'),
+            (string) config('tura.workspace'),
+        ));
     }
 
     public function boot(): void
