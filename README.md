@@ -106,3 +106,7 @@ controls.
 The `version.md` on the default branch is what the GitHub Releases must show;
 `.github/workflows/release.yml` and `tools/release.sh` keep them in step, and
 `CHANGELOG.md` supplies the notes.
+
+## Brand explorations
+
+Reserved concepts live in [brand/](brand/README.md). They are not production assets.

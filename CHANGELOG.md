@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.3 - preserve the refined S essencial brand concept
+
+Store the selected geometric S exploration under `brand/s-essencial`, with editable SVG sources, PNG/ICO exports, a presentation board and the unchanged reference. The concept remains parked; no production templates, styles, favicon links or public assets change.
+
+Validation: SVG parsing, PNG decoding and dimensions, ICO resolutions, and visual inspection of the presentation board.
+
 ## 1.0.2 - The Tura Notes page says its sync runs on a server you own
 
 The description on /p/tura-notes ends at "no account and no cloud of ours",
