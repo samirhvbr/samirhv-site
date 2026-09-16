@@ -39,6 +39,7 @@ class ProjectSectionTest extends TestCase
         'sshvterm' => 'sshvterm',
         'ai-memory' => 'ai_memory',
         'shvia' => 'shvia_models',
+        'tura-notes' => 'tura_notes',
     ];
 
     /**

@@ -12,6 +12,34 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.2 - The Tura Notes page says its sync runs on a server you own
+
+The description on /p/tura-notes ends at "no account and no cloud of ours",
+which is true and reads as an absence. It is not one: the app syncs between
+machines through a server the **reader** runs, and until now the page said
+nothing about it. Someone who wanted their notes on two machines had nowhere to
+go from here, and someone who assumed there was a sign-in went looking for one
+that does not exist.
+
+The section under the convention — `partials/projects/tura-notes.blade.php`,
+its strings in `lang/{en,pt_BR}/tura_notes.php` — is product copy and
+deliberately not a second copy of the procedure: what it is for, the three
+commands that stand the server up, the pairing modes as a table, and what to
+read before deciding. The walkthrough it is written from stays in the Tura
+repository (`docs/SELF-HOSTING.md`), and a second copy of a procedure is a copy
+that goes stale in silence.
+
+It leads with the part a download page is tempted to leave out. There is **no
+end-to-end encryption**: the server reads its own notes, so the machine has to
+be one the reader would trust with them. **One credential per device**, because
+two devices sharing one cannot be told apart and revoking the lost one cuts off
+the kept one. And **sync is not a backup** — it copies your mistakes to the
+other machine promptly and correctly.
+
+`ProjectSectionTest` gains the slug: nine cases, 491 assertions, both languages
+rendering with no database, no key printed as text, no unreplaced placeholder,
+and the two lang files covering the same keys.
+
 ## 1.0.1 - The ai-memory access panel offers both repositories
 
 The panel had one row, `external_url`, pointing at akitaonrails/ai-memory — the
