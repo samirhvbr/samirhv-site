@@ -12,6 +12,42 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.8 - `files:add` gets a version flag that can actually be reached
+
+`AddProjectFile` declared `--version`, and `--version` is a **global** Symfony
+Console option. `Application::doRun()` intercepts it before it resolves any
+command: it prints `Laravel Framework 13.12.0`, returns 0, and the command never
+runs. A caller passing `files:add … --version=1.6.0` got clean output and exit 0
+with nothing published — the worst shape a failure can take, because every
+automated check of it passes.
+
+That is not hypothetical. `build-local.sh --publish` in the `tura-notes`
+repository ingests with exactly that flag. It reported four green steps, printed
+`Laravel Framework 13.12.0` where the ingest line belonged, announced
+"Published", deleted its staging copy, and left `/p/tura-notes` reading "Em
+preparação" with zero `project_files` rows. The version string in the transcript
+is what identified it.
+
+The option is now `--file-version`. Reproduced in a standalone Symfony Console
+application: with `--version` the command body never executes and the framework
+version is printed instead, byte for byte what the server produced; with
+`--file-version` it runs and receives the value.
+
+**The old name broke the no-flag form too.** In that same reproduction,
+`files:add <path> --project=<slug>` — the form `README.md` and `CLAUDE.md`
+document — fails with `An option named "version" already exists.`, because
+merging the application definition finds a conflicting option of the same name.
+After the rename both forms run.
+
+The flag stays optional either way: `FileIngestService` asks `FilenameInspector`
+for the version when none is given, and it reads the first `X.Y(.Z)` in the
+filename, so `TuraNotes_1.6.0_aarch64.dmg` describes itself.
+
+**Callers must change.** `build-local.sh` and `tools/build-linux.sh` in the
+`tura-notes` repository both pass `--version=`; after this they will be told the
+option does not exist and will fail loudly instead of succeeding silently, which
+is the point. Dropping the flag there loses nothing.
+
 ## 1.0.7 - The Tura publisher is removed: the Tura repository already had one
 
 `tools/publish-tura.sh`, added one version ago in 1.0.5, is deleted. It should
