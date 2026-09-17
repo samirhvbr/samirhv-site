@@ -12,6 +12,39 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.7 - The Tura publisher is removed: the Tura repository already had one
+
+`tools/publish-tura.sh`, added one version ago in 1.0.5, is deleted. It should
+never have been written here.
+
+`build-local.sh --publish`, in the `tura-notes` repository, already published the
+signed `.dmg` to this site, and by the same four steps for the same stated
+reasons — preflight the download service, `scp` to a staging directory, compare
+the sha256 **before** the ingest because a truncated `scp` leaves a file that
+`files:add` swallows happily, then one `files:add --project=tura-notes`. It
+already carried the destination as documented constants (`TURA_PUBLISH_HOST`,
+`TURA_PUBLISH_APP`, `TURA_PUBLISH_SLUG`).
+
+And it carried a gate that 1.0.5 did not: it refuses to publish a `.dmg` that is
+unsigned or has no notarisation ticket (ADR-024 of that repository). The script
+removed here would have published an unsigned build without a word — dropping
+the exact protection that makes this site the macOS channel in the first place.
+
+Two tools for one job is worse than one; two where the redundant one is missing
+the safety check is a trap with a timer on it. Whoever found `publish-tura.sh`
+first would have used it.
+
+**This leaves no gap.** Every platform the catalogue entry promises is already
+covered there: `build-local.sh --publish` sends the signed `.dmg`, and on a
+Linux host that same entry point `exec`s `tools/build-linux.sh`, whose
+`--publish` sends the `.deb`, AppImage and `.rpm` through the same `files:add`,
+with the same hash check, and publishes the updater feed besides. ADR-072 of
+that repository decided exactly this shape.
+
+What is missing is not code but the act: nobody has run `--publish` yet, which
+is why `/p/tura-notes` still shows "Em preparação". It is the first item of that
+repository's queue, and it needs the machine holding the Developer ID.
+
 ## 1.0.6 - The style check goes green on a double space in a docblock
 
 `vendor/bin/pint --test` had been failing on the default branch since 1.0.4, on
