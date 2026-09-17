@@ -12,6 +12,38 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.5 - Publishing a Tura build stops being eight commands typed by hand
+
+`tools/publish-tura.sh` takes the built packages and publishes them as downloads
+of the site, in one run.
+
+The Tura `.dmg` is signed and notarized by the machine that holds the Developer
+ID certificate in its keychain, not by a CI runner — which is why the
+`tura-notes` GitHub Release never carries it, and why this site is the macOS
+channel. Since the project's `tools/build-linux.sh`, the `.deb`, AppImage and
+`.rpm` come out of the same local build and travel the same way. Publishing a
+release meant repeating, package by package: `scp`, `ssh`, `sudo -u www-data php
+artisan files:add`, delete the staging file. Four packages, eight commands, and
+a mistyped `--project` publishes into the neighbouring project without saying so.
+
+    ./tools/publish-tura.sh --host samirhv --dir ~/x/tura-notes/dist
+
+What it does per package: checks the sha256 **after** the transfer and before
+the ingest — a truncated `.dmg` that got published is worse than one that did
+not, because it looks ready — then runs `files:add` as `www-data` and removes
+the staging file. It creates its own staging directory and removes only what it
+put there, with `rmdir` rather than `rm -rf`, so anything unexpected left inside
+fails loudly instead of being deleted blind.
+
+It does **not** build anything. Only finished files go in.
+
+`--dry-run` prints the exact `scp` and `ssh` lines without touching the server.
+`--dir` picks up only the extensions `FilenameInspector` knows, so checksums and
+build logs sitting next to the packages do not become downloads.
+
+The host has no default on purpose: a guessed hostname publishes to the wrong
+server, which is worse than not running. `--host`, or `SAMIRHV_SSH_HOST`.
+
 ## 1.0.4 - The admin mints Tura sync credentials
 
 Enrolling a device on the Tura sync server meant an ssh session, a CLI and
