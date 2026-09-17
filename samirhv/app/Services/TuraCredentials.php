@@ -55,7 +55,7 @@ class TuraCredentials
      * `token list` devolve rótulo, workspace, escopo, permissões e revogação —
      * nunca o segredo, que só existe no digest BLAKE3.
      *
-     * @return array<int,array<string,mixed>>|null  null quando indisponível.
+     * @return array<int,array<string,mixed>>|null null quando indisponível.
      */
     public function list(): ?array
     {

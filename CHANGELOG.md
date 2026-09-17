@@ -12,6 +12,21 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.6 - The style check goes green on a double space in a docblock
+
+`vendor/bin/pint --test` had been failing on the default branch since 1.0.4, on
+`app/Services/TuraCredentials.php`. Under the five fixer names Pint reported —
+`unary_operator_spaces`, `braces_position`, `not_operator_with_successor_space`,
+`single_line_empty_body`, `phpdoc_align` — the actual change is one space: a
+`@return` line aligned with two spaces instead of one.
+
+Small, and worth its own commit rather than a ride along the next feature: while
+CI is red for a reason nobody remembers, a red badge stops being information,
+and the next real failure arrives looking exactly like this one.
+
+The fix is Pint's own output, not a hand edit — `pint --test samirhv/` now
+passes over all 164 files.
+
 ## 1.0.5 - Publishing a Tura build stops being eight commands typed by hand
 
 `tools/publish-tura.sh` takes the built packages and publishes them as downloads
