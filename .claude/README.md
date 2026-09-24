@@ -1,14 +1,14 @@
-# Configuração Claude Code — Blue3
+# Claude Code configuration — Blue3
 
-## Modelo
-Usando `opusplan` (híbrido). Opus pra raciocínio, Sonnet pra execução.
+## Model
+The model is the user's choice, made with `/model` per session; a subagent
+inherits the session's model. **This repository configures none of it**
+(repodocs ADR-027).
 
 ## Effort
-`max` + adaptive thinking desabilitado.
+`max` + adaptive thinking disabled.
 
-## Permissões críticas
-- `.env`, chaves OAuth Passport, `auth.json` bloqueados
-- `migrate:fresh`, `db:wipe` bloqueados — proteção contra perda de dados
-- `mysql/mariadb` direto bloqueados — Claude deve gerar migrations, não rodar SQL
-
-
+## Critical permissions
+- `.env`, Passport OAuth keys, `auth.json` blocked
+- `migrate:fresh`, `db:wipe` blocked — protection against data loss
+- direct `mysql/mariadb` blocked — Claude must generate migrations, not run SQL

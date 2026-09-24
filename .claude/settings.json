@@ -1,12 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "_comment_modelo": "Usando opusplan: Opus 5 pra planejar, Sonnet 5 pra executar",
+  "_comment_profile": "THIS FILE DOES NOT CHOOSE THE MODEL, ON PURPOSE (24/09/2026 — repodocs ADR-027). No `model`, no `fallbackModel`, and nothing in `env` that steers one: no `ANTHROPIC_MODEL`, no `ANTHROPIC_DEFAULT_*_MODEL`, no `CLAUDE_CODE_SUBAGENT_MODEL`. The model is the user's choice, made with /model, and a subagent inherits it. The highest effortLevel a FILE accepts is 'xhigh'; use /effort max for a single session.",
   "_comment_effort": "Max + adaptive thinking off = sempre raciocinio profundo",
   "effortLevel": "max",
   "env": {
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5"
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
   },
   "permissions": {
     "_comment": "Permissões do projeto - Laravel/Blue3",
