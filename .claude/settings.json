@@ -1,13 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "_comment_modelo": "Usando opusplan: Opus 5 pra planejar, Sonnet 5 pra executar",
-  "model": "opusplan",
   "_comment_effort": "Max + adaptive thinking off = sempre raciocinio profundo",
   "effortLevel": "max",
   "env": {
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5"
   },
   "permissions": {

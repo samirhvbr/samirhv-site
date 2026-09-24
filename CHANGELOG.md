@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.9 - the model pin leaves .claude/settings.json
+
+`"model": "opus[1m]"` and the `ANTHROPIC_DEFAULT_OPUS_MODEL` env pin are gone.
+The window suffix was a version pin in disguise — the 1M variant existed only for the
+previous Opus, so every session was born on it while the catalog already offered the
+newer one. The env var is worse than a pin: it redefines what `opus` means for
+everything that reads it, the model picker included.
+
+It unblocks nothing on its own: the deciding layer is the account's server-managed
+settings, which outrank every local file. Rule, measurement and what to write instead
+(`"model": "opus55"`, the version named): repodocs ADR-026.
+
+No test: two JSON keys and a comment. Checked that the file still parses.
+
 ## 1.0.8 - `files:add` gets a version flag that can actually be reached
 
 `AddProjectFile` declared `--version`, and `--version` is a **global** Symfony
