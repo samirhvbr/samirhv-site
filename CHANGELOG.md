@@ -12,6 +12,39 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.13 - a test and a CI job fail when the AI-MEMORY copy stops matching ai-memory-web
+
+1.0.12 made `samirhv/app/Services/AiMemory/` a copy. This entry adds what the owner asked
+for alongside it: a check that fails when the two differ. There are two ways to differ,
+and each is caught where it can be measured.
+
+**Offline, in the suite: `ReaderCopyTest`.** It fails when:
+
+- a copied file was edited here: each sha256 is compared with `UPSTREAM.json`, and so is
+  the set of classes;
+- a sync brought a string with no `lang/pt_BR.json` entry. The admin would show it in
+  English. The strings are read from the tokens of each `__()`/`say()` call, and a known
+  one (`still open`) is asserted first, so an extractor that finds nothing cannot pass;
+- a sync brought a `config('aimemory.*')` key `config/aimemory.php` does not declare, or
+  an import this app does not have;
+- under this app's own config, with the request locale set to `en` as on admin routes,
+  the copy no longer renders `05/09/2026 09:34` and `em aberto`.
+
+Five reversions, each measured red on its own test: a comment edited in a copied file, a
+translation removed, `date_format` removed from the config, `locale` set back to follow
+the request, and an import of a class this app lacks.
+
+**Online, in CI: `.github/workflows/ai-memory-reader.yml`.** It runs
+`tools/sync-ai-memory-reader.sh --check` on every push to `master`, every PR and daily at
+09:17 UTC, since a push to ai-memory-web triggers nothing here. It fails with exit 1 when
+upstream `master` differs from the copy, and with exit 2 when it could not measure (clone
+failed, ref missing). Before the sync, `--check` against ai-memory-web 0.1.19 listed all
+eleven files as different and exited 1. After it, `--check` reported "in sync" and exited
+0, both from GitHub and from a local clone.
+
+Suite: **191 passed, 1 skipped** (186 + these 5; the skip is the unrelated accessibility
+one), in `php:8.4-cli` with `pdo_sqlite`. `pint --test` passes.
+
 ## 1.0.12 - the AI-MEMORY reader classes become a synced copy of ai-memory-web's
 
 The eleven classes under `samirhv/app/Services/AiMemory/` are now **byte-identical** to the

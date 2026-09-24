@@ -252,6 +252,7 @@ To change the interval: `data-every` (seconds) on the `[data-aim-live]` element.
 | Config | `config/aimemory.php`, `aimemory` connection in `config/database.php` |
 | The module's Portuguese (notice, "em aberto") | `lang/pt_BR.json`, keyed by ai-memory-web's English |
 | Guard regression tests | `tests/Unit/AiMemory/AiMemoryDatabaseTest.php` |
+| The copy stays a copy (§6.1) | `tests/Unit/AiMemory/ReaderCopyTest.php`, `.github/workflows/ai-memory-reader.yml` |
 | History | migration `..._create_ai_memory_stat_snapshots_table`, `App\Models\AiMemoryStatSnapshot`, `app/Console/Commands/SnapshotAiMemoryStats.php` |
 
 ### 6.1 The reader classes are a copy — change them in ai-memory-web
@@ -278,6 +279,14 @@ apart by then.
   `pt_BR`, and the strings are keyed by the English sentence ai-memory-web
   uses. A sentence reworded there drops back to English here until
   `lang/pt_BR.json` follows.
+- **Two checks fail when the copy stops being one.** `ReaderCopyTest`, in the
+  suite, fails on a local edit (each sha256 against `UPSTREAM.json`), and on a
+  sync that brought a string `lang/pt_BR.json` lacks, a config key
+  `config/aimemory.php` does not declare, or an import this app does not have.
+  The CI workflow `ai-memory-reader.yml` runs `--check` on every push, every
+  PR and daily, and fails when ai-memory-web's `master` moved and the copy did
+  not follow. Red on either one means: sync, run the suite, commit. It never
+  means edit the copy.
 - **Comments in those files point at ai-memory-web's documents**
   (`docs/permissions.md`, `docs/read-only.md`), because they carry that
   repository's bytes. The Portuguese notice points here, to §4.

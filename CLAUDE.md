@@ -35,7 +35,8 @@ Trabalhar sobre uma base desatualizada gera conflitos. Puxe primeiro, sempre. Pa
   the same directory in [samirhvbr/ai-memory-web](https://github.com/samirhvbr/ai-memory-web), which is the
   source. Never edit them here: change the class there, then run `tools/sync-ai-memory-reader.sh`. What
   differs between the two apps lives in `config/aimemory.php` and `lang/pt_BR.json`
-  (`samirhv/docs/AI-MEMORY.md` §6.1).
+  (`samirhv/docs/AI-MEMORY.md` §6.1). `ReaderCopyTest` fails on a local edit, and the
+  `ai-memory-reader.yml` workflow fails when ai-memory-web moved and the copy did not.
 - **CSS theme:** `public/vendor/canvas/style.css` + `css/blog-theme.css`
 
 ---

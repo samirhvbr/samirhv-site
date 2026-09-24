@@ -1,0 +1,37 @@
+name: AI-MEMORY reader copy
+
+# samirhv/app/Services/AiMemory/*.php is a byte-identical copy of the same
+# directory in samirhvbr/ai-memory-web (ADR-006 there, samirhv/docs/AI-MEMORY.md
+# §6.1 here). The suite already fails on a local edit to the copy. This job
+# fails when ai-memory-web moved and the copy did not follow. It also runs
+# daily, because a push over there triggers nothing here.
+#
+# Red here means: run tools/sync-ai-memory-reader.sh, then the suite, and
+# commit what it wrote. The fix is never to edit the copy by hand.
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-memory-reader-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  in-sync:
+    name: The copy matches ai-memory-web master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare the copy with ai-memory-web master
+        # Exit 1 = differs, 2 = could not measure (clone failed, ref missing).
+        # Both fail the job: a check that could not reach upstream checked nothing.
+        run: tools/sync-ai-memory-reader.sh --check
