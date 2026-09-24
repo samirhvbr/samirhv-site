@@ -50,30 +50,26 @@
       "Read(./storage/oauth-*.key)",
       "Read(./storage/*.pem)",
       "Read(./auth.json)",
-      "Bash(rm -rf:*)",
       "Bash(rm -rf /:*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(git clean -fd:*)",
       "Bash(php artisan migrate:fresh:*)",
       "Bash(php artisan migrate:reset:*)",
       "Bash(php artisan db:wipe:*)",
       "Bash(mysql:*)",
-      "Bash(mariadb:*)",
-      "Bash(curl * | sh:*)",
-      "Bash(curl * | bash:*)",
-      "Bash(wget * | sh:*)"
+      "Bash(mariadb:*)"
     ],
     "ask": [
       "Bash(sudo:*)",
+      "Bash(rm -rf:*)",
       "Bash(git push:*)",
       "Bash(php artisan migrate:*)",
       "Bash(composer require:*)",
       "Bash(composer update:*)",
       "Bash(npm install --save:*)",
       "Bash(mysqldump:*)",
-      "Bash(mariadb-dump:*)"
+      "Bash(mariadb-dump:*)",
+      "Bash(curl * | sh:*)",
+      "Bash(curl * | bash:*)",
+      "Bash(wget * | sh:*)"
     ]
   }
 }
