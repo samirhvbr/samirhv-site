@@ -4,12 +4,12 @@ namespace App\Services\AiMemory;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
-/** Páginas (wiki consolidada) do ai-memory: lista, leitura e histórico. */
+/** ai-memory pages (the consolidated wiki): list, read and history. */
 class PageRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
-    /** Páginas na versão atual (is_latest), opcionalmente de um projeto. */
+    /** Pages at their current version (is_latest), optionally of one project. */
     public function paginate(?string $projectHex, int $perPage): LengthAwarePaginator
     {
         $where = 'p.is_latest = 1';
@@ -29,7 +29,7 @@ class PageRepository
         return $this->db->paginate($sql, $bind, "SELECT COUNT(*) FROM pages p WHERE {$where}", $bind, $perPage);
     }
 
-    /** Uma versão específica de página (qualquer, não só a atual) por id hex. */
+    /** One page version (any, not only the current one) by hex id. */
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
@@ -49,8 +49,8 @@ class PageRepository
     }
 
     /**
-     * Todas as versões da mesma (workspace, project, path) — atual → antigas —
-     * a "linha do tempo" da página via supersedes.
+     * Every version of the same (workspace, project, path) — current to oldest —
+     * the page's timeline through `supersedes`.
      */
     public function history(object $page): array
     {

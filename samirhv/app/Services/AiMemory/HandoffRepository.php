@@ -4,12 +4,12 @@ namespace App\Services\AiMemory;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
-/** Handoffs — transferências de contexto "onde paramos" entre agentes. */
+/** Handoffs — the "where we left off" context passed between agents. */
 class HandoffRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
-    /** Lista, opcionalmente filtrada por estado (open|accepted|expired). */
+    /** Listing, optionally filtered by state (open|accepted|expired). */
     public function paginate(?string $state, int $perPage): LengthAwarePaginator
     {
         $where = '1 = 1';
@@ -31,7 +31,7 @@ class HandoffRepository
         return $this->db->paginate($sql, $bind, "SELECT COUNT(*) FROM handoffs h WHERE {$where}", $bind, $perPage);
     }
 
-    /** Um handoff por id hex, com os campos JSON crus (decodificados na view). */
+    /** One handoff by hex id, with the raw JSON fields (decoded in the view). */
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(

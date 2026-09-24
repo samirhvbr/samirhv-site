@@ -3,14 +3,14 @@
 namespace App\Services\AiMemory;
 
 /**
- * Busca full-text nas páginas usando o MESMO índice FTS5 do ai-memory
- * (tabela `pages_fts`, colunas title/body). Ordena por bm25 (menor = melhor).
+ * Full-text search over the pages using ai-memory's OWN FTS5 index (the
+ * `pages_fts` table, columns title/body). Ordered by bm25 (lower is better).
  */
 class SearchRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
-    /** Resultados com trecho destacado (sentinelas <<< >>> viram <mark> na view). */
+    /** Hits with a highlighted snippet (the <<< >>> sentinels become <mark> in the view). */
     public function search(string $query, int $limit = 30): array
     {
         $match = $this->toMatch($query);
@@ -32,11 +32,11 @@ class SearchRepository
     }
 
     /**
-     * Traduz a busca do usuário para uma expressão MATCH segura: cada token
-     * vira uma frase entre aspas seguida de `*` (prefixo) — assim "oauth" acha
-     * "oauth2" e "auth" acha "authentication". As aspas neutralizam a sintaxe
-     * do FTS5 (operadores AND/OR/NOT/NEAR, aspas) que causaria erro de query;
-     * múltiplos tokens combinam por AND implícito.
+     * Translate the user's query into a safe MATCH expression: each token
+     * becomes a quoted phrase followed by `*` (prefix), so "oauth" finds
+     * "oauth2" and "auth" finds "authentication". The quotes neutralise the
+     * FTS5 syntax (AND/OR/NOT/NEAR operators, quotes) that would otherwise
+     * raise a query error; several tokens combine with an implicit AND.
      */
     private function toMatch(string $query): string
     {

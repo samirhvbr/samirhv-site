@@ -5,7 +5,7 @@ namespace App\Services\AiMemory;
 use Illuminate\Support\Carbon;
 use Throwable;
 
-/** Contagens e séries temporais para o Dashboard do módulo AI-MEMORY. */
+/** Counts and time series for the dashboard. */
 class StatsRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
@@ -13,7 +13,7 @@ class StatsRepository
     /**
      * Current totals, live from ai-memory itself. Each COUNT tolerates a table
      * that a given ai-memory version does not have (it becomes 0 instead of
-     * taking the Dashboard down) — but ONLY that: see count().
+     * taking the dashboard down) — but ONLY that: see count().
      */
     public function counts(): array
     {
@@ -29,13 +29,13 @@ class StatsRepository
         ];
     }
 
-    /** [Y-m-d => total] contínuo dos últimos $days dias (observações criadas). */
+    /** [Y-m-d => total] over the last $days days, with no gaps (observations created). */
     public function observationsByDay(int $days): array
     {
         return $this->byDay('observations', 'created_at', $days);
     }
 
-    /** [Y-m-d => total] contínuo dos últimos $days dias (sessões iniciadas). */
+    /** [Y-m-d => total] over the last $days days, with no gaps (sessions started). */
     public function sessionsByDay(int $days): array
     {
         return $this->byDay('sessions', 'started_at', $days);

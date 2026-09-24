@@ -43,9 +43,11 @@ class SetLocale
 
     /**
      * A route with no known language prefix renders in the bare language. That
-     * covers `/login`, `/d/{file}`, `/lang/*` and all of `admin.*` — none of
-     * which call `__()` today; the admin hardcodes its Portuguese and is out of
-     * scope on purpose. Worth knowing before translating it.
+     * covers `/login`, `/d/{file}`, `/lang/*` and all of `admin.*`. The admin
+     * hardcodes its Portuguese and is out of scope on purpose, with one
+     * exception: the AI-MEMORY reader classes call `__()` with the locale fixed
+     * in config/aimemory.php, so they do not depend on this middleware. Worth
+     * knowing before translating it.
      */
     private function fromRoute(Request $request): string
     {

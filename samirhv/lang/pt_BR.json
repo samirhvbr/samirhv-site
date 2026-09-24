@@ -1,0 +1,12 @@
+{
+    "still open": "em aberto",
+    "The database path (AI_MEMORY_SQLITE_PATH) is empty in this installation.": "O caminho do banco (AI_MEMORY_SQLITE_PATH) está vazio nesta instalação.",
+    "The file [:path] does not exist on this host.": "O arquivo [:path] não existe neste servidor.",
+    "The web server user has no read permission on [:path].": "O usuário do PHP-FPM não tem permissão de leitura em [:path].",
+    "The database is in WAL mode and the web server user has no WRITE permission on the directory [:dir]. A WAL reader has to be able to create the `-shm`/`-wal` files when they do not exist — read permission on `memory.sqlite` alone is not enough. See docs/permissions.md.": "O banco está em modo WAL e o usuário do PHP-FPM (www-data) não tem permissão de ESCRITA no diretório [:dir]. Um leitor de WAL precisa poder criar os arquivos `-shm`/`-wal` quando eles não existem — só leitura no `memory.sqlite` não basta. Ver docs/AI-MEMORY.md §4.",
+    "SQLite could not open [:path] or its `-wal`/`-shm` files — usually a missing read permission on one of them, or a missing traverse (x) permission on [:dir].": "O SQLite não conseguiu abrir [:path] nem seus arquivos `-wal`/`-shm` — normalmente falta permissão de leitura em algum deles, ou de travessia (x) em [:dir].",
+    "The PHP extension `pdo_sqlite` is not installed on this host.": "A extensão `pdo_sqlite` do PHP não está instalada neste servidor.",
+    "The database has been locked by another process for longer than `busy_timeout` — ai-memory may be in a long write cycle. Try again in a moment.": "O banco está travado por outro processo há mais tempo que o `busy_timeout` — o ai-memory pode estar num ciclo longo de escrita. Tente novamente em instantes.",
+    "The ai-memory schema in this version is missing a table/column this screen queries (driver detail: :message). Most likely an ai-memory version change.": "O esquema do ai-memory nesta versão não tem uma tabela/coluna que esta tela consulta (detalhe do driver: :message). Provável mudança de versão do ai-memory.",
+    "Failed to query [:path]: :message": "Falha ao consultar [:path]: :message"
+}

@@ -2,12 +2,12 @@
 
 namespace App\Services\AiMemory;
 
-/** Projetos do ai-memory (com contagens) e opções para selects de filtro. */
+/** ai-memory projects (with counts) and the options for the filter selects. */
 class ProjectRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
-    /** Lista de projetos com workspace + contagens + última atividade. */
+    /** Projects with workspace, counts and last activity. */
     public function all(): array
     {
         return $this->db->select(
@@ -26,7 +26,7 @@ class ProjectRepository
         );
     }
 
-    /** Um projeto por id (hex) com contagens. */
+    /** One project by hex id, with counts. */
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
@@ -45,7 +45,7 @@ class ProjectRepository
         );
     }
 
-    /** [{id_hex, name}] para popular selects de filtro. */
+    /** [{id_hex, name}] to populate the filter selects. */
     public function options(): array
     {
         return $this->db->select('SELECT lower(hex(id)) AS id_hex, name FROM projects ORDER BY name');

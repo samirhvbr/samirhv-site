@@ -5,14 +5,14 @@ namespace App\Services\AiMemory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
-/** Observações (cada fato aprendido numa sessão), com filtros. */
+/** Observations (each fact learned during a session), with filters. */
 class ObservationRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
     /**
-     * Lista filtrável. $filters: kind, importance (mínima), project (hex),
-     * days (janela). Mais recentes primeiro.
+     * Filterable listing. $filters: kind, importance (minimum), project (hex),
+     * days (window). Most recent first.
      */
     public function paginate(array $filters, int $perPage): LengthAwarePaginator
     {
@@ -46,7 +46,7 @@ class ObservationRepository
         return $this->db->paginate($sql, $bind, "SELECT COUNT(*) FROM observations o WHERE {$where}", $bind, $perPage);
     }
 
-    /** Uma observação por id hex, com sessão/projeto. */
+    /** One observation by hex id, with its session/project. */
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
@@ -60,7 +60,7 @@ class ObservationRepository
         );
     }
 
-    /** Tipos distintos de observação, para o select de filtro. */
+    /** Distinct observation kinds, for the filter select. */
     public function kinds(): array
     {
         return array_map(

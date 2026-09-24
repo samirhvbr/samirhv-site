@@ -7,19 +7,19 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Números derivados do Dashboard do AI-MEMORY.
+ * Derived numbers for the dashboard.
  *
- * Aqui NÃO se toca em banco: recebe o que os repositórios (e a tabela durável
- * de retratos) já trouxeram e devolve o que a view precisa desenhar — resumos
- * de série, variação em N dias, escala do eixo e caminhos SVG dos gráficos.
- * Fica num service porque é a única lógica de verdade da tela, e assim ela é
- * testável sem subir a view (controllers finos — ver CLAUDE.md).
+ * Nothing here touches a database: it receives what the repositories (and the
+ * durable snapshot table) already brought and returns what the view needs to
+ * draw — series summaries, the change over N days, the axis scale and the SVG
+ * paths of the charts. It lives in a service because it is the only real logic
+ * on that screen, which makes it testable without rendering the view.
  */
 class DashboardSummary
 {
     /**
-     * Resumo de uma série diária [Y-m-d => total]: total do período, média,
-     * pico (valor + dia) e o valor de hoje. `top` é o teto do eixo Y.
+     * Summary of a daily series [Y-m-d => total]: period total, average, peak
+     * (value + day) and today's value. `top` is the ceiling of the Y axis.
      *
      * @param  array<string,int>  $byDay
      * @return array{total:int,avg:int,max:int,top:int,peak_day:?string,today:int,days:int}
@@ -34,7 +34,7 @@ class DashboardSummary
         $peakDay = null;
         foreach ($byDay as $day => $value) {
             if ($value === $max) {
-                $peakDay = $day;   // empate → o pico mais recente
+                $peakDay = $day;   // on a tie, the most recent peak
             }
         }
 
@@ -50,10 +50,11 @@ class DashboardSummary
     }
 
     /**
-     * Variação de um total entre o retrato mais antigo dentro da janela e o
-     * número vivo de agora. Devolve também quantos dias esse intervalo tem de
-     * fato (os retratos são diários, mas podem faltar) — a UI mostra o real,
-     * nunca um "7 dias" que não aconteceu. Null quando não há retrato útil.
+     * Change in a total between the oldest snapshot inside the window and the
+     * live number right now. It also returns how many days that interval really
+     * spans (snapshots are daily, but one can be missing) — the UI shows the
+     * real figure, never a "7 days" that did not happen. Null when there is no
+     * usable snapshot.
      *
      * @param  Collection<int,AiMemoryStatSnapshot>  $history
      * @return array{value:int,days:int}|null
@@ -70,15 +71,15 @@ class DashboardSummary
 
         $elapsed = (int) round(abs($reference->captured_on->diffInDays(Carbon::today())));
         if ($elapsed < 1) {
-            return null;   // só há retrato de hoje: ainda não dá para comparar
+            return null;   // only today's snapshot exists: nothing to compare against yet
         }
 
         return ['value' => $live - (int) $reference->{$metric}, 'days' => $elapsed];
     }
 
     /**
-     * Teto "redondo" do eixo Y (passos de meia ordem de grandeza), para o topo
-     * do gráfico não ser um número quebrado: 78 → 80, 959 → 1000, 65.453 → 70.000.
+     * A "round" ceiling for the Y axis (half-order-of-magnitude steps), so the
+     * top of the chart is not an odd number: 78 → 80, 959 → 1000, 65,453 → 70,000.
      */
     public function niceMax(int $max): int
     {
@@ -92,8 +93,8 @@ class DashboardSummary
     }
 
     /**
-     * Sparkline: escala min→max (interessa a FORMA da curva, não o zero) com
-     * uma folga vertical para a linha não encostar nas bordas.
+     * Sparkline: scaled min→max (the SHAPE of the curve is what matters, not the
+     * zero) with a little vertical padding so the line never touches the edges.
      *
      * @param  array<int,int>  $values
      * @return array{line:string,last_y:float,height:float}
@@ -104,8 +105,8 @@ class DashboardSummary
     }
 
     /**
-     * Área do histórico: baseline no zero (é um acumulado — a escala tem de ser
-     * honesta) e teto explícito, o mesmo do eixo.
+     * History area: baseline at zero (it is a running total — the scale has to
+     * be honest) and an explicit ceiling, the same one the axis shows.
      *
      * @param  array<int,int>  $values
      * @return array{line:string,area:string,last_y:float,height:float}
@@ -115,7 +116,7 @@ class DashboardSummary
         return $this->path($values, $width, $height, $top, 0, true);
     }
 
-    /** Séries dos retratos por métrica: ['observations' => [1, 2, …], …]. */
+    /** Snapshot series per metric: ['observations' => [1, 2, …], …]. */
     public function historySeries(Collection $history, array $metrics): array
     {
         $out = [];
@@ -127,9 +128,10 @@ class DashboardSummary
     }
 
     /**
-     * Gera o caminho SVG de uma série. Coordenadas no espaço do viewBox — o SVG
-     * é desenhado com `preserveAspectRatio="none"` e traço `non-scaling-stroke`,
-     * então ele acompanha a largura do card sem distorcer a linha.
+     * Build the SVG path of a series. Coordinates live in the viewBox space —
+     * the SVG is drawn with `preserveAspectRatio="none"` and a
+     * `non-scaling-stroke`, so it follows the width of the card without
+     * distorting the line.
      *
      * @param  array<int,int>  $values
      * @return array{line:string,area:string,last_y:float,height:float}

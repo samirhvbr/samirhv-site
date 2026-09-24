@@ -12,6 +12,43 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.12 - the AI-MEMORY reader classes become a synced copy of ai-memory-web's
+
+The eleven classes under `samirhv/app/Services/AiMemory/` are now **byte-identical** to the
+same directory in [samirhvbr/ai-memory-web](https://github.com/samirhvbr/ai-memory-web)
+0.1.19 (`9088c01`). That repository is the source. The owner decided on 23–24/09/2026 to
+keep both screens, and to keep this copy in sync by a script with a check that fails on
+divergence. The decision is ADR-006 there.
+
+Measured before the change, the two copies were 217 lines apart. 179 of those lines were
+comments. The other 38 were three choices that belong to each app: the fallback timezone,
+the default date format and the UI language. ai-memory-web 0.1.18 moved all three out of
+the classes, so here they live in:
+
+- `config/aimemory.php`, where `date_format` = `d/m/Y H:i` and `locale` = `pt_BR` are new.
+  `timezone` was already there.
+- `lang/pt_BR.json`: the ten strings, keyed by ai-memory-web's English. The locale is fixed
+  in config, not taken from the request, because admin routes render in the bare
+  (English) locale.
+
+**What an operator sees does not change.** The ten Portuguese strings were checked by
+script to be byte-identical to the ones the old classes returned, with each `:path`,
+`:dir` and `:message` in place of the interpolated variable. Right after the raw sync,
+two existing tests failed: `AiMemoryDatabaseTest` asserts `ESCRITA no diretório` and
+`não existe`. With the translation in place, the suite is back to its baseline: **186
+passed, 1 skipped** (the unrelated accessibility skip), in `php:8.4-cli` with
+`pdo_sqlite`, and `pint --test` passes on the copied files.
+
+`tools/sync-ai-memory-reader.sh` makes the copy. It reads ai-memory-web from GitHub (a
+bare, blob-less clone) or from a local clone with `--from`, writes the files and
+`UPSTREAM.json` (commit, version, one sha256 per file), deletes a class upstream no longer
+has, and commits nothing. `--check` exits 1 when the copy differs from upstream and 2 when
+it could not measure, never 0 on a failed clone or an unknown ref. The comments in the
+copied files are now English, because they are that repository's bytes.
+`docs/AI-MEMORY.md` §6.1, `CLAUDE.md`, `app/Services/README.md` and the `SetLocale`
+docblock say so where an editor will look. The docblock had said that nothing under
+`admin.*` calls `__()`, which stopped being true with this change.
+
 ## 1.0.11 - the permission lists follow repodocs: five commands move to ask, seven rules leave deny
 
 `rm -rf` and `curl`/`wget` piped into a shell leave `deny` and now ask for confirmation.

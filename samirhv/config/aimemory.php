@@ -46,6 +46,16 @@ return [
     // Timezone used to display timestamps (ai-memory stores UTC microseconds).
     'timezone' => env('AI_MEMORY_TIMEZONE', 'America/Sao_Paulo'),
 
+    // Default format of AiMemoryTime::format(), for the calls in the views that
+    // do not pass one.
+    'date_format' => 'd/m/Y H:i',
+
+    // Language of the text the reader classes produce (the degradation notice,
+    // "em aberto"). Fixed rather than taken from the request: admin routes
+    // render in the bare (English) locale, and this module speaks Portuguese.
+    // The strings are in lang/pt_BR.json, keyed by ai-memory-web's English.
+    'locale' => 'pt_BR',
+
     // How many days of history the Dashboard charts show.
     'chart_days' => 30,
 

@@ -1,0 +1,20 @@
+{
+    "rule": "Do not edit these .php files here. Change them in ai-memory-web, then run tools/sync-ai-memory-reader.sh (ADR-006 there, docs/AI-MEMORY.md §6 here).",
+    "source": "https://github.com/samirhvbr/ai-memory-web",
+    "path": "app/Services/AiMemory",
+    "version": "0.1.19",
+    "commit": "9088c0187f1867bec236fb091c4b4091017de454",
+    "files": {
+        "AiMemoryDatabase.php": "639303dad52dd0b4edcf158be98e6969de5b6df1081372b31e5122285be58f10",
+        "AiMemoryTime.php": "989b93d2f44f85876846c24a44aa7d4c0aa30528d7706f309339d1afd88f3dda",
+        "DashboardSummary.php": "089fbb1be68838cba356a75e5293a480695c6a95669fb1cf2a6d93142b92a344",
+        "HandoffRepository.php": "c6020a16f7f4f2d87969906fc00c8fc06e6f405d2a978fc6b750113af26935d9",
+        "ObservationRepository.php": "e9e3b43deb1f0922dee86081dc932f3bb270bd2217e06818d580a20af36bb0c4",
+        "PageRepository.php": "afe78cb1750453b76a5f93868ff8e8036da35c9cf3be29f74af2ec9764e43895",
+        "ProjectRepository.php": "71af7d065623ea810d5d181dc232eba4ce2fd5a30caf6e642824a8d3f095bf2d",
+        "SearchRepository.php": "21f917e2c6311f0e94e1e0eae880ad225456077cf7a3c7c6f1865d89c9764c70",
+        "SessionRepository.php": "fc08d4b6061fdaf81adedbdbc73533b091ba666dc8b10195ecd09191e2e0f709",
+        "StatsRepository.php": "c74318794fd9f6f1d3ce8420ef0325e3eaf04c717454efb02ac4bf7f2bf379c3",
+        "WorkspaceRepository.php": "34daf5ae9a55ef6415a5f1ba41ccbaef451beb749b4d2a5db8086a8f08c562d6"
+    }
+}

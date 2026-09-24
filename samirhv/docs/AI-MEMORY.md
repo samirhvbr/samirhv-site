@@ -236,6 +236,7 @@ To change the interval: `data-every` (seconds) on the `[data-aim-live]` element.
 
 | Layer | File |
 | --- | --- |
+| **The reader classes below are a copy** of ai-memory-web — see §6.1 | `app/Services/AiMemory/*.php`, pinned by `app/Services/AiMemory/UPSTREAM.json` |
 | RO connection + `isAvailable`/`unavailableReason` + pagination | `app/Services/AiMemory/AiMemoryDatabase.php` |
 | Time formatting (µs → local) | `app/Services/AiMemory/AiMemoryTime.php` |
 | Queries (one per screen) | `app/Services/AiMemory/{Stats,Project,Workspace,Page,Session,Observation,Handoff,Search}Repository.php` |
@@ -249,8 +250,37 @@ To change the interval: `data-every` (seconds) on the `[data-aim-live]` element.
 | Chart reading aids (crosshair/tooltip/keyboard) | `public/js/admin/ai-memory/dashboard.js` |
 | Degradation notice | `resources/views/admin/ai-memory/_unavailable.blade.php` |
 | Config | `config/aimemory.php`, `aimemory` connection in `config/database.php` |
+| The module's Portuguese (notice, "em aberto") | `lang/pt_BR.json`, keyed by ai-memory-web's English |
 | Guard regression tests | `tests/Unit/AiMemory/AiMemoryDatabaseTest.php` |
 | History | migration `..._create_ai_memory_stat_snapshots_table`, `App\Models\AiMemoryStatSnapshot`, `app/Console/Commands/SnapshotAiMemoryStats.php` |
+
+### 6.1 The reader classes are a copy — change them in ai-memory-web
+
+The eleven classes under `app/Services/AiMemory/` are a **byte-identical copy**
+of the same directory in
+[samirhvbr/ai-memory-web](https://github.com/samirhvbr/ai-memory-web), the
+standalone version of this module. That repository is the source: the owner
+decided on 23–24/09/2026 to keep both screens, with ai-memory-web as the
+source, and to keep this copy in sync by a script, with a check that fails when
+the two differ. The decision is ADR-006 there. The two had drifted 217 lines
+apart by then.
+
+- **Never edit those `.php` files here.** Change the class in ai-memory-web,
+  push, then run `tools/sync-ai-memory-reader.sh` from the repository root. It
+  rewrites the files and `UPSTREAM.json` (commit, version, one sha256 per file)
+  and commits nothing.
+- **What stays ours** is what differs between the two apps, and none of it is
+  in the classes: `config/aimemory.php` (`timezone`, `date_format`, `locale`),
+  the Portuguese in `lang/pt_BR.json`, the controller, the views, the snapshot
+  model and command.
+- **The language is fixed in config, not taken from the request**: admin
+  routes render in the bare (English) locale, so `aimemory.locale` is
+  `pt_BR`, and the strings are keyed by the English sentence ai-memory-web
+  uses. A sentence reworded there drops back to English here until
+  `lang/pt_BR.json` follows.
+- **Comments in those files point at ai-memory-web's documents**
+  (`docs/permissions.md`, `docs/read-only.md`), because they carry that
+  repository's bytes. The Portuguese notice points here, to §4.
 
 ### ai-memory schema (reference)
 

@@ -31,6 +31,11 @@ Trabalhar sobre uma base desatualizada gera conflitos. Puxe primeiro, sempre. Pa
 - **Template engine:** Blade
 - **Frontend:** Canvas 7 (tema HTML5) — assets em `public/vendor/canvas/`
 - **Banco de Dados:** MySQL / MariaDB — nunca usar SQLite como **armazenamento do app**. **Exceção deliberada:** o módulo **AI-MEMORY** do admin lê (somente leitura, `PRAGMA query_only`) o SQLite **externo** do produto `ai-memory` — é fonte de dados de terceiro, não storage nosso. Não "conserte" a conexão `aimemory` em `config/database.php`. Ver `samirhv/docs/AI-MEMORY.md`.
+- **The AI-MEMORY reader classes are a copy.** `samirhv/app/Services/AiMemory/*.php` is byte-identical to
+  the same directory in [samirhvbr/ai-memory-web](https://github.com/samirhvbr/ai-memory-web), which is the
+  source. Never edit them here: change the class there, then run `tools/sync-ai-memory-reader.sh`. What
+  differs between the two apps lives in `config/aimemory.php` and `lang/pt_BR.json`
+  (`samirhv/docs/AI-MEMORY.md` §6.1).
 - **CSS theme:** `public/vendor/canvas/style.css` + `css/blog-theme.css`
 
 ---

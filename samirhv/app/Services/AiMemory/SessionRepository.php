@@ -5,16 +5,16 @@ namespace App\Services\AiMemory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
-/** Sessões (um agente trabalhando) e a timeline de observações de cada uma. */
+/** Sessions (one agent at work) and the observation timeline of each one. */
 class SessionRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
     /**
-     * Lista filtrável/ordenável. $filters: project (hex), agent, days (janela
-     * sobre started_at), sort ∈ recent|oldest|longest|shortest. A duração
-     * ordena por (ended_at - started_at); sessões em aberto usam "agora" como
-     * fim, para ordenar pela duração corrente.
+     * Filterable, sortable listing. $filters: project (hex), agent, days
+     * (window over started_at), sort ∈ recent|oldest|longest|shortest. Duration
+     * sorts by (ended_at - started_at); open sessions use "now" as their end, so
+     * they sort by their current duration.
      */
     public function paginate(array $filters, int $perPage): LengthAwarePaginator
     {
@@ -33,8 +33,8 @@ class SessionRepository
             $bind[] = Carbon::now('UTC')->subDays((int) $filters['days'])->timestamp * 1_000_000;
         }
 
-        // A ordenação por duração injeta "agora" (?) no ORDER BY; por isso as
-        // bindings do SELECT podem ter um item a mais que as do COUNT.
+        // Sorting by duration injects "now" (?) into the ORDER BY, which is why
+        // the SELECT bindings can carry one more item than the COUNT ones.
         $selectBind = $bind;
         $sort = $filters['sort'] ?? 'recent';
         if (in_array($sort, ['longest', 'shortest'], true)) {
@@ -55,7 +55,7 @@ class SessionRepository
         return $this->db->paginate($sql, $selectBind, "SELECT COUNT(*) FROM sessions s WHERE {$where}", $bind, $perPage);
     }
 
-    /** agent_kinds distintos, para o select de filtro. */
+    /** Distinct agent_kinds, for the filter select. */
     public function agentKinds(): array
     {
         return array_map(
@@ -64,7 +64,7 @@ class SessionRepository
         );
     }
 
-    /** Uma sessão por id hex, com projeto e página-resumo (se houver). */
+    /** One session by hex id, with its project and summary page (if any). */
     public function find(string $hexId): ?object
     {
         return $this->db->selectOne(
@@ -83,7 +83,7 @@ class SessionRepository
         );
     }
 
-    /** Observações da sessão em ordem cronológica (timeline). */
+    /** The session's observations in chronological order (timeline). */
     public function observations(string $sessionHex): array
     {
         return $this->db->select(

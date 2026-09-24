@@ -5,7 +5,7 @@ Three kinds of class live here, and the subdirectory says which:
 | Path | Kind | What it does |
 |---|---|---|
 | `Services/*.php` | Service | A use case or a capability: `FileIngestService`, `GithubReleaseChecker`, `AnalyticsService`, `AuditLogger`, `UserAgentParser`, `DownloadPresenter`. |
-| `Services/AiMemory/*Repository.php` | Repository | Read-only queries against the **external** `ai-memory` SQLite index. Nothing here writes. |
+| `Services/AiMemory/*Repository.php` | Repository | Read-only queries against the **external** `ai-memory` SQLite index. Nothing here writes. The whole `AiMemory/` directory is a copy of ai-memory-web's and is never edited here (`docs/AI-MEMORY.md` §6.1). |
 | `Services/GitHub/Visualizations/*.php` | Presenter | Turns rows into what a chart needs — `RepositoryOverview`, `CommitHeatmap`. No queries of their own. |
 
 ## Why the repositories and presenters are not in `app/Repositories/` and `app/Presenters/`

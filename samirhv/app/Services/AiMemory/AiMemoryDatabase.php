@@ -11,15 +11,15 @@ use Throwable;
  * LOW-LEVEL, READ-ONLY access to the ai-memory SQLite index.
  *
  * ▸ WHY THIS EXISTS, AND WHY IT CAN "STOP WORKING"
- *   ai-memory (github.com/akitaonrails/ai-memory) runs on the SAME production
- *   host as Samirhv and keeps its index in a WAL-mode SQLite file (2.x installs
- *   it under /opt/ai-memory/data/db/memory.sqlite; 1.x used the Docker volume
+ *   ai-memory (github.com/akitaonrails/ai-memory) runs on the SAME host as this
+ *   app and keeps its index in a WAL-mode SQLite file (2.x installs it under
+ *   /opt/ai-memory/data/db/memory.sqlite; 1.x used the Docker volume
  *   `ai-memory-data`). This class opens that file as a SECOND READER, so the
- *   module is HOST-COUPLED by design: move the app to another machine, change
- *   the install layout, or take away the PHP-FPM user's access and the queries
- *   stop. When that happens `isAvailable()` returns false, `unavailableReason()`
+ *   app is HOST-COUPLED by design: move it to another machine, change the
+ *   install layout, or take away the web user's access and the queries stop.
+ *   When that happens `isAvailable()` returns false, `unavailableReason()`
  *   explains what exactly failed, and the UI shows the notice — never a 500.
- *   See docs/AI-MEMORY.md and config/aimemory.php.
+ *   See config/aimemory.php and docs/permissions.md.
  *
  * ▸ WAL READERS NEED A WRITABLE DIRECTORY (the trap that caused the 2.0 outage)
  *   Read permission on memory.sqlite is NOT enough. A WAL database is read
@@ -31,7 +31,7 @@ use Throwable;
  *   "General error: 8 attempt to write a readonly database" on a plain SELECT.
  *   Opening the file with `?mode=ro` does NOT help: a read-only handle cannot
  *   create `-shm` either. The supported fix is filesystem permission on the
- *   directory (docs/AI-MEMORY.md §4).
+ *   directory (docs/permissions.md).
  *
  * ▸ READ-ONLY (security invariant)
  *   ai-memory is the ONLY legitimate writer: it serialises writes through a
@@ -42,17 +42,17 @@ use Throwable;
  *
  * ▸ TIMESTAMPS
  *   ai-memory stores time as INTEGER MICROSECONDS since the epoch (UTC).
- *   Use AiMemoryTime::ts() to render them in the display timezone.
+ *   Use AiMemoryTime::format() to render them in the display timezone.
  */
 class AiMemoryDatabase
 {
     /** Per-request memo of the availability probe. */
     private ?bool $available = null;
 
-    /** Operator-facing explanation of the last failure (UI text, pt-BR). */
+    /** Operator-facing explanation of the last failure (UI text). */
     private ?string $reason = null;
 
-    /** Absolute path of memory.sqlite on the host (used by the notice). */
+    /** Absolute path of memory.sqlite on this host (used by the notice). */
     public function path(): string
     {
         return (string) config('aimemory.path');
@@ -61,7 +61,7 @@ class AiMemoryDatabase
     /** Display timezone for timestamps. */
     public function timezone(): string
     {
-        return (string) config('aimemory.timezone', 'America/Sao_Paulo');
+        return (string) config('aimemory.timezone', 'UTC');
     }
 
     /**
@@ -87,15 +87,15 @@ class AiMemoryDatabase
         $path = $this->path();
 
         if ($path === '') {
-            return $this->fail('O caminho do banco (AI_MEMORY_SQLITE_PATH) está vazio nesta instalação.');
+            return $this->fail($this->say('The database path (AI_MEMORY_SQLITE_PATH) is empty in this installation.'));
         }
 
         if (! is_file($path)) {
-            return $this->fail("O arquivo [{$path}] não existe neste servidor.");
+            return $this->fail($this->say('The file [:path] does not exist on this host.', ['path' => $path]));
         }
 
         if (! is_readable($path)) {
-            return $this->fail("O usuário do PHP-FPM não tem permissão de leitura em [{$path}].");
+            return $this->fail($this->say('The web server user has no read permission on [:path].', ['path' => $path]));
         }
 
         try {
@@ -109,14 +109,14 @@ class AiMemoryDatabase
         }
     }
 
-    /** Why the module is degraded, in operator language — or null when it is fine. */
+    /** Why the app is degraded, in operator language — or null when it is fine. */
     public function unavailableReason(): ?string
     {
         return $this->available === false ? $this->reason : null;
     }
 
     /**
-     * Degrade the module after a query that failed even though the probe passed
+     * Degrade the app after a query that failed even though the probe passed
      * (permission changed mid-request, ai-memory upgrade renamed a table, lock
      * timeout...). Called by the controller's guard so every later screen and
      * the live endpoint in this request answer "unavailable" instead of retrying.
@@ -155,8 +155,8 @@ class AiMemoryDatabase
 
     /**
      * Paginate a raw SELECT reusing LengthAwarePaginator, so the views keep
-     * using `{{ $x->links() }}` and `->withQueryString()` like the rest of the
-     * admin. `$sql` must NOT contain LIMIT/OFFSET (added here).
+     * using `{{ $x->links() }}` and `->withQueryString()` like any Eloquent
+     * listing. `$sql` must NOT contain LIMIT/OFFSET (added here).
      */
     public function paginate(string $sql, array $bindings, string $countSql, array $countBindings, int $perPage): LengthAwarePaginator
     {
@@ -194,32 +194,44 @@ class AiMemoryDatabase
         $dir = $path !== '' ? dirname($path) : '';
 
         if (str_contains($message, 'attempt to write a readonly database')) {
-            return 'O banco está em modo WAL e o usuário do PHP-FPM (www-data) não tem permissão de '
-                ."ESCRITA no diretório [{$dir}]. Um leitor de WAL precisa poder criar os arquivos "
-                .'`-shm`/`-wal` quando eles não existem — só leitura no `memory.sqlite` não basta. '
-                .'Ver docs/AI-MEMORY.md §4.';
+            return $this->say('The database is in WAL mode and the web server user has no WRITE permission on the '
+                .'directory [:dir]. A WAL reader has to be able to create the `-shm`/`-wal` files when '
+                .'they do not exist — read permission on `memory.sqlite` alone is not enough. '
+                .'See docs/permissions.md.', ['dir' => $dir]);
         }
 
         if (str_contains($message, 'unable to open database file')) {
-            return "O SQLite não conseguiu abrir [{$path}] nem seus arquivos `-wal`/`-shm` — normalmente "
-                ."falta permissão de leitura em algum deles, ou de travessia (x) em [{$dir}].";
+            return $this->say('SQLite could not open [:path] or its `-wal`/`-shm` files — usually a missing read '
+                .'permission on one of them, or a missing traverse (x) permission on [:dir].', ['path' => $path, 'dir' => $dir]);
         }
 
         if (str_contains($message, 'could not find driver')) {
-            return 'A extensão `pdo_sqlite` do PHP não está instalada neste servidor.';
+            return $this->say('The PHP extension `pdo_sqlite` is not installed on this host.');
         }
 
         if (str_contains($message, 'database is locked')) {
-            return 'O banco está travado por outro processo há mais tempo que o `busy_timeout` — '
-                .'o ai-memory pode estar num ciclo longo de escrita. Tente novamente em instantes.';
+            return $this->say('The database has been locked by another process for longer than `busy_timeout` — '
+                .'ai-memory may be in a long write cycle. Try again in a moment.');
         }
 
         if (preg_match('/no such (table|column)/i', $message)) {
-            return 'O esquema do ai-memory nesta versão não tem uma tabela/coluna que esta tela consulta '
-                ."(detalhe do driver: {$message}). Provável mudança de versão do ai-memory.";
+            return $this->say('The ai-memory schema in this version is missing a table/column this screen queries '
+                .'(driver detail: :message). Most likely an ai-memory version change.', ['message' => $message]);
         }
 
-        return "Falha ao consultar [{$path}]: {$message}";
+        return $this->say('Failed to query [:path]: :message', ['path' => $path, 'message' => $message]);
+    }
+
+    /**
+     * UI text in the host app's language. The English sentence is the key, so
+     * this app needs no translation file; a host that renders another language
+     * ships a JSON translation and names it in `aimemory.locale` — samirhv-site
+     * does, with `lang/pt_BR.json`, because this class is copied there
+     * byte-for-byte (ADR-006).
+     */
+    private function say(string $line, array $replace = []): string
+    {
+        return __($line, $replace, config('aimemory.locale'));
     }
 
     /**

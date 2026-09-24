@@ -2,12 +2,12 @@
 
 namespace App\Services\AiMemory;
 
-/** Workspaces do ai-memory, com contagens agregadas dos projetos que abrigam. */
+/** ai-memory workspaces, with the counts of the projects they hold. */
 class WorkspaceRepository
 {
     public function __construct(private readonly AiMemoryDatabase $db) {}
 
-    /** Lista de workspaces com contagens + última atividade. */
+    /** Workspaces with counts and last activity. */
     public function all(): array
     {
         return $this->db->select(
