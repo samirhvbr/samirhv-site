@@ -2,6 +2,8 @@
 
 A personal identity for Samir Hanna Verza: precise, authored and direct. This edition refines the selected cyan S into a consistent vector system. **Proposal only: no production website assets or styles have been replaced.** The original study remains in `../s-essencial/`.
 
+The yellow revision adds a pure `#FFFF00` hairline to the upper terminal of the S. Its two-unit horizontal width on the 100-unit source grid is 2.5% of the visible symbol width. It stays inside the existing silhouette, follows the terminal angle and appears nowhere else in the mark. The name and supporting graphics retain their original colors. The previous cyan-only revision is preserved in Git commit `4e1978c`.
+
 Start with `overview.png` and the nine-page `manual-identidade.pdf`. The Portuguese manual is intended for the brand owner and future application designers.
 
 ## Files
@@ -29,12 +31,15 @@ Keep the name lowercase. The wordmark uses outlined Manrope at weight 750 with c
 | Mist | `#F4F7FA` | Main light surface and dark-theme text |
 | Muted | `#9BA9BA` | Secondary text on graphite |
 | Cyan ink | `#007A9E` | Small colored text on mist |
+| Pure yellow | `#FFFF00` | Tiny upper-terminal accent only |
 
 Cyan on graphite has 8.3:1 contrast; mist on graphite 17.7:1; cyan ink on mist 4.6:1. Do not use bright cyan for small text on light surfaces. Logo colors are graphic identity, not automatic text colors.
 
 Clearspace is at least one quarter of the visible symbol height, measured from the artwork bounds. Suggested digital minimums: horizontal SVG canvas width 160 px; standalone visible symbol height 24 px. For smaller use, choose the dedicated favicon. Confirm legibility in the actual product context when applying.
 
 No glow, gradients, shadows, stretching, extra outlines or rotation. Preserve flat colors. Use the diagonal motif once per composition and keep it away from reading areas. Favor generous whitespace and simple alignment over decorative panels.
+
+Keep yellow confined to the supplied terminal in full-color marks. Do not repeat it on the lower terminal, the wordmark, backgrounds or ribbons. Monochrome signatures deliberately omit it. The optical favicon uses a 0.75-unit inset on its 16-unit grid so that the accent survives rasterization without becoming a large block. The accent is decorative and does not convey status or other information.
 
 The proposed verbal signature is **“Engenharia com assinatura.”** Supporting copy: **“Projetos, ferramentas e código.”** Describe concrete problems, working software and how to get started; avoid inflated promises.
 

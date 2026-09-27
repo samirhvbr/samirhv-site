@@ -16,6 +16,7 @@ s+=f'<rect x="80" y="588" width="915" height="258" rx="16" fill="{F}"/>'
 s+=asset('logo-horizontal-light.svg',118,640,830)+asset('app-icon-cyan.svg',1070,588,258)
 s+=asset('favicon.svg',1388,654,64)+t('Favicon',17,1387,765,M,400)
 s+=t('Manrope',50,80,960,F,700)+t('Preciso. Autoral. Direto.',22,82,1015,M,400)
+s+=t('Detalhe na ponta / #FFFF00',16,82,1068,M,400)
 for j,(name,h) in enumerate([('Ciano',C),('Grafite',N),('Névoa',F),('Ciano texto',b['INK'])]):
  x=650+j*221;s+=f'<rect x="{x}" y="911" width="195" height="94" rx="6" fill="{h}" stroke="#334050"/>'
  s+=t(name,17,x,1040,F,500)+t(h,16,x,1071,M,400)

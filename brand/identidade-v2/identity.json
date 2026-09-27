@@ -1,13 +1,20 @@
 {
   "name": "samirhv",
   "edition": "S essencial / 02",
+  "revision": "subtle yellow terminal",
   "status": "identity proposal, not deployed",
   "palette": {
     "cyan": "#0BB8EE",
     "graphite": "#0B1018",
     "mist": "#F4F7FA",
     "muted": "#9BA9BA",
-    "cyanInk": "#007A9E"
+    "cyanInk": "#007A9E",
+    "yellowAccent": "#FFFF00"
+  },
+  "accent": {
+    "path": "M88 10H90L82.5 25H80.5Z",
+    "widthIn100UnitGrid": 2,
+    "usage": "Upper terminal only; omitted from monochrome signatures."
   },
   "typeface": "Manrope",
   "wordmarkWeight": 750,

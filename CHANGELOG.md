@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.15 - Add a subtle pure-yellow terminal to the samirhv brand
+
+Confine the #FFFF00 accent to a thin inset at the upper tip of the S. Refresh
+full-color vector and raster assets, optical favicons, previews and the visual
+manual. Monochrome signatures and production website assets remain unchanged.
+
+Validation: inspect the updated overview, rendered manual and 16/32/48 px
+favicons; verify SVG structure, export dimensions and ICO frames.
+
 ## 1.0.14 - Refine the samirhv visual identity and package brand assets
 
 Add the second S essencial identity edition with outlined vector signatures,
