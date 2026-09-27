@@ -4,7 +4,7 @@ A personal identity for Samir Hanna Verza: precise, authored and direct. This ed
 
 The yellow revision adds a pure `#FFFF00` hairline to the upper terminal of the S. Its two-unit horizontal width on the 100-unit source grid is 2.5% of the visible symbol width. It stays inside the existing silhouette, follows the terminal angle and appears nowhere else in the mark. The name and supporting graphics retain their original colors. The previous cyan-only revision is preserved in Git commit `4e1978c`.
 
-Start with `overview.png` and the nine-page `manual-identidade.pdf`. The Portuguese manual is intended for the brand owner and future application designers.
+Start with `overview.png` and the ten-page `manual-identidade.pdf`. Page 05 specifies the yellow accent, with its digital color values, geometry and usage rules. The Portuguese manual is intended for the brand owner and future application designers.
 
 ## Files
 
@@ -40,6 +40,8 @@ Clearspace is at least one quarter of the visible symbol height, measured from t
 No glow, gradients, shadows, stretching, extra outlines or rotation. Preserve flat colors. Use the diagonal motif once per composition and keep it away from reading areas. Favor generous whitespace and simple alignment over decorative panels.
 
 Keep yellow confined to the supplied terminal in full-color marks. Do not repeat it on the lower terminal, the wordmark, backgrounds or ribbons. Monochrome signatures deliberately omit it. The optical favicon uses a 0.75-unit inset on its 16-unit grid so that the accent survives rasterization without becoming a large block. The accent is decorative and does not convey status or other information.
+
+Yellow color specification: sRGB HEX `#FFFF00`, RGB `255 / 255 / 0`, HSL `60° / 100% / 50%`, 100% opacity. The source terminal is 2 units wide horizontally and 15 units tall on the 100-unit grid; its horizontal width is 2.5% of the 80-unit visible S width. Follow the original terminal slope. The larger swatch on the specification page documents the color and is not a suggested application area.
 
 The proposed verbal signature is **“Engenharia com assinatura.”** Supporting copy: **“Projetos, ferramentas e código.”** Describe concrete problems, working software and how to get started; avoid inflated promises.
 

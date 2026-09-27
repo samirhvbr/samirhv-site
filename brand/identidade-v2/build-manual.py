@@ -1,5 +1,7 @@
 """Build the visual identity manual. Requires reportlab, svglib and Pillow."""
 from pathlib import Path
+import colorsys
+import json
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -7,6 +9,10 @@ from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 from PIL import Image
 R=Path(__file__).resolve().parent; A=R/'assets'
+identity=json.loads((R/'identity.json').read_text())
+Y=identity['palette']['yellowAccent']
+yellow_rgb=tuple(int(Y[i:i+2],16) for i in (1,3,5))
+yellow_h,yellow_l,yellow_s=colorsys.rgb_to_hls(*(v/255 for v in yellow_rgb))
 for w in (400,500,700):pdfmetrics.registerFont(TTFont(f'M{w}',str(R/f'fonts/Manrope-{w}.ttf')))
 W,H=960,600; N='#0B1018'; C='#0BB8EE'; F='#F4F7FA'; M='#9BA9BA'; I='#007A9E'
 c=canvas.Canvas(str(R/'manual-identidade.pdf'),pagesize=(W,H));c.setTitle('samirhv / Identidade visual / S essencial 02');c.setAuthor('samirhv')
@@ -48,11 +54,24 @@ def ratio(a,b):v=sorted([luminance(a),luminance(b)]);return (v[1]+.05)/(v[0]+.05
 page(4,'Cor que identifica. Contraste que funciona.')
 for k,(name,h) in enumerate([('Ciano',C),('Grafite',N),('Névoa',F),('Ciano texto',I)]):
  x=48+k*222;rect(x,160,204,180,h);text(name,x,358,19,N,700);text(h,x,388,14,I,500)
-rect(48,425,18,4,'#FFFF00');text('Amarelo puro #FFFF00: apenas o filete da ponta, sem ampliar a área de cor.',80,415,13,N)
+rect(48,425,18,4,Y);text(f'Amarelo puro {Y}: cor de acento. Especificação completa na página 05.',80,415,13,N)
 lines([f'Ciano / grafite: {ratio(C,N):.1f}:1     •     Névoa / grafite: {ratio(F,N):.1f}:1',f'Ciano texto / névoa: {ratio(I,F):.1f}:1     •     combinações para texto corrente'],48,450,16)
 text('Sobre fundo claro, reserve o ciano vivo ao símbolo e a detalhes gráficos.',48,512,13,I)
 end()
-page(5,'Tipografia com presença')
+page(5,'Amarelo puro / especificação')
+# This enlarged swatch documents the color; it is not an application example.
+rect(48,154,312,84,Y);text('AMARELO PURO',68,170,12,N,700);text(Y,68,190,25,N,700)
+rect(48,259,312,230,N);svg('symbol-cyan.svg',99,274,200)
+text('Aplicação: só na ponta superior do S.',48,505,13,I)
+text('Referência digital / sRGB',408,151,20,N,700)
+specs=[('HEX',Y),('RGB',' / '.join(map(str,yellow_rgb))),('HSL',f'{yellow_h*360:.0f}° / {yellow_s*100:.0f}% / {yellow_l*100:.0f}%'),('Opacidade','100% - cor chapada')]
+for j,(label,value) in enumerate(specs):
+ y=195+j*30;text(label,408,y,13,I,500);text(value,535,y,15,N,500)
+text('Proporção do detalhe',408,332,18,N,700)
+lines([f"Filete: {identity['accent']['widthIn100UnitGrid']} unidades na horizontal, em uma grade de 100.", 'Equivale a 2,5% da largura visível do S (80 unidades).', 'Altura: 15 unidades. Inclinação igual à ponta original.'],408,366,13,step=22)
+lines(['Favicon: filete óptico de 0,75 unidade na grade de 16.', 'Uso único, contido na silhueta. Sem repetição no nome,', 'no terminal inferior ou nos fundos. Omitir em monocromia.'],408,447,13,step=22)
+end()
+page(6,'Tipografia com presença')
 text('Manrope',48,148,76,N,700);text('Aa 0123456789',50,255,35,I,500)
 lines(['Uma família para títulos, interface e texto.', 'O nome da marca usa peso 750 e espaçamento próprio.', 'Nos arquivos finais, as letras já estão em curvas.'],50,341,16)
 text('Hierarquia sugerida',565,162,21,N,700)
@@ -62,7 +81,7 @@ lines(['Descreva o problema, a solução e', 'como começar. Prefira evidência'
 text('700 títulos  /  500 rótulos  /  400 texto',566,450,13,I)
 text('Monoespaçada apenas em código e dados técnicos.',50,514,13,I)
 end()
-page(6,'Pequeno também é marca.',True)
+page(7,'Pequeno também é marca.',True)
 svg('app-icon-cyan.svg',48,164,192);svg('app-icon-dark.svg',275,164,192)
 text('Ícone / avatar',48,386,16,F,500)
 text('Favicon com ajuste óptico',551,164,20,F,700)
@@ -71,7 +90,7 @@ for x,n in [(558,16),(650,32),(760,48)]:
 lines(['Aberturas ampliadas e menos detalhes.', 'O favicon usa uma placa para preservar', 'a leitura em abas claras e escuras.'],551,402,15,M)
 text('Fonte mobile: quadrada, opaca e sem cantos pré-recortados.',48,512,13,M)
 end()
-page(7,'Espaço para respirar')
+page(8,'Espaço para respirar')
 # Clearspace = 20 units, quarter of visible 80-unit symbol height.
 rect(48,164,535,176,'#E5EBF0');svg('logo-horizontal-light.svg',72,185,487)
 c.setStrokeColor(I);c.setLineWidth(.7);c.setDash(3,3);c.rect(60,H-328,511,152,stroke=1,fill=0);c.setDash()
@@ -82,7 +101,7 @@ svg('logo-horizontal-light.svg',649,234,160);text('Assinatura: 160 px de largura
 svg('symbol-navy.svg',649,356,30);text('Símbolo: 24 px visíveis',649,405,13,I)
 text('Abaixo disso, use o favicon.',649,450,13,I)
 end()
-page(8,'Aplicações da identidade',True)
+page(9,'Aplicações da identidade',True)
 c.drawImage(str(A/'social-cover.png'),48,H-151-287.175,width=547,height=287.175)
 svg('app-icon-cyan.svg',676,169,144)
 text('Assinatura pessoal',651,352,18,F,700)
@@ -90,7 +109,7 @@ lines(['Samir Hanna Verza', 'samirhv.com.br'],651,392,15,M)
 text('Capa social • arquivo pronto em 1200 × 630 px',48,465,13,M)
 text('Elementos planos, alinhamentos simples e uma diagonal como apoio.',48,513,13,M)
 end()
-page(9,'Pronta para ganhar aplicações')
+page(10,'Pronta para ganhar aplicações')
 text('O que acompanha a marca',48,158,24,N,700)
 lines(['01  Logos horizontais e verticais em SVG e PNG.', '02  Símbolo, versões monocromáticas e wordmark.', '03  Favicons, ícones, capa social e capa de repositório.', '04  Tipografia licenciada, cores e tokens de referência.', '05  Fontes vetoriais e scripts para novas exportações.'],48,219,17,step=43)
 rect(625,157,287,354,N);text('Status desta edição',649,185,19,F,700)

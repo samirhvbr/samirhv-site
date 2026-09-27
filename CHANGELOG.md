@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.16 - Document the yellow accent specification in the brand manual
+
+Add a dedicated yellow specification page with sRGB HEX, RGB, HSL, opacity,
+terminal dimensions and favicon usage rules. Link it from the palette page
+and refresh the ten-page PDF and handoff archive.
+
+Validation: check extracted color values and page references, render the full
+manual and visually inspect the new specification page.
+
 ## 1.0.15 - Add a subtle pure-yellow terminal to the samirhv brand
 
 Confine the #FFFF00 accent to a thin inset at the upper tip of the S. Refresh
