@@ -1,0 +1,11 @@
+:root {
+  --brand-cyan: #0BB8EE;
+  --brand-graphite: #0B1018;
+  --brand-mist: #F4F7FA;
+  --brand-muted: #9BA9BA;
+  --brand-cyan-ink: #007A9E;
+  --brand-font: "Manrope", Arial, sans-serif;
+  --brand-radius-control: 8px;
+  --brand-radius-panel: 16px;
+  --brand-space-unit: 8px;
+}

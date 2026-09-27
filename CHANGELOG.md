@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.14 - Refine the samirhv visual identity and package brand assets
+
+Add the second S essencial identity edition with outlined vector signatures,
+optical favicons, app icons, licensed Manrope fonts, color tokens, social covers
+and a nine-page visual manual. Preserve the original study and supplied reference.
+The identity remains a proposal under `brand/`; production assets are unchanged.
+
+Validation: parse all SVGs; verify PNG dimensions, ICO frames and PDF page count;
+render and visually review the manual and overview.
+
 ## 1.0.13 - a test and a CI job fail when the AI-MEMORY copy stops matching ai-memory-web
 
 1.0.12 made `samirhv/app/Services/AiMemory/` a copy. This entry adds what the owner asked
