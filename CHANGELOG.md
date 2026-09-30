@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.24 - The flaw-by-flaw table fits ten agents on a desktop
+
+With a tenth agent the last column fell outside the 1040 px container and only showed up when the
+table was scrolled sideways, which hid the newest entry. The flaw column's minimum width goes
+from 14rem to 12.5rem, each agent column's from 5.6rem to 4.9rem, and cell padding from 10 px to
+8 px, so ten agents fit at desktop width; phones keep the pinned flaw column and scroll the rest.
+
+Validation: checked in headless Chromium at 1366 px (all ten columns visible) and 390 px.
+
 ## 1.0.23 - An agent that runs at its model's default effort says so, in both languages
 
 Some models expose no reasoning-effort setting and always run at their own default; the results

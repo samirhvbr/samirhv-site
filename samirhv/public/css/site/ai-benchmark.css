@@ -100,9 +100,9 @@
 .ab-flaws thead th{ font-family:var(--s-mono); font-size:.68rem; font-weight:600; color:var(--s-muted); letter-spacing:.02em; background:var(--s-bg-2); vertical-align:bottom; }
 /* One column per agent: the model name may wrap, so the table grows with the
    leaderboard without squeezing the flaw names into a sliver. */
-.ab-flaws thead th + th{ min-width:5.6rem; }
-.ab-flaws td{ white-space:nowrap; padding-inline:10px; }
-.ab-flaws tbody th{ font-weight:400; min-width:14rem; }
+.ab-flaws thead th + th{ min-width:4.9rem; }
+.ab-flaws td{ white-space:nowrap; padding-inline:8px; }
+.ab-flaws tbody th{ font-weight:400; min-width:12.5rem; }
 /* The flaw column stays put when the agent columns scroll sideways. */
 .ab-flaws tr > :first-child{ position:sticky; left:0; z-index:1; background:var(--s-surface); box-shadow:1px 0 0 var(--s-line); }
 .ab-flaws thead tr > :first-child{ background:var(--s-bg-2); z-index:2; }
