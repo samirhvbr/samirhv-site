@@ -12,6 +12,25 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.39 - The AI Benchmark page shows the top six next to its title
+
+A reader who stops at the fold now sees who leads. The hero becomes two columns: the title, lead
+and buttons on the left, and a card on the right. The card lists the first six agents of the first
+instance with rank, model, score and grade, then a line giving the score scale and the total number
+of agents ("not official until each has three runs"), and a link to the full leaderboard.
+
+The card reads the same `results.json` as the leaderboard, so it follows every sync with no hand
+edits. The score and grade come from each agent's representative run, and the size is
+`AiBenchmark::HERO_TOP`. Below 860 px the card stacks under the buttons. The strings exist in both
+languages.
+
+Validation:
+- a new test checks the heading, the six names in rank order and the link on the English page, and
+  the Portuguese heading and link;
+- the Portuguese page is checked for the English strings;
+- the full suite, Pint and `view:cache` pass;
+- checked in headless Chromium at 1366 px and 390 px.
+
 ## 1.0.38 - The AI Benchmark page shows Kimi K2.7 Code among eighteen agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@142f665. That version adds

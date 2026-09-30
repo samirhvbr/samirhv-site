@@ -15,6 +15,9 @@ return [
     'lead' => 'O LEB — LLM Engineering Benchmark — entrega a um agente de IA um sistema legado em produção, com falhas plantadas e consumidores que dependem de como ele se comporta hoje. Ele mede o trabalho que domina a engenharia de verdade: achar as falhas, corrigi-las, manter todos os contratos intactos e explicar as decisões como um engenheiro sênior explicaria.',
     'cta_results' => 'Ver os resultados',
     'cta_source' => 'Método no GitHub',
+    'top_title' => 'Os :n melhores até aqui',
+    'top_note' => 'Nota de 0 a 1000, entre :total agentes. Não oficial até cada um ter três runs.',
+    'top_link' => 'Placar completo',
 
     'why_title' => 'Por que mais um benchmark',
     'why_body' => 'A maioria dos benchmarks mede código escrito do zero, ou uma issue isolada resolvida. Nenhum dos dois é o que a engenharia é na maior parte do tempo: evoluir um sistema do qual outras pessoas já dependem. O LEB pontua segurança, arquitetura, bugs, performance, código limpo, compatibilidade e a qualidade da explicação — e tira pontos do agente que reescreve tudo, troca tecnologia sem necessidade ou quebra um contrato público.',

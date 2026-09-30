@@ -24,6 +24,9 @@ final class AiBenchmark
     /** Columns in the flaw-by-flaw table: the top N entries, in rank order. */
     public const FLAW_TABLE_AGENTS = 10;
 
+    /** Entries in the summary next to the page title. */
+    public const HERO_TOP = 6;
+
     private static ?array $cache = null;
 
     /**

@@ -20,6 +20,9 @@ return [
     'lead' => 'LEB — the LLM Engineering Benchmark — hands an AI agent a legacy system in production, with flaws planted in it and consumers that depend on how it behaves today. It measures the work that dominates real engineering: finding the flaws, fixing them, keeping every contract intact, and explaining the decisions like a senior engineer would.',
     'cta_results' => 'See the results',
     'cta_source' => 'Method on GitHub',
+    'top_title' => 'Top :n so far',
+    'top_note' => 'Score out of 1000, of :total agents. Not official until each has three runs.',
+    'top_link' => 'Full leaderboard',
 
     'why_title' => 'Why another benchmark',
     'why_body' => 'Most benchmarks measure code written from scratch, or one isolated issue solved. Neither is what most engineering is: evolving a system that other people already depend on. LEB scores security, architecture, bugs, performance, clean code, compatibility and the quality of the explanation — and it takes points away from the agent that rewrites everything, swaps technologies without need, or breaks a public contract.',

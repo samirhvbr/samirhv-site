@@ -73,7 +73,7 @@ class AiBenchmarkPageTest extends TestCase
 
         foreach (['Can an AI maintain', 'How a run works', 'Read this before quoting', 'See the results', 'Flaw by flaw',
             'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official',
-            'training cutoff', 'runs per agent', 'prefixes are blackhole', 'benchmark VM'] as $english) {
+            'training cutoff', 'runs per agent', 'prefixes are blackhole', 'benchmark VM', 'so far', 'Full leaderboard'] as $english) {
             $response->assertDontSee($english);
         }
     }
@@ -193,6 +193,17 @@ class AiBenchmarkPageTest extends TestCase
             ->assertOk()
             ->assertSee('corte de treino posterior à publicação do gabarito')
             ->assertSee('corte de treino não publicado');
+    }
+
+    public function test_the_hero_summarises_the_top_six_in_rank_order(): void
+    {
+        $entries = AiBenchmark::results()['instances'][0]['entries'];
+        $response = $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Top 6 so far');
+
+        $names = array_map(fn ($e) => $e['model']['name'], array_slice($entries, 0, AiBenchmark::HERO_TOP));
+        $response->assertSeeInOrder(['Top 6 so far', ...$names, 'Full leaderboard'], false);
+
+        $this->get(self::PT)->assertOk()->assertSee('Os 6 melhores até aqui')->assertSee('Placar completo');
     }
 
     /** A key with no string behind it renders as itself: `ai_benchmark.instances.LEB-100-A.name`. */

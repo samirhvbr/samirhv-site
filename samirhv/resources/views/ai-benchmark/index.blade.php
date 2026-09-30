@@ -32,13 +32,45 @@
                 <a href="{{ lroute('home') }}" class="s-meta"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>{{ __('shell.home') }}</a>
             </nav>
 
-            <span class="s-kicker">{{ __('ai_benchmark.kicker') }}</span>
-            <h1 class="s-display ab-title">{{ __('ai_benchmark.heading') }} <span class="ab-accent nocolor">{{ __('ai_benchmark.heading_accent') }}</span></h1>
-            <p class="s-lead ab-lead">{{ __('ai_benchmark.lead') }}</p>
+            @php
+                // The first instance's leaders, for a reader who stops at the fold. The full
+                // leaderboard, with runs and caveats, is further down.
+                $topInst = $instances[0] ?? null;
+                $top = $topInst ? array_slice($topInst['entries'], 0, AiBenchmark::HERO_TOP) : [];
+            @endphp
+            <div class="ab-hero__grid">
+                <div>
+                    <span class="s-kicker">{{ __('ai_benchmark.kicker') }}</span>
+                    <h1 class="s-display ab-title">{{ __('ai_benchmark.heading') }} <span class="ab-accent nocolor">{{ __('ai_benchmark.heading_accent') }}</span></h1>
+                    <p class="s-lead ab-lead">{{ __('ai_benchmark.lead') }}</p>
 
-            <div class="ab-actions">
-                <a href="#results" class="s-btn s-btn--lg">{{ __('ai_benchmark.cta_results') }} <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
-                <a href="{{ $repo }}" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github" aria-hidden="true"></i> {{ __('ai_benchmark.cta_source') }}</a>
+                    <div class="ab-actions">
+                        <a href="#results" class="s-btn s-btn--lg">{{ __('ai_benchmark.cta_results') }} <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+                        <a href="{{ $repo }}" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg"><i class="fa-brands fa-github" aria-hidden="true"></i> {{ __('ai_benchmark.cta_source') }}</a>
+                    </div>
+                </div>
+
+                @if(count($top))
+                    <aside class="s-card ab-top" aria-labelledby="ab-top-title">
+                        <div class="ab-top__head">
+                            <h2 class="ab-top__title" id="ab-top-title">{{ __('ai_benchmark.top_title', ['n' => count($top)]) }}</h2>
+                            <span class="ab-top__cap">{{ $topInst['id'] }}</span>
+                        </div>
+                        <ol class="ab-top__list">
+                            @foreach($top as $e)
+                                @php $grade = AiBenchmark::representativeRun($e)['grade']; @endphp
+                                <li>
+                                    <span class="ab-top__rank">{{ $e['rank'] }}</span>
+                                    <span class="ab-top__name">{{ $e['model']['name'] }}</span>
+                                    <span class="ab-top__score">{{ $e['score'] }}</span>
+                                    <span class="ab-grade ab-grade--{{ Str::lower($grade) }} ab-grade--pill">{{ __("ai_benchmark.grades.$grade") }}</span>
+                                </li>
+                            @endforeach
+                        </ol>
+                        <p class="ab-top__note">{{ __('ai_benchmark.top_note', ['total' => count($topInst['entries'])]) }}</p>
+                        <a href="#results" class="ab-top__link">{{ __('ai_benchmark.top_link') }} <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+                    </aside>
+                @endif
             </div>
         </div>
     </section>
