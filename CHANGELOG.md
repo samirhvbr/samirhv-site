@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.22 - The AI Benchmark page shows nine agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@b0e2fa6, which adds
+GPT-6.1-sol (666, 4th) to the LEB-100-A leaderboard, five points above GPT-6-astra.
+
+The hand-written reading of the results is rewritten for nine agents in both languages: four
+agents identified the dispatcher and declined to split it, GPT-6.1-sol and GPT-6-astra are the
+strongest GPT models and split on MD5 versus the CSV injection, places 6 to 9 sit within 26
+points. The conflict-of-interest caveat now places GPT-5.6-terra 6th after its review.
+
+Validation: the full suite, Pint and `view:cache` pass; the nine-column flaw table checked in
+headless Chromium at 1366 px.
+
 ## 1.0.21 - The AI Benchmark page shows eight agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@9b05e25, which adds
