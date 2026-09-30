@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.25 - The AI Benchmark page shows ten agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@251e77c, which adds
+MiniMax-M3 (460, 10th), the first model from neither Anthropic nor OpenAI, run at its model's
+default effort because it has no effort setting.
+
+The hand-written reading of the results is rewritten for ten agents in both languages, with a
+line saying MiniMax-M3 ran at the model's default while the other nine ran at xhigh. The
+conflict-of-interest caveat now counts four verdicts changed in review and places GPT-5.6-terra
+9th to 6th after its review.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass; the leaderboard shows
+"default effort (not configurable)" / "esforço padrão (não configurável)" for MiniMax-M3.
+
 ## 1.0.24 - The flaw-by-flaw table fits ten agents on a desktop
 
 With a tenth agent the last column fell outside the 1040 px container and only showed up when the
