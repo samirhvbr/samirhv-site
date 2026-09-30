@@ -200,8 +200,14 @@
                     </ol>
 
                     {{-- ── Flaw by flaw ── --}}
+                    {{-- Only the top ten: one column per agent stops being readable past that,
+                         and every agent's flaw-by-flaw result is in its scorecard anyway. --}}
+                    @php $flawEntries = array_slice($entries, 0, AiBenchmark::FLAW_TABLE_AGENTS); @endphp
                     <h4 class="s-h3 ab-subtitle">{{ __('ai_benchmark.flaws_title') }}</h4>
                     <p class="s-body s-muted">{{ __('ai_benchmark.flaws_intro') }}</p>
+                    @if(count($entries) > count($flawEntries))
+                        <p class="s-body s-muted">{{ __('ai_benchmark.flaws_top', ['shown' => count($flawEntries), 'total' => count($entries)]) }}</p>
+                    @endif
                     <ul class="ab-legend">
                         <li><span class="ab-dot ab-dot--fixed" aria-hidden="true"></span>{{ __('ai_benchmark.legend_fixed') }}</li>
                         <li><span class="ab-dot ab-dot--found" aria-hidden="true"></span>{{ __('ai_benchmark.legend_found') }}</li>
@@ -213,7 +219,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">{{ __('ai_benchmark.col_flaw') }}</th>
-                                    @foreach($entries as $e)
+                                    @foreach($flawEntries as $e)
                                         <th scope="col">{{ $e['model']['name'] }}</th>
                                     @endforeach
                                 </tr>
@@ -225,7 +231,7 @@
                                             <span class="ab-flaw__name">{{ __("ai_benchmark.flaws.{$flaw['id']}") }}</span>
                                             <span class="ab-flaw__meta">{{ $flaw['id'] }} · {{ __("ai_benchmark.severity.{$flaw['severity']}") }} · {{ __("ai_benchmark.difficulty.{$flaw['difficulty']}") }}</span>
                                         </th>
-                                        @foreach($entries as $e)
+                                        @foreach($flawEntries as $e)
                                             @php
                                                 $best = collect($e['runs'])->sortByDesc('total')->first();
                                                 $f = $best['flaws'][$flaw['id']] ?? null;

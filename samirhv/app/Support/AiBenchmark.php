@@ -21,6 +21,9 @@ final class AiBenchmark
 {
     public const PATH = 'data/ai-benchmark/results.json';
 
+    /** Columns in the flaw-by-flaw table: the top N entries, in rank order. */
+    public const FLAW_TABLE_AGENTS = 10;
+
     private static ?array $cache = null;
 
     /**
@@ -53,6 +56,18 @@ final class AiBenchmark
     public static function flush(): void
     {
         self::$cache = null;
+    }
+
+    /**
+     * Serve these results instead of the file until the next flush(). Tests
+     * only: a shape the real file does not have yet (an eleventh agent, a
+     * second run) is exercised without touching the synced copy.
+     *
+     * @param  array{instances: list<array<string, mixed>>}  $data
+     */
+    public static function fake(array $data): void
+    {
+        self::$cache = $data;
     }
 
     /**

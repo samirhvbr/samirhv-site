@@ -103,6 +103,7 @@ return [
 
     'flaws_title' => 'Flaw by flaw',
     'flaws_intro' => 'What each agent found and fixed among the planted flaws. The hard ones are flaws of absence — a missing authorization check, a session never regenerated, a file left open on the error path.',
+    'flaws_top' => 'The table shows the top :shown of :total agents. Every agent\'s result, flaw by flaw, is in its scorecard.',
     'legend_fixed' => 'fixed',
     'legend_found' => 'found, not fixed',
     'legend_missed' => 'missed',

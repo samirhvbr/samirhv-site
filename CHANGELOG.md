@@ -12,6 +12,21 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.27 - The flaw-by-flaw table shows the top ten agents
+
+The flaw-by-flaw table has one column per agent, and at ten it already fills the 1040 px container
+(1.0.24). From the eleventh agent on, the table shows the top ten in rank order, with a line
+saying how many agents there are and that every agent's result, flaw by flaw, is in its
+scorecard. The leaderboard above it still lists every agent. The limit is
+`AiBenchmark::FLAW_TABLE_AGENTS`; with ten agents today nothing on the page changes.
+
+`AiBenchmark::fake()` serves a results array to the page in tests, so a shape the synced file
+does not have yet (here, an eleventh agent) can be exercised without touching the copy.
+
+Validation: a test with eleven agents checks that the eleventh appears in the leaderboard and not
+in the table header, and that the note shows in both languages; another checks the note stays
+away at ten. The full suite, Pint and `view:cache` pass.
+
 ## 1.0.26 - The AI Benchmark page shows the instance's name and the current highlights
 
 Since the page was created (1.0.18), the instance heading rendered the raw keys

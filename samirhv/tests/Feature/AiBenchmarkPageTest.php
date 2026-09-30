@@ -86,6 +86,38 @@ class AiBenchmarkPageTest extends TestCase
         }
     }
 
+    public function test_the_flaw_table_shows_the_top_ten_and_the_leaderboard_shows_everyone(): void
+    {
+        $data = AiBenchmark::results();
+        $inst = &$data['instances'][0];
+        $extra = end($inst['entries']);
+        $extra['model']['name'] = 'Eleventh Agent';
+        $extra['rank'] = count($inst['entries']) + 1;
+        $inst['entries'] = array_slice($inst['entries'], 0, AiBenchmark::FLAW_TABLE_AGENTS);
+        $inst['entries'][] = $extra;
+        unset($inst);
+        AiBenchmark::fake($data);
+
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('Eleventh Agent</strong>', false)
+            ->assertDontSee('<th scope="col">Eleventh Agent</th>', false)
+            ->assertSee('The table shows the top 10 of 11 agents.');
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSee('A tabela mostra os 10 primeiros de 11 agentes.');
+    }
+
+    public function test_the_top_ten_note_stays_away_while_every_agent_fits(): void
+    {
+        $data = AiBenchmark::results();
+        $data['instances'][0]['entries'] = array_slice($data['instances'][0]['entries'], 0, AiBenchmark::FLAW_TABLE_AGENTS);
+        AiBenchmark::fake($data);
+
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertDontSee('The table shows the top');
+    }
+
     /** A key with no string behind it renders as itself: `ai_benchmark.instances.LEB-100-A.name`. */
     public function test_no_translation_key_renders_raw_on_either_page(): void
     {

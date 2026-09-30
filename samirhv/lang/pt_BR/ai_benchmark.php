@@ -98,6 +98,7 @@ return [
 
     'flaws_title' => 'Falha por falha',
     'flaws_intro' => 'O que cada agente achou e corrigiu entre as falhas plantadas. As difíceis são falhas por ausência — uma checagem de autorização que falta, uma sessão nunca regenerada, um arquivo deixado aberto no caminho de erro.',
+    'flaws_top' => 'A tabela mostra os :shown primeiros de :total agentes. O resultado de cada agente, falha por falha, está no scorecard dele.',
     'legend_fixed' => 'corrigida',
     'legend_found' => 'achada, não corrigida',
     'legend_missed' => 'não achada',
