@@ -27,6 +27,7 @@ The site speaks English and Brazilian Portuguese, and **the URL decides which**.
 | home | `/` | `/pt-br` |
 | downloads | `/downloads` | `/pt-br/downloads` |
 | project | `/p/{slug}` | `/pt-br/p/{slug}` |
+| AI benchmark | `/ai-benchmark` | `/pt-br/ai-benchmark` |
 
 A visitor arriving at a bare URL is negotiated: a browser asking for Portuguese
 is sent to `/pt-br` (302, `Vary: Accept-Language, Cookie`), anyone else stays on
@@ -71,6 +72,14 @@ samirhv/                     ← repository root
 its files grouped by operating system and version, a recommended build picked
 from the User-Agent, and its changelog. `/d/{file}` is the only way to fetch a
 file: the disk is private, and every hit is counted and audited.
+
+`/ai-benchmark` explains LEB, the LLM Engineering Benchmark, and shows its
+results. The numbers are not written here: they come from
+`samirhv/resources/data/ai-benchmark/results.json`, a byte-identical copy of
+`results/results.json` in [samirhvbr/ai-benchmark](https://github.com/samirhvbr/ai-benchmark),
+refreshed with `tools/sync-ai-benchmark-results.sh` (`--check` compares it with
+upstream). What is written here is the reading of those numbers and the caveats,
+in `lang/*/ai_benchmark.php` — reread them whenever a sync changes the results.
 
 ## Admin
 

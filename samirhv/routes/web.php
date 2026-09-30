@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiBenchmarkController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LegacyEnglishPrefix;
@@ -45,6 +46,9 @@ $publico = function (): void {
 
     // Static project pages (a description, with no database row).
     Route::view('/projects/github-desktop', 'projects.github-desktop')->name('project.github-desktop');
+
+    // LEB: the benchmark explained, then its results (a synced file, no database).
+    Route::get('/ai-benchmark', AiBenchmarkController::class)->name('ai-benchmark');
 };
 
 /* Prefixed languages first: a prefixed path must never be shadowed by a bare

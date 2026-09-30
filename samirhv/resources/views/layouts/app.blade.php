@@ -157,6 +157,7 @@
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.projects') }}</div></a></li>
                                 @endif
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.downloads') }}</div></a></li>
+                                <li class="menu-item"><a class="menu-link" href="{{ lroute('ai-benchmark') }}"><div>{{ __('shell.ai_benchmark') }}</div></a></li>
                             </ul>
                         </nav>
 
@@ -218,6 +219,7 @@
                             <ul class="list-unstyled mb-0" style="display: flex; flex-direction: column; gap: 10px;">
                                 <li><a href="{{ lroute('home') }}" class="s-flink">{{ __('shell.home') }}</a></li>
                                 <li><a href="{{ lroute('downloads') }}" class="s-flink">{{ __('shell.downloads') }}</a></li>
+                                <li><a href="{{ lroute('ai-benchmark') }}" class="s-flink">{{ __('shell.ai_benchmark') }}</a></li>
                                 <li><a href="{{ route('admin.dashboard') }}" class="s-flink">{{ __('shell.admin_panel') }}</a></li>
                                 @foreach(\App\Support\Locales::SUPPORTED as $langOption)
                                     @if($langOption !== app()->getLocale())

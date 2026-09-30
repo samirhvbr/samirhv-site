@@ -57,7 +57,7 @@ Trabalhar sobre uma base desatualizada gera conflitos. Puxe primeiro, sempre. Pa
 
 ## Estrutura (v0.2.0+)
 
-**Público** (`routes/web.php`): `/` (home, vitrine), `/downloads` (lista), `/p/{slug}` (projeto), `/d/{file}` (download com contagem + auditoria), `/login`, `/logout`.
+**Público** (`routes/web.php`): `/` (home, vitrine), `/downloads` (lista), `/p/{slug}` (projeto), `/ai-benchmark` (LEB results, synced from samirhvbr/ai-benchmark by `tools/sync-ai-benchmark-results.sh`), `/d/{file}` (download com contagem + auditoria), `/login`, `/logout`.
 
 **Admin** (`routes/admin.php`, prefixo `/admin`, middleware `auth,admin,password.changed`): dashboard, `projetos` (CRUD), `projetos/{p}/arquivos` (upload), `monitor` (versão nossa × upstream OSS no GitHub, via `GithubReleaseChecker`), `auditoria` (downloads + analytics), `auditoria-acesso` (ações/logins), `perfil`.
 

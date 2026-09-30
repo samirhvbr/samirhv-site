@@ -17,6 +17,7 @@ return [
     'home' => 'Início',
     'projects' => 'Projetos',
     'downloads' => 'Downloads',
+    'ai_benchmark' => 'AI Benchmark',
     'explore_releases' => 'Explorar releases',
 
     'title_suffix' => 'Projetos',

@@ -12,6 +12,25 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.18 - An AI Benchmark page in the main menu explains LEB and publishes its results
+
+`/ai-benchmark` (and `/pt-br/ai-benchmark`) explains what LEB measures — evolving a legacy
+system without breaking it — how a run works, how the 1000 points are scored and lost, and how
+runs are isolated from the answer key. Then the results from the synced file: per instance a
+leaderboard (total, grade, the seven categories, penalties, discovery index, calibration, a link
+to each audited scorecard) and a flaw-by-flaw table of what each agent found and fixed, followed
+by a hand-written reading of the numbers and the caveats — one run per agent, an AI judge that
+is also a contestant, an answer key already public, harness fixes made before scoring.
+
+The main menu and the footer link to it, and it joins `/sitemap.xml`. Interface strings live in
+`lang/{en,pt_BR}/ai_benchmark.php`; the page's CSS is `public/css/site/ai-benchmark.css`, theme
+tokens only.
+
+Validation: AiBenchmarkPageTest (both languages render with no leak, every entry appears, the
+menu links in the page's language, hreflang is reciprocal, every id in the file has a name in
+both languages, the key sets match); the full suite, Pint and `view:cache` pass; checked in
+headless Chromium at 1366 and 390 px.
+
 ## 1.0.17 - The LEB results arrive as a synced copy of ai-benchmark's results.json
 
 The benchmark's numbers are produced and audited in samirhvbr/ai-benchmark, where
