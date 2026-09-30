@@ -12,6 +12,25 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.34 - The AI Benchmark page shows GLM-5.3 sixth among thirteen agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@d81b9bd. That version adds
+GLM-5.3 at 629 (Silver, 6th), run in opencode at effort high with every isolation layer, 241 points
+above GLM-5.2. Its training cutoff is unpublished, so it carries the tag. The flaw table shows the
+top ten of thirteen.
+
+The hand-written copy is rewritten for thirteen agents in both languages:
+- **Highlights.** Architecture reads "0 for the other nine". Compatibility at 100 includes GLM-5.3.
+  Four agents did not run at xhigh. Places 6 to 10 sit within 30 points (629 to 599), with
+  GPT-5.6-terra seventh. A new line names GLM-5.3 the strongest model here from outside Anthropic
+  and OpenAI.
+- **Judge caveat.** It counts three Claude models of thirteen. The verdict changed in review for
+  GPT-5.6-terra is given as the 41 points it adds, since the ranks it quoted (9th to 6th) no longer
+  hold.
+- **Isolation section.** It adds GLM-5.3 to the runs of 30 September that had every layer.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.33 - The AI Benchmark page shows twelve agents on LEB-100-A with Kimi K3 tenth
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@c886584:
