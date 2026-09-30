@@ -71,6 +71,7 @@
 .ab-row__id strong{ font-size:1.12rem; color:var(--s-ink); }
 .ab-row__id small{ font-family:var(--s-mono); font-size:.72rem; color:var(--s-muted); }
 .ab-row__runs{ font-family:var(--s-mono); font-size:.68rem; color:var(--s-warn); }
+.ab-row__exposure{ font-family:var(--s-mono); font-size:.68rem; color:var(--s-warn); cursor:help; }
 .ab-row__total{ grid-area:total; display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
 .ab-score{ font-size:2.1rem; font-weight:800; letter-spacing:-.03em; color:var(--s-ink); line-height:1; font-variant-numeric:tabular-nums; }
 .ab-row__total small{ font-family:var(--s-mono); font-size:.68rem; color:var(--s-faint); }

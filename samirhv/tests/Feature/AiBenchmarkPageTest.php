@@ -72,7 +72,8 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('Leia isto antes de citar um número');
 
         foreach (['Can an AI maintain', 'How a run works', 'Read this before quoting', 'See the results', 'Flaw by flaw',
-            'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official'] as $english) {
+            'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official',
+            'training cutoff', 'runs per agent'] as $english) {
             $response->assertDontSee($english);
         }
     }
@@ -116,6 +117,70 @@ class AiBenchmarkPageTest extends TestCase
         AiBenchmark::fake($data);
 
         $this->get(self::EN, self::EN_HEADER)->assertOk()->assertDontSee('The table shows the top');
+    }
+
+    public function test_a_second_run_shows_its_totals_and_the_score_run_supplies_the_details(): void
+    {
+        $data = AiBenchmark::results();
+        $e = &$data['instances'][0]['entries'][0];
+        $second = $e['runs'][0];
+        $second['run'] = 2;
+        $second['total'] = $e['score'] + 59;
+        $second['grade'] = 'Platinum';
+        $e['runs'][] = $second;
+        $e['runs_count'] = 2;
+        $e['totals'] = [$e['score'], $second['total']];
+        $e['representative_run'] = 1;
+        unset($e);
+        AiBenchmark::fake($data);
+
+        $first = $data['instances'][0]['entries'][0];
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('2 of 3 runs ('.$first['totals'][0].' · '.$first['totals'][1].')')
+            ->assertDontSee('ab-grade--platinum ab-grade--pill', false)
+            ->assertSee('Up to three runs per agent.')
+            ->assertDontSee('One run per agent.');
+    }
+
+    public function test_one_run_each_keeps_the_single_run_caveat(): void
+    {
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('One run per agent.')
+            ->assertDontSee('Up to three runs per agent.');
+    }
+
+    public function test_the_representative_run_falls_back_to_the_best_one_in_an_older_file(): void
+    {
+        $entry = ['runs' => [['run' => 1, 'total' => 700], ['run' => 2, 'total' => 760]]];
+        $this->assertSame(2, AiBenchmark::representativeRun($entry)['run']);
+
+        $entry['representative_run'] = 1;
+        $this->assertSame(1, AiBenchmark::representativeRun($entry)['run']);
+    }
+
+    public function test_a_model_that_may_have_trained_on_the_key_is_marked(): void
+    {
+        $data = AiBenchmark::results();
+        $inst = &$data['instances'][0];
+        $inst['key_published_on'] = '2026-07-13';
+        foreach ($inst['entries'] as $i => &$e) {
+            $e['key_exposure'] = ['before', 'after', 'unknown'][min($i, 2)];
+        }
+        unset($inst, $e);
+        AiBenchmark::fake($data);
+
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('training cutoff after the answer key went public')
+            ->assertSee('training cutoff not published')
+            ->assertSee('The answer key has been public since 2026-07-13.', false);
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSee('corte de treino posterior à publicação do gabarito')
+            ->assertSee('corte de treino não publicado');
     }
 
     /** A key with no string behind it renders as itself: `ai_benchmark.instances.LEB-100-A.name`. */

@@ -153,7 +153,7 @@
                     <ol class="ab-board">
                         @foreach($entries as $e)
                             @php
-                                $run = collect($e['runs'])->sortByDesc('total')->first();
+                                $run = AiBenchmark::representativeRun($e);
                                 $penalty = collect($run['penalties'])->sum('deduction');
                             @endphp
                             <li class="s-card ab-row">
@@ -167,8 +167,13 @@
                                         ? __('ai_benchmark.effort_default')
                                         : __('ai_benchmark.effort', ['level' => $e['model']['reasoning_effort']]) }}</small>
                                     <span class="ab-row__runs">
-                                        {{ __('ai_benchmark.runs_label', ['count' => $e['runs_count']]) }}@unless($e['official']) · {{ __('ai_benchmark.unofficial') }}@endunless
+                                        {{ __('ai_benchmark.runs_label', ['count' => $e['runs_count']]) }}@if($e['runs_count'] > 1) ({{ implode(' · ', $e['totals']) }})@endif @unless($e['official']) · {{ __('ai_benchmark.unofficial') }}@endunless
                                     </span>
+                                    {{-- Could this model have trained on the public answer key? From the
+                                         cutoff its provider publishes; only a "maybe" is worth a tag. --}}
+                                    @if(in_array($e['key_exposure'] ?? null, ['after', 'unknown'], true))
+                                        <span class="ab-row__exposure" title="{{ __('ai_benchmark.exposure_help', ['date' => $inst['key_published_on']]) }}">{{ __('ai_benchmark.exposure_'.$e['key_exposure']) }}</span>
+                                    @endif
                                 </div>
 
                                 <div class="ab-row__total">
@@ -233,8 +238,7 @@
                                         </th>
                                         @foreach($flawEntries as $e)
                                             @php
-                                                $best = collect($e['runs'])->sortByDesc('total')->first();
-                                                $f = $best['flaws'][$flaw['id']] ?? null;
+                                                $f = AiBenchmark::representativeRun($e)['flaws'][$flaw['id']] ?? null;
                                                 $state = $f === null ? 'missed' : ($f['fixed'] ? 'fixed' : ($f['found'] ? 'found' : 'missed'));
                                             @endphp
                                             <td>
@@ -270,7 +274,12 @@
         <div class="container ab-wrap">
             <h2 class="s-h2 ab-h2">{{ __('ai_benchmark.caveats_title') }}</h2>
             <ul class="ab-caveats">
+                @php
+                    // One of the two run caveats applies: all single runs, or some agent with more.
+                    $multiRun = collect($instances)->flatMap(fn ($i) => $i['entries'])->contains(fn ($e) => $e['runs_count'] > 1);
+                @endphp
                 @foreach(trans('ai_benchmark.caveats') as $key => $text)
+                    @continue($key === ($multiRun ? 'single_run' : 'multi_run'))
                     <li class="s-body">
                         <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
                         <span>{!! $md($text) !!}</span>

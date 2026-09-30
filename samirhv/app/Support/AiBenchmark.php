@@ -71,6 +71,22 @@ final class AiBenchmark
     }
 
     /**
+     * The run an entry's score belongs to. Its grade, categories and flaws are
+     * what the page shows next to that score (ai-benchmark PROTOCOL §4). A file
+     * older than `representative_run` falls back to the best run, as before.
+     *
+     * @param  array<string, mixed>  $entry
+     * @return array<string, mixed>
+     */
+    public static function representativeRun(array $entry): array
+    {
+        $runs = collect($entry['runs']);
+
+        return $runs->firstWhere('run', $entry['representative_run'] ?? null)
+            ?? $runs->sortByDesc('total')->first();
+    }
+
+    /**
      * Width of a score bar, 0–100, never NaN.
      */
     public static function percent(int|float $score, int|float $max): int

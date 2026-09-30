@@ -12,6 +12,35 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.28 - The AI Benchmark page takes each agent's details from the run its score belongs to, and marks a model that may have trained on the answer key
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@a6f02a3, where an agent can
+now have up to three runs. Its score is the lower median of their totals, which is always the
+total of one run, `representative_run`, and every entry carries `totals` and `key_exposure`. No
+number on the page moves.
+
+- **Details come from the score's run.** The leaderboard's grade, category bars, penalties and
+  scorecard link, and each column of the flaw-by-flaw table, read `AiBenchmark::representativeRun()`
+  instead of the best run. With two runs the page would otherwise have shown one run's score next
+  to the other run's grade. A file without `representative_run` falls back to the best run.
+- **More than one run shows the totals**, as in "2 of 3 runs (711 · 770)". The caveats show "One
+  run per agent" while that is true, and switch to "Up to three runs per agent" once any agent has
+  a second run.
+- **Answer-key exposure.** A model whose published training cutoff is after the day LEB-100-A's
+  answer key went public, or whose provider publishes none, carries a tag under its run count. The
+  tag reads "training cutoff after the answer key went public" or "training cutoff not published",
+  and its tooltip gives the date. Today only MiniMax-M3 carries it (not published).
+- **The public-key caveat is rewritten** in both languages. The VM that runs the benchmark cannot
+  reach GitHub, what a model saw in training depends on its cutoff, and a later or missing cutoff
+  is marked in the leaderboard. "LEB-100-A should be retired for new runs" goes; the instance stays
+  current under those two conditions.
+
+Validation: new tests cover a second run (totals shown, the higher run's grade not shown, the
+caveat switch), the single-run caveat, the representative-run fallback, and the exposure tags in
+both languages. The Portuguese page is checked for the English labels. The full suite, Pint,
+`view:cache` and the sync `--check` pass. The MiniMax-M3 card was checked in headless Chromium at
+1366 px.
+
 ## 1.0.27 - The flaw-by-flaw table shows the top ten agents
 
 The flaw-by-flaw table has one column per agent, and at ten it already fills the 1040 px container
