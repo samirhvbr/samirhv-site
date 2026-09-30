@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.33 - The AI Benchmark page shows twelve agents on LEB-100-A with Kimi K3 tenth
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@c886584:
+- **Kimi K3 enters at 528 (Bronze, 10th).** It ran on a clone of the execution VM, since destroyed
+  with its session log. Its training cutoff is unpublished, so it carries the tag.
+- **Two agents move down.** MiniMax-M3 is 11th and GLM-5.2 12th.
+- **The first message is fixed.** The upstream protocol now fixes it word for word.
+
+The hand-written copy is rewritten for twelve agents in both languages:
+- **Highlights.** Architecture reads "0 for the other eight". Compatibility at 100 includes Kimi
+  K3. Three agents did not run at xhigh. The last three, Kimi K3, MiniMax-M3 and GLM-5.2, are the
+  only ones that left the N+1 query in place; the line said "only two" and was wrong once Kimi K3
+  arrived.
+- **Judge caveat.** It counts three Claude models of twelve.
+- **Parameters caveat.** It adds Kimi K3 to the runs with no session log.
+- **Isolation section.** Only Opus 5.5's second run and GLM-5.2's had every layer on 30 September.
+  Kimi K3's clone did not record its address blocks.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.32 - The AI Benchmark page shows eleven agents on LEB-100-A and Opus 5.5's second run
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@174843a. That version adds
