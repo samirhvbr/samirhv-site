@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.20 - The flaw-by-flaw table stays readable as agents are added
+
+With eight agents the table squeezed the flaw column to a sliver — names wrapped to four lines —
+and cut the last agent off. The model names in the header may now wrap, each agent column keeps a
+minimum width, and the flaw column keeps its own (narrower on phones) and stays pinned to the left
+while the agent columns scroll sideways.
+
+Validation: checked in headless Chromium at 1366 px (eight columns, no scroll) and 390 px (pinned
+flaw column, agents scroll).
+
 ## 1.0.19 - The AI Benchmark page shows seven agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@fbcc857, which adds

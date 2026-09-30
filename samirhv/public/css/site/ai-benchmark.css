@@ -97,9 +97,15 @@
 .ab-flaws{ width:100%; border-collapse:collapse; min-width:640px; }
 .ab-flaws th, .ab-flaws td{ padding:11px 14px; border-bottom:1px solid var(--s-line); text-align:left; vertical-align:middle; }
 .ab-flaws tbody tr:last-child th, .ab-flaws tbody tr:last-child td{ border-bottom:0; }
-.ab-flaws thead th{ font-family:var(--s-mono); font-size:.7rem; font-weight:600; color:var(--s-muted); letter-spacing:.02em; background:var(--s-bg-2); white-space:nowrap; }
-.ab-flaws td{ white-space:nowrap; }
-.ab-flaws tbody th{ font-weight:400; }
+.ab-flaws thead th{ font-family:var(--s-mono); font-size:.68rem; font-weight:600; color:var(--s-muted); letter-spacing:.02em; background:var(--s-bg-2); vertical-align:bottom; }
+/* One column per agent: the model name may wrap, so the table grows with the
+   leaderboard without squeezing the flaw names into a sliver. */
+.ab-flaws thead th + th{ min-width:5.6rem; }
+.ab-flaws td{ white-space:nowrap; padding-inline:10px; }
+.ab-flaws tbody th{ font-weight:400; min-width:14rem; }
+/* The flaw column stays put when the agent columns scroll sideways. */
+.ab-flaws tr > :first-child{ position:sticky; left:0; z-index:1; background:var(--s-surface); box-shadow:1px 0 0 var(--s-line); }
+.ab-flaws thead tr > :first-child{ background:var(--s-bg-2); z-index:2; }
 .ab-flaw__name{ display:block; font-size:.86rem; color:var(--s-ink); }
 .ab-flaw__meta{ display:block; font-family:var(--s-mono); font-size:.66rem; color:var(--s-faint); margin-top:2px; }
 .ab-flaw__pts{ font-family:var(--s-mono); font-size:.7rem; color:var(--s-muted); margin-left:8px; font-variant-numeric:tabular-nums; }
@@ -128,4 +134,5 @@
   .ab-weights li{ grid-template-columns:7.5rem minmax(0,1fr) 2.4rem; }
   .ab-row__cats li{ grid-template-columns:6.8rem minmax(0,1fr) 3.4rem; }
   .ab-caveats{ grid-template-columns:minmax(0,1fr); }
+  .ab-flaws tbody th{ min-width:10.5rem; }
 }
