@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.23 - An agent that runs at its model's default effort says so, in both languages
+
+Some models expose no reasoning-effort setting and always run at their own default; the results
+file marks them `reasoning_effort: "default"`. The leaderboard showed the raw value ("effort
+default", in English on both pages). It now reads "default effort (not configurable)" and
+"esforço padrão (não configurável)"; a chosen level still reads "effort xhigh" / "esforço xhigh".
+
+Validation: AiBenchmarkPageTest (the Portuguese page is checked for the English label), Pint and
+`view:cache` pass.
+
 ## 1.0.22 - The AI Benchmark page shows nine agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@b0e2fa6, which adds

@@ -65,6 +65,7 @@ return [
     'facts_evaluated' => 'evaluated :date',
     'facts_matrix' => 'matrix :sha',
     'effort' => 'effort :level',
+    'effort_default' => 'default effort (not configurable)',
 
     'col_rank' => '#',
     'col_model' => 'Agent',

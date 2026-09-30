@@ -161,7 +161,11 @@
 
                                 <div class="ab-row__id">
                                     <strong data-rank="#{{ $e['rank'] }} · ">{{ $e['model']['name'] }}</strong>
-                                    <small>{{ $e['model']['provider'] }} · {{ __('ai_benchmark.effort', ['level' => $e['model']['reasoning_effort']]) }}</small>
+                                    {{-- "default" is a model with no effort setting at all, not a level
+                                         someone chose — it gets words, not the raw value. --}}
+                                    <small>{{ $e['model']['provider'] }} · {{ ($e['model']['reasoning_effort'] ?? null) === 'default'
+                                        ? __('ai_benchmark.effort_default')
+                                        : __('ai_benchmark.effort', ['level' => $e['model']['reasoning_effort']]) }}</small>
                                     <span class="ab-row__runs">
                                         {{ __('ai_benchmark.runs_label', ['count' => $e['runs_count']]) }}@unless($e['official']) · {{ __('ai_benchmark.unofficial') }}@endunless
                                     </span>

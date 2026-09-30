@@ -72,7 +72,7 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('Leia isto antes de citar um número');
 
         foreach (['Can an AI maintain', 'How a run works', 'Read this before quoting', 'See the results', 'Flaw by flaw',
-            'effort xhigh', 'matrix 68088', 'the same names', 'not official'] as $english) {
+            'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official'] as $english) {
             $response->assertDontSee($english);
         }
     }
