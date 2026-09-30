@@ -145,6 +145,18 @@ class AiBenchmarkPageTest extends TestCase
 
     public function test_one_run_each_keeps_the_single_run_caveat(): void
     {
+        $data = AiBenchmark::results();
+        foreach ($data['instances'] as &$inst) {
+            foreach ($inst['entries'] as &$e) {
+                $e['runs'] = [$e['runs'][0]];
+                $e['runs_count'] = 1;
+                $e['totals'] = [$e['runs'][0]['total']];
+                $e['representative_run'] = $e['runs'][0]['run'];
+            }
+        }
+        unset($inst, $e);
+        AiBenchmark::fake($data);
+
         $this->get(self::EN, self::EN_HEADER)
             ->assertOk()
             ->assertSee('One run per agent.')

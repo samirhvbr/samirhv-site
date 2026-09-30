@@ -12,6 +12,34 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.32 - The AI Benchmark page shows eleven agents on LEB-100-A and Opus 5.5's second run
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@174843a. That version adds
+two things: Claude Opus 5.5's second run (717, published as 711, the lower of two) and GLM-5.2
+(388, 11th and Failed, run at effort high in opencode). It also voids Claude Fable 5.1's second
+run, which the client finished with a different model.
+
+The page follows the data on its own, from 1.0.27 and 1.0.28:
+- the flaw-by-flaw table shows the top ten of eleven, with its note;
+- Opus 5.5's card reads "2 of 3 runs (711 · 717)";
+- the run caveat switches to "Up to three runs per agent";
+- GLM-5.2 carries the "training cutoff not published" tag.
+
+The hand-written copy is rewritten for eleven agents in both languages:
+- **Highlights.** Architecture now reads "0 for the other seven". Compatibility at 100 now
+  includes GLM-5.2. A new line gives Opus's six-point spread between runs, and another names the
+  two agents that did not run at xhigh. MiniMax-M3 and GLM-5.2 are the two that left the N+1 in
+  place.
+- **Caveats.** A new one explains the voided run. The judge caveat counts three Claude models of
+  eleven. The parameters caveat says what was recorded from the session logs. The public-key
+  caveat and the isolation section separate the runs of 29 September (name block only) from those
+  of 30 September (every layer), and add that no session log shows a request to GitHub.
+
+Validation:
+- the single-run caveat test now builds its own one-run data, since the real file has a second run;
+- the full suite, Pint, `view:cache` and the sync `--check` pass;
+- no raw translation key renders on either page.
+
 ## 1.0.31 - The AI Benchmark page says the published runs had GitHub's names blocked, not its addresses
 
 1.0.29 and 1.0.30 described the VM's blackhole routes as if every published run had them. The VM's

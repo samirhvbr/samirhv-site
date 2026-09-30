@@ -310,6 +310,23 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (d2493de3), which is this run",
+                "elapsed_seconds": 1058.087,
+                "tokens": {
+                  "input": 1533,
+                  "output": 138245,
+                  "cache": 7176279,
+                  "total": 7316057
+                },
+                "usd_estimate": 3.6,
+                "note": "includes a 945-token Claude Haiku 4.5 call the client makes for the session title"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-sonnet-5.5-xhigh/run-1/scorecard.md"
             }
           ],
@@ -482,6 +499,23 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285 session log, usage summed per API message",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 932,
+                  "output": 71351,
+                  "cache": 2551395,
+                  "total": 2623678
+                },
+                "usd_estimate": null,
+                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-fable-5.1-xhigh/run-1/scorecard.md"
             }
           ],
@@ -498,11 +532,12 @@
             "training_cutoff": "2026-06",
             "training_cutoff_source": "https://platform.claude.com/docs/en/about-claude/models/overview"
           },
-          "runs_count": 1,
+          "runs_count": 2,
           "official": false,
           "score": 711,
           "totals": [
-            711
+            711,
+            717
           ],
           "representative_run": 1,
           "key_exposure": "before",
@@ -660,7 +695,188 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": 1,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285 session log, usage summed per API message",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 40,
+                  "output": 80368,
+                  "cache": 1949756,
+                  "total": 2030164
+                },
+                "usd_estimate": null,
+                "note": "the client's per-folder summary was overwritten by a later session, so no cost or model time survives"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-1/scorecard.md"
+            },
+            {
+              "run": 2,
+              "total": 717,
+              "grade": "Silver",
+              "categories": {
+                "SEC": {
+                  "score": 233,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 50,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 139,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 150,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 45,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 9,
+                "precisao": 9,
+                "causa_raiz": 10,
+                "priorizacao": 7,
+                "trade_offs": 10
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 99
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 97
+                },
+                "SEC-008": {
+                  "earned": 2,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 65
+                },
+                "SEC-013": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "SEC-014": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 98
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 5,
+                  "possible": 6,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 85
+                },
+                "PERF-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "ARCH-002": {
+                  "earned": 4,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 70
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 14,
+              "brier": 0.024,
+              "discovery_index": 87.5,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Claude Code",
+                "version": "2.1.285"
+              },
+              "cost_time": {
+                "source": "Claude Code 2.1.285: the usage it keeps in ~/.claude.json for the run folder's last session (9a1a224a), which is this run",
+                "elapsed_seconds": 922.774,
+                "tokens": {
+                  "input": 962,
+                  "output": 83343,
+                  "cache": 1940114,
+                  "total": 2024419
+                },
+                "usd_estimate": 3.01,
+                "note": "includes a 938-token Claude Haiku 4.5 call the client makes for the session title"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/claude-opus-5.5-xhigh/run-2/scorecard.md"
             }
           ],
           "rank": 3
@@ -837,6 +1053,23 @@
               "characterization": {
                 "passed": 22,
                 "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 73937,
+                  "output": 43294,
+                  "cache": 1233792,
+                  "total": 1351023
+                },
+                "usd_estimate": null,
+                "note": "output includes 18217 reasoning tokens; the log keeps no cost and no model time"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6.1-sol-xhigh/run-1/scorecard.md"
             }
@@ -1016,6 +1249,23 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 58947,
+                  "output": 31166,
+                  "cache": 753408,
+                  "total": 843521
+                },
+                "usd_estimate": null,
+                "note": "output includes 9417 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-6-astra-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1187,6 +1437,23 @@
               "characterization": {
                 "passed": 22,
                 "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 54590,
+                  "output": 25866,
+                  "cache": 486656,
+                  "total": 567112
+                },
+                "usd_estimate": null,
+                "note": "output includes 10449 reasoning tokens; the log keeps no cost and no model time"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-terra-xhigh/run-1/scorecard.md"
             }
@@ -1372,6 +1639,23 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": 0,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.159.2"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.159.2 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 52386,
+                  "output": 18315,
+                  "cache": 1163520,
+                  "total": 1234221
+                },
+                "usd_estimate": null,
+                "note": "output includes 8127 reasoning tokens; the log keeps no cost and no model time"
+              },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-sol-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1550,6 +1834,9 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": null,
+              "client": null,
+              "cost_time": null,
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.5-xhigh/run-1/scorecard.md"
             }
           ],
@@ -1727,6 +2014,23 @@
               "characterization": {
                 "passed": 22,
                 "failed": 0
+              },
+              "operator_replies": 1,
+              "client": {
+                "name": "Codex CLI",
+                "version": "0.158.0"
+              },
+              "cost_time": {
+                "source": "Codex CLI 0.158.0 session log, final token_count event",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 74979,
+                  "output": 30975,
+                  "cache": 886784,
+                  "total": 992738
+                },
+                "usd_estimate": null,
+                "note": "output includes 8730 reasoning tokens; the log keeps no cost and no model time"
               },
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/gpt-5.6-luna-xhigh/run-1/scorecard.md"
             }
@@ -1908,10 +2212,203 @@
                 "passed": 22,
                 "failed": 0
               },
+              "operator_replies": null,
+              "client": null,
+              "cost_time": null,
               "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/minimax-m3/run-1/scorecard.md"
             }
           ],
           "rank": 10
+        },
+        {
+          "agent": "z.ai-glm-5.2-high",
+          "model": {
+            "name": "GLM-5.2",
+            "id": "glm-5.2",
+            "provider": "Z.AI",
+            "reasoning_effort": "high",
+            "exact_version": null,
+            "training_cutoff": null,
+            "training_cutoff_source": "https://docs.z.ai/guides/llm/glm-5.2",
+            "training_cutoff_note": "Z.AI publishes no training or knowledge cutoff for GLM-5.2 (model page checked on 2026-09-30); third-party figures are not used"
+          },
+          "runs_count": 1,
+          "official": false,
+          "score": 388,
+          "totals": [
+            388
+          ],
+          "representative_run": 1,
+          "key_exposure": "unknown",
+          "discovery_index": 50.0,
+          "brier": 0.001,
+          "runs": [
+            {
+              "run": 1,
+              "total": 388,
+              "grade": "Reprovada",
+              "categories": {
+                "SEC": {
+                  "score": 172,
+                  "max": 250
+                },
+                "ARCH": {
+                  "score": 0,
+                  "max": 200
+                },
+                "BUG": {
+                  "score": 86,
+                  "max": 150
+                },
+                "PERF": {
+                  "score": 0,
+                  "max": 150
+                },
+                "CLN": {
+                  "score": 0,
+                  "max": 100
+                },
+                "COMP": {
+                  "score": 100,
+                  "max": 100
+                },
+                "EXPL": {
+                  "score": 30,
+                  "max": 50
+                }
+              },
+              "expl_rubric": {
+                "clareza": 7,
+                "precisao": 6,
+                "causa_raiz": 7,
+                "priorizacao": 5,
+                "trade_offs": 5
+              },
+              "penalties": [],
+              "comp_violations": [],
+              "flaws": {
+                "SEC-001": {
+                  "earned": 10,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-003": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "SEC-008": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-013": {
+                  "earned": 2,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "SEC-014": {
+                  "earned": 3,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": false,
+                  "confidence": 100
+                },
+                "SEC-015": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "SEC-017": {
+                  "earned": 9,
+                  "possible": 10,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 100
+                },
+                "BUG-001": {
+                  "earned": 8,
+                  "possible": 8,
+                  "found": true,
+                  "fixed": true,
+                  "confidence": 95
+                },
+                "BUG-004": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "PERF-001": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-002": {
+                  "earned": 0,
+                  "possible": 10,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "ARCH-009": {
+                  "earned": 0,
+                  "possible": 6,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                },
+                "CLN-007": {
+                  "earned": 0,
+                  "possible": 8,
+                  "found": false,
+                  "fixed": false,
+                  "confidence": null
+                }
+              },
+              "false_positives": 0,
+              "decoys_reported": 0,
+              "extra_findings": 4,
+              "brier": 0.001,
+              "discovery_index": 50.0,
+              "characterization": {
+                "passed": 22,
+                "failed": 0
+              },
+              "operator_replies": 0,
+              "client": {
+                "name": "opencode",
+                "version": "1.18.33"
+              },
+              "cost_time": {
+                "source": "opencode 1.18.33 session record (opencode.db)",
+                "elapsed_seconds": null,
+                "tokens": {
+                  "input": 52899,
+                  "output": 13001,
+                  "cache": 716992,
+                  "total": 790478
+                },
+                "usd_estimate": 0.35,
+                "note": "the total includes 7,586 reasoning tokens; opencode keeps no model time"
+              },
+              "scorecard_url": "https://github.com/samirhvbr/ai-benchmark/blob/master/results/2026/LEB-100-A/z.ai-glm-5.2-high/run-1/scorecard.md"
+            }
+          ],
+          "rank": 11
         }
       ]
     }
