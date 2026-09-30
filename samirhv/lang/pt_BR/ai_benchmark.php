@@ -37,10 +37,11 @@ return [
     'grades_title' => 'Selos',
 
     'isolation_title' => 'Os runs acontecem longe do gabarito',
-    'isolation_body' => 'Os agentes rodam numa VM Linux dedicada que não alcança o GitHub: github.com e os hosts de conteúdo do GitHub resolvem para loopback, os prefixos IPv4 e IPv6 do GitHub são rotas blackhole, e a VM nem tem IPv6. Um agente em teste não consegue abrir, clonar nem baixar o repositório do benchmark durante um run. Os endereços regionais do GitHub fora desses prefixos não estão bloqueados, então um contorno deliberado continua possível e um acidental não. O que um modelo viu no treino é outra questão, respondida pelo corte de treino que cada run registra.',
+    'isolation_body' => 'Os agentes rodam numa VM Linux dedicada isolada do GitHub. Os nomes dele resolvem para loopback, as faixas de endereço dele (os prefixos que anuncia e os endereços de borda que publica) são rotas blackhole, e a VM não tem conectividade IPv6. Os bloqueios por endereço entraram em 30 de setembro de 2026. Os resultados publicados até aqui são de runs feitos na véspera, só com o bloqueio por nome: nenhum agente alcançava o GitHub pelo nome, mas uma conexão deliberada direto a um endereço dele não era barrada. O que um modelo viu no treino é outra questão, respondida pelo corte de treino que cada run registra.',
     'term_title' => 'VM do benchmark',
     'hosts_comment' => '/etc/hosts · IPv4 e IPv6 iguais',
     'routes_comment' => 'ip route · prefixos do GitHub',
+    'routes_more' => '+ 71 endereços de borda (api.github.com/meta)',
     'hosts_same' => 'os mesmos nomes',
 
     'results_title' => 'Resultados',
@@ -156,7 +157,7 @@ return [
         'multi_run' => '**Até três runs por agente.** A nota oficial do LEB é a mediana de três runs independentes. Enquanto um agente não tem os três, a nota dele é o menor dos totais até aqui, os totais aparecem ao lado, e tudo o que se mostra com a nota vem desse mesmo run.',
         'judge' => '**O juiz é uma IA.** O Claude Opus 5.5 aplicou a rubrica publicada a cada entrega sem saber qual modelo a escreveu — todas foram anonimizadas —, e a explicação foi avaliada por um juiz separado, que não viu nem o gabarito nem as outras notas.',
         'conflict' => '**O juiz também é competidor.** O Claude Opus 5.5 é um dos agentes avaliados, e três dos dez são modelos Claude — os três primeiros lugares. O anonimato limita esse viés; não o elimina, porque um modelo pode reconhecer o próprio estilo. Cada veredito é publicado com a justificativa, falha por falha, e os quatro vereditos alterados na revisão dizem por quê; um deles leva o GPT-5.6-terra do 9º para o 6º lugar.',
-        'key_public' => '**O gabarito é público.** A matriz de falhas da LEB-100-A está no repositório público desde 13 de julho de 2026. A VM que roda o benchmark não alcança o GitHub, então nenhum agente consegue lê-la durante um run. O que um modelo viu no treino depende de até onde vão os dados de treino dele: cada run registra o corte que o provedor publica, e um modelo com corte posterior, ou não publicado, aparece marcado no placar.',
+        'key_public' => '**O gabarito é público.** A matriz de falhas da LEB-100-A está no repositório público desde 13 de julho de 2026. Durante os runs publicados até aqui a VM bloqueava o GitHub por nome, então nenhum agente conseguia buscá-la por acidente; desde 30 de setembro de 2026 ela bloqueia também os endereços do GitHub. O que um modelo viu no treino depende de até onde vão os dados de treino dele: cada run registra o corte que o provedor publica, e um modelo com corte posterior, ou não publicado, aparece marcado no placar.',
         'harness' => '**Os testes do próprio benchmark foram corrigidos.** Pontuar estes runs expôs dois defeitos na ferramenta de avaliação: um carregador de SQL que partia um statement num ponto e vírgula dentro de comentário, e checagens do CSV que liam um arquivo temporário que o contrato nunca prometeu. Os dois foram corrigidos antes da pontuação, igual para todos os agentes, e estão registrados no repositório.',
         'params' => '**Alguns parâmetros dos runs não foram registrados:** a versão exata do modelo, a temperatura, tokens e custo, e os logs completos. Cada run os marca como não registrados, em vez de chutar.',
     ],

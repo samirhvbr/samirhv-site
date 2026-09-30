@@ -42,10 +42,11 @@ return [
     'grades_title' => 'Grades',
 
     'isolation_title' => 'Runs happen where the answer key is out of reach',
-    'isolation_body' => 'Agents run on a dedicated Linux VM that cannot reach GitHub: github.com and GitHub\'s content hosts resolve to loopback, GitHub\'s IPv4 and IPv6 prefixes are blackhole routes, and the VM has no IPv6 to begin with. An agent under test cannot open, clone or download the benchmark repository during a run. GitHub\'s regional edge addresses outside those prefixes are not blocked, so a deliberate bypass stays possible and an accidental one does not. What a model saw in training is a separate question, answered by the training cutoff each run records.',
+    'isolation_body' => 'Agents run on a dedicated Linux VM isolated from GitHub. Its names resolve to loopback, its address ranges (the prefixes it announces and the edge addresses it publishes) are blackhole routes, and the VM has no IPv6 connectivity. The address blocks came on 30 September 2026. The results published so far are from runs made the day before, with the name block only: no agent could reach GitHub by name, but a deliberate connection straight to one of its addresses was not blocked. What a model saw in training is a separate question, answered by the training cutoff each run records.',
     'term_title' => 'benchmark VM',
     'hosts_comment' => '/etc/hosts · IPv4 and IPv6 alike',
     'routes_comment' => 'ip route · GitHub\'s prefixes',
+    'routes_more' => '+ 71 edge addresses (api.github.com/meta)',
     'hosts_same' => 'the same names',
 
     'results_title' => 'Results',
@@ -161,7 +162,7 @@ return [
         'multi_run' => '**Up to three runs per agent.** An official LEB score is the median of three independent runs. Until an agent has three, its score is the lower of its totals so far, the totals are listed next to it, and everything shown with the score comes from that same run.',
         'judge' => '**The judge is an AI.** Claude Opus 5.5 applied the published rubric to every delivery without knowing which model wrote it — each was anonymised — and the explanation was scored by a separate judge that saw neither the answer key nor the other scores.',
         'conflict' => '**The judge is also a contestant.** Claude Opus 5.5 is one of the agents evaluated, and three of the ten are Claude models — the top three places. Anonymity limits that bias; it does not remove it, since a model can recognise its own style. Every verdict is published with its rationale, flaw by flaw, and the four verdicts changed in review say why; one of them lifts GPT-5.6-terra from 9th to 6th.',
-        'key_public' => '**The answer key is public.** The failure matrix of LEB-100-A has been in the public repository since 13 July 2026. The VM that runs the benchmark cannot reach GitHub, so no agent can read it during a run. What a model saw in training depends on how far its training data reaches: each run records the cutoff its provider publishes, and a model whose cutoff is later, or not published, is marked in the leaderboard.',
+        'key_public' => '**The answer key is public.** The failure matrix of LEB-100-A has been in the public repository since 13 July 2026. During the runs published so far the VM blocked GitHub by name, so no agent could fetch it by accident; since 30 September 2026 it blocks GitHub\'s addresses too. What a model saw in training depends on how far its training data reaches: each run records the cutoff its provider publishes, and a model whose cutoff is later, or not published, is marked in the leaderboard.',
         'harness' => '**The benchmark\'s own tests were fixed.** Scoring these runs exposed two defects in the evaluation tooling: an SQL loader that split a statement on a semicolon inside a comment, and CSV checks that read a temporary file the contract never promised. Both were fixed before scoring, the same way for every agent, and are recorded in the repository.',
         'params' => '**Some run parameters were not recorded:** the exact model version, the temperature, token counts and cost, and the full logs. Each run marks them as not recorded rather than guessing.',
     ],

@@ -127,6 +127,7 @@
                         '2a0a:a440::/29', '2620:112:3000::/44', '2606:50c0::/32'] as $prefix)
                         <span class="c-key">blackhole</span> {{ $prefix }}<br>
                     @endforeach
+                    <span class="c-dim">{{ __('ai_benchmark.routes_more') }}</span>
                 </div>
             </div>
         </div>

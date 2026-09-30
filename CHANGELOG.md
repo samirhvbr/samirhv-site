@@ -12,6 +12,22 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.31 - The AI Benchmark page says the published runs had GitHub's names blocked, not its addresses
+
+1.0.29 and 1.0.30 described the VM's blackhole routes as if every published run had them. The VM's
+logs show otherwise, as ai-benchmark 0.2.15 records. The routes went in on 30 September 2026, after
+the ten published runs of the 29th, and those runs had only the `/etc/hosts` name block. The block
+stopped accidental access but not a deliberate connection straight to a GitHub address.
+
+In both languages, the isolation section now separates what the VM does today from what the
+published runs had. Today it blocks the names, the announced prefixes and the edge addresses
+GitHub publishes, and it has no IPv6. The runs of the 29th had the name block only. The public-key
+caveat says the same, and the terminal adds a line for the 71 edge addresses under the seven
+prefixes.
+
+Validation: the full suite, Pint and `view:cache` pass. The section was checked in headless Chromium
+at 1366 px.
+
 ## 1.0.30 - The AI Benchmark page shows GitHub's IPv6 prefixes among the VM's blackhole routes
 
 1.0.29 listed only GitHub's four IPv4 prefixes as blackhole routes. The script the execution VM
