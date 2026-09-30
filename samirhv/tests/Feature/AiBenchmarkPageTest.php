@@ -73,7 +73,7 @@ class AiBenchmarkPageTest extends TestCase
 
         foreach (['Can an AI maintain', 'How a run works', 'Read this before quoting', 'See the results', 'Flaw by flaw',
             'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official',
-            'training cutoff', 'runs per agent'] as $english) {
+            'training cutoff', 'runs per agent', 'IPv4 prefixes', 'benchmark VM'] as $english) {
             $response->assertDontSee($english);
         }
     }

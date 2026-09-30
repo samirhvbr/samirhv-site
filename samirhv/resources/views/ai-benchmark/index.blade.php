@@ -113,14 +113,19 @@
             <div class="s-term" aria-hidden="true">
                 <div class="s-term__bar">
                     <span class="s-term__dot s-term__dot--r"></span><span class="s-term__dot s-term__dot--y"></span><span class="s-term__dot s-term__dot--g"></span>
-                    <span class="s-term__title">/etc/hosts</span>
+                    <span class="s-term__title">{{ __('ai_benchmark.term_title') }}</span>
                 </div>
                 <div class="s-term__body">
                     <span class="c-cmt"># {{ __('ai_benchmark.hosts_comment') }}</span><br>
                     <span class="c-key">127.0.0.1</span> github.com api.github.com<br>
                     <span class="c-key">127.0.0.1</span> codeload.github.com<br>
                     <span class="c-key">127.0.0.1</span> raw.githubusercontent.com<br>
-                    <span class="c-key">::1</span> <span class="c-dim">({{ __('ai_benchmark.hosts_same') }})</span>
+                    <span class="c-key">::1</span> <span class="c-dim">({{ __('ai_benchmark.hosts_same') }})</span><br>
+                    <br>
+                    <span class="c-cmt"># {{ __('ai_benchmark.routes_comment') }}</span><br>
+                    @foreach(['140.82.112.0/20', '143.55.64.0/20', '185.199.108.0/22', '192.30.252.0/22'] as $prefix)
+                        <span class="c-key">blackhole</span> {{ $prefix }}<br>
+                    @endforeach
                 </div>
             </div>
         </div>

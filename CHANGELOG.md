@@ -12,6 +12,24 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.29 - The AI Benchmark page describes the execution VM's full isolation from GitHub
+
+The section "Runs happen where the answer key is out of reach" said the block was by name only, and
+so that a deliberate bypass was open. As ai-benchmark 0.2.11 now documents, the VM that runs the
+benchmark has three layers, all in place since the first scored run:
+
+- GitHub's names resolve to loopback.
+- GitHub's IPv4 prefixes are blackhole routes.
+- The VM has no IPv6.
+
+The text says so in both languages. It keeps the one limit that remains: GitHub's regional edge
+addresses outside those prefixes are not blocked. It also points training exposure at the cutoff
+each run records. The terminal next to it is titled "benchmark VM" and adds the four blackhole
+routes under the `/etc/hosts` lines.
+
+Validation: the full suite, Pint and `view:cache` pass. The Portuguese page is checked for the new
+English labels. The section was checked in headless Chromium at 1366 px.
+
 ## 1.0.28 - The AI Benchmark page takes each agent's details from the run its score belongs to, and marks a model that may have trained on the answer key
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@a6f02a3, where an agent can

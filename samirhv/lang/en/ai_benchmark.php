@@ -42,8 +42,10 @@ return [
     'grades_title' => 'Grades',
 
     'isolation_title' => 'Runs happen where the answer key is out of reach',
-    'isolation_body' => 'Agents run on a dedicated Linux VM where github.com and GitHub\'s content hosts resolve to loopback, so an agent under test cannot open, clone or download the benchmark repository during a run. The block is by name: it stops accidental and naive access, not a deliberate bypass, and it says nothing about what a model saw in training.',
-    'hosts_comment' => 'benchmark VM · IPv4 and IPv6 alike',
+    'isolation_body' => 'Agents run on a dedicated Linux VM that cannot reach GitHub: github.com and GitHub\'s content hosts resolve to loopback, GitHub\'s IPv4 prefixes are blackhole routes, and the VM has no IPv6. An agent under test cannot open, clone or download the benchmark repository during a run. GitHub\'s regional edge addresses outside those prefixes are not blocked, so a deliberate bypass stays possible and an accidental one does not. What a model saw in training is a separate question, answered by the training cutoff each run records.',
+    'term_title' => 'benchmark VM',
+    'hosts_comment' => '/etc/hosts · IPv4 and IPv6 alike',
+    'routes_comment' => 'ip route · GitHub\'s IPv4 prefixes',
     'hosts_same' => 'the same names',
 
     'results_title' => 'Results',

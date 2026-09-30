@@ -37,8 +37,10 @@ return [
     'grades_title' => 'Selos',
 
     'isolation_title' => 'Os runs acontecem longe do gabarito',
-    'isolation_body' => 'Os agentes rodam numa VM Linux dedicada em que github.com e os hosts de conteúdo do GitHub resolvem para loopback, então um agente em teste não consegue abrir, clonar nem baixar o repositório do benchmark durante o run. O bloqueio é por nome: ele barra o acesso acidental e ingênuo, não um contorno deliberado, e não diz nada sobre o que um modelo viu no treinamento.',
-    'hosts_comment' => 'VM do benchmark · IPv4 e IPv6 iguais',
+    'isolation_body' => 'Os agentes rodam numa VM Linux dedicada que não alcança o GitHub: github.com e os hosts de conteúdo do GitHub resolvem para loopback, os prefixos IPv4 do GitHub são rotas blackhole, e a VM não tem IPv6. Um agente em teste não consegue abrir, clonar nem baixar o repositório do benchmark durante um run. Os endereços regionais do GitHub fora desses prefixos não estão bloqueados, então um contorno deliberado continua possível e um acidental não. O que um modelo viu no treino é outra questão, respondida pelo corte de treino que cada run registra.',
+    'term_title' => 'VM do benchmark',
+    'hosts_comment' => '/etc/hosts · IPv4 e IPv6 iguais',
+    'routes_comment' => 'ip route · prefixos IPv4 do GitHub',
     'hosts_same' => 'os mesmos nomes',
 
     'results_title' => 'Resultados',
