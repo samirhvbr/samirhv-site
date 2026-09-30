@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.41 - The AI Benchmark page shows Qwen3 Coder Next and says the execution machine changed on 30 September
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@8d7b628. That version adds
+**Qwen3 Coder Next** at 507 (Bronze, 18th of 21), run through Novita in opencode at the model's
+default: it is non-thinking and has no effort setting. It carries the tag, since the Qwen team
+publishes no cutoff. It is the first run made as an unprivileged user on a machine cleaned of
+earlier runs' leftovers.
+
+The hand-written copy is rewritten for twenty-one agents in both languages:
+- **Bottom of the table.** Qwen3 Coder Next joins it. It is the only one of the five that fixed
+  the N+1 query, and it has the weakest explanation (18 of 50) and the worst calibration (Brier
+  0.301).
+- **Effort.** Twelve agents did not run at xhigh.
+- **Compatibility and architecture.** Qwen3 Coder Next kept compatibility at 100; architecture reads
+  "0 for the other seventeen".
+- **A new caveat, "The machine changed on 30 September."** It says that until then the agents ran
+  as the VM's administrator on a machine that kept earlier runs' leftovers, and what their session
+  logs show: no agent read another's work, and the opencode agents shared a leftover test database
+  holding only seed rows.
+
 ## 1.0.40 - The AI Benchmark page shows twenty agents on LEB-100-A with both DeepSeek runs
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@4f3e4b1. That version adds:
