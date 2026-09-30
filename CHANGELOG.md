@@ -12,6 +12,31 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.40 - The AI Benchmark page shows twenty agents on LEB-100-A with both DeepSeek runs
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@4f3e4b1. That version adds:
+- **DeepSeek V4 Flash** at 612 (Silver, 13th), run through Novita. Its note says DeepSeek now
+  routes that name to V4.1 on its own API.
+- **DeepSeek V4.1 Flash** at 625 (Silver, 9th), run through DeepSeek's own API and the cheapest run
+  so far.
+
+Both carry the tag, since DeepSeek publishes no cutoff. The flaw table shows the top ten of twenty.
+
+The hand-written copy is rewritten for twenty agents in both languages:
+- **SEC-008.** Five agents fixed the CSV injection. Two of them, GPT-5.6-sol and DeepSeek V4.1
+  Flash, also rewrote the `-` marker.
+- **DeepSeek.** A new line gives the cost of V4.1 Flash and V4 Flash's lost 30 points, with the
+  routing caveat.
+- **Architecture.** It reads "0 for the other sixteen".
+- **Compatibility.** Scores of 100 include DeepSeek V4.1 Flash; eight agents changed a business
+  value.
+- **Effort.** Eleven agents did not run at xhigh.
+- **Places 6 to 16.** They sit within 41 points, with GPT-5.6-terra tenth.
+- **Judge caveat.** It counts three Claude models of twenty.
+- **Isolation section.** It now says that every run of 30 September but Kimi K3's had every layer.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.39 - The AI Benchmark page shows the top six next to its title
 
 A reader who stops at the fold now sees who leads. The hero becomes two columns: the title, lead
