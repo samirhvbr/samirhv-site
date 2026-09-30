@@ -123,7 +123,8 @@
                     <span class="c-key">::1</span> <span class="c-dim">({{ __('ai_benchmark.hosts_same') }})</span><br>
                     <br>
                     <span class="c-cmt"># {{ __('ai_benchmark.routes_comment') }}</span><br>
-                    @foreach(['140.82.112.0/20', '143.55.64.0/20', '185.199.108.0/22', '192.30.252.0/22'] as $prefix)
+                    @foreach(['140.82.112.0/20', '143.55.64.0/20', '185.199.108.0/22', '192.30.252.0/22',
+                        '2a0a:a440::/29', '2620:112:3000::/44', '2606:50c0::/32'] as $prefix)
                         <span class="c-key">blackhole</span> {{ $prefix }}<br>
                     @endforeach
                 </div>

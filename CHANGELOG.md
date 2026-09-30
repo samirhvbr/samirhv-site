@@ -12,6 +12,17 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.30 - The AI Benchmark page shows GitHub's IPv6 prefixes among the VM's blackhole routes
+
+1.0.29 listed only GitHub's four IPv4 prefixes as blackhole routes. The script the execution VM
+runs (published in ai-benchmark 0.2.12) also blackholes three IPv6 prefixes: 2a0a:a440::/29,
+2620:112:3000::/44 and 2606:50c0::/32. The terminal now lists all seven. In both languages the
+text says the IPv4 and IPv6 prefixes are blackhole routes and that the VM has no IPv6 to begin
+with.
+
+Validation: the full suite, Pint and `view:cache` pass. The section was checked in headless Chromium
+at 1366 px.
+
 ## 1.0.29 - The AI Benchmark page describes the execution VM's full isolation from GitHub
 
 The section "Runs happen where the answer key is out of reach" said the block was by name only, and
