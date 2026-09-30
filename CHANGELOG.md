@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.37 - The AI Benchmark page shows Grok 4.6 seventh among seventeen agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@cd025bf:
+- **Grok 4.6 enters at 633** (Silver, 7th). It ran in opencode at effort high with every isolation
+  layer.
+- **It carries the tag.** xAI publishes no training cutoff for it.
+- **Flaw table.** It shows the top ten of seventeen.
+
+The hand-written copy is rewritten for seventeen agents in both languages:
+- **Grok line.** It adds Grok 4.6, five points behind Grok 4.7 for about an eighth of the cost.
+- **GLM-5.3 line.** It gives its new place, 8th.
+- **Other highlights.**
+  - Architecture reads "0 for the other thirteen".
+  - Compatibility at 100 names the two Grok models.
+  - Eight agents did not run at xhigh.
+  - Places 6 to 14 sit within 41 points, with GPT-5.6-terra ninth.
+- **Judge caveat.** It counts three Claude models of seventeen.
+- **Isolation section.** The runs of 30 September with every layer are Opus 5.5's second, the two
+  Grok runs and the four GLM runs.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.36 - The AI Benchmark page shows Grok 4.7 sixth among sixteen agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@460c11b. That version adds
