@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.17 - The LEB results arrive as a synced copy of ai-benchmark's results.json
+
+The benchmark's numbers are produced and audited in samirhvbr/ai-benchmark, where
+`tools/export-results.py` builds `results/results.json` from the scorecards. A number edited
+here would disagree with the scorecard that justifies it, so the site keeps a byte-identical
+copy in `samirhv/resources/data/ai-benchmark/`, with `UPSTREAM.json` naming the source commit.
+
+`tools/sync-ai-benchmark-results.sh` refreshes it from GitHub (or `--from` a local clone) and
+`--check` exits 1 when the copy has drifted; it never reads through command substitution, so
+the copy stays byte-identical. `App\Support\AiBenchmark` reads the file once per request and
+degrades to "no results yet" when it is missing or invalid.
+
+Validation: `--check` fails before a sync and passes after; the copy matches ai-benchmark@e219e58.
+
 ## 1.0.16 - Document the yellow accent specification in the brand manual
 
 Add a dedicated yellow specification page with sRGB HEX, RGB, HSL, opacity,
