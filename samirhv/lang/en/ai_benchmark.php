@@ -52,11 +52,12 @@ return [
     'instance_title' => ':id · :name',
     'instances' => [
         'LEB-100-A' => [
-            '**Only Sonnet 5.5 fixed the formula injection in the CSV (SEC-008)** — the fix the answer key expects — and it is the only agent with security at 250 of 250. Fable 5.1, Opus 5.5 and GPT-5.6-luna reported it and kept the cells raw for the export\'s consumers; GPT-5.5 did not report it.',
-            '**Architecture was the weakest category for all five** — 50, 25, 50, 0 and 0 of 200. Nobody split the dispatcher that does everything: Sonnet 5.5, Fable 5.1 and Opus 5.5 named it and declined to restructure it.',
-            '**Nobody broke the contract mechanically.** All five stayed on mysqli, kept the 22 characterization checks green and reported no decoy. Judgement is what separated them: Sonnet 5.5 and Fable 5.1 kept compatibility at 100, while each of the other three changed a business value (−30).',
-            '**Passwords and secrets split the field.** The three Claude models migrated MD5 to `password_hash` transparently at login; both GPT models left MD5 in place on purpose. Fable 5.1, in turn, kept the secrets in the config as literal fallbacks.',
-            '**GPT-5.5 and GPT-5.6-luna are two points apart, across the Silver/Bronze line** — well inside the noise of a single run.',
+            '**Only Sonnet 5.5 and GPT-5.6-sol fixed the formula injection in the CSV (SEC-008)**, with the fix the answer key expects; Sonnet 5.5 is the only agent with security at 250 of 250. GPT-5.6-sol also turned the `-` of a ticket with no technician into `\'-`, a new bug (−15). Three agents reported the flaw and kept the cells raw; two did not report it.',
+            '**Architecture was the weakest category for everyone**: 50, 25 and 50 of 200 for the Claude models, 0 for all four GPT models. Nobody split the dispatcher that does everything; the three Claude models named it and declined to restructure it.',
+            '**Nobody broke the contract mechanically.** All seven stayed on mysqli, kept the 22 characterization checks green and reported no decoy. Judgement is what separated them: Sonnet 5.5, Fable 5.1 and GPT-5.6-terra kept compatibility at 100, while the other four each changed a business value (−30).',
+            '**Five agents migrated MD5 to `password_hash`** transparently at login; GPT-5.5 and GPT-5.6-luna left MD5 in place on purpose. Fable 5.1 kept the secrets in the config as literal fallbacks.',
+            '**Places 4 to 7 sit within 26 points** (625 to 599), well inside the noise of a single run. GPT-5.6-terra reported the fewest planted flaws and still ranks fourth, on compatibility and on what it did fix.',
+            '**The GPT models are the best calibrated** (Brier 0.000–0.006): fewer findings, each stated with high confidence and each real.',
         ],
     ],
     'facts_mode' => 'mode :mode · :turns turns',
@@ -153,7 +154,7 @@ return [
     'caveats' => [
         'single_run' => '**One run per agent.** An official LEB score is the median of three independent runs. These are single runs, and a second run can move a total by tens of points.',
         'judge' => '**The judge is an AI.** Claude Opus 5.5 applied the published rubric to every delivery without knowing which model wrote it — each was anonymised — and the explanation was scored by a separate judge that saw neither the answer key nor the other scores.',
-        'conflict' => '**The judge is also a contestant.** Claude Opus 5.5 is one of the agents evaluated, and three of the five are Claude models. Anonymity limits that bias; it does not remove it, since a model can recognise its own style. Every verdict is published with its rationale, flaw by flaw, and the one verdict changed in review says why.',
+        'conflict' => '**The judge is also a contestant.** Claude Opus 5.5 is one of the agents evaluated, and three of the seven are Claude models — the top three places. Anonymity limits that bias; it does not remove it, since a model can recognise its own style. Every verdict is published with its rationale, flaw by flaw, and the two verdicts changed in review say why; one of them lifts GPT-5.6-terra from 7th to 4th.',
         'key_public' => '**The answer key is public.** The failure matrix of LEB-100-A has been in the public repository since July 2026. The VM kept it out of reach during the runs, but it may have reached training data: LEB-100-A should be retired for new runs.',
         'harness' => '**The benchmark\'s own tests were fixed.** Scoring these runs exposed two defects in the evaluation tooling: an SQL loader that split a statement on a semicolon inside a comment, and CSV checks that read a temporary file the contract never promised. Both were fixed before scoring, the same way for every agent, and are recorded in the repository.',
         'params' => '**Some run parameters were not recorded:** the exact model version, the temperature, token counts and cost, and the full logs. Each run marks them as not recorded rather than guessing.',

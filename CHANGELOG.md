@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.19 - The AI Benchmark page shows seven agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@fbcc857, which adds
+GPT-5.6-terra (625, 4th) and GPT-5.6-sol (612, 5th) to the LEB-100-A leaderboard; the flaw
+table now has seven columns and still fits a desktop width without scrolling.
+
+The hand-written reading of the results is rewritten for seven agents in both languages: two
+agents fixed SEC-008, architecture is the weakest category for everyone, three agents keep
+compatibility at 100, places 4 to 7 sit within 26 points. The conflict-of-interest caveat now says
+the three Claude models hold the top three places and that one of the two verdicts changed in
+review moves GPT-5.6-terra from 7th to 4th.
+
+Validation: the full suite, Pint and `view:cache` pass; checked in headless Chromium at 1366 px.
+
 ## 1.0.18 - An AI Benchmark page in the main menu explains LEB and publishes its results
 
 `/ai-benchmark` (and `/pt-br/ai-benchmark`) explains what LEB measures — evolving a legacy

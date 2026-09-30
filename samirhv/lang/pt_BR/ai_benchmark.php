@@ -47,11 +47,12 @@ return [
     'instance_title' => ':id · :name',
     'instances' => [
         'LEB-100-A' => [
-            '**Só o Sonnet 5.5 corrigiu a injeção de fórmula no CSV (SEC-008)** — a correção que o gabarito espera — e ele é o único agente com segurança em 250 de 250. Fable 5.1, Opus 5.5 e GPT-5.6-luna a reportaram e mantiveram as células cruas para quem consome o export; o GPT-5.5 não a reportou.',
-            '**Arquitetura foi a categoria mais fraca dos cinco** — 50, 25, 50, 0 e 0 de 200. Ninguém separou o dispatcher que faz tudo: Sonnet 5.5, Fable 5.1 e Opus 5.5 o apontaram e decidiram não reestruturá-lo.',
-            '**Ninguém quebrou o contrato mecanicamente.** Os cinco ficaram no mysqli, mantiveram as 22 checagens de caracterização verdes e não reportaram nenhuma isca. O que os separou foi julgamento: Sonnet 5.5 e Fable 5.1 mantiveram compatibilidade em 100; cada um dos outros três mudou um valor de negócio (−30).',
-            '**Senhas e segredos dividiram o campo.** Os três modelos Claude migraram o MD5 para `password_hash` de forma transparente no login; os dois modelos GPT deixaram o MD5 de propósito. O Fable 5.1, por sua vez, manteve os segredos na configuração como fallback literal.',
-            '**GPT-5.5 e GPT-5.6-luna estão a dois pontos um do outro, na fronteira entre Silver e Bronze** — bem dentro do ruído de um run único.',
+            '**Só o Sonnet 5.5 e o GPT-5.6-sol corrigiram a injeção de fórmula no CSV (SEC-008)**, com a correção que o gabarito espera; o Sonnet 5.5 é o único agente com segurança em 250 de 250. O GPT-5.6-sol também transformou o `-` de um chamado sem técnico em `\'-`, um bug novo (−15). Três agentes reportaram a falha e mantiveram as células cruas; dois não a reportaram.',
+            '**Arquitetura foi a categoria mais fraca de todos**: 50, 25 e 50 de 200 para os modelos Claude, 0 para os quatro modelos GPT. Ninguém separou o dispatcher que faz tudo; os três modelos Claude o apontaram e decidiram não reestruturá-lo.',
+            '**Ninguém quebrou o contrato mecanicamente.** Os sete ficaram no mysqli, mantiveram as 22 checagens de caracterização verdes e não reportaram nenhuma isca. O que os separou foi julgamento: Sonnet 5.5, Fable 5.1 e GPT-5.6-terra mantiveram compatibilidade em 100; cada um dos outros quatro mudou um valor de negócio (−30).',
+            '**Cinco agentes migraram o MD5 para `password_hash`** de forma transparente no login; GPT-5.5 e GPT-5.6-luna deixaram o MD5 de propósito. O Fable 5.1 manteve os segredos na configuração como fallback literal.',
+            '**Do 4º ao 7º lugar a diferença é de 26 pontos** (625 a 599), bem dentro do ruído de um run único. O GPT-5.6-terra reportou o menor número de falhas plantadas e mesmo assim ficou em quarto, pela compatibilidade e pelo que corrigiu.',
+            '**Os modelos GPT são os mais bem calibrados** (Brier 0,000–0,006): menos achados, cada um com confiança alta e todos reais.',
         ],
     ],
     'facts_mode' => 'modo :mode · :turns turnos',
@@ -148,7 +149,7 @@ return [
     'caveats' => [
         'single_run' => '**Um run por agente.** A nota oficial do LEB é a mediana de três runs independentes. Estes são runs únicos, e um segundo run pode mover um total em dezenas de pontos.',
         'judge' => '**O juiz é uma IA.** O Claude Opus 5.5 aplicou a rubrica publicada a cada entrega sem saber qual modelo a escreveu — todas foram anonimizadas —, e a explicação foi avaliada por um juiz separado, que não viu nem o gabarito nem as outras notas.',
-        'conflict' => '**O juiz também é competidor.** O Claude Opus 5.5 é um dos agentes avaliados, e três dos cinco são modelos Claude. O anonimato limita esse viés; não o elimina, porque um modelo pode reconhecer o próprio estilo. Cada veredito é publicado com a justificativa, falha por falha, e o único veredito alterado na revisão diz por quê.',
+        'conflict' => '**O juiz também é competidor.** O Claude Opus 5.5 é um dos agentes avaliados, e três dos sete são modelos Claude — os três primeiros lugares. O anonimato limita esse viés; não o elimina, porque um modelo pode reconhecer o próprio estilo. Cada veredito é publicado com a justificativa, falha por falha, e os dois vereditos alterados na revisão dizem por quê; um deles leva o GPT-5.6-terra do 7º para o 4º lugar.',
         'key_public' => '**O gabarito é público.** A matriz de falhas da LEB-100-A está no repositório público desde julho de 2026. A VM a manteve fora de alcance durante os runs, mas ela pode ter chegado a dados de treinamento: a LEB-100-A deve ser aposentada para runs novos.',
         'harness' => '**Os testes do próprio benchmark foram corrigidos.** Pontuar estes runs expôs dois defeitos na ferramenta de avaliação: um carregador de SQL que partia um statement num ponto e vírgula dentro de comentário, e checagens do CSV que liam um arquivo temporário que o contrato nunca prometeu. Os dois foram corrigidos antes da pontuação, igual para todos os agentes, e estão registrados no repositório.',
         'params' => '**Alguns parâmetros dos runs não foram registrados:** a versão exata do modelo, a temperatura, tokens e custo, e os logs completos. Cada run os marca como não registrados, em vez de chutar.',
