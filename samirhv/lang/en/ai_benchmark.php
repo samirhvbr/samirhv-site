@@ -52,13 +52,8 @@ return [
     'instance_title' => ':id · :name',
     'instances' => [
         'LEB-100-A' => [
-            '**Three agents fixed the formula injection in the CSV (SEC-008)** — Sonnet 5.5, GPT-5.6-sol and GPT-6-astra — with the fix the answer key expects; Sonnet 5.5 is the only agent with security at 250 of 250. GPT-5.6-sol also turned the `-` of a ticket with no technician into `\'-`, a new bug (−15).',
-            '**Architecture was the weakest category for everyone**: 50, 25 and 50 of 200 for the Claude models, 25 for GPT-6.1-sol and 0 for the other six. Nobody split the dispatcher that does everything; four agents named it and declined to restructure it.',
-            '**Nobody broke the contract mechanically.** All ten stayed on mysqli, kept the 22 characterization checks green and reported no decoy. Judgement is what separated them: Sonnet 5.5, Fable 5.1 and GPT-5.6-terra kept compatibility at 100, while the other seven each changed a business value (−30).',
-            '**GPT-6.1-sol and GPT-6-astra are the strongest GPT models here** (666 and 661, 4th and 5th), with the best explanations among the GPT models. They split on the hard calls: 6.1-sol migrated MD5 to `password_hash` and left the CSV injection alone; astra did the opposite.',
-            '**MiniMax-M3 ran at its model\'s default effort** — it has no effort setting — while the other nine ran at xhigh. It ranks tenth (460): the only agent that left the N+1 query in place, and the report with the most wrong mechanisms (explanation 20 of 50).',
-            '**Places 6 to 9 sit within 26 points** (625 to 599), well inside the noise of a single run. GPT-5.6-terra reported the fewest planted flaws and still ranks sixth, on compatibility and on what it did fix.',
-            '**The GPT models are the best calibrated** (Brier 0.000–0.006): fewer findings, each stated with high confidence and each real.',
+            'name' => 'Support-ticket panel (NetX ISP)',
+            'desc' => 'The support-ticket panel of an internet provider, written in 2013-style PHP: data-access functions and an index.php that routes, authorizes and builds the HTML. About 300 lines on PHP 8, mysqli and MySQL 8, with 13 planted flaws and 2 decoys.',
         ],
     ],
     'facts_mode' => 'mode :mode · :turns turns',
@@ -142,13 +137,15 @@ return [
 
     'highlights_title' => 'What stood out',
     'highlights' => [
-        // Read from the LEB-100-A scorecards of 2026-09-29 — revisit when results.json changes.
+        // Read from the LEB-100-A scorecards of 2026-09-30 — revisit when results.json changes.
         'LEB-100-A' => [
-            '**Nobody fixed the formula injection in the CSV (SEC-008).** Three agents reported it and chose to keep the cells raw for the export\'s consumers; GPT-5.5 did not report it.',
-            '**Architecture was the weakest category for all four** — 25, 50, 0 and 0 of 200. Nobody split the dispatcher that does everything: Fable 5.1 and Opus 5.5 named it and declined to restructure it.',
-            '**Nobody broke the contract mechanically.** All four stayed on mysqli, kept the 22 characterization checks green and reported no decoy. Judgement is what separated them: only Fable 5.1 kept compatibility at 100, while each of the other three changed a business value (−30).',
-            '**Passwords and secrets split the field.** Fable 5.1 and Opus 5.5 migrated MD5 to `password_hash` transparently at login; both GPT models left MD5 in place on purpose. Fable 5.1, in turn, kept the secrets in the config as literal fallbacks.',
-            '**GPT-5.5 and GPT-5.6-luna are two points apart, across the Silver/Bronze line** — well inside the noise of a single run.',
+            '**Three agents fixed the formula injection in the CSV (SEC-008)** — Sonnet 5.5, GPT-5.6-sol and GPT-6-astra — with the fix the answer key expects; Sonnet 5.5 is the only agent with security at 250 of 250. GPT-5.6-sol also turned the `-` of a ticket with no technician into `\'-`, a new bug (−15).',
+            '**Architecture was the weakest category for everyone**: 50, 25 and 50 of 200 for the Claude models, 25 for GPT-6.1-sol and 0 for the other six. Nobody split the dispatcher that does everything; four agents named it and declined to restructure it.',
+            '**Nobody broke the contract mechanically.** All ten stayed on mysqli, kept the 22 characterization checks green and reported no decoy. Judgement is what separated them: Sonnet 5.5, Fable 5.1 and GPT-5.6-terra kept compatibility at 100, while the other seven each changed a business value (−30).',
+            '**GPT-6.1-sol and GPT-6-astra are the strongest GPT models here** (666 and 661, 4th and 5th), with the best explanations among the GPT models. They split on the hard calls: 6.1-sol migrated MD5 to `password_hash` and left the CSV injection alone; astra did the opposite.',
+            '**MiniMax-M3 ran at its model\'s default effort** — it has no effort setting — while the other nine ran at xhigh. It ranks tenth (460): the only agent that left the N+1 query in place, and the report with the most wrong mechanisms (explanation 20 of 50).',
+            '**Places 6 to 9 sit within 26 points** (625 to 599), well inside the noise of a single run. GPT-5.6-terra reported the fewest planted flaws and still ranks sixth, on compatibility and on what it did fix.',
+            '**The GPT models are the best calibrated** (Brier 0.000–0.006): fewer findings, each stated with high confidence and each real.',
         ],
     ],
 

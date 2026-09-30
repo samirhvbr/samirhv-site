@@ -86,6 +86,14 @@ class AiBenchmarkPageTest extends TestCase
         }
     }
 
+    /** A key with no string behind it renders as itself: `ai_benchmark.instances.LEB-100-A.name`. */
+    public function test_no_translation_key_renders_raw_on_either_page(): void
+    {
+        foreach ([self::EN => self::EN_HEADER, self::PT => []] as $url => $headers) {
+            $this->get($url, $headers)->assertOk()->assertDontSee('ai_benchmark.', false);
+        }
+    }
+
     public function test_the_main_menu_links_to_the_page_in_the_current_language(): void
     {
         $this->get('/projects/github-desktop', self::EN_HEADER)
@@ -114,6 +122,9 @@ class AiBenchmarkPageTest extends TestCase
             $lang = require lang_path("$locale/ai_benchmark.php");
             foreach (AiBenchmark::results()['instances'] as $inst) {
                 $this->assertArrayHasKey($inst['id'], $lang['instances'], "$locale: no name for {$inst['id']}");
+                $this->assertIsString($lang['instances'][$inst['id']]['name'] ?? null, "$locale: no name for {$inst['id']}");
+                $this->assertIsString($lang['instances'][$inst['id']]['desc'] ?? null, "$locale: no description for {$inst['id']}");
+                $this->assertNotEmpty($lang['highlights'][$inst['id']] ?? [], "$locale: no highlights for {$inst['id']}");
                 foreach ($inst['flaws'] as $flaw) {
                     $this->assertArrayHasKey($flaw['id'], $lang['flaws'], "$locale: no name for {$flaw['id']}");
                     $this->assertArrayHasKey($flaw['severity'], $lang['severity'], "$locale: no label for {$flaw['severity']}");

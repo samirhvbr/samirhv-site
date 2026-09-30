@@ -12,6 +12,23 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.26 - The AI Benchmark page shows the instance's name and the current highlights
+
+Since the page was created (1.0.18), the instance heading rendered the raw keys
+`ai_benchmark.instances.LEB-100-A.name` and `.desc`, and "What stood out" showed the first
+four-agent reading. Every results update wrote the new reading under `instances.LEB-100-A`,
+where the view looks for the instance's name, instead of under `highlights.LEB-100-A`, where it
+looks for the reading.
+
+In both languages `instances.LEB-100-A` now holds the name and description of the instance (the
+support-ticket panel of an internet provider, in legacy PHP), and the ten-agent reading replaces
+the four-agent one under `highlights.LEB-100-A`. A new test fails when either page renders any
+`ai_benchmark.` key, and the lang test now requires a name, a description and highlights for
+every instance in the results file.
+
+Validation: both new assertions fail on 1.0.25's lang files and pass here; the full suite, Pint
+and `view:cache` pass.
+
 ## 1.0.25 - The AI Benchmark page shows ten agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@251e77c, which adds
