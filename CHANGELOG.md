@@ -12,6 +12,18 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.21 - The AI Benchmark page shows eight agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@9b05e25, which adds
+GPT-6-astra (661, 4th) to the LEB-100-A leaderboard.
+
+The hand-written reading of the results is rewritten for eight agents in both languages: three
+agents fixed SEC-008, GPT-6-astra is the strongest GPT model here, three agents keep
+compatibility at 100, places 5 to 8 sit within 26 points. The conflict-of-interest caveat now
+counts three verdicts changed in review.
+
+Validation: the full suite, Pint and `view:cache` pass.
+
 ## 1.0.20 - The flaw-by-flaw table stays readable as agents are added
 
 With eight agents the table squeezed the flaw column to a sliver — names wrapped to four lines —
