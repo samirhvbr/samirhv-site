@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.35 - The AI Benchmark page shows fifteen agents on LEB-100-A with the two GLM-5.3 variants
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@2bfd623:
+- **GLM-5.3-Flash enters at 624** (Silver, 8th).
+- **GLM-5.3-FlashX enters at 597** (Bronze, 12th).
+- **Both carry the tag.** Both ran in opencode at effort high with every isolation layer, and
+  neither has a published training cutoff.
+- **Flaw table.** It shows the top ten of fifteen.
+
+The hand-written copy is rewritten for fifteen agents in both languages:
+- **Highlights.** Architecture reads "0 for the other eleven". Compatibility at 100 now covers
+  Sonnet 5.5, Fable 5.1, GPT-5.6-terra, Kimi K3 and the four GLM models. Six agents did not run at
+  xhigh. Places 6 to 12 sit within 32 points (629 to 597). The GLM-5.3 line adds Flash, five points
+  behind at a tenth of the cost, and FlashX.
+- **Judge caveat.** It counts three Claude models of fifteen.
+- **Isolation section.** The runs of 30 September with every layer are Opus 5.5's second and the
+  four GLM runs.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.34 - The AI Benchmark page shows GLM-5.3 sixth among thirteen agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@d81b9bd. That version adds
