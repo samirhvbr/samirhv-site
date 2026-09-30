@@ -12,6 +12,25 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.38 - The AI Benchmark page shows Kimi K2.7 Code among eighteen agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@142f665. That version adds
+Kimi K2.7 Code at 415 (Bronze, 17th), run in opencode at the model's only effort (the default) with
+every isolation layer. Its training cutoff is unpublished, so it carries the tag. The flaw table
+shows the top ten of eighteen.
+
+The hand-written copy is rewritten for eighteen agents in both languages:
+- **Architecture.** It reads "0 for the other fourteen".
+- **Compatibility.** Scores of 100 now include the two Kimi models.
+- **Effort.** Nine agents did not run at xhigh.
+- **Bottom of the table.** It names the four agents that left the N+1 query in place. Kimi K2.7
+  Code is the worst calibrated so far (Brier 0.225): it reported two SQL injections at confidence
+  100 in integer-only functions.
+- **Judge caveat.** It counts three Claude models of eighteen.
+- **Isolation section.** It adds Kimi K2.7 Code to the runs of 30 September with every layer.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.37 - The AI Benchmark page shows Grok 4.6 seventh among seventeen agents on LEB-100-A
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@cd025bf:
