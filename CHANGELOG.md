@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.36 - The AI Benchmark page shows Grok 4.7 sixth among sixteen agents on LEB-100-A
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@460c11b. That version adds
+Grok 4.7 at 638 (Silver, 6th), run in opencode at effort high with every isolation layer. Its
+training cutoff (May 2026) predates the public answer key, so it carries no tag. The flaw table
+shows the top ten of sixteen.
+
+The hand-written copy is rewritten for sixteen agents in both languages:
+- **SEC-008.** Four agents fixed the CSV formula injection, Grok 4.7 among them.
+- **Grok 4.7.** A new line calls it the strongest model here from outside Anthropic and OpenAI,
+  and the only agent that used the web: one read of the PHP manual. The GLM-5.3 line now follows
+  it, at 7th.
+- **Other highlights.** Architecture reads "0 for the other twelve". Compatibility at 100 includes
+  Grok 4.7. Seven agents did not run at xhigh. Places 6 to 13 sit within 41 points (638 to 597),
+  with GPT-5.6-terra eighth.
+- **Judge caveat.** It counts three Claude models of sixteen.
+- **Isolation section.** It adds Grok 4.7 to the runs of 30 September with every layer.
+
+Validation: the full suite, Pint, `view:cache` and the sync `--check` pass.
+
 ## 1.0.35 - The AI Benchmark page shows fifteen agents on LEB-100-A with the two GLM-5.3 variants
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@2bfd623:
