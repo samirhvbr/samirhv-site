@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.51 - The AI Benchmark page shows Claude Haiku 4.5, last of twenty-seven at 317
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@34278fd, which
+adds Claude Haiku 4.5 at the model's default effort, since Haiku 4.5 does not support the setting.
+It scores 317, below the pass line, 27th of 27.
+
+The copy follows, in both languages:
+- **Bottom of the table.** Haiku 4.5 joins it, with its time and cost, and the reproduced defect
+  that hides a client's own tickets on the main page.
+- **Counts.** Sixteen agents did not run at xhigh, eleven lost compatibility points, and
+  twenty-four score 0 in architecture.
+- **The judge-conflict caveat.** It says five of the twenty-seven are Claude models, holding the top
+  four places and the last.
+
 ## 1.0.50 - The AI Benchmark page shows Claude Fable 5.1's second xhigh run: its published score becomes 764, third
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@f196839, which
