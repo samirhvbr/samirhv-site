@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.60 - The AI Benchmark page shows Grok 4.7's official score, 638, the fifth official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@e84305f. That
+version adds Grok 4.7's runs 2 (663) and 3 (607). Its score becomes official at 638, the median,
+unchanged and 9th.
+
+The copy is updated in both languages: the highlight names five official scores, and the Grok 4.7
+highlight gives its three runs and says the web lookup happened in its first run.
+
 ## 1.0.59 - The AI Benchmark page adds Gemini 3.8 Flash (687, 6th), the strongest model from outside Anthropic
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@a02a2a8. That
