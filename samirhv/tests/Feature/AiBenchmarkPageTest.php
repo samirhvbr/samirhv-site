@@ -299,10 +299,10 @@ class AiBenchmarkPageTest extends TestCase
     {
         $this->get(self::EN, self::EN_HEADER)->assertOk()
             ->assertSee('Finding is not fixing')
-            ->assertSee('<strong>Sonnet 5.5 fixes more, every time.</strong>', false);
+            ->assertSee('<strong>Sonnet 5.5 fixes more, in the run that counts.</strong>', false);
         $this->get(self::PT)->assertOk()
             ->assertSee('Achar não é corrigir')
-            ->assertSee('<strong>Sonnet 5.5 corrige mais, sempre.</strong>', false);
+            ->assertSee('<strong>Sonnet 5.5 corrige mais, no run que conta.</strong>', false);
     }
 
     /** The downloadable CSVs are linked from both pages and hold the same runs as the page's data. */

@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.53 - The AI Benchmark page shows two official scores, Sonnet 5.5 at 809 and Opus 5.5 at 717, and qualifies the fixing pattern
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@63ca2d9. That
+version adds three runs:
+- **Claude Sonnet 5.5 at xhigh, run 3 (724).** Its score becomes official at 809, still first.
+- **GPT-6.1-sol, run 2 (653).** Its published score is now 653, 7th.
+- **GLM-5.3, run 2 (621).**
+
+The copy is rewritten in both languages:
+- **"Finding is not fixing".** It no longer says Sonnet fixes more "every time". Sonnet's third run
+  fixed 8 of the 13, fewer than any of Opus's three, so the reading now says Sonnet fixes more "in
+  the run that counts" (11 against 9 and 10) and lists every run.
+- **Highlights.**
+  - A line on the two official scores.
+  - The GPT and GLM lines with their new scores.
+  - Architecture: two agents above 0.
+  - Ranks from DeepSeek V4.1 Flash down.
+- **A correction.** 1.0.51 counted eleven agents with lost compatibility points. Since Opus's counted
+  run is its second, which kept compatibility, the count is ten, and seventeen at 100.
+
+The reading test follows the new heading.
+
 ## 1.0.52 - The AI Benchmark page shows Claude Haiku 4.5's second run, with its score still 317
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4188a74, which
