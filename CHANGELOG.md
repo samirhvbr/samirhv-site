@@ -12,6 +12,30 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.48 - The AI Benchmark page shows Sonnet 5.5's second xhigh run and GLM-5.3 Prime, and rereads the Claude comparison
+
+`resources/data/ai-benchmark/results.json` and the two CSVs are synced from ai-benchmark@77df832.
+That version adds:
+- **Claude Sonnet 5.5 at xhigh, run 2: 809.** The published score becomes the lower of 825 and
+  809, still first.
+- **GLM-5.3 Prime: 635**, 9th, the strongest GLM model.
+
+The hand-written copy is rewritten from the new data, in both languages:
+- **"Finding is not fixing".** The reading now says that the three Claude models find the same:
+  12 of the 13 planted flaws each in the run that counts, with the same discovery index. They
+  differ only in how many they fix: Sonnet 11, Fable and Opus 9. Sonnet's leads are restated
+  against its published 809, over Opus (+98) and over Fable (+28).
+- **Highlights.**
+  - New: Sonnet 5.5 has two runs, 16 points apart.
+  - Updated:
+    - seven agents with the CSV fix;
+    - the per-model architecture scores;
+    - sixteen agents at compatibility 100;
+    - GLM-5.3 Prime as the strongest GLM;
+    - every rank from Grok 4.6 down;
+    - fifteen agents not at xhigh.
+  - The GPT models' calibration claim now reads "among the best (Brier 0.015 or less)".
+
 ## 1.0.47 - The AI Benchmark page offers the results for download as CSV
 
 `tools/sync-ai-benchmark-results.sh` now brings, besides `results.json`, the two CSVs that
