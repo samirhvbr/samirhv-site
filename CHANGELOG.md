@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.42 - The AI Benchmark page tells two entries of the same model apart by their effort
+
+The hero's top six and the flaw-by-flaw table show only the model's name, so a model run in two
+configurations would appear twice under the same name. `AiBenchmark::displayName()` appends the
+effort level only when another entry of the same instance runs the same model ("Claude Sonnet 5.5
+· xhigh" and "Claude Sonnet 5.5 · max"); every other name is unchanged. The leaderboard already
+showed the effort under each name. A new test covers the helper, and the hero test now expects the
+disambiguated names.
+
 ## 1.0.41 - The AI Benchmark page shows Qwen3 Coder Next and says the execution machine changed on 30 September
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@8d7b628. That version adds

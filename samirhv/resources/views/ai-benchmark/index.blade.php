@@ -61,7 +61,7 @@
                                 @php $grade = AiBenchmark::representativeRun($e)['grade']; @endphp
                                 <li>
                                     <span class="ab-top__rank">{{ $e['rank'] }}</span>
-                                    <span class="ab-top__name">{{ $e['model']['name'] }}</span>
+                                    <span class="ab-top__name">{{ AiBenchmark::displayName($e, $topInst['entries']) }}</span>
                                     <span class="ab-top__score">{{ $e['score'] }}</span>
                                     <span class="ab-grade ab-grade--{{ Str::lower($grade) }} ab-grade--pill">{{ __("ai_benchmark.grades.$grade") }}</span>
                                 </li>
@@ -264,7 +264,7 @@
                                 <tr>
                                     <th scope="col">{{ __('ai_benchmark.col_flaw') }}</th>
                                     @foreach($flawEntries as $e)
-                                        <th scope="col">{{ $e['model']['name'] }}</th>
+                                        <th scope="col">{{ AiBenchmark::displayName($e, $entries) }}</th>
                                     @endforeach
                                 </tr>
                             </thead>

@@ -90,6 +90,23 @@ final class AiBenchmark
     }
 
     /**
+     * The model's name, with its effort level appended only when another entry of the same
+     * instance runs the same model ("Claude Sonnet 5.5 · max" next to "… · xhigh"). The hero
+     * and the flaw table show the name alone, and would otherwise repeat it.
+     *
+     * @param  array<string, mixed>  $entry
+     * @param  array<int, array<string, mixed>>  $entries  every entry of the instance
+     */
+    public static function displayName(array $entry, array $entries): string
+    {
+        $name = $entry['model']['name'];
+        $twins = collect($entries)->where('model.name', $name)->count();
+        $effort = $entry['model']['reasoning_effort'] ?? null;
+
+        return $twins > 1 && $effort ? "{$name} · {$effort}" : $name;
+    }
+
+    /**
      * Width of a score bar, 0–100, never NaN.
      */
     public static function percent(int|float $score, int|float $max): int

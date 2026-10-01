@@ -200,7 +200,7 @@ class AiBenchmarkPageTest extends TestCase
         $entries = AiBenchmark::results()['instances'][0]['entries'];
         $response = $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Top 6 so far');
 
-        $names = array_map(fn ($e) => $e['model']['name'], array_slice($entries, 0, AiBenchmark::HERO_TOP));
+        $names = array_map(fn ($e) => AiBenchmark::displayName($e, $entries), array_slice($entries, 0, AiBenchmark::HERO_TOP));
         $response->assertSeeInOrder(['Top 6 so far', ...$names, 'Full leaderboard'], false);
 
         $this->get(self::PT)->assertOk()->assertSee('Os 6 melhores até aqui')->assertSee('Placar completo');
@@ -263,6 +263,17 @@ class AiBenchmarkPageTest extends TestCase
         $pt = require lang_path('pt_BR/ai_benchmark.php');
 
         $this->assertSame($this->keys($en), $this->keys($pt));
+    }
+
+    /** The hero and the flaw table show the name alone, so a model run twice needs its effort. */
+    public function test_the_effort_is_appended_only_to_a_model_that_appears_twice(): void
+    {
+        $entry = fn (string $name, string $effort) => ['model' => ['name' => $name, 'reasoning_effort' => $effort]];
+        $entries = [$entry('Claude Sonnet 5.5', 'xhigh'), $entry('Claude Fable 5.1', 'xhigh'), $entry('Claude Sonnet 5.5', 'max')];
+
+        $this->assertSame('Claude Sonnet 5.5 · xhigh', AiBenchmark::displayName($entries[0], $entries));
+        $this->assertSame('Claude Sonnet 5.5 · max', AiBenchmark::displayName($entries[2], $entries));
+        $this->assertSame('Claude Fable 5.1', AiBenchmark::displayName($entries[1], $entries));
     }
 
     public function test_a_score_bar_is_clamped_to_its_track(): void
