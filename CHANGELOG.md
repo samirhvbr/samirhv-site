@@ -12,6 +12,22 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.55 - The AI Benchmark page adds Claude Sonnet 5.5 at max without ultracode (807, 2nd) and DeepSeek V4 Pro (604)
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@9e33149. That
+version adds two agents, so the table now has twenty-nine:
+- **Claude Sonnet 5.5 at max, as a single agent (807, 2nd).** It took 27 minutes and US$ 3.86.
+- **DeepSeek V4 Pro at high (604, 18th).** It ranks below both DeepSeek Flash models.
+
+The copy is updated in both languages:
+- **Multi-agent highlight.** It now compares the 8-hour multi-agent Sonnet run (774, now 3rd) with
+  the same model at the same max effort as a single agent (807).
+- **Counts.** Seven agents fixed the CSV injection, nineteen kept compatibility at 100, eighteen
+  did not run at xhigh, and six of the twenty-nine agents are Claude models.
+- **Ranks.** Every rank quoted in the highlights is checked against the new table. In 1.0.54,
+  Grok 4.7, GLM-5.3 Prime and Grok 4.6 were quoted one place too low after GPT-6-astra moved
+  down; the new agent at 2nd makes those numbers right again.
+
 ## 1.0.54 - The AI Benchmark page shows GPT-6-astra's official score, 628, and recounts the CSV injection fixes
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@60c0305. That
