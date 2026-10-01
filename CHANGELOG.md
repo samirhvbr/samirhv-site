@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.47 - The AI Benchmark page offers the results for download as CSV
+
+`tools/sync-ai-benchmark-results.sh` now brings, besides `results.json`, the two CSVs that
+ai-benchmark@b9a121d exports. They are byte-identical copies in
+`public/downloads/ai-benchmark/`, never edited here. `--check` covers them too.
+- **`runs.csv`** has one row per scored run: score, rank, model and host, effort, client mode,
+  categories, flaws found and fixed, time, tokens and cost.
+- **`flaws.csv`** has one row per run and planted flaw.
+
+The "Audit it" section gains two download buttons and a link to the data dictionary
+(`results/CSV.md`). Its text mentions the spreadsheets in both languages. A new test checks that
+both pages link the files, and that the downloadable `runs.csv` has exactly the runs of the
+page's `results.json`, so a half-done sync fails the suite.
+
 ## 1.0.46 - The AI Benchmark page shows the three GPT runs of 1 October and twenty-five agents
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@eb92014. That version adds:

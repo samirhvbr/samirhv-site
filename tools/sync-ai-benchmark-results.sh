@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # sync-ai-benchmark-results.sh — keep samirhv/resources/data/ai-benchmark/results.json
-# a byte-identical copy of results/results.json in samirhvbr/ai-benchmark.
+# a byte-identical copy of results/results.json in samirhvbr/ai-benchmark, and
+# samirhv/public/downloads/ai-benchmark/{runs,flaws}.csv byte-identical copies of the
+# CSVs exported next to it (offered for download on the page).
 #
 # WHY THIS EXISTS: the /ai-benchmark page shows numbers that are produced and
 # audited in ai-benchmark, where tools/export-results.py builds results.json
@@ -31,6 +33,8 @@ ROOT=$(cd "$(dirname "$0")/.." && pwd)
 DEST_DIR=$ROOT/samirhv/resources/data/ai-benchmark
 DEST=$DEST_DIR/results.json
 MANIFEST=$DEST_DIR/UPSTREAM.json
+CSV_DIR=$ROOT/samirhv/public/downloads/ai-benchmark
+CSVS="runs.csv flaws.csv"
 
 MODE=sync
 REF=master
@@ -68,18 +72,27 @@ SHA=$("${GIT[@]}" rev-parse --verify --quiet "$REF^{commit}") || die "no commit 
     || die "$UPSTREAM_PATH does not exist at $SHA"
 python3 -m json.tool "$TMP/results.json" >/dev/null 2>&1 \
     || die "$UPSTREAM_PATH at $SHA is not valid JSON"
+for f in $CSVS; do
+    "${GIT[@]}" show "$SHA:results/$f" > "$TMP/$f" 2>/dev/null || die "results/$f does not exist at $SHA"
+    head -n 1 "$TMP/$f" | grep -q '^edition,' || die "results/$f at $SHA has no CSV header"
+done
 
 if [ "$MODE" = check ]; then
-    if [ -f "$DEST" ] && cmp -s "$TMP/results.json" "$DEST"; then
+    same=1
+    [ -f "$DEST" ] && cmp -s "$TMP/results.json" "$DEST" || same=0
+    for f in $CSVS; do [ -f "$CSV_DIR/$f" ] && cmp -s "$TMP/$f" "$CSV_DIR/$f" || same=0; done
+    if [ "$same" = 1 ]; then
         echo "sync-ai-benchmark-results: in sync with ai-benchmark@${SHA:0:12}"
         exit 0
     fi
-    echo "sync-ai-benchmark-results: results.json differs from ai-benchmark@${SHA:0:12} — run tools/sync-ai-benchmark-results.sh" >&2
+    echo "sync-ai-benchmark-results: results.json or a CSV differs from ai-benchmark@${SHA:0:12} — run tools/sync-ai-benchmark-results.sh" >&2
     exit 1
 fi
 
 mkdir -p "$DEST_DIR"
 cp "$TMP/results.json" "$DEST"
+mkdir -p "$CSV_DIR"
+for f in $CSVS; do cp "$TMP/$f" "$CSV_DIR/$f"; done
 printf '{\n  "repository": "samirhvbr/ai-benchmark",\n  "path": "%s",\n  "commit": "%s"\n}\n' \
     "$UPSTREAM_PATH" "$SHA" > "$MANIFEST"
-echo "sync-ai-benchmark-results: copied $UPSTREAM_PATH from ai-benchmark@${SHA:0:12}"
+echo "sync-ai-benchmark-results: copied $UPSTREAM_PATH, results/runs.csv and results/flaws.csv from ai-benchmark@${SHA:0:12}"

@@ -158,3 +158,5 @@
   .ab-caveats{ grid-template-columns:minmax(0,1fr); }
   .ab-flaws tbody th{ min-width:10.5rem; }
 }
+.ab-downloads{ margin-top:12px; align-items:center; }
+.ab-downloads__dict{ font-size:.85rem; color:var(--s-accent-ink-2); text-decoration:none; }

@@ -354,6 +354,12 @@
                 <a href="{{ $repo }}/tree/master/results" target="_blank" rel="noopener" class="s-btn s-btn--lg"><i class="fa-brands fa-github" aria-hidden="true"></i> {{ __('ai_benchmark.audit_results') }}</a>
                 <a href="{{ $repo }}/blob/master/SPEC.md" target="_blank" rel="noopener" class="s-btn s-btn--ghost s-btn--lg">{{ __('ai_benchmark.audit_method') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
             </div>
+            {{-- Byte-identical copies of ai-benchmark's results/*.csv, brought by tools/sync-ai-benchmark-results.sh. --}}
+            <div class="ab-actions ab-downloads">
+                <a href="{{ asset('downloads/ai-benchmark/runs.csv') }}" download class="s-btn s-btn--ghost"><i class="fa-solid fa-file-csv" aria-hidden="true"></i> {{ __('ai_benchmark.download_runs') }}</a>
+                <a href="{{ asset('downloads/ai-benchmark/flaws.csv') }}" download class="s-btn s-btn--ghost"><i class="fa-solid fa-file-csv" aria-hidden="true"></i> {{ __('ai_benchmark.download_flaws') }}</a>
+                <a href="{{ $repo }}/blob/master/results/CSV.md" target="_blank" rel="noopener" class="ab-downloads__dict">{{ __('ai_benchmark.download_dictionary') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
         </div>
     </section>
 

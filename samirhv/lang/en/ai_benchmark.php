@@ -194,7 +194,10 @@ return [
     ],
 
     'audit_title' => 'Audit it',
-    'audit_body' => 'Every delivery, mechanical report, verdict and scorecard is in the repository, next to the specification that produced them.',
+    'audit_body' => 'Every delivery, mechanical report, verdict and scorecard is in the repository, next to the specification that produced them. The same data is here as two spreadsheets: one row per run, and one per run and planted flaw.',
     'audit_results' => 'Results on GitHub',
     'audit_method' => 'Specification',
+    'download_runs' => 'Runs (CSV)',
+    'download_flaws' => 'Flaw by flaw (CSV)',
+    'download_dictionary' => 'What each column means',
 ];

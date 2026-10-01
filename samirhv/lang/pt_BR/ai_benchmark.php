@@ -189,7 +189,10 @@ return [
     ],
 
     'audit_title' => 'Audite',
-    'audit_body' => 'Cada entrega, relatório mecânico, veredito e scorecard está no repositório, ao lado da especificação que os produziu.',
+    'audit_body' => 'Cada entrega, relatório mecânico, veredito e scorecard está no repositório, ao lado da especificação que os produziu. Os mesmos dados estão aqui em duas planilhas: uma linha por run, e uma por run e falha plantada.',
     'audit_results' => 'Resultados no GitHub',
     'audit_method' => 'Especificação',
+    'download_runs' => 'Runs (CSV)',
+    'download_flaws' => 'Falha por falha (CSV)',
+    'download_dictionary' => 'O que cada coluna significa',
 ];

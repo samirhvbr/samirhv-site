@@ -305,6 +305,25 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('<strong>Sonnet 5.5 corrige mais.</strong>', false);
     }
 
+    /** The downloadable CSVs are linked from both pages and hold the same runs as the page's data. */
+    public function test_the_csv_downloads_are_linked_and_match_the_results(): void
+    {
+        $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('downloads/ai-benchmark/runs.csv', false)
+            ->assertSee('downloads/ai-benchmark/flaws.csv', false);
+        $this->get(self::PT)->assertOk()->assertSee('Falha por falha (CSV)');
+
+        $runs = array_map('str_getcsv', file(public_path('downloads/ai-benchmark/runs.csv'), FILE_IGNORE_NEW_LINES));
+        $header = array_shift($runs);
+        $this->assertSame(['edition', 'instance', 'agent', 'run'], array_slice($header, 0, 4));
+        $expected = collect(AiBenchmark::results()['instances'])->flatMap(fn ($i) => $i['entries'])->sum('runs_count');
+        $this->assertCount($expected, $runs, 'runs.csv and results.json come from different exports: run tools/sync-ai-benchmark-results.sh');
+
+        $flaws = file(public_path('downloads/ai-benchmark/flaws.csv'), FILE_IGNORE_NEW_LINES);
+        $planted = count(AiBenchmark::results()['instances'][0]['flaws']);
+        $this->assertCount($expected * $planted + 1, $flaws);
+    }
+
     public function test_a_score_bar_is_clamped_to_its_track(): void
     {
         $this->assertSame(50, AiBenchmark::percent(125, 250));
