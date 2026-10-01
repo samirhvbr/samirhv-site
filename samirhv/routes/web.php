@@ -25,6 +25,12 @@ Route::permanentRedirect('/projetos/github-desktop', '/pt-br/projects/github-des
 Route::permanentRedirect('/en/projetos/github-desktop', '/projects/github-desktop');
 Route::get('/en/{path?}', LegacyEnglishPrefix::class)->where('path', '.*');
 
+// The benchmark CSVs lived under public/downloads/ from 1.0.47 to 1.0.68. That
+// folder shadowed the /downloads page on Apache (a real directory is never
+// rewritten to index.php), so they moved to public/data/; old links still land.
+Route::permanentRedirect('/downloads/ai-benchmark/runs.csv', '/data/ai-benchmark/runs.csv');
+Route::permanentRedirect('/downloads/ai-benchmark/flaws.csv', '/data/ai-benchmark/flaws.csv');
+
 /*
 | ── Public pages, in both languages ─────────────────────────────────────────
 |

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # sync-ai-benchmark-results.sh — keep samirhv/resources/data/ai-benchmark/results.json
 # a byte-identical copy of results/results.json in samirhvbr/ai-benchmark, and
-# samirhv/public/downloads/ai-benchmark/{runs,flaws}.csv byte-identical copies of the
+# samirhv/public/data/ai-benchmark/{runs,flaws}.csv byte-identical copies of the
 # CSVs exported next to it (offered for download on the page).
 #
 # WHY THIS EXISTS: the /ai-benchmark page shows numbers that are produced and
@@ -33,7 +33,7 @@ ROOT=$(cd "$(dirname "$0")/.." && pwd)
 DEST_DIR=$ROOT/samirhv/resources/data/ai-benchmark
 DEST=$DEST_DIR/results.json
 MANIFEST=$DEST_DIR/UPSTREAM.json
-CSV_DIR=$ROOT/samirhv/public/downloads/ai-benchmark
+CSV_DIR=$ROOT/samirhv/public/data/ai-benchmark
 CSVS="runs.csv flaws.csv"
 
 MODE=sync

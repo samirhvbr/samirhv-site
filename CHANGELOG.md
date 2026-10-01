@@ -12,6 +12,23 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.69 - The English Downloads page answers again: the benchmark CSVs move out of a folder named like the page
+
+Since 1.0.47, `https://samirhv.com.br/downloads` answered **403 Forbidden** while
+`/pt-br/downloads` worked. 1.0.47 published the benchmark CSVs in
+`samirhv/public/downloads/ai-benchmark/`, a real folder with the same name as the bare (English)
+`/downloads` route. Apache serves `public/` directly and rewrites to `index.php` only what is not a
+directory, so it treated `/downloads` as the folder: it added the trailing slash and, with listings
+off, refused it. There is no `public/pt-br/`, so the Portuguese page never hit the folder.
+
+- **The CSVs move to `samirhv/public/data/ai-benchmark/`.** The download buttons and
+  `tools/sync-ai-benchmark-results.sh` follow; `public/downloads/` no longer exists.
+- **Old CSV links keep working:** `/downloads/ai-benchmark/{runs,flaws}.csv` answer 301 to the new
+  addresses (`LegacyUrlRedirectTest`).
+- **It cannot come back unnoticed:** `PublicFolderRouteCollisionTest` fails when any folder in
+  `public/` has the name of a route's first segment. Laravel's test client never goes through
+  Apache, so the page tests alone could not have caught it.
+
 ## 1.0.68 - The AI Benchmark page shows Claude Sonnet 5.5 at max at 773, one point below the multi-agent run
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@0.2.59. That

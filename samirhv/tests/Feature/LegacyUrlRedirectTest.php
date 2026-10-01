@@ -72,6 +72,17 @@ class LegacyUrlRedirectTest extends TestCase
             ->assertRedirect(url('/downloads').'?utm_medium=email&utm_source=newsletter');
     }
 
+    /** The benchmark CSVs left public/downloads/ in 1.0.69; their old links still reach them. */
+    public function test_the_old_csv_links_move_to_the_data_folder(): void
+    {
+        foreach (['runs.csv', 'flaws.csv'] as $file) {
+            $this->get("/downloads/ai-benchmark/{$file}")
+                ->assertStatus(301)
+                ->assertRedirect(url("/data/ai-benchmark/{$file}"));
+            $this->assertFileExists(public_path("data/ai-benchmark/{$file}"));
+        }
+    }
+
     /** One hop, not a chain: a redirect that redirects again loses PageRank. */
     public function test_a_legacy_url_resolves_in_a_single_hop(): void
     {
