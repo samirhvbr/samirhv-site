@@ -87,6 +87,15 @@ class AiBenchmarkPageTest extends TestCase
         }
     }
 
+    public function test_neither_page_names_the_instance_s_fictional_company(): void
+    {
+        // LEB-100-A's legacy system is set at a made-up ISP whose name belongs to a real company;
+        // the repository keeps it, the page describes the instance without it.
+        foreach ([[self::EN, self::EN_HEADER], [self::PT, []]] as [$url, $headers]) {
+            $this->get($url, $headers)->assertOk()->assertDontSee('NetX')->assertDontSee('N3tX');
+        }
+    }
+
     public function test_the_flaw_table_shows_the_top_ten_and_the_leaderboard_shows_everyone(): void
     {
         $data = AiBenchmark::results();

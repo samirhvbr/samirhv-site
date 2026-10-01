@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.66 - AiBenchmarkPageTest checks that the page does not name LEB-100-A's company
+
+Adds `test_neither_page_names_the_instance_s_fictional_company`, which fetches the English and the
+Portuguese page and asserts that neither shows the company name. The 1.0.65 entry described this
+test, but its commit did not carry it: the edit to the test file failed and the commit went out
+with the copy change only.
+
 ## 1.0.65 - The AI Benchmark page no longer names the company in LEB-100-A's legacy system
 
 LEB-100-A's legacy system is set at a made-up internet provider whose name, it turns out, belongs to
