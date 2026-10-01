@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.56 - The AI Benchmark page shows DeepSeek V4 Pro at 496, the lower of its two runs
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@c9a3d45. That
+version adds DeepSeek V4 Pro's second run (496), made at the same time as the first (604) through
+another host. Its published score becomes 496, 24th.
+
+The copy is updated in both languages: the DeepSeek highlight gives both runs, DeepSeek V4 Pro
+joins the agents that close the table, and the band of close scores is now places 8 to 21.
+
 ## 1.0.55 - The AI Benchmark page adds Claude Sonnet 5.5 at max without ultracode (807, 2nd) and DeepSeek V4 Pro (604)
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@9e33149. That
