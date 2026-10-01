@@ -12,6 +12,22 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.46 - The AI Benchmark page shows the three GPT runs of 1 October and twenty-five agents
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@eb92014. That version adds:
+- **GPT-6.1-sol pro** at 654 (Silver, 7th).
+- **GPT-6.1-sol at effort ultra** at 597 (Bronze, 18th).
+- **GPT-5.3-Codex** at 403 (Bronze, 24th).
+
+GPT-6.1-sol now has two entries, so the hero and the flaw table name them "· xhigh" and "· ultra".
+
+The hand-written copy is rewritten for twenty-five agents in both languages:
+- **A new highlight** says GPT-6.1-sol at ultra scored 69 points below itself at xhigh. It is the
+  second case here of more effort scoring less, and it took 24 minutes, not 8 hours.
+- **Ranks.** Places from Grok 4.7 down move by one. The near-tie band is places 8 to 19.
+- **The other lines.** GPT-5.3-Codex joins the bottom of the table and the agents with
+  compatibility at 100; fourteen agents did not run at xhigh.
+
 ## 1.0.45 - The AI Benchmark page adds a reading across the Claude models: finding is not fixing
 
 A new block, under each instance's highlights, holds a hand-written reading across agents
