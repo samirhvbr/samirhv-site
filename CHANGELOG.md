@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.44 - The AI Benchmark page names the client mode next to the effort: max (ultracode)
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@67caaef, which records a
+client mode that changes how the model works as `model.client_mode`. Claude Sonnet 5.5's
+multi-agent run carries `ultracode`.
+- **Leaderboard.** That row reads "Anthropic · effort max (ultracode)", in Portuguese "esforço max
+  (ultracode)". A default-effort row keeps its wording and adds the mode the same way.
+- **Hero and flaw table.** The run reads "Claude Sonnet 5.5 · max (ultracode)", next to "Claude
+  Sonnet 5.5 · xhigh". The hero's name column now wraps instead of cutting the name with an
+  ellipsis, which at desktop widths had hidden "(ultracode)".
+- **Tests.** `AiBenchmark::effortLevel()` builds the label. The new page test fakes a mode on two
+  entries and asserts the literal text in both languages, so it no longer depends on the synced
+  data or on the function it tests.
+
 ## 1.0.43 - The AI Benchmark page shows Claude Sonnet 5.5 in multi-agent mode, third at 774
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@3374f01. That version adds

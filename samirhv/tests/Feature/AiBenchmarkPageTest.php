@@ -268,12 +268,30 @@ class AiBenchmarkPageTest extends TestCase
     /** The hero and the flaw table show the name alone, so a model run twice needs its effort. */
     public function test_the_effort_is_appended_only_to_a_model_that_appears_twice(): void
     {
-        $entry = fn (string $name, string $effort) => ['model' => ['name' => $name, 'reasoning_effort' => $effort]];
-        $entries = [$entry('Claude Sonnet 5.5', 'xhigh'), $entry('Claude Fable 5.1', 'xhigh'), $entry('Claude Sonnet 5.5', 'max')];
+        $entry = fn (string $name, string $effort, ?string $mode = null) => ['model' => ['name' => $name, 'reasoning_effort' => $effort, 'client_mode' => $mode]];
+        $entries = [$entry('Claude Sonnet 5.5', 'xhigh'), $entry('Claude Fable 5.1', 'xhigh'), $entry('Claude Sonnet 5.5', 'max', 'ultracode')];
 
         $this->assertSame('Claude Sonnet 5.5 · xhigh', AiBenchmark::displayName($entries[0], $entries));
-        $this->assertSame('Claude Sonnet 5.5 · max', AiBenchmark::displayName($entries[2], $entries));
+        $this->assertSame('Claude Sonnet 5.5 · max (ultracode)', AiBenchmark::displayName($entries[2], $entries));
         $this->assertSame('Claude Fable 5.1', AiBenchmark::displayName($entries[1], $entries));
+    }
+
+    /** A client mode that changes how the model works is named next to its effort, in both languages. */
+    public function test_the_leaderboard_names_the_client_mode_next_to_the_effort(): void
+    {
+        $data = AiBenchmark::results();
+        $entries = &$data['instances'][0]['entries'];
+        $entries[0]['model'] = ['client_mode' => 'ultracode', 'reasoning_effort' => 'max'] + $entries[0]['model'];
+        $entries[1]['model'] = ['client_mode' => 'ultracode', 'reasoning_effort' => 'default'] + $entries[1]['model'];
+        unset($entries);
+        AiBenchmark::fake($data);
+
+        $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('effort max (ultracode)')
+            ->assertSee('default effort (not configurable) (ultracode)');
+        $this->get(self::PT)->assertOk()
+            ->assertSee('esforço max (ultracode)')
+            ->assertSee('esforço padrão (não configurável) (ultracode)');
     }
 
     public function test_a_score_bar_is_clamped_to_its_track(): void

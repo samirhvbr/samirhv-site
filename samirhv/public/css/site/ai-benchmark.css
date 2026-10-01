@@ -23,7 +23,7 @@
 .ab-top__list li{ display:grid; grid-template-columns:1.4rem minmax(0,1fr) auto 5.6rem; gap:10px; align-items:center; padding:8px 0; border-bottom:1px solid var(--s-line); }
 .ab-top__list li:last-child{ border-bottom:0; }
 .ab-top__rank{ font-family:var(--s-mono); font-size:.78rem; color:var(--s-faint); }
-.ab-top__name{ font-size:.92rem; color:var(--s-ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ab-top__name{ font-size:.92rem; color:var(--s-ink); overflow-wrap:anywhere; }
 .ab-top__score{ font-family:var(--s-mono); font-size:.95rem; font-weight:600; color:var(--s-ink); text-align:right; }
 .ab-top .ab-grade--pill{ justify-content:center; font-size:.62rem; padding:2px 8px; }
 .ab-top__note{ margin:10px 0 0; font-size:.76rem; line-height:1.5; color:var(--s-muted); }

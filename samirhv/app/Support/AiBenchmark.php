@@ -91,8 +91,8 @@ final class AiBenchmark
 
     /**
      * The model's name, with its effort level appended only when another entry of the same
-     * instance runs the same model ("Claude Sonnet 5.5 · max" next to "… · xhigh"). The hero
-     * and the flaw table show the name alone, and would otherwise repeat it.
+     * instance runs the same model ("Claude Sonnet 5.5 · max (ultracode)" next to "… · xhigh").
+     * The hero and the flaw table show the name alone, and would otherwise repeat it.
      *
      * @param  array<string, mixed>  $entry
      * @param  array<int, array<string, mixed>>  $entries  every entry of the instance
@@ -101,9 +101,23 @@ final class AiBenchmark
     {
         $name = $entry['model']['name'];
         $twins = collect($entries)->where('model.name', $name)->count();
-        $effort = $entry['model']['reasoning_effort'] ?? null;
+        $effort = self::effortLevel($entry['model']);
 
-        return $twins > 1 && $effort ? "{$name} · {$effort}" : $name;
+        return $twins > 1 && $effort !== '' ? "{$name} · {$effort}" : $name;
+    }
+
+    /**
+     * The effort level with the client mode that changes how the model works, when the run
+     * records one: `xhigh`, or `max (ultracode)` for Claude Code's multi-agent mode.
+     *
+     * @param  array<string, mixed>  $model
+     */
+    public static function effortLevel(array $model): string
+    {
+        $effort = (string) ($model['reasoning_effort'] ?? '');
+        $mode = $model['client_mode'] ?? null;
+
+        return $mode && $effort !== '' ? "{$effort} ({$mode})" : $effort;
     }
 
     /**

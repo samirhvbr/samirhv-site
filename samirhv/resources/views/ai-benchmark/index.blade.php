@@ -203,8 +203,8 @@
                                     {{-- "default" is a model with no effort setting at all, not a level
                                          someone chose — it gets words, not the raw value. --}}
                                     <small>{{ $e['model']['provider'] }} · {{ ($e['model']['reasoning_effort'] ?? null) === 'default'
-                                        ? __('ai_benchmark.effort_default')
-                                        : __('ai_benchmark.effort', ['level' => $e['model']['reasoning_effort']]) }}</small>
+                                        ? __('ai_benchmark.effort_default').(($e['model']['client_mode'] ?? null) ? " ({$e['model']['client_mode']})" : '')
+                                        : __('ai_benchmark.effort', ['level' => AiBenchmark::effortLevel($e['model'])]) }}</small>
                                     <span class="ab-row__runs">
                                         {{ __('ai_benchmark.runs_label', ['count' => $e['runs_count']]) }}@if($e['runs_count'] > 1) ({{ implode(' · ', $e['totals']) }})@endif @unless($e['official']) · {{ __('ai_benchmark.unofficial') }}@endunless
                                     </span>
