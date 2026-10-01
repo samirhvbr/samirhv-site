@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.62 - The AI Benchmark page lists all ten unscored attempts, grouped by cause
+
+`resources/data/ai-benchmark/UPSTREAM.json` now points at ai-benchmark@2297a38, which records two
+more Gemini 3.8 Flash attempts cut off by OpenRouter's rate limit and a GPT-5.6-terra run made in a
+different client from its first. No score changes.
+
+The caveat about voided runs is rewritten in both languages. It now counts ten unscored attempts
+and groups them by cause: a switch to another model (Fable 5.1, twice), a provider failure (four),
+a setup error (three) and a client different from the agent's first run (one).
+
 ## 1.0.61 - The AI Benchmark page adds Gemini 3.8 Flash at medium (550, 23rd)
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4de89a6. That
