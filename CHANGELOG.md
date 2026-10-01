@@ -12,6 +12,17 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.58 - The AI Benchmark page lists all five voided runs, including Fable 5.1's second switch to Opus 4.8
+
+`resources/data/ai-benchmark/UPSTREAM.json` now points at ai-benchmark@0.2.51, which records Claude
+Fable 5.1's third attempt as void. No score changes.
+
+The "voided runs" caveat is rewritten in both languages. It said two runs were voided and that
+Fable 5.1 showed only its first run; both were out of date. It now names all five voids: Fable
+5.1 twice (its client handed the run to Claude Opus 4.8 after Fable's safeguards stopped it during
+the security work), the first multi-agent Sonnet 5.5 run, Claude Haiku 4.5's first attempt and
+GPT-5.6-sol pro's first attempt.
+
 ## 1.0.57 - The AI Benchmark page shows DeepSeek V4 Pro's official score, 496, the fourth official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4aa1e52. That
