@@ -12,6 +12,24 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.49 - The AI Benchmark page shows the first official score: Claude Opus 5.5 at 717, the median of three runs
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@e7fa5c7, which
+adds Opus 5.5's third run at xhigh (805). With three runs the agent is official. Its published score
+is the median, 717, 4th, and the page drops its "not official" mark on its own.
+
+The copy is rewritten in both languages:
+- **Highlight.** A new line names the first official score and explains its spread. The three runs
+  fixed the same 9 planted flaws; the 94 points came from judgement calls. It replaces the line on
+  Sonnet's two runs and keeps their numbers.
+- **"Finding is not fixing".**
+  - The three Claude models now find "nearly the same": 12, 12 and 11 in the runs that count.
+  - Sonnet "fixes more, every time": 11 in both of its runs, against 9 in each of Opus's three.
+  - Its lead over the official 717 is restated as clean code (+100), not security (+17).
+  - The caution now says the pattern held across every run so far.
+
+The reading test follows the new heading.
+
 ## 1.0.48 - The AI Benchmark page shows Sonnet 5.5's second xhigh run and GLM-5.3 Prime, and rereads the Claude comparison
 
 `resources/data/ai-benchmark/results.json` and the two CSVs are synced from ai-benchmark@77df832.
