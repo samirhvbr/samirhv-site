@@ -12,6 +12,17 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.61 - The AI Benchmark page adds Gemini 3.8 Flash at medium (550, 23rd)
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4de89a6. That
+version adds Gemini 3.8 Flash at medium effort (550, 23rd), a separate agent from the same model at
+high, and records an attempt started outside the task's folder as void. The table now has
+thirty-one agents.
+
+The copy is updated in both languages: the Gemini highlight compares the two efforts (687 against
+550), and the counts read thirty-one agents, twenty-one at compatibility 100, twenty not at xhigh
+and seven voided runs.
+
 ## 1.0.60 - The AI Benchmark page shows Grok 4.7's official score, 638, the fifth official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@e84305f. That
