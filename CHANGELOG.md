@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.43 - The AI Benchmark page shows Claude Sonnet 5.5 in multi-agent mode, third at 774
+
+`resources/data/ai-benchmark/results.json` is synced from ai-benchmark@3374f01. That version adds
+**Claude Sonnet 5.5 in Claude Code's multi-agent mode** at 774 (Gold, 3rd of 22), at effort max:
+7 workflows with 68 subagents, 8.1 hours and US$ 233, against 825 for the same model at xhigh in 19
+minutes and US$ 3.60. Every agent from Opus 5.5 down moves one place.
+
+The hand-written copy is rewritten for twenty-two agents in both languages:
+- **A new highlight** says eight hours of multi-agent work scored 51 points below nineteen minutes
+  of one agent: the same scores elsewhere and better calibration, but 0 in architecture against 50.
+  It also says nine subagents fell back to an older Sonnet, and that none of the delivery came from
+  them.
+- **SEC-008 and security.** Six agents fixed the CSV injection. Sonnet 5.5 is the only model at 250
+  of 250, in both modes.
+- **Ranks.** GPT-6.1-sol and GPT-6-astra are 5th and 6th, the two Grok models 7th and 8th, GLM-5.3
+  9th and DeepSeek V4.1 Flash 10th. The near-tie band is places 7 to 17.
+- **Caveats.** Four of the twenty-two are Claude models, Sonnet 5.5 twice, and they hold the top four
+  places. Two runs were voided; the second is the first multi-agent attempt, stopped to give the
+  machine more processors.
+
 ## 1.0.42 - The AI Benchmark page tells two entries of the same model apart by their effort
 
 The hero's top six and the flaw-by-flaw table show only the model's name, so a model run in two
