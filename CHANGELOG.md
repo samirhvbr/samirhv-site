@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.64 - The AI Benchmark page shows DeepSeek V4.1 Flash's official score, 612, the seventh official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@d445d16. That
+version adds DeepSeek V4.1 Flash's runs 2 (612) and 3 (597). Its score becomes official at 612, the
+median, and it moves from 13th to 18th. Its published run is now run 2, which did not fix the CSV
+injection.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names seven.
+- **CSV injection.** Six agents fixed it, not seven, and only GPT-5.6-sol broke the technician
+  column's `-`; DeepSeek V4.1 Flash's published run does neither.
+- **DeepSeek V4.1 Flash.** It is the cheapest agent, official at 612, 18th.
+- **Ranks.** GLM-5.3 is 15th and GPT-5.6-terra 13th, one place up each.
+
 ## 1.0.63 - The AI Benchmark page shows GPT-5.6-terra's official score, 625, the sixth official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@537fcb5. That
