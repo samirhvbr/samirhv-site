@@ -58,7 +58,7 @@ return [
     'instance_title' => ':id · :name',
     'instances' => [
         'LEB-100-A' => [
-            'name' => 'Support-ticket panel (NetX ISP)',
+            'name' => 'Support-ticket panel of an internet provider',
             'desc' => 'The support-ticket panel of an internet provider, written in 2013-style PHP: data-access functions and an index.php that routes, authorizes and builds the HTML. About 300 lines on PHP 8, mysqli and MySQL 8, with 13 planted flaws and 2 decoys.',
         ],
     ],

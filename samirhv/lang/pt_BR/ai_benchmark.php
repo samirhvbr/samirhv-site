@@ -53,7 +53,7 @@ return [
     'instance_title' => ':id · :name',
     'instances' => [
         'LEB-100-A' => [
-            'name' => 'Painel de chamados (NetX ISP)',
+            'name' => 'Painel de chamados de um provedor de internet',
             'desc' => 'O painel de chamados de suporte de um provedor de internet, escrito em PHP estilo 2013: funções de acesso a dados e um index.php que roteia, autoriza e monta o HTML. Cerca de 300 linhas em PHP 8, mysqli e MySQL 8, com 13 falhas plantadas e 2 iscas.',
         ],
     ],

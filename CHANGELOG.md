@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.65 - The AI Benchmark page no longer names the company in LEB-100-A's legacy system
+
+LEB-100-A's legacy system is set at a made-up internet provider whose name, it turns out, belongs to
+a real company. The page now calls the instance "Support-ticket panel of an internet provider" /
+"Painel de chamados de um provedor de internet". The benchmark repository keeps the instance as it
+is: renaming it would change the package and the answer key the runs were made against.
+
+`AiBenchmarkPageTest` checks that neither language's page shows the name, so a later sync cannot
+bring it back.
+
 ## 1.0.64 - The AI Benchmark page shows DeepSeek V4.1 Flash's official score, 612, the seventh official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@d445d16. That
