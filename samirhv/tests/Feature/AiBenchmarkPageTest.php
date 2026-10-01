@@ -294,6 +294,17 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('esforço padrão (não configurável) (ultracode)');
     }
 
+    /** The cross-agent reading renders under its instance, in both languages, with its markup. */
+    public function test_the_reading_across_agents_renders_in_both_languages(): void
+    {
+        $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('Finding is not fixing')
+            ->assertSee('<strong>Sonnet 5.5 fixes more.</strong>', false);
+        $this->get(self::PT)->assertOk()
+            ->assertSee('Achar não é corrigir')
+            ->assertSee('<strong>Sonnet 5.5 corrige mais.</strong>', false);
+    }
+
     public function test_a_score_bar_is_clamped_to_its_track(): void
     {
         $this->assertSame(50, AiBenchmark::percent(125, 250));

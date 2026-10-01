@@ -301,6 +301,21 @@
                             @endforeach
                         </ul>
                     @endif
+
+                    {{-- A hand-written reading across agents, for an instance that has one:
+                         what a single total hides. Same source and escaping as the highlights. --}}
+                    @php $reading = trans('ai_benchmark.readings'); $reading = is_array($reading) ? ($reading[$inst['id']] ?? null) : null; @endphp
+                    @if(is_array($reading) && !empty($reading['points'] ?? []))
+                        <div class="ab-reading">
+                            <h4 class="s-h3 ab-subtitle">{{ $reading['title'] }}</h4>
+                            <p class="s-body ab-reading__lead">{!! $md($reading['lead']) !!}</p>
+                            <ol class="ab-reading__list">
+                                @foreach($reading['points'] as $line)
+                                    <li class="s-body">{!! $md($line) !!}</li>
+                                @endforeach
+                            </ol>
+                        </div>
+                    @endif
                 </article>
             @empty
                 <p class="s-body s-muted">{{ __('ai_benchmark.results_empty') }}</p>

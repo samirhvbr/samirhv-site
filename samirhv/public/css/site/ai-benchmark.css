@@ -130,6 +130,10 @@
 
 .ab-highlights{ margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.55rem; max-width:52em; }
 .ab-highlights li{ font-size:.95rem; }
+.ab-reading{ max-width:52em; }
+.ab-reading__lead{ margin:0 0 .8rem; font-size:.95rem; color:var(--s-muted); }
+.ab-reading__list{ margin:0; padding:1rem 1.2rem 1rem 2.4rem; display:flex; flex-direction:column; gap:.6rem; border-left:3px solid var(--s-accent); background:var(--s-accent-soft); border-radius:0 var(--s-r) var(--s-r) 0; }
+.ab-reading__list li{ font-size:.95rem; }
 .ab-highlights strong, .ab-caveats strong{ color:var(--s-ink); }
 
 /* ── Caveats ── */

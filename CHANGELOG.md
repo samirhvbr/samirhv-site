@@ -12,6 +12,21 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.45 - The AI Benchmark page adds a reading across the Claude models: finding is not fixing
+
+A new block, under each instance's highlights, holds a hand-written reading across agents
+(`readings.<instance>`). It is rendered and escaped like the highlights. For LEB-100-A it
+compares the three Claude models on two axes that one total hides, in English and Portuguese:
+- **Finding.** Fable 5.1 and Opus 5.5 each reported 12 of the 13 planted flaws, and Sonnet 5.5
+  reported 11.
+- **Fixing.** Sonnet 5.5 fixed 11, and Fable and Opus fixed 9 each. Sonnet's lead over Opus
+  comes mostly from clean code and compatibility, not from security.
+- **Compute.** The three single-agent runs took 16 to 20 minutes each. Sonnet 5.5 in multi-agent
+  mode took almost 8 hours and US$ 233 and scored 51 points less.
+
+Every number comes from the verdicts, scorecards and `run.json` files of ai-benchmark 0.2.35. A
+test checks that the block renders in both languages.
+
 ## 1.0.44 - The AI Benchmark page names the client mode next to the effort: max (ultracode)
 
 `resources/data/ai-benchmark/results.json` is synced from ai-benchmark@67caaef, which records a

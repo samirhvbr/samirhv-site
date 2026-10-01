@@ -160,6 +160,20 @@ return [
         ],
     ],
 
+    'readings' => [
+        // Lido dos vereditos e scorecards da LEB-100-A de 30/09/2026 — revisar quando o results.json mudar.
+        'LEB-100-A' => [
+            'title' => 'Achar não é corrigir',
+            'lead' => 'Lado a lado, os três modelos Claude se separam em dois eixos que um total só esconde: quantas das falhas plantadas eles acharam e quantas corrigiram dentro do contrato.',
+            'points' => [
+                '**Fable 5.1 e Opus 5.5 acham mais.** Cada um reportou 12 das 13 falhas plantadas no run que conta, contra 11 do Sonnet 5.5, e os dois lideram o índice de descoberta (91,7 contra 79,2). O Fable é o único modelo Claude com 150 de 150 em bugs: reportou o vazamento de handle de arquivo na exportação do CSV, que o Sonnet corrigiu sem reportar.',
+                '**Sonnet 5.5 corrige mais.** Corrigiu 11 das 13, contra 9 do Fable e 9 do Opus. Fable e Opus acharam e explicaram a injeção de fórmula no CSV e a deixaram no lugar, para proteger quem consome o arquivo; o Sonnet prefixou só as células que começam uma fórmula, a correção que o gabarito espera. A vantagem de 114 pontos sobre o Opus vem sobretudo de código limpo e compatibilidade (+105), não de segurança (+17); sobre o Fable, vem sobretudo de segurança (+39).',
+                '**Mais computação não mudou o padrão.** Os três runs de um agente só levaram de 16 a 20 minutos cada. O Sonnet 5.5 no modo multiagente levou quase 8 horas e US$ 233, cerca de 25 vezes o tempo e 65 vezes o custo do seu run de um agente só, e fez 51 pontos a menos: as mesmas correções e uma verificação mais funda do próprio código, mas o dispatcher que o run de um agente só nomeou numa frase nunca chegou ao relatório.',
+                '**Como ler.** Para mapear os problemas de um código e decidir você mesmo o que mudar, Fable e Opus mostraram mais; para ter as correções feitas dentro do contrato, o Sonnet foi mais longe. É uma tarefa e um run por modelo: um padrão para testar, não um veredito.',
+            ],
+        ],
+    ],
+
     'caveats_title' => 'Leia isto antes de citar um número',
     'caveats' => [
         'single_run' => '**Um run por agente.** A nota oficial do LEB é a mediana de três runs independentes. Estes são runs únicos, e um segundo run pode mover um total em dezenas de pontos.',

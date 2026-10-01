@@ -165,6 +165,20 @@ return [
         ],
     ],
 
+    'readings' => [
+        // Read from the LEB-100-A verdicts and scorecards of 2026-09-30 — revisit when results.json changes.
+        'LEB-100-A' => [
+            'title' => 'Finding is not fixing',
+            'lead' => 'Side by side, the three Claude models separate along two axes that one total hides: how many of the planted flaws they found, and how many they fixed within the contract.',
+            'points' => [
+                '**Fable 5.1 and Opus 5.5 find more.** Each reported 12 of the 13 planted flaws in its scored run, against 11 for Sonnet 5.5, and both lead the discovery index (91.7 against 79.2). Fable is the only Claude model at 150 of 150 in bugs: it reported the file-handle leak in the CSV export, which Sonnet fixed without reporting.',
+                '**Sonnet 5.5 fixes more.** It fixed 11 of the 13, against 9 for Fable and 9 for Opus. Fable and Opus found and explained the formula injection in the CSV and left it in place, to protect the file\'s consumers; Sonnet prefixed only the cells that start a formula, the fix the answer key expects. Its 114-point lead over Opus comes mostly from clean code and compatibility (+105), not from security (+17); over Fable, it is mostly security (+39).',
+                '**More compute did not change the pattern.** The three single-agent runs took 16 to 20 minutes each. Sonnet 5.5 in multi-agent mode took almost 8 hours and US$ 233, about 25 times as long and 65 times the cost of its single-agent run, and scored 51 points less: the same fixes and a deeper check of its own code, but the dispatcher that the single-agent run named in one sentence never reached its report.',
+                '**How to read it.** To map the problems in a codebase and decide yourself what to change, Fable and Opus surfaced more; to have the fixes made within the contract, Sonnet went further. It is one task and one run per model: a pattern worth testing, not a verdict.',
+            ],
+        ],
+    ],
+
     'caveats_title' => 'Read this before quoting a number',
     'caveats' => [
         'single_run' => '**One run per agent.** An official LEB score is the median of three independent runs. These are single runs, and a second run can move a total by tens of points.',
