@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.68 - The AI Benchmark page shows Claude Sonnet 5.5 at max at 773, one point below the multi-agent run
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@0.2.59. That
+version adds the second single-agent run of Claude Sonnet 5.5 at max (773). Its published score
+becomes 773, the lower of 807 and 773, and it moves to 3rd; the multi-agent run (774) is 2nd again.
+
+The copy is updated in both languages:
+- **Multi-agent highlight.** Eight hours of multi-agent work now scores the same as half an hour of
+  one agent at the same effort (774 against 807 and 773), not more.
+- **Security at 250** is Sonnet's at xhigh and in multi-agent mode; the max run that now counts
+  left MD5 in place.
+- **Architecture** is 0 for every agent but Opus 5.5 and Sonnet 5.5 at xhigh.
+
 ## 1.0.67 - The AI Benchmark page shows Gemini 3.8 Flash at 588, the lower of its two high runs, and its search for the answer key
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@37311a9. That
