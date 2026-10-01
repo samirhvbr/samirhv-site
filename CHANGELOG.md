@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.67 - The AI Benchmark page shows Gemini 3.8 Flash at 588, the lower of its two high runs, and its search for the answer key
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@37311a9. That
+version adds Gemini 3.8 Flash's second run at high (588). Its published score becomes 588, the
+lower of 687 and 588, and it moves from 6th to 22nd.
+
+The copy is updated in both languages:
+- **Gemini highlight.** It no longer calls Gemini the strongest model from outside Anthropic. It
+  gives both runs, and says the second searched the VM for the answer key, which is not there.
+- **Grok 4.7** is again the strongest model from outside Anthropic and OpenAI, 8th.
+- **Ranks.** Every rank from 6th to 21st moves one place up, each checked against the table; the
+  band of close scores is places 8 to 21.
+
 ## 1.0.66 - AiBenchmarkPageTest checks that the page does not name LEB-100-A's company
 
 Adds `test_neither_page_names_the_instance_s_fictional_company`, which fetches the English and the
