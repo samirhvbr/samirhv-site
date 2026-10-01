@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.52 - The AI Benchmark page shows Claude Haiku 4.5's second run, with its score still 317
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4188a74, which
+adds Claude Haiku 4.5's second run, at 369. Its published score stays the lower, 317, last. The
+bottom-of-table line, in both languages, now says it publishes the lower of its two runs, and that
+the visibility defect was in the first.
+
 ## 1.0.51 - The AI Benchmark page shows Claude Haiku 4.5, last of twenty-seven at 317
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@34278fd, which
