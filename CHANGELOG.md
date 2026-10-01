@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.57 - The AI Benchmark page shows DeepSeek V4 Pro's official score, 496, the fourth official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@4aa1e52. That
+version adds DeepSeek V4 Pro's third run (432). Its score becomes official at 496, the median of
+604, 496 and 432, still 24th.
+
+The copy is updated in both languages: the highlight now names four official scores and notes that
+a single run can sit more than 100 points from the median, and the DeepSeek highlight gives all
+three runs.
+
 ## 1.0.56 - The AI Benchmark page shows DeepSeek V4 Pro at 496, the lower of its two runs
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@c9a3d45. That
