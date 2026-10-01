@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.54 - The AI Benchmark page shows GPT-6-astra's official score, 628, and recounts the CSV injection fixes
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@60c0305. That
+version adds GPT-6-astra's runs 2 (596) and 3 (628) at xhigh. Its score becomes official at 628,
+the median of 661, 596 and 628, and it moves from 5th to 10th.
+
+The copy is rewritten in both languages:
+- **Official scores.** The highlight now names three official scores, adding GPT-6-astra's.
+- **CSV injection (SEC-008).** It now says six agents fixed it, not seven: GPT-6-astra's official
+  run left it in place, where its first run had fixed it.
+- **The GPT models.** The strongest are now GPT-6.1-sol pro and GPT-6.1-sol (654 and 653). The
+  sentence saying 6.1-sol and astra split on MD5 and the CSV injection is gone: astra's official
+  run made the same two calls as 6.1-sol.
+
 ## 1.0.53 - The AI Benchmark page shows two official scores, Sonnet 5.5 at 809 and Opus 5.5 at 717, and qualifies the fixing pattern
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@63ca2d9. That
