@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.63 - The AI Benchmark page shows GPT-5.6-terra's official score, 625, the sixth official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@537fcb5. That
+version adds GPT-5.6-terra's runs 2 (611) and 3 (645) in Codex CLI. Its score becomes official at
+625, the median, unchanged and 14th.
+
+The copy is updated in both languages: the highlight names six official scores, and the caveat on
+unscored attempts says the GPT-5.6-terra run made in another client has now been repeated in Codex.
+
 ## 1.0.62 - The AI Benchmark page lists all ten unscored attempts, grouped by cause
 
 `resources/data/ai-benchmark/UPSTREAM.json` now points at ai-benchmark@2297a38, which records two
