@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.50 - The AI Benchmark page shows Claude Fable 5.1's second xhigh run: its published score becomes 764, third
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@f196839, which
+adds Fable 5.1's second run at xhigh (764, against 781). Its published score becomes the lower, 764,
+and it moves to 3rd. Claude Sonnet 5.5's multi-agent run moves to 2nd (774).
+
+The copy follows, in both languages:
+- **Architecture.** Only three agents score above 0 now.
+- **Multi-run line.** It names Fable's two runs.
+- **The multi-agent highlight.** It says 2nd.
+- **"Finding is not fixing".** Fable found 12 and 11 and fixed 9 and 10. Sonnet still fixed 11 in
+  both runs. Its 45-point lead over Fable's 764 is security (+17) and architecture (+25).
+
 ## 1.0.49 - The AI Benchmark page shows the first official score: Claude Opus 5.5 at 717, the median of three runs
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@e7fa5c7, which
