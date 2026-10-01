@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.59 - The AI Benchmark page adds Gemini 3.8 Flash (687, 6th), the strongest model from outside Anthropic
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark@a02a2a8. That
+version adds Gemini 3.8 Flash at high (687, 6th), the first Google model, and records a second
+Gemini attempt as void after an OpenRouter timeout. The table now has thirty agents.
+
+The copy is updated in both languages:
+- **New highlight.** Gemini 3.8 Flash is the strongest model from outside Anthropic, 33 points
+  above the best GPT model; the Grok 4.7 highlight no longer claims that place.
+- **Ranks.** Every rank from 6th down moves one place, and each quoted rank is checked against the
+  new table. The band of close scores is now places 9 to 22.
+- **Counts.** Thirty agents, twenty at compatibility 100, nineteen not at xhigh, six voided runs.
+
 ## 1.0.58 - The AI Benchmark page lists all five voided runs, including Fable 5.1's second switch to Opus 4.8
 
 `resources/data/ai-benchmark/UPSTREAM.json` now points at ai-benchmark@0.2.51, which records Claude
