@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.70 - The AI Benchmark data carries the recorded cost of Claude Sonnet 5.5's second max run
+
+`resources/data/ai-benchmark/results.json` and `public/data/ai-benchmark/runs.csv` are synced from
+ai-benchmark@a69a23c (0.2.60), which replaces that run's pending cost with the client's record,
+US$ 4.75. No score or copy changes.
+
 ## 1.0.69 - The English Downloads page answers again: the benchmark CSVs move out of a folder named like the page
 
 Since 1.0.47, `https://samirhv.com.br/downloads` answered **403 Forbidden** while
