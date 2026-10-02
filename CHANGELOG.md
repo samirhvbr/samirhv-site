@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.72 - The AI Benchmark page shows GPT-5.6-sol's official score, 612, the ninth official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.62, which
+adds GPT-5.6-sol's third run at xhigh (608). Its score becomes official at 612, the median,
+unchanged and 15th. The highlight on official scores now names nine, in both languages.
+
 ## 1.0.71 - The AI Benchmark page shows GPT-6.1-sol's official score, 661, the eighth official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.61. That
