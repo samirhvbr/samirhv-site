@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.76 - The AI Benchmark page shows GPT-5.6-luna and GPT-5.5 official, at 601 and 568
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.65, which
+adds the third runs of GPT-5.6-luna (624) and GPT-5.5 (568). Both scores become official, at 601 and
+568, with no change of rank.
+
+The copy is updated in both languages: the highlight names twelve official scores; twenty-two agents
+now keep compatibility at 100, since GPT-5.5's official run does; and the caveat on missing session
+logs now says only GPT-5.5's first run left none.
+
 ## 1.0.75 - The AI Benchmark page shows Claude Sonnet 5.5 at max official at 807, 2nd, above the multi-agent run
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.64. That
