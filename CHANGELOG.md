@@ -12,6 +12,21 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.75 - The AI Benchmark page shows Claude Sonnet 5.5 at max official at 807, 2nd, above the multi-agent run
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.64. That
+version adds Claude Sonnet 5.5's third single-agent max run (820), and second runs of GPT-5.5 (558)
+and GPT-5.6-luna (601). Sonnet 5.5 at max becomes official at 807, 2nd; the multi-agent run (774) is
+3rd. GPT-5.5 publishes 558 and drops to 22nd.
+
+The copy is updated in both languages:
+- **Multi-agent highlight.** Eight hours of multi-agent work again scores less than half an hour of
+  one agent at the same effort: 774 against an official 807.
+- **Official scores.** The highlight names ten.
+- **Security and architecture.** Sonnet 5.5 is at 250 in all three settings again, and scores 12 in
+  architecture at max, since the run that now counts is its first.
+- **Ranks.** Gemini 3.8 Flash at high is 21st; the band of close scores is places 8 to 20.
+
 ## 1.0.74 - The Portuguese AI Benchmark summary says "Nota sobre 1000", as the English says "out of 1000"
 
 The summary next to the title read "Nota de 0 a 1000" in Portuguese and "Score out of 1000" in
