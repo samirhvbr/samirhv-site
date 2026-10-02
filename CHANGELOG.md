@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.79 - The AI Benchmark page shows fifteen official scores, adds MiniMax-M3 with the thinking variant, and counts fourteen unscored attempts
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.69: the
+third runs of Claude Haiku 4.5 (official at 317) and GLM-5.3 Prime (official at 628), and MiniMax-M3
+with opencode's thinking variant as a new agent (462). The table has thirty-two agents.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names fifteen, with GLM-5.3 Prime and Claude Haiku 4.5.
+- **Counts.** Thirty-two agents, ten below compatibility 100, twenty-one not at xhigh.
+- **The closing list** adds MiniMax-M3 with the thinking variant.
+- **Unscored attempts.** The caveat counts fourteen, adding the four runs made after their agent
+  already had three.
+
 ## 1.0.78 - The AI Benchmark page shows GPT-6.1-sol at ultra official at 616, 15th
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.67, which
