@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.74 - The Portuguese AI Benchmark summary says "Nota sobre 1000", as the English says "out of 1000"
+
+The summary next to the title read "Nota de 0 a 1000" in Portuguese and "Score out of 1000" in
+English. The same AI Benchmark copy now also renders on shvia.org, whose harness compares the
+numbers in the two languages and counted the extra 0 as a fact one side lacks. The Portuguese now
+matches the English: same fact, one number.
+
 ## 1.0.73 - The AI Benchmark page shows GLM-5.3 Prime at 628, the lower of its two runs
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.63, which

@@ -16,7 +16,7 @@ return [
     'cta_results' => 'Ver os resultados',
     'cta_source' => 'Método no GitHub',
     'top_title' => 'Os :n melhores até aqui',
-    'top_note' => 'Nota de 0 a 1000, entre :total agentes. Não oficial até cada um ter três runs.',
+    'top_note' => 'Nota sobre 1000, entre :total agentes. Não oficial até cada um ter três runs.',
     'top_link' => 'Placar completo',
 
     'why_title' => 'Por que mais um benchmark',
