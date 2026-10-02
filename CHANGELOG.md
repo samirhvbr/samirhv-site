@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.80 - The AI Benchmark data catches up with the copy that 1.0.79 published ahead of it
+
+1.0.79 rewrote the copy for ai-benchmark 0.2.69 (fifteen official scores, MiniMax-M3 with the
+thinking variant, Claude Haiku 4.5 and GLM-5.3 Prime official) before that version was committed
+upstream. `tools/sync-ai-benchmark-results.sh` reads the data from the upstream commit, so 1.0.79
+shipped the new copy over the previous data (ai-benchmark@b1937cf). This release syncs
+`results.json` and the CSVs from ai-benchmark@9e4449e, the 0.2.69 commit the copy describes. No copy
+changes.
+
 ## 1.0.79 - The AI Benchmark page shows fifteen official scores, adds MiniMax-M3 with the thinking variant, and counts fourteen unscored attempts
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.69: the
