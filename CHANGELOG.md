@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.73 - The AI Benchmark page shows GLM-5.3 Prime at 628, the lower of its two runs
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.63, which
+adds GLM-5.3 Prime's second run (628). Its published score becomes 628, the lower of 635 and 628,
+and it moves from 9th to 11th.
+
+The copy is updated in both languages: the GLM highlight gives both runs; six agents fixed the CSV
+injection, since the Prime run that now counts left it alone; Grok 4.6 is 9th and GPT-6-astra 10th.
+
 ## 1.0.72 - The AI Benchmark page shows GPT-5.6-sol's official score, 612, the ninth official score
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.62, which
