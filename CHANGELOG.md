@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.78 - The AI Benchmark page shows GPT-6.1-sol at ultra official at 616, 15th
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.67, which
+adds GPT-6.1-sol's third run at ultra (616). Its score becomes official at 616, the median of 597,
+656 and 616, and it moves from 19th to 15th.
+
+The copy is updated in both languages: the highlight names thirteen official scores, the ultra
+highlight gives its three runs and the official 616, and DeepSeek V4.1 Flash is 18th.
+
 ## 1.0.77 - The AI Benchmark page gives both of GPT-6.1-sol's ultra runs, 597 and 656
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.66, which
