@@ -12,6 +12,19 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.71 - The AI Benchmark page shows GPT-6.1-sol's official score, 661, the eighth official score
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.61. That
+version adds GPT-6.1-sol's third run at xhigh (661) and GPT-5.6-sol's second (612). GPT-6.1-sol's
+score becomes official at 661 and it moves to 6th, above GPT-6.1-sol pro.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names eight.
+- **GPT models.** GPT-6.1-sol is the strongest, official at 661; GPT-6.1-sol pro follows at 654.
+  GPT-6.1-sol at ultra is now 64 points below its official score at xhigh.
+- **CSV injection.** Seven agents fixed it: GPT-6.1-sol's official run joins them.
+- **Architecture.** GPT-6.1-sol scores 25, for naming the dispatcher, with Sonnet 5.5 at xhigh.
+
 ## 1.0.70 - The AI Benchmark data carries the recorded cost of Claude Sonnet 5.5's second max run
 
 `resources/data/ai-benchmark/results.json` and `public/data/ai-benchmark/runs.csv` are synced from
