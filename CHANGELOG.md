@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.77 - The AI Benchmark page gives both of GPT-6.1-sol's ultra runs, 597 and 656
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.66, which
+adds GPT-6.1-sol's second run at ultra (656). Its published score stays 597, the lower, 19th.
+
+The ultra highlight is rewritten in both languages: it no longer calls the agent a case of more
+effort scoring less without qualification, and gives both runs — the first with three subagents and
+9 flaws found, the second with two and 10 fixed.
+
 ## 1.0.76 - The AI Benchmark page shows GPT-5.6-luna and GPT-5.5 official, at 601 and 568
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.65, which
