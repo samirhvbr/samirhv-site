@@ -92,12 +92,16 @@
 .ab-chip[aria-pressed="true"] .ab-chip__n{ color:inherit; }
 .ab-filter__status{ margin:.7rem 0 0; }
 .ab-row[hidden]{ display:none; }
+.ab-sort{ margin-top:10px; }
+.ab-row__catpos{ font-family:var(--s-mono); font-size:.72rem; font-weight:600; color:var(--s-accent-ink-2); }
+.ab-row__catpos[hidden]{ display:none; }
+.ab-row__cats li.is-sorted .ab-cat__name{ color:var(--s-accent-ink-2); font-weight:600; }
 
 .ab-board{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .ab-row{ display:grid; grid-template-columns:2.4rem minmax(0,1fr) auto; grid-template-areas:"rank id total" "rank cats cats" "rank meta meta"; gap:14px 18px; padding:20px 22px; }
-.ab-row:first-child{ border-color:var(--s-line-2); }
+.ab-row--leader{ border-color:var(--s-line-2); }
 .ab-row__rank{ grid-area:rank; font-family:var(--s-mono); font-size:1.5rem; font-weight:600; color:var(--s-faint); line-height:1; }
-.ab-row:first-child .ab-row__rank{ color:var(--s-accent-ink-2); }
+.ab-row--leader .ab-row__rank{ color:var(--s-accent-ink-2); }
 .ab-row__id{ grid-area:id; display:flex; flex-direction:column; gap:3px; min-width:0; }
 .ab-row__id strong{ font-size:1.12rem; color:var(--s-ink); }
 .ab-row__id small{ font-family:var(--s-mono); font-size:.72rem; color:var(--s-muted); }

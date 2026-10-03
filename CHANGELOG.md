@@ -12,6 +12,24 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.84 - The AI Benchmark leaderboard can be ordered by category, with each card's position in it
+
+A second row of chips, "Order by", sits under the vendor filter: Overall (the default) and the seven
+categories. Picking a category re-sorts the leaderboard by that category's score, with ties kept in
+overall-rank order. Each card then shows its position in the category, e.g. "#4 in Security", and that
+category's bar is highlighted.
+
+- **The rank does not move.** The number on each card stays its rank in the full leaderboard.
+  Positions in a category use competition ranking (1, 1, 1, 4) and are counted over every agent, so
+  they do not change with the vendor filter. The two controls combine.
+- **The leader card is marked by rank, not by position.** Its highlight was `:first-child`, which would
+  have followed whichever card a category order put first. It is now `.ab-row--leader`, on the rank-1
+  entry.
+- **Templates are hidden text.** Both templates (the "showing" line and the position) travel as hidden
+  text instead of a `data-template` attribute, as on shvia.org, so one script serves both sites.
+- `lang/{en,pt_BR}/ai_benchmark.php`: `sort_label`, `sort_overall`, `sort_position`.
+- `AiBenchmarkPageTest`: a chip per category, `data-scores` on every row, one leader card.
+
 ## 1.0.83 - The AI Benchmark leaderboard can be filtered by vendor, keeping every agent's rank
 
 A row of vendor chips sits above each leaderboard, one per vendor in the results file with its agent

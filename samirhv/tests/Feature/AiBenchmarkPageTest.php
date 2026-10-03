@@ -300,18 +300,32 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('<div class="ab-filter" data-ab-filter hidden>', false)
             ->assertSee('Filter by vendor')
             ->assertSee('Showing '.count($entries).' of '.count($entries).' agents.')
-            ->assertSee('data-template="Showing :shown of :total agents.', false)
+            ->assertSee('<span class="ab-filter__tpl" hidden>Showing :shown of :total agents.', false)
             ->assertSee('js/site/ai-benchmark.js', false);
         foreach ($vendors as $vendor => $n) {
             $attr = e($vendor);
             $response->assertSee('data-vendor="'.$attr.'" aria-pressed="false">'.$attr.' <span class="ab-chip__n">'.$n.'</span>', false);
         }
-        $this->assertSame(count($entries), substr_count($response->getContent(), '<li class="s-card ab-row" data-vendor="'));
+        $this->assertSame(count($entries), preg_match_all('/<li class="s-card ab-row( ab-row--leader)?" data-vendor="/', $response->getContent()));
         foreach ($entries as $e) {
             $response->assertSee('<span class="ab-row__rank" aria-label="#'.$e['rank'].'">', false);
         }
 
+        // The category order: one chip per category, every row carrying its scores,
+        // and only the rank-1 card marked as the leader (not whichever card is first).
+        $response->assertSee('<span class="ab-sort__tpl" hidden>#:pos in :cat</span>', false)
+            ->assertSee('data-sort="" aria-pressed="true">Overall</button>', false);
+        foreach (['SEC' => 'Security', 'ARCH' => 'Architecture', 'BUG' => 'Bugs', 'PERF' => 'Performance',
+            'CLN' => 'Clean code', 'COMP' => 'Compatibility', 'EXPL' => 'Explanation'] as $cat => $name) {
+            $response->assertSee('data-sort="'.$cat.'" aria-pressed="false">'.$name.'</button>', false);
+        }
+        $html = $response->getContent();
+        $this->assertSame(count($entries), preg_match_all('/data-scores="SEC:\d+ ARCH:\d+ BUG:\d+ PERF:\d+ CLN:\d+ COMP:\d+ EXPL:\d+"/', $html));
+        $this->assertSame(count(array_filter($entries, fn ($e) => $e['rank'] === 1)), substr_count($html, 'ab-row--leader'));
+
         $this->get(self::PT)->assertOk()
+            ->assertSee('Ordenar por')
+            ->assertSee('#:pos em :cat')
             ->assertSee('Filtrar por fornecedor')
             ->assertSee('Todos')
             ->assertSee('Mostrando '.count($entries).' de '.count($entries).' agentes.');

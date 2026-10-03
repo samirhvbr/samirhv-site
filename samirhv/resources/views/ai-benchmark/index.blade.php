@@ -192,9 +192,12 @@
                         </div>
                     </header>
 
-                    {{-- Vendor filter. It only hides rows: every rank stays the one in the full
-                         leaderboard. Rendered hidden and revealed by js/site/ai-benchmark.js, so
-                         without JavaScript the page is the plain leaderboard. --}}
+                    {{-- Vendor filter and category order. The filter only hides rows and the order
+                         only moves them: the number on each card stays its rank in the full
+                         leaderboard, and a category order adds the card's position in that category.
+                         Rendered hidden and revealed by js/site/ai-benchmark.js, so without
+                         JavaScript the page is the plain leaderboard. The templates travel as hidden
+                         text, as on shvia.org, whose language-parity check compares attributes. --}}
                     @php $vendors = collect($entries)->pluck('model.provider')->unique()->values(); @endphp
                     <div class="ab-filter" data-ab-filter hidden>
                         <div class="ab-filter__chips" role="group" aria-label="{{ __('ai_benchmark.filter_label') }}">
@@ -204,7 +207,16 @@
                                 <button type="button" class="ab-chip" data-vendor="{{ $vendor }}" aria-pressed="false">{{ $vendor }} <span class="ab-chip__n">{{ collect($entries)->where('model.provider', $vendor)->count() }}</span></button>
                             @endforeach
                         </div>
-                        <p class="ab-filter__status s-meta" aria-live="polite" data-template="{{ __('ai_benchmark.filter_shown', ['shown' => ':shown', 'total' => ':total']) }}">{{ __('ai_benchmark.filter_shown', ['shown' => count($entries), 'total' => count($entries)]) }}</p>
+                        <div class="ab-filter__chips ab-sort" role="group" aria-label="{{ __('ai_benchmark.sort_label') }}">
+                            <span class="ab-filter__label">{{ __('ai_benchmark.sort_label') }}</span>
+                            <button type="button" class="ab-chip" data-sort="" aria-pressed="true">{{ __('ai_benchmark.sort_overall') }}</button>
+                            @foreach(array_keys(AiBenchmark::representativeRun($entries[0])['categories']) as $cat)
+                                <button type="button" class="ab-chip" data-sort="{{ $cat }}" aria-pressed="false">{{ __("ai_benchmark.categories.$cat") }}</button>
+                            @endforeach
+                        </div>
+                        <span class="ab-filter__tpl" hidden>{{ __('ai_benchmark.filter_shown', ['shown' => ':shown', 'total' => ':total']) }}</span>
+                        <span class="ab-sort__tpl" hidden>{{ __('ai_benchmark.sort_position', ['pos' => ':pos', 'cat' => ':cat']) }}</span>
+                        <p class="ab-filter__status s-meta" aria-live="polite">{{ __('ai_benchmark.filter_shown', ['shown' => count($entries), 'total' => count($entries)]) }}</p>
                     </div>
 
                     {{-- The leaderboard. An ordered list, because the order IS the content. --}}
@@ -214,7 +226,7 @@
                                 $run = AiBenchmark::representativeRun($e);
                                 $penalty = collect($run['penalties'])->sum('deduction');
                             @endphp
-                            <li class="s-card ab-row" data-vendor="{{ $e['model']['provider'] }}">
+                            <li class="s-card ab-row{{ $e['rank'] === 1 ? ' ab-row--leader' : '' }}" data-vendor="{{ $e['model']['provider'] }}" data-scores="{{ collect($run['categories'])->map(fn ($c, $k) => $k.':'.$c['score'])->implode(' ') }}">
                                 <span class="ab-row__rank" aria-label="#{{ $e['rank'] }}">{{ $e['rank'] }}</span>
 
                                 <div class="ab-row__id">
@@ -229,6 +241,7 @@
                                     </span>
                                     {{-- Could this model have trained on the public answer key? From the
                                          cutoff its provider publishes; only a "maybe" is worth a tag. --}}
+                                    <span class="ab-row__catpos" hidden></span>
                                     @if(in_array($e['key_exposure'] ?? null, ['after', 'unknown'], true))
                                         <span class="ab-row__exposure" title="{{ __('ai_benchmark.exposure_help', ['date' => $inst['key_published_on']]) }}">{{ __('ai_benchmark.exposure_'.$e['key_exposure']) }}</span>
                                     @endif
@@ -242,7 +255,7 @@
 
                                 <ul class="ab-row__cats">
                                     @foreach($run['categories'] as $cat => $c)
-                                        <li>
+                                        <li data-cat="{{ $cat }}">
                                             <span class="ab-cat__name">{{ __("ai_benchmark.categories.$cat") }}</span>
                                             <span class="ab-bar" aria-hidden="true"><i style="width: {{ AiBenchmark::percent($c['score'], $c['max']) }}%"></i></span>
                                             <span class="ab-cat__val">{{ $c['score'] }}<small>/{{ $c['max'] }}</small></span>
