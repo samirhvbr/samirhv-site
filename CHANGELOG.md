@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.82 - The AI Benchmark page adds the second multi-agent Sonnet 5.5 run, 820 in 2 hours
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.73 (ai-benchmark@e9865d4): Claude Sonnet
+5.5's second run in multi-agent mode at max scored 820 in 2 hours for US$ 171, against 774 in 8.1 hours
+for US$ 233. It still publishes the lower, 774, 3rd.
+
+The multi-agent highlight and the Claude comparison are rewritten in both languages. Before, they said
+eight hours of multi-agent work scored less than a single agent. Now they say that at best it tied the
+single-agent 820, at many times the cost, and that the dispatcher reached neither report.
+
 ## 1.0.81 - The AI Benchmark page shows sixteen official scores, with MiniMax-M3 thinking official and DeepSeek V4 Flash last at 282
 
 `resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.72
