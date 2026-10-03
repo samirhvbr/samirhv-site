@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.81 - The AI Benchmark page shows sixteen official scores, with MiniMax-M3 thinking official and DeepSeek V4 Flash last at 282
+
+`resources/data/ai-benchmark/results.json` and the CSVs are synced from ai-benchmark 0.2.72
+(ai-benchmark@4c14c20). It adds runs 2 and 3 of MiniMax-M3 with the thinking variant (616 and 434;
+official at 462), Grok 4.6's run 2 (640; it still publishes 633) and DeepSeek V4 Flash's run 2 (282).
+That last run is now its published score, last of thirty-two.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names sixteen, with MiniMax-M3 with the thinking variant.
+- **Contract.** The heading said nobody broke the contract mechanically. DeepSeek V4 Flash's published
+  run now breaks one characterization check, so the highlight says one run did. The counts are now
+  twenty-three at compatibility 100 and nine below it.
+- **DeepSeek.** V4 Flash publishes 282 from two hosts, and V4 Pro is compared with V4.1 Flash's 612,
+  not with "the Flash models".
+- **The closing list** ends with DeepSeek V4 Flash, three below the pass line. The judge caveat says
+  Claude models hold second-to-last place, not last.
+- **Unscored attempts.** The caveat counts sixteen: a third GPT-6.1-sol run at ultra after its
+  three, and a multi-agent Sonnet 5.5 attempt whose client was logged out.
+- **Grok 4.6** shows its two runs (633 and 640).
+
 ## 1.0.80 - The AI Benchmark data catches up with the copy that 1.0.79 published ahead of it
 
 1.0.79 rewrote the copy for ai-benchmark 0.2.69 (fifteen official scores, MiniMax-M3 with the
