@@ -12,6 +12,28 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.83 - The AI Benchmark leaderboard can be filtered by vendor, keeping every agent's rank
+
+A row of vendor chips sits above each leaderboard, one per vendor in the results file with its agent
+count, plus "All". Selecting chips shows only those vendors' agents. Several chips can be selected at
+once; turning the last one off, or choosing "All", shows everyone again. A live line says how many
+agents are shown.
+
+The filter only hides rows. Every agent keeps the rank it has in the full leaderboard, so a filtered
+view reads 8, 9, 20, 22, not 1 to 4.
+
+- `resources/views/ai-benchmark/index.blade.php`: the chip bar, and `data-vendor` on every row. The
+  bar is rendered `hidden` and revealed by the script, so without JavaScript the page is the plain
+  leaderboard, with no dead controls.
+- `public/js/site/ai-benchmark.js` (new): the filter, using `aria-pressed` on the chips and an
+  `aria-live` status line.
+- `public/css/site/ai-benchmark.css`: chip styles, matching the site's chips.
+- `lang/{en,pt_BR}/ai_benchmark.php`: `filter_label`, `filter_all`, `filter_shown`.
+- `AiBenchmarkPageTest`: one chip per vendor with its count, one tagged row per entry, the ranks
+  unchanged, and both languages.
+
+The flaw-by-flaw table is not filtered: it shows the top ten by rank.
+
 ## 1.0.82 - The AI Benchmark page adds the second multi-agent Sonnet 5.5 run, 820 in 2 hours
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.73 (ai-benchmark@e9865d4): Claude Sonnet

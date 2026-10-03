@@ -286,6 +286,37 @@ class AiBenchmarkPageTest extends TestCase
     }
 
     /** A client mode that changes how the model works is named next to its effort, in both languages. */
+    /**
+     * The vendor filter only hides rows: one chip per vendor in the file, with its count, each row
+     * tagged with its vendor, and the ranks left as the full leaderboard's. The bar starts hidden,
+     * so without the script the page is the plain leaderboard.
+     */
+    public function test_the_vendor_filter_offers_every_vendor_and_tags_every_row(): void
+    {
+        $entries = AiBenchmark::results()['instances'][0]['entries'];
+        $vendors = array_count_values(array_map(fn ($e) => $e['model']['provider'], $entries));
+
+        $response = $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('<div class="ab-filter" data-ab-filter hidden>', false)
+            ->assertSee('Filter by vendor')
+            ->assertSee('Showing '.count($entries).' of '.count($entries).' agents.')
+            ->assertSee('data-template="Showing :shown of :total agents.', false)
+            ->assertSee('js/site/ai-benchmark.js', false);
+        foreach ($vendors as $vendor => $n) {
+            $attr = e($vendor);
+            $response->assertSee('data-vendor="'.$attr.'" aria-pressed="false">'.$attr.' <span class="ab-chip__n">'.$n.'</span>', false);
+        }
+        $this->assertSame(count($entries), substr_count($response->getContent(), '<li class="s-card ab-row" data-vendor="'));
+        foreach ($entries as $e) {
+            $response->assertSee('<span class="ab-row__rank" aria-label="#'.$e['rank'].'">', false);
+        }
+
+        $this->get(self::PT)->assertOk()
+            ->assertSee('Filtrar por fornecedor')
+            ->assertSee('Todos')
+            ->assertSee('Mostrando '.count($entries).' de '.count($entries).' agentes.');
+    }
+
     public function test_the_leaderboard_names_the_client_mode_next_to_the_effort(): void
     {
         $data = AiBenchmark::results();

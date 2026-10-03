@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ vasset('css/site/ai-benchmark.css') }}">
 @endpush
 
+@push('scripts')
+    <script defer src="{{ vasset('js/site/ai-benchmark.js') }}"></script>
+@endpush
+
 @php
     use App\Support\AiBenchmark;
     use Illuminate\Support\Str;
@@ -188,6 +192,21 @@
                         </div>
                     </header>
 
+                    {{-- Vendor filter. It only hides rows: every rank stays the one in the full
+                         leaderboard. Rendered hidden and revealed by js/site/ai-benchmark.js, so
+                         without JavaScript the page is the plain leaderboard. --}}
+                    @php $vendors = collect($entries)->pluck('model.provider')->unique()->values(); @endphp
+                    <div class="ab-filter" data-ab-filter hidden>
+                        <div class="ab-filter__chips" role="group" aria-label="{{ __('ai_benchmark.filter_label') }}">
+                            <span class="ab-filter__label">{{ __('ai_benchmark.filter_label') }}</span>
+                            <button type="button" class="ab-chip" data-vendor="" aria-pressed="true">{{ __('ai_benchmark.filter_all') }}</button>
+                            @foreach($vendors as $vendor)
+                                <button type="button" class="ab-chip" data-vendor="{{ $vendor }}" aria-pressed="false">{{ $vendor }} <span class="ab-chip__n">{{ collect($entries)->where('model.provider', $vendor)->count() }}</span></button>
+                            @endforeach
+                        </div>
+                        <p class="ab-filter__status s-meta" aria-live="polite" data-template="{{ __('ai_benchmark.filter_shown', ['shown' => ':shown', 'total' => ':total']) }}">{{ __('ai_benchmark.filter_shown', ['shown' => count($entries), 'total' => count($entries)]) }}</p>
+                    </div>
+
                     {{-- The leaderboard. An ordered list, because the order IS the content. --}}
                     <ol class="ab-board">
                         @foreach($entries as $e)
@@ -195,7 +214,7 @@
                                 $run = AiBenchmark::representativeRun($e);
                                 $penalty = collect($run['penalties'])->sum('deduction');
                             @endphp
-                            <li class="s-card ab-row">
+                            <li class="s-card ab-row" data-vendor="{{ $e['model']['provider'] }}">
                                 <span class="ab-row__rank" aria-label="#{{ $e['rank'] }}">{{ $e['rank'] }}</span>
 
                                 <div class="ab-row__id">

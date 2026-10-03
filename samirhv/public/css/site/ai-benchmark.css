@@ -79,6 +79,20 @@
 .ab-instance__head .s-body{ max-width:48em; margin:0; }
 .ab-facts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:1rem; }
 
+/* Vendor filter: only hides rows; the ranks are the full leaderboard's. */
+.ab-filter{ margin:0 0 1.1rem; }
+.ab-filter[hidden]{ display:none; }
+.ab-filter__chips{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.ab-filter__label{ font-family:var(--s-mono); font-size:.72rem; color:var(--s-muted); margin-right:4px; }
+.ab-chip{ display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border:1px solid var(--s-line); border-radius:9px; background:rgba(150,155,185,.04); color:var(--s-ink-2); font-family:var(--s-sans); font-weight:500; font-size:.84rem; cursor:pointer; transition:border-color .15s, background-color .15s, color .15s; }
+.ab-chip:hover{ border-color:var(--s-line-2); color:var(--s-ink); }
+.ab-chip:focus-visible{ outline:2px solid var(--s-accent-ink-2); outline-offset:2px; }
+.ab-chip[aria-pressed="true"]{ border-color:var(--s-line-2); background:var(--s-accent-soft); color:var(--s-accent-ink-2); }
+.ab-chip__n{ font-family:var(--s-mono); font-size:.7rem; color:var(--s-faint); }
+.ab-chip[aria-pressed="true"] .ab-chip__n{ color:inherit; }
+.ab-filter__status{ margin:.7rem 0 0; }
+.ab-row[hidden]{ display:none; }
+
 .ab-board{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .ab-row{ display:grid; grid-template-columns:2.4rem minmax(0,1fr) auto; grid-template-areas:"rank id total" "rank cats cats" "rank meta meta"; gap:14px 18px; padding:20px 22px; }
 .ab-row:first-child{ border-color:var(--s-line-2); }
