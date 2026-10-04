@@ -12,6 +12,18 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.86 - The AI Benchmark page shows nineteen official scores, with Sonnet 5.5's multi-agent mode official at 774
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.76 (ai-benchmark@cabc5c1). Claude Sonnet
+5.5's third multi-agent run at max scored 759 in 3.6 hours for US$ 119, with an explanation of 47/50, the
+best here. With runs of 774, 820 and 759 the agent is official at 774, 3rd.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names nineteen, adding the multi-agent mode.
+- **Multi-agent.** The highlight and the Claude comparison now give all three runs (8.1, 2 and 3.6 hours;
+  US$ 233, 171 and 119; 774, 820 and 759), the official 774 against the single agent's 807, and seven
+  fallback subagents in the third run.
+
 ## 1.0.85 - The AI Benchmark page shows eighteen official scores, with GLM-5.3 and Gemini 3.8 Flash official, and corrects three ranks
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.75 (ai-benchmark@fe67d8e). It adds the third
