@@ -12,6 +12,22 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.87 - The AI Benchmark page drops the three runs withdrawn for an incomplete record: thirty agents, eighteen official
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.78 (ai-benchmark@db95496). Under the new
+`PROTOCOL §4` item 5, a run counts only if its client, first message, session log and cost were recorded.
+Three runs from the first batch had none of them, and are withdrawn:
+- GPT-5.5's run 1. GPT-5.5 now publishes 558 from two runs and is no longer official.
+- MiniMax-M3 at its default, and Kimi K3. These were their only runs, so both agents leave the table.
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names eighteen; GPT-5.5 is out of the list.
+- **Counts.** Thirty agents, twenty-nine with the characterization green, twenty-one at compatibility
+  100, nineteen not at xhigh.
+- **The closing list** loses Kimi K3 and MiniMax-M3 at its default.
+- **Isolation.** It no longer needs the Kimi K3 exception.
+- **The parameters caveat** says the three runs without a session log were withdrawn.
+
 ## 1.0.86 - The AI Benchmark page shows nineteen official scores, with Sonnet 5.5's multi-agent mode official at 774
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.76 (ai-benchmark@cabc5c1). Claude Sonnet
