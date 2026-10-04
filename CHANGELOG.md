@@ -12,6 +12,24 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.85 - The AI Benchmark page shows eighteen official scores, with GLM-5.3 and Gemini 3.8 Flash official, and corrects three ranks
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.75 (ai-benchmark@fe67d8e). It adds the third
+runs of GLM-5.3 (604) and Gemini 3.8 Flash at high (100). Both agents are now official: GLM-5.3 at 621
+(629, 621 and 604) and Gemini 3.8 Flash at 588 (687, 588 and 100).
+
+The copy is updated in both languages:
+- **Official scores.** The highlight names eighteen, with GLM-5.3 and Gemini 3.8 Flash at high. It
+  adds Gemini's third run to the examples of a run far from its median.
+- **Gemini 3.8 Flash.** Its highlight now states the official score. It also says how the third run
+  ended: a database server the agent started kept its own command from returning, and the run was
+  scored as delivered.
+- **GLM-5.3.** Official at 621 over three runs, instead of "the lower of two".
+- **Three stale ranks, wrong since 1.0.81.** When DeepSeek V4 Flash fell to last, every agent below its
+  old place moved up one, and the copy was not checked. Gemini 3.8 Flash at high goes from 21st to
+  20th, at medium from 23rd to 22nd, and DeepSeek V4.1 Flash from 18th to 17th. "Places 8 to 20"
+  becomes "8 to 19": 638 to 597 is now places 8 to 19.
+
 ## 1.0.84 - The AI Benchmark leaderboard can be ordered by category, with each card's position in it
 
 A second row of chips, "Order by", sits under the vendor filter: Overall (the default) and the seven
