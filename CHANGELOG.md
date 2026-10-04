@@ -12,6 +12,21 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.89 - The AI Benchmark page adds GPT-6-astra at ultra, 668, the best GPT run, and shifts the ranks below it
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.83 (ai-benchmark@b1387cc). GPT-6-astra at
+ultra joins as a new agent with one run of 668, 6th. A finished Grok 4.7 run at xhigh was lost when its VM
+was restored before the copy, and is kept as void.
+
+The copy is updated in both languages:
+- **GPT.** GPT-6.1-sol is the strongest *official* GPT model (7th). The best GPT run is GPT-6-astra at
+  ultra (668, one run).
+- **Ranks.** Every rank cited below 6th moves down one place. The historical ones ("its first run, 6th")
+  stay.
+- **Counts.** Thirty-one agents, thirty with the characterization green, ten below compatibility 100,
+  twenty not at xhigh, six Claude models out of thirty-one.
+- **Unscored attempts.** The caveat counts seventeen, with the lost Grok 4.7 run.
+
 ## 1.0.88 - The AI Benchmark page shows nineteen official scores, with Grok 4.6 official at 633
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.80 (ai-benchmark@05c00df): Grok 4.6's third
