@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.88 - The AI Benchmark page shows nineteen official scores, with Grok 4.6 official at 633
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.80 (ai-benchmark@05c00df): Grok 4.6's third
+run scored 620, and with runs of 633, 640 and 620 it is official at 633, 9th. The copy names nineteen
+official scores in both languages, and the Grok highlight gives Grok 4.6's three runs.
+
 ## 1.0.87 - The AI Benchmark page drops the three runs withdrawn for an incomplete record: thirty agents, eighteen official
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.78 (ai-benchmark@db95496). Under the new
