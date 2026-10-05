@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.90 - The AI Benchmark page adds Kimi K3 at high (629, 11th) and counts nineteen unscored attempts
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.86 (ai-benchmark@716ef5d). Kimi K3 returns
+as a new agent at its high variant, with one recorded run of 629, 11th. Its default-effort run had been
+withdrawn in 1.0.87.
+
+The copy is updated in both languages:
+- **Ranks.** Every rank cited from 11th down moves down one place.
+- **Counts.** Thirty-two agents, thirty-one with the characterization green, eleven below compatibility
+  100, twenty-one not at xhigh.
+- **The parameters caveat** says Kimi K3 is back with a recorded run.
+- **Unscored attempts.** The caveat counts nineteen. One more Kimi K3 run was lost to a VM restore
+  before the copy, and Fable 5.1's third attempt hit an expired login.
+
 ## 1.0.89 - The AI Benchmark page adds GPT-6-astra at ultra, 668, the best GPT run, and shifts the ranks below it
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.83 (ai-benchmark@b1387cc). GPT-6-astra at
