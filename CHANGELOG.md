@@ -12,6 +12,22 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.94 - The AI Benchmark page adds Kimi K2.7 Code highspeed (402, official) and applies the release-date rule to the dagger
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.91 (ai-benchmark@f43621f). Two upstream
+changes reach the page:
+- **A release date bounds the training cutoff** (ai-benchmark 0.2.90). Qwen3 Coder Next, MiniMax-M3,
+  Kimi K2.7 Code and GLM-5.2 were released before the answer key went public, so they lose the dagger.
+- **Kimi K2.7 Code highspeed** joins as a new agent, official at 402 (402, 363 and 402), 30th.
+
+The copy is updated in both languages:
+- **The dagger label** now reads "no published cutoff or earlier release", and its tooltip and the
+  answer-key caveat explain the release-date rule.
+- **Counts.** Twenty-two official scores, thirty-three agents, thirty-two with the characterization
+  green, twelve below compatibility 100, twenty-two not at xhigh.
+- **The closing list** adds Kimi K2.7 Code highspeed.
+- `AiBenchmarkPageTest` checks the new dagger label.
+
 ## 1.0.93 - The AI Benchmark page shows twenty-one official scores, with Kimi K3 at high and Kimi K2.7 Code official
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.89 (ai-benchmark@359b1cf). Both third runs

@@ -195,13 +195,13 @@ class AiBenchmarkPageTest extends TestCase
         $this->get(self::EN, self::EN_HEADER)
             ->assertOk()
             ->assertSee('training cutoff after the answer key went public')
-            ->assertSee('training cutoff not published')
+            ->assertSee('no published cutoff or earlier release')
             ->assertSee('The answer key has been public since 2026-07-13.', false);
 
         $this->get(self::PT)
             ->assertOk()
             ->assertSee('corte de treino posterior à publicação do gabarito')
-            ->assertSee('corte de treino não publicado');
+            ->assertSee('sem corte ou lançamento anterior publicado');
     }
 
     public function test_the_hero_summarises_the_top_six_in_rank_order(): void
