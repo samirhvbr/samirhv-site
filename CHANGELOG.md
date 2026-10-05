@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.92 - The AI Benchmark data adds Kimi K2.7 Code's second run (415)
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.88 (ai-benchmark@b0b8dfb). Kimi K2.7 Code's
+second run scored 415, the same as its first, so it still publishes 415, 28th. No rank moves, and the
+copy is unchanged.
+
 ## 1.0.91 - The AI Benchmark data adds Kimi K3's second run at high (634); it still publishes 629
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.87 (ai-benchmark@0d037cd). Kimi K3 at high now
