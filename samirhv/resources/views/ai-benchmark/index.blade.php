@@ -229,7 +229,7 @@
                                 $run = AiBenchmark::representativeRun($e);
                                 $penalty = collect($run['penalties'])->sum('deduction');
                             @endphp
-                            <li class="s-card ab-row{{ $e['rank'] === 1 ? ' ab-row--leader' : '' }}" data-vendor="{{ $e['model']['provider'] }}" data-scores="{{ collect($run['categories'])->map(fn ($c, $k) => $k.':'.$c['score'])->implode(' ') }}">
+                            <li class="s-card ab-row{{ $e['rank'] === 1 ? ' ab-row--leader' : '' }}{{ $loop->even ? ' ab-row--alt' : '' }}" data-vendor="{{ $e['model']['provider'] }}" data-scores="{{ collect($run['categories'])->map(fn ($c, $k) => $k.':'.$c['score'])->implode(' ') }}">
                                 <span class="ab-row__rank" aria-label="#{{ $e['rank'] }}">{{ $e['rank'] }}</span>
 
                                 <div class="ab-row__id">

@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.107 - The AI Benchmark leaderboard shades every second card, so each card's edges are clear
+
+Every second card on screen gets a background halfway between `--s-surface` and `--s-surface-2`, a light
+shade off the plain card; the leader keeps its own look. The view marks every second card in rank order, and
+the script recounts the shade on each filter, order and page, so it follows the cards actually shown. The
+vendor-filter test accepts the class and counts it.
+
 ## 1.0.106 - The AI Benchmark page writes run times as 7h 55min, from the session record
 
 The run time in each card's sheet reads `19min`, `2h` or `7h 55min` instead of `7 h 55 min`. The highlights

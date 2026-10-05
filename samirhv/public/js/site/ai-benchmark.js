@@ -96,8 +96,12 @@
       });
       var pages = Math.max(1, Math.ceil(kept.length / PAGE));
       if (page > pages) page = pages;
-      rows.forEach(function (row) { row.hidden = true; });
-      kept.slice((page - 1) * PAGE, page * PAGE).forEach(function (row) { row.hidden = false; });
+      rows.forEach(function (row) { row.hidden = true; row.classList.remove("ab-row--alt"); });
+      // The alternate shade follows the cards on screen, not their place in the full list.
+      kept.slice((page - 1) * PAGE, page * PAGE).forEach(function (row, i) {
+        row.hidden = false;
+        row.classList.toggle("ab-row--alt", i % 2 === 1);
+      });
       if (!pager) return;
       pager.hidden = pages === 1;
       pager.querySelector(".ab-pager__label").textContent = (pagerTpl || ":n / :total").replace(":n", String(page)).replace(":total", String(pages));

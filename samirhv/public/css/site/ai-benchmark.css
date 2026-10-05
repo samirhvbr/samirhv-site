@@ -105,6 +105,9 @@
 .ab-board{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .ab-row{ display:grid; grid-template-columns:2.4rem minmax(0,1fr) auto; grid-template-areas:"rank id total" "rank cats cats" "rank meta meta" "rank more more"; gap:14px 18px; padding:20px 22px; }
 .ab-row--leader{ border-color:var(--s-line-2); }
+/* Every second card shown is a shade off the surface, so one card's end is clear
+   from the next one's start. The script recounts it on every filter, order and page. */
+.ab-row--alt:not(.ab-row--leader){ background:color-mix(in srgb, var(--s-surface) 50%, var(--s-surface-2)); }
 .ab-row__rank{ grid-area:rank; font-family:var(--s-mono); font-size:1.5rem; font-weight:600; color:var(--s-faint); line-height:1; }
 .ab-row--leader .ab-row__rank{ color:var(--s-accent-ink-2); }
 .ab-row__id{ grid-area:id; display:flex; flex-direction:column; gap:3px; min-width:0; }

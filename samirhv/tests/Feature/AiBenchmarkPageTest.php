@@ -306,7 +306,9 @@ class AiBenchmarkPageTest extends TestCase
             $attr = e($vendor);
             $response->assertSee('data-vendor="'.$attr.'" aria-pressed="false">'.$attr.' <span class="ab-chip__n">'.$n.'</span>', false);
         }
-        $this->assertSame(count($entries), preg_match_all('/<li class="s-card ab-row( ab-row--leader)?" data-vendor="/', $response->getContent()));
+        $this->assertSame(count($entries), preg_match_all('/<li class="s-card ab-row( ab-row--leader)?( ab-row--alt)?" data-vendor="/', $response->getContent()));
+        // Every second card in rank order starts with the alternate shade; the script recounts it.
+        $this->assertSame(intdiv(count($entries), 2), substr_count($response->getContent(), ' ab-row--alt"'));
         foreach ($entries as $e) {
             $response->assertSee('<span class="ab-row__rank" aria-label="#'.$e['rank'].'">', false);
         }
