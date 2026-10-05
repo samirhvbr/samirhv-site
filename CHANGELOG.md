@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.105 - The AI Benchmark card sheet shows how long each run took
+
+Each run line in a card's sheet now shows its wall-clock time, from the session's first message to its end
+(`wall_minutes` in `results.json`, synced from ai-benchmark 0.2.103): minutes under an hour, hours and minutes
+above. The feature test checks the time of every run that has one.
+
 ## 1.0.104 - The AI Benchmark cards open, on a click, a written comment and a run-by-run sheet for each agent
 
 Each leaderboard card carries a `<details>` panel that opens on its summary or on a click anywhere on the

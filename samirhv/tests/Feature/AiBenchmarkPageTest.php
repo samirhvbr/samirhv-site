@@ -345,6 +345,16 @@ class AiBenchmarkPageTest extends TestCase
         $this->assertSame(array_sum(array_map(fn ($e) => count($e['runs']), $entries)), substr_count($html, '<li>
                                                 <strong>Run '));
 
+        // Wall-clock time, run by run: minutes under an hour, hours and minutes above.
+        foreach ($entries as $e) {
+            foreach ($e['runs'] as $r) {
+                if (($r['wall_minutes'] ?? null) !== null) {
+                    $m = (int) round($r['wall_minutes']);
+                    $en->assertSee($m < 60 ? "$m min" : intdiv($m, 60).' h '.($m % 60).' min');
+                }
+            }
+        }
+
         $pt = $this->get(self::PT)->assertOk()->assertSee('Comentário e ficha')->assertSee('Run a run');
         foreach ($entries as $e) {
             if ($e['comment'] ?? null) {
