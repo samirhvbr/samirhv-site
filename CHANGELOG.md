@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.100 - The AI Benchmark page adds GPT-6-astra at ultra's second run (666); it publishes 666, 6th
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.98 (ai-benchmark@30e5519). GPT-6-astra at ultra
+now has two runs, 668 and 666, and publishes 666, still 6th. The GPT highlight gives both runs, in both
+languages.
+
 ## 1.0.99 - The AI Benchmark page shows twenty-four official scores, with Grok 4.7 at xhigh official at 631
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.97 (ai-benchmark@1e32533). Grok 4.7 at xhigh
