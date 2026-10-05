@@ -12,6 +12,17 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.99 - The AI Benchmark page shows twenty-four official scores, with Grok 4.7 at xhigh official at 631
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.97 (ai-benchmark@1e32533). Grok 4.7 at xhigh
+has its second and third runs (617 and 631) and is official at 631, 11th. That puts it below Grok 4.7 at
+high, so Grok 4.7 at high and Grok 4.6 move back to 9th and 10th.
+
+The copy is updated in both languages:
+- **The official-scores highlight** names twenty-four.
+- **The Grok highlight** gives the xhigh agent's official score and its explanation range.
+- **Ranks.** Grok 4.7 at high is 9th and Grok 4.6 10th again, and "places 10 to 22" becomes "9 to 22".
+
 ## 1.0.98 - The AI Benchmark page adds Grok 4.7 at xhigh (640, 9th) and shifts the ranks below it
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.96 (ai-benchmark@d86883e). Grok 4.7 at xhigh
