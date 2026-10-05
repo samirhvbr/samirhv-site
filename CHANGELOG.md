@@ -12,6 +12,11 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.91 - The AI Benchmark data adds Kimi K3's second run at high (634); it still publishes 629
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.87 (ai-benchmark@0d037cd). Kimi K3 at high now
+has two runs (629 and 634) and still publishes the lower, 11th. No rank moves, so the copy is unchanged.
+
 ## 1.0.90 - The AI Benchmark page adds Kimi K3 at high (629, 11th) and counts nineteen unscored attempts
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.86 (ai-benchmark@716ef5d). Kimi K3 returns
