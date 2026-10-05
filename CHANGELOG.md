@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.97 - The AI Benchmark page shows twenty-three official scores, with Gemini 3.7 Flash official at 587
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.95 (ai-benchmark@8b59002). Gemini 3.7 Flash
+at high is official at 587 (587, 587 and 556), 23rd. A fourth run of it is kept unscored.
+
+The copy is updated in both languages:
+- The official-scores highlight names twenty-three.
+- The Gemini highlight calls Gemini 3.7 Flash official.
+- The unscored-attempts caveat counts twenty, with the fourth Gemini 3.7 Flash run.
+
 ## 1.0.96 - The AI Benchmark page adds Gemini 3.7 Flash at high (587 in both runs, 23rd)
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.93 (ai-benchmark@6e83f85). Gemini 3.7 Flash
