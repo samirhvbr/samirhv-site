@@ -12,6 +12,18 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.98 - The AI Benchmark page adds Grok 4.7 at xhigh (640, 9th) and shifts the ranks below it
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.96 (ai-benchmark@d86883e). Grok 4.7 at xhigh
+joins as a new agent with one run of 640, 9th. Its report scored 44/50, the best explanation from outside
+Anthropic and OpenAI.
+
+The copy is updated in both languages:
+- **The Grok highlight** adds the xhigh run.
+- **Ranks.** Every rank cited from 9th down moves down one place, and "places 9 to 21" becomes "10 to 22".
+- **Counts.** Thirty-five agents, thirty-four with the characterization green, twenty-three at
+  compatibility 100.
+
 ## 1.0.97 - The AI Benchmark page shows twenty-three official scores, with Gemini 3.7 Flash official at 587
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.95 (ai-benchmark@8b59002). Gemini 3.7 Flash
