@@ -278,6 +278,50 @@
                                     @endif
                                     <a href="{{ $run['scorecard_url'] }}" target="_blank" rel="noopener">{{ __('ai_benchmark.scorecard') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                                 </p>
+
+                                {{-- Opened by its summary or by a click anywhere on the card. The comment is
+                                     written (comments.json in the benchmark repo); everything below it is
+                                     read from the runs, so it never disagrees with the scorecards. --}}
+                                @php
+                                    $comment = $e['comment'][app()->getLocale() === 'pt_BR' ? 'pt_BR' : 'en'] ?? null;
+                                    $neverFixed = collect($inst['flaws'])->pluck('id')->filter(fn ($id) => collect($e['runs'])->every(fn ($r) => ! ($r['flaws'][$id]['fixed'] ?? false)));
+                                    $catNames = fn ($cats) => $cats->keys()->map(fn ($c) => __("ai_benchmark.categories.$c"))->implode(', ');
+                                    $full = collect($run['categories'])->filter(fn ($c) => $c['score'] === $c['max']);
+                                    $zero = collect($run['categories'])->filter(fn ($c) => $c['score'] === 0);
+                                @endphp
+                                <details class="ab-row__more">
+                                    <summary>{{ __('ai_benchmark.more_open') }}</summary>
+                                    @if($comment)
+                                        <p class="ab-more__comment">{{ $comment }}</p>
+                                        <p class="ab-more__note s-meta">{{ __('ai_benchmark.more_note') }}</p>
+                                    @endif
+                                    <dl class="ab-more__facts">
+                                        @if($full->isNotEmpty())
+                                            <dt>{{ __('ai_benchmark.more_full') }}</dt><dd>{{ $catNames($full) }}</dd>
+                                        @endif
+                                        @if($zero->isNotEmpty())
+                                            <dt>{{ __('ai_benchmark.more_zero') }}</dt><dd>{{ $catNames($zero) }}</dd>
+                                        @endif
+                                        <dt>{{ __('ai_benchmark.more_never_fixed') }}</dt>
+                                        <dd>{{ $neverFixed->isEmpty() ? __('ai_benchmark.more_all_fixed') : $neverFixed->map(fn ($id) => __("ai_benchmark.flaws.$id"))->implode('; ') }}</dd>
+                                    </dl>
+                                    <h5 class="ab-more__title">{{ __('ai_benchmark.more_runs') }}</h5>
+                                    <ul class="ab-more__runs">
+                                        @foreach($e['runs'] as $r)
+                                            <li>
+                                                <strong>{{ __('ai_benchmark.more_run', ['n' => $r['run']]) }} · {{ $r['total'] }}</strong>
+                                                <span>{{ __('ai_benchmark.more_fixed', ['fixed' => collect($r['flaws'])->where('fixed', true)->count(), 'total' => count($r['flaws'])]) }}</span>
+                                                <span>{{ trans_choice('ai_benchmark.more_fp', $r['false_positives'], ['count' => $r['false_positives']]) }}</span>
+                                                <span>{{ trans_choice('ai_benchmark.more_comp', count($r['comp_violations']), ['count' => count($r['comp_violations'])]) }}</span>
+                                                <span>{{ __('ai_benchmark.more_checks', ['passed' => $r['characterization']['passed'], 'total' => $r['characterization']['passed'] + $r['characterization']['failed']]) }}</span>
+                                                @if(($r['cost_time']['usd_estimate'] ?? null) !== null)
+                                                    <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_time']['usd_estimate'], 2)]) }}</span>
+                                                @endif
+                                                <a href="{{ $r['scorecard_url'] }}" target="_blank" rel="noopener">{{ __('ai_benchmark.scorecard') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </details>
                             </li>
                         @endforeach
                     </ol>

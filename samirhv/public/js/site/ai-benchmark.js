@@ -1,5 +1,5 @@
-/* AI Benchmark page: the vendor filter, the category order and the pages of
-   each leaderboard. The same file runs on samirhv.com.br and shvia.org.
+/* AI Benchmark page: the vendor filter, the category order, the pages of
+   each leaderboard and the card that opens on a click. The same file runs on samirhv.com.br and shvia.org.
 
    The filter only hides rows and the order only moves them. The number on each
    card stays its rank in the full leaderboard, because the rank is the result;
@@ -153,6 +153,20 @@
         applySort();
         page = 1;
         paginate();
+      });
+    });
+
+    // A click anywhere on a card opens its comment and details; links, controls and a
+    // text selection keep their own behaviour, and the summary stays the keyboard control.
+    rows.forEach(function (row) {
+      var more = row.querySelector(".ab-row__more");
+      if (!more) return;
+      row.setAttribute("data-more", "");
+      row.addEventListener("click", function (ev) {
+        if (ev.target.closest("a, button, summary, .ab-row__more")) return;
+        var sel = window.getSelection && window.getSelection();
+        if (sel && String(sel).length) return;
+        more.open = !more.open;
       });
     });
 

@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.104 - The AI Benchmark cards open, on a click, a written comment and a run-by-run sheet for each agent
+
+Each leaderboard card carries a `<details>` panel that opens on its summary or on a click anywhere on the
+card (links, controls and a text selection keep their own behaviour). It shows the agent's written comment,
+from the benchmark's `comments.json` via `results.json` (`comment.en` / `comment.pt_BR`), then a sheet read
+from the runs: the categories at full marks and at zero, the planted flaws no run fixed, and run by run the
+total, flaws fixed, false positives, business values changed, characterization checks, cost and scorecard.
+`results.json` is synced from ai-benchmark 0.2.102. Two feature tests cover the panel in both languages and
+a card with no comment.
+
 ## 1.0.103 - The AI Benchmark page shows twenty-six official scores, with GPT-5.5 official again at 558
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.101 (ai-benchmark@f3e72f5). GPT-5.5 has its third

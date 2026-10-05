@@ -331,6 +331,39 @@ class AiBenchmarkPageTest extends TestCase
             ->assertSee('Mostrando '.count($entries).' de '.count($entries).' agentes.');
     }
 
+    public function test_every_card_opens_on_its_comment_and_the_details_read_from_its_runs(): void
+    {
+        $entries = AiBenchmark::results()['instances'][0]['entries'];
+        $en = $this->get(self::EN, self::EN_HEADER)->assertOk();
+        $html = $en->getContent();
+        $this->assertSame(count($entries), substr_count($html, '<details class="ab-row__more">'));
+        foreach ($entries as $e) {
+            if ($e['comment'] ?? null) {
+                $en->assertSee($e['comment']['en']);
+            }
+        }
+        $this->assertSame(array_sum(array_map(fn ($e) => count($e['runs']), $entries)), substr_count($html, '<li>
+                                                <strong>Run '));
+
+        $pt = $this->get(self::PT)->assertOk()->assertSee('Comentário e ficha')->assertSee('Run a run');
+        foreach ($entries as $e) {
+            if ($e['comment'] ?? null) {
+                $pt->assertSee($e['comment']['pt_BR']);
+            }
+        }
+    }
+
+    public function test_a_card_without_a_comment_still_opens_on_its_details(): void
+    {
+        $data = AiBenchmark::results();
+        $data['instances'][0]['entries'][0]['comment'] = null;
+        AiBenchmark::fake($data);
+
+        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()->getContent();
+        $this->assertSame(count($data['instances'][0]['entries']), substr_count($html, '<details class="ab-row__more">'));
+        $this->assertSame(count(array_filter($data['instances'][0]['entries'], fn ($e) => $e['comment'] ?? null)), substr_count($html, 'class="ab-more__comment"'));
+    }
+
     public function test_the_leaderboard_names_the_client_mode_next_to_the_effort(): void
     {
         $data = AiBenchmark::results();

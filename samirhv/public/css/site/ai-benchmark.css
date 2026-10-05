@@ -103,7 +103,7 @@
 .ab-row__cats li.is-sorted .ab-cat__name{ color:var(--s-accent-ink-2); font-weight:600; }
 
 .ab-board{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
-.ab-row{ display:grid; grid-template-columns:2.4rem minmax(0,1fr) auto; grid-template-areas:"rank id total" "rank cats cats" "rank meta meta"; gap:14px 18px; padding:20px 22px; }
+.ab-row{ display:grid; grid-template-columns:2.4rem minmax(0,1fr) auto; grid-template-areas:"rank id total" "rank cats cats" "rank meta meta" "rank more more"; gap:14px 18px; padding:20px 22px; }
 .ab-row--leader{ border-color:var(--s-line-2); }
 .ab-row__rank{ grid-area:rank; font-family:var(--s-mono); font-size:1.5rem; font-weight:600; color:var(--s-faint); line-height:1; }
 .ab-row--leader .ab-row__rank{ color:var(--s-accent-ink-2); }
@@ -123,6 +123,22 @@
 .ab-row__meta a{ color:var(--s-accent-ink-2); text-decoration:none; }
 .ab-row__meta a:hover{ color:var(--s-ink); }
 .ab-row__meta [title]{ cursor:help; }
+/* The card opens on a click anywhere; the summary stays the keyboard control. */
+.ab-row[data-more]{ cursor:pointer; }
+.ab-row__more{ grid-area:more; border-top:1px solid var(--s-line); padding-top:10px; cursor:auto; }
+.ab-row__more > summary{ cursor:pointer; font-family:var(--s-mono); font-size:.72rem; color:var(--s-accent-ink-2); width:max-content; }
+.ab-row__more > summary:hover{ color:var(--s-ink); }
+.ab-more__comment{ margin:12px 0 4px; color:var(--s-ink); line-height:1.55; }
+.ab-more__note{ margin:0 0 12px; font-size:.68rem; }
+.ab-more__facts{ display:grid; grid-template-columns:max-content minmax(0,1fr); gap:4px 16px; margin:0 0 12px; font-size:.85rem; }
+.ab-more__facts dt{ font-family:var(--s-mono); font-size:.72rem; color:var(--s-muted); padding-top:2px; }
+.ab-more__facts dd{ margin:0; color:var(--s-ink-2); }
+.ab-more__title{ margin:0 0 6px; font-family:var(--s-mono); font-size:.72rem; font-weight:600; color:var(--s-muted); }
+.ab-more__runs{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; }
+.ab-more__runs li{ display:flex; flex-wrap:wrap; gap:2px 14px; font-family:var(--s-mono); font-size:.72rem; color:var(--s-ink-2); }
+.ab-more__runs strong{ color:var(--s-ink); }
+.ab-more__runs a{ color:var(--s-accent-ink-2); text-decoration:none; }
+@media (max-width:600px){ .ab-more__facts{ grid-template-columns:1fr; } .ab-more__facts dd{ margin-bottom:6px; } }
 
 .ab-subtitle{ margin:2.6rem 0 .6rem; }
 .ab-legend{ list-style:none; margin:1rem 0; padding:0; display:flex; flex-wrap:wrap; gap:8px 22px; font-size:.82rem; color:var(--s-muted); }
@@ -173,7 +189,7 @@
   .ab-audit .ab-actions{ justify-content:flex-start; }
 }
 @media (max-width:560px){
-  .ab-row{ grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"id total" "cats cats" "meta meta"; padding:18px 16px; }
+  .ab-row{ grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"id total" "cats cats" "meta meta" "more more"; padding:18px 16px; }
   .ab-row__rank{ display:none; }
   .ab-row__id strong::before{ content:attr(data-rank); }
   .ab-weights li{ grid-template-columns:7.5rem minmax(0,1fr) 2.4rem; }
