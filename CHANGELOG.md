@@ -12,6 +12,20 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.95 - The AI Benchmark leaderboard pages at 25 agents, and each card shows its cost per run
+
+- **Pages of 25.** The leaderboard now shows 25 agents a page, with Previous/Next buttons and a "Page n of
+  m" line under it. Pages run over the agents the vendor filter keeps, in the current order (overall or by
+  category). Changing the filter or the order returns to page 1. Each card keeps its rank in the full
+  leaderboard. Without JavaScript the page still lists every agent.
+- **Cost per run.** Each card's meta line shows the average cost of the runs that recorded one, e.g.
+  "Cost US$ 0.57 a run". A tooltip says how many runs that average covers, and that Codex CLI keeps no
+  cost. Cards with no recorded cost show none.
+- `public/js/site/ai-benchmark.js`: the pager, applied after the filter and the order. Hiding rows is now
+  done in one place.
+- `lang/{en,pt_BR}/ai_benchmark.php`: `cost_run`, `cost_help`, `page_prev`, `page_next`, `page_of`. The pager
+  labels travel as hidden text, as the other templates do, for shvia.org's language-parity check.
+
 ## 1.0.94 - The AI Benchmark page adds Kimi K2.7 Code highspeed (402, official) and applies the release-date rule to the dagger
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.91 (ai-benchmark@f43621f). Two upstream

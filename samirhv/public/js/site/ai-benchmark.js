@@ -1,5 +1,5 @@
-/* AI Benchmark page: the vendor filter and the category order above each
-   leaderboard. The same file runs on samirhv.com.br and shvia.org.
+/* AI Benchmark page: the vendor filter, the category order and the pages of
+   each leaderboard. The same file runs on samirhv.com.br and shvia.org.
 
    The filter only hides rows and the order only moves them. The number on each
    card stays its rank in the full leaderboard, because the rank is the result;
@@ -21,8 +21,12 @@
     var status = bar.querySelector(".ab-filter__status");
     var shownTpl = text(bar.querySelector(".ab-filter__tpl"));
     var posTpl = text(bar.querySelector(".ab-sort__tpl"));
+    var pagerTpl = text(bar.querySelector(".ab-pager__tpl"));
     var selected = {};
     var sortKey = "";
+    var PAGE = 25;
+    var page = 1;
+    var pager = null;
 
     function text(el) { return el ? el.textContent : null; }
 
@@ -40,9 +44,9 @@
       var any = Object.keys(selected).length > 0;
       var shown = 0;
       rows.forEach(function (row) {
-        var visible = !any || selected[row.getAttribute("data-vendor")] === true;
-        row.hidden = !visible;
-        if (visible) shown++;
+        var match = !any || selected[row.getAttribute("data-vendor")] === true;
+        row.setAttribute("data-match", match ? "1" : "0");
+        if (match) shown++;
       });
       vendorChips.forEach(function (chip) {
         var vendor = chip.getAttribute("data-vendor");
@@ -84,6 +88,49 @@
       });
     }
 
+    // Pages of PAGE rows over the rows the filter keeps, in their current order.
+    // Hiding is done here only, so the filter and the order never fight over it.
+    function paginate() {
+      var kept = Array.prototype.filter.call(board.children, function (row) {
+        return row.getAttribute("data-match") !== "0";
+      });
+      var pages = Math.max(1, Math.ceil(kept.length / PAGE));
+      if (page > pages) page = pages;
+      rows.forEach(function (row) { row.hidden = true; });
+      kept.slice((page - 1) * PAGE, page * PAGE).forEach(function (row) { row.hidden = false; });
+      if (!pager) return;
+      pager.hidden = pages === 1;
+      pager.querySelector(".ab-pager__label").textContent = (pagerTpl || ":n / :total").replace(":n", String(page)).replace(":total", String(pages));
+      pager.querySelector("[data-page=prev]").disabled = page === 1;
+      pager.querySelector("[data-page=next]").disabled = page === pages;
+    }
+
+    function buildPager() {
+      pager = document.createElement("nav");
+      pager.className = "ab-pager";
+      function btn(dir, label) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "ab-chip ab-pager__btn";
+        b.setAttribute("data-page", dir);
+        b.textContent = label;
+        b.addEventListener("click", function () {
+          page += dir === "next" ? 1 : -1;
+          paginate();
+          var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          bar.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+        });
+        return b;
+      }
+      var label = document.createElement("span");
+      label.className = "ab-pager__label";
+      label.setAttribute("aria-live", "polite");
+      pager.appendChild(btn("prev", text(bar.querySelector(".ab-pager__prev")) || "‹"));
+      pager.appendChild(label);
+      pager.appendChild(btn("next", text(bar.querySelector(".ab-pager__next")) || "›"));
+      board.parentNode.insertBefore(pager, board.nextSibling);
+    }
+
     vendorChips.forEach(function (chip) {
       chip.addEventListener("click", function () {
         var vendor = chip.getAttribute("data-vendor");
@@ -95,6 +142,8 @@
           selected[vendor] = true;
         }
         applyFilter();
+        page = 1;
+        paginate();
       });
     });
 
@@ -102,12 +151,16 @@
       chip.addEventListener("click", function () {
         sortKey = chip.getAttribute("data-sort");
         applySort();
+        page = 1;
+        paginate();
       });
     });
 
     bar.hidden = false;
+    buildPager();
     applyFilter();
     applySort();
+    paginate();
   }
 
   document.querySelectorAll("[data-ab-filter]").forEach(initBoard);

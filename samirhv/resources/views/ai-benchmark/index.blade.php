@@ -215,6 +215,9 @@
                             @endforeach
                         </div>
                         <span class="ab-filter__tpl" hidden>{{ __('ai_benchmark.filter_shown', ['shown' => ':shown', 'total' => ':total']) }}</span>
+                        <span class="ab-pager__tpl" hidden>{{ __('ai_benchmark.page_of', ['n' => ':n', 'total' => ':total']) }}</span>
+                        <span class="ab-pager__prev" hidden>{{ __('ai_benchmark.page_prev') }}</span>
+                        <span class="ab-pager__next" hidden>{{ __('ai_benchmark.page_next') }}</span>
                         <span class="ab-sort__tpl" hidden>{{ __('ai_benchmark.sort_position', ['pos' => ':pos', 'cat' => ':cat']) }}</span>
                         <p class="ab-filter__status s-meta" aria-live="polite">{{ __('ai_benchmark.filter_shown', ['shown' => count($entries), 'total' => count($entries)]) }}</p>
                     </div>
@@ -268,6 +271,10 @@
                                     <span title="{{ __('ai_benchmark.discovery_help') }}">{{ __('ai_benchmark.discovery') }} {{ number_format($e['discovery_index'], 1) }}</span>
                                     @if($e['brier'] !== null)
                                         <span title="{{ __('ai_benchmark.brier_help') }}">{{ __('ai_benchmark.brier') }} {{ number_format($e['brier'], 3) }}</span>
+                                    @endif
+                                    @php $costs = collect($e['runs'])->pluck('cost_time.usd_estimate')->filter(fn ($v) => $v !== null); @endphp
+                                    @if($costs->isNotEmpty())
+                                        <span class="ab-row__cost" title="{{ __('ai_benchmark.cost_help', ['n' => $costs->count()]) }}">{{ __('ai_benchmark.cost_run', ['cost' => number_format($costs->avg(), 2)]) }}</span>
                                     @endif
                                     <a href="{{ $run['scorecard_url'] }}" target="_blank" rel="noopener">{{ __('ai_benchmark.scorecard') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                                 </p>

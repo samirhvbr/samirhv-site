@@ -93,6 +93,11 @@
 .ab-filter__status{ margin:.7rem 0 0; }
 .ab-row[hidden]{ display:none; }
 .ab-sort{ margin-top:10px; }
+.ab-pager{ display:flex; align-items:center; justify-content:center; gap:14px; margin:16px 0 0; }
+.ab-pager[hidden]{ display:none; }
+.ab-pager__label{ font-family:var(--s-mono); font-size:.8rem; color:var(--s-muted); font-variant-numeric:tabular-nums; }
+.ab-pager__btn:disabled{ opacity:.45; cursor:default; }
+.ab-row__cost{ color:var(--s-ink-2); }
 .ab-row__catpos{ font-family:var(--s-mono); font-size:.72rem; font-weight:600; color:var(--s-accent-ink-2); }
 .ab-row__catpos[hidden]{ display:none; }
 .ab-row__cats li.is-sorted .ab-cat__name{ color:var(--s-accent-ink-2); font-weight:600; }
