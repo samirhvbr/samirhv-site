@@ -12,6 +12,17 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.102 - The AI Benchmark page adds DeepSeek V4 Flash at xhigh (617, 18th) and shifts the ranks below it
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.100 (ai-benchmark@24255c4). DeepSeek V4 Flash at
+xhigh joins as a new agent with one run of 617, 18th. The same model at high still publishes 282.
+
+The copy is updated in both languages:
+- **The DeepSeek highlight** adds the xhigh run.
+- **Ranks.** Every rank cited from 18th down moves down one place, and "places 9 to 22" becomes "9 to 23".
+- **Counts.** Thirty-six agents, thirty-five with the characterization green, twenty-four at
+  compatibility 100.
+
 ## 1.0.101 - The AI Benchmark page shows twenty-five official scores, with GPT-6-astra at ultra the strongest GPT agent (666)
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.99 (ai-benchmark@ab39440). GPT-6-astra at ultra
