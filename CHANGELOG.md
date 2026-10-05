@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.101 - The AI Benchmark page shows twenty-five official scores, with GPT-6-astra at ultra the strongest GPT agent (666)
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.99 (ai-benchmark@ab39440). GPT-6-astra at ultra
+has its third run (651) and is official at 666, 6th, above GPT-6.1-sol (661).
+
+The copy is updated in both languages:
+- **The GPT highlight** now leads with GPT-6-astra at ultra.
+- **The official-scores highlight** names twenty-five.
+
 ## 1.0.100 - The AI Benchmark page adds GPT-6-astra at ultra's second run (666); it publishes 666, 6th
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.98 (ai-benchmark@30e5519). GPT-6-astra at ultra
