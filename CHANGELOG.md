@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.93 - The AI Benchmark page shows twenty-one official scores, with Kimi K3 at high and Kimi K2.7 Code official
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.89 (ai-benchmark@359b1cf). Both third runs
+are in: Kimi K3 at high is official at 629 (629, 634 and 574), 11th, and Kimi K2.7 Code at 415 (415, 415
+and 512), 28th. No rank moves. The official-scores highlight names twenty-one in both languages.
+
 ## 1.0.92 - The AI Benchmark data adds Kimi K2.7 Code's second run (415)
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.88 (ai-benchmark@b0b8dfb). Kimi K2.7 Code's
