@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.103 - The AI Benchmark page shows twenty-six official scores, with GPT-5.5 official again at 558
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.101 (ai-benchmark@f3e72f5). GPT-5.5 has its third
+counted run, 536, and is official again at 558 (558, 568 and 536), 26th. The official-scores highlight names
+twenty-six, in both languages.
+
 ## 1.0.102 - The AI Benchmark page adds DeepSeek V4 Flash at xhigh (617, 18th) and shifts the ranks below it
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.100 (ai-benchmark@24255c4). DeepSeek V4 Flash at
