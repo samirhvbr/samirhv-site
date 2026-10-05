@@ -316,7 +316,7 @@
                                                 <span>{{ __('ai_benchmark.more_checks', ['passed' => $r['characterization']['passed'], 'total' => $r['characterization']['passed'] + $r['characterization']['failed']]) }}</span>
                                                 @if(($r['wall_minutes'] ?? null) !== null)
                                                     @php $m = (int) round($r['wall_minutes']); @endphp
-                                                    <span title="{{ __('ai_benchmark.more_time_help') }}">{{ $m < 60 ? __('ai_benchmark.more_time_min', ['m' => $m]) : __('ai_benchmark.more_time_h', ['h' => intdiv($m, 60), 'm' => $m % 60]) }}</span>
+                                                    <span title="{{ __('ai_benchmark.more_time_help') }}">{{ $m < 60 ? __('ai_benchmark.more_time_min', ['m' => $m]) : ($m % 60 === 0 ? __('ai_benchmark.more_time_h_only', ['h' => intdiv($m, 60)]) : __('ai_benchmark.more_time_h', ['h' => intdiv($m, 60), 'm' => $m % 60])) }}</span>
                                                 @endif
                                                 @if(($r['cost_time']['usd_estimate'] ?? null) !== null)
                                                     <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_time']['usd_estimate'], 2)]) }}</span>

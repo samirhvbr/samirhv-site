@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.106 - The AI Benchmark page writes run times as 7h 55min, from the session record
+
+The run time in each card's sheet reads `19min`, `2h` or `7h 55min` instead of `7 h 55 min`. The highlights
+quote the multi-agent Sonnet's runs from their session records, 7h 55min, 2h and 3h 34min (they said 8.1, 2
+and 3.6 hours), and Gemini 3.8 Flash at medium as 4min 34s (it said 4.5 minutes). Synced from ai-benchmark
+0.2.104.
+
 ## 1.0.105 - The AI Benchmark card sheet shows how long each run took
 
 Each run line in a card's sheet now shows its wall-clock time, from the session's first message to its end

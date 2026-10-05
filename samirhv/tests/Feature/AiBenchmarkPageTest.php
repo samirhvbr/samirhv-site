@@ -345,12 +345,12 @@ class AiBenchmarkPageTest extends TestCase
         $this->assertSame(array_sum(array_map(fn ($e) => count($e['runs']), $entries)), substr_count($html, '<li>
                                                 <strong>Run '));
 
-        // Wall-clock time, run by run: minutes under an hour, hours and minutes above.
+        // Wall-clock time, run by run, as 19min or 7h 55min: never decimal hours.
         foreach ($entries as $e) {
             foreach ($e['runs'] as $r) {
                 if (($r['wall_minutes'] ?? null) !== null) {
                     $m = (int) round($r['wall_minutes']);
-                    $en->assertSee($m < 60 ? "$m min" : intdiv($m, 60).' h '.($m % 60).' min');
+                    $en->assertSee($m < 60 ? "{$m}min" : intdiv($m, 60).'h'.($m % 60 ? ' '.($m % 60).'min' : ''));
                 }
             }
         }
