@@ -12,6 +12,18 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.96 - The AI Benchmark page adds Gemini 3.7 Flash at high (587 in both runs, 23rd)
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.93 (ai-benchmark@6e83f85). Gemini 3.7 Flash
+at high joins as a new agent with two runs, both 587, and publishes 587, 23rd. The ranks below it move down
+one place.
+
+The copy is updated in both languages:
+- **The Gemini highlight** mentions the generation before.
+- **Ranks.** The medium-effort Gemini 3.8 Flash is 25th.
+- **Counts.** Thirty-four agents, thirty-three with the characterization green, twenty-two at compatibility
+  100, twenty-three not at xhigh.
+
 ## 1.0.95 - The AI Benchmark leaderboard pages at 25 agents, and each card shows its cost per run
 
 - **Pages of 25.** The leaderboard now shows 25 agents a page, with Previous/Next buttons and a "Page n of
