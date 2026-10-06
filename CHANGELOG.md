@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.110 - The AI Benchmark page counts twenty-one void attempts and says Nex N2.5 Pro is too slow for a third run
+
+Synced from ai-benchmark 0.2.109. Nex N2.5 Pro's third run was cut off by the operator's connection after more
+than 21 hours and voided, and the operator will not repeat it, the model being too slow: the void caveat counts
+twenty-one attempts and names it, and the highlight that names Nex says it stays at two runs, in both languages.
+
 ## 1.0.109 - The AI Benchmark page adds Nex N2.5 Pro's second run, 428; it still publishes 317
 
 Synced from ai-benchmark 0.2.107. Nex N2.5 Pro's run 2 scored 428 in 19h 35min; with two runs it publishes the
