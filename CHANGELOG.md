@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.111 - The AI Benchmark English copy parses again: 1.0.110 shipped two unescaped apostrophes
+
+1.0.110 added "operator's" and "Nex N2.5 Pro's" to the void caveat in `lang/en/ai_benchmark.php` without escaping
+the apostrophes inside the single-quoted PHP string, so the file did not parse and the English page answered 500.
+Both are escaped; `php -l` and the feature tests pass. 1.0.110 should not be deployed.
+
 ## 1.0.110 - The AI Benchmark page counts twenty-one void attempts and says Nex N2.5 Pro is too slow for a third run
 
 Synced from ai-benchmark 0.2.109. Nex N2.5 Pro's third run was cut off by the operator's connection after more
