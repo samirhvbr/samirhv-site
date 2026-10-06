@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.108 - The AI Benchmark page adds Nex N2.5 Pro at high, 317, below the pass line, 35th of thirty-seven
+
+`results.json` and the CSVs are synced from ai-benchmark 0.2.106: Nex N2.5 Pro at high, a new agent, scores 317
+in its first run (10h 03min, US$ 2.80); its functions return nothing without a logged-in user and break 8 of
+the 22 characterization checks. The highlights count thirty-seven agents, two runs that broke the contract
+mechanically, twenty-four agents not at xhigh, and Nex among the agents that close the table, in both languages.
+
 ## 1.0.107 - The AI Benchmark leaderboard shades every second card, so each card's edges are clear
 
 Every second card on screen gets a background halfway between `--s-surface` and `--s-surface-2`, a light
