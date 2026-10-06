@@ -12,6 +12,11 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.109 - The AI Benchmark page adds Nex N2.5 Pro's second run, 428; it still publishes 317
+
+Synced from ai-benchmark 0.2.107. Nex N2.5 Pro's run 2 scored 428 in 19h 35min; with two runs it publishes the
+lower, 317, still 35th. The highlight that names it gives both runs and their times, in both languages.
+
 ## 1.0.108 - The AI Benchmark page adds Nex N2.5 Pro at high, 317, below the pass line, 35th of thirty-seven
 
 `results.json` and the CSVs are synced from ai-benchmark 0.2.106: Nex N2.5 Pro at high, a new agent, scores 317
