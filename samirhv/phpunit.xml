@@ -23,6 +23,8 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
+        <!-- No analytics hits from the suite; GoogleTagTest turns the tag on per test. -->
+        <env name="GOOGLE_TAG_ID" value=""/>
         <!-- MySQL, per the project rule; sqlite is never this app's storage.
              DB_DATABASE names a database that does not exist, deliberately: the
              suite is written to need no database, and without this line a test

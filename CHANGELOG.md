@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.112 - The public pages load the Google tag, so the Google Analytics property G-BC74RPH8P3 receives hits
+
+New `partials/google-tag.blade.php`, included at the end of the public layout's `<head>` beside the Matomo
+snippet: the stock gtag.js loader and `gtag('config', …)` call, async. The measurement id comes from
+`services.google.tag_id` (`GOOGLE_TAG_ID`), defaulting to `G-BC74RPH8P3` so a deploy ships the tag without
+touching the server's `.env`; an empty value turns it off, which `.env.example` and `phpunit.xml` do so local
+copies and the suite send no hits. The admin layout and the login view do not carry it. `GoogleTagTest` pins
+the single load, the configured id, the head placement, the off switch and the login exclusion.
+
 ## 1.0.111 - The AI Benchmark English copy parses again: 1.0.110 shipped two unescaped apostrophes
 
 1.0.110 added "operator's" and "Nex N2.5 Pro's" to the void caveat in `lang/en/ai_benchmark.php` without escaping

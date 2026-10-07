@@ -94,6 +94,9 @@
 
     {{-- Matomo Analytics (self-hosted) — só renderiza com MATOMO_* configurado. --}}
     @include('partials.matomo')
+
+    {{-- Google tag (Google Analytics 4) — only renders with GOOGLE_TAG_ID set. --}}
+    @include('partials.google-tag')
 </head>
 
 <body class="stretched dark">
