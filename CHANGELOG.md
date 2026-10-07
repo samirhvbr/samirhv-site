@@ -12,6 +12,13 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.113 - The Google tag defaults to G-WTE9C2ZB0V, the property created for samirhv.com.br alone
+
+1.0.112 shipped `G-BC74RPH8P3`, a property that was not made for this site. `services.google.tag_id` now defaults to
+`G-WTE9C2ZB0V` ("samirhv.com.br – GA4", web stream https://samirhv.com.br, UTC−3), `.env.example` and `GoogleTagTest`
+follow. A server `.env` that sets `GOOGLE_TAG_ID` explicitly keeps its value, so it must carry the new id or be
+cleared. 1.0.112 should not be deployed on its own: it would send hits to the wrong property.
+
 ## 1.0.112 - The public pages load the Google tag, so the Google Analytics property G-BC74RPH8P3 receives hits
 
 New `partials/google-tag.blade.php`, included at the end of the public layout's `<head>` beside the Matomo

@@ -51,7 +51,7 @@ return [
     // The default is the production measurement id, so a deploy ships the tag
     // without touching the server's .env. It is public in the page source, not a secret.
     'google' => [
-        'tag_id' => env('GOOGLE_TAG_ID', 'G-BC74RPH8P3'),
+        'tag_id' => env('GOOGLE_TAG_ID', 'G-WTE9C2ZB0V'),
     ],
 
     // GitHub View (admin): token + owner default do dashboard de visualização de

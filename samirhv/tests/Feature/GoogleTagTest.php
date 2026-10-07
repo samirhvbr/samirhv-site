@@ -13,7 +13,7 @@ use Tests\TestCase;
  */
 class GoogleTagTest extends TestCase
 {
-    private const ID = 'G-BC74RPH8P3';
+    private const ID = 'G-WTE9C2ZB0V';
 
     public function test_the_public_head_loads_the_tag_once_and_configures_the_property(): void
     {
