@@ -224,4 +224,7 @@ return [
     'download_runs' => 'Runs (CSV)',
     'download_flaws' => 'Falha por falha (CSV)',
     'download_dictionary' => 'O que cada coluna significa',
+
+    'leb300_note' => 'O próximo nível, o :link, está em preparação: ainda não tem resultados.',
+    'leb300_link' => 'LEB-300',
 ];

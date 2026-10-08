@@ -12,6 +12,18 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.114 - A LEB-300 page says the second level exists and has no results yet
+
+`/ai-benchmark/leb-300` and `/pt-br/ai-benchmark/leb-300` are new: a `Route::view` with its copy in `lang/en/leb_300.php`
+and `lang/pt_BR/leb_300.php`. The page names the level (an application of about 3,000 lines, above LEB-100's 300), says
+it is in preparation with no results published, says what will appear when there are some (one line per agent: the
+total, the grade, the score per category, the number of runs, the cost and the time) and what never will (the planted
+defects, the code under test, the answer key), and links to the ai-benchmark repository and to the LEB-100 page. It has
+no database, no results file and no number that is a score. The LEB-100 page gains a one-line note that points to it,
+the sitemap lists it with the usual alternates, and `Leb300PageTest` covers it in both languages (language, reciprocal
+hreflang and canonical, no leak between languages, no results block, the links in each direction, the switcher).
+`SitemapTest` now includes the two addresses. Nothing else moves.
+
 ## 1.0.113 - The Google tag defaults to G-WTE9C2ZB0V, the property created for samirhv.com.br alone
 
 1.0.112 shipped `G-BC74RPH8P3`, a property that was not made for this site. `services.google.tag_id` now defaults to

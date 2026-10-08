@@ -35,6 +35,9 @@
             <nav class="ab-back">
                 <a href="{{ lroute('home') }}" class="s-meta"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>{{ __('shell.home') }}</a>
             </nav>
+            {{-- The next level, in preparation, has a page of its own. `{!! !!}` is safe: markup of this
+                 file plus lang/ text, which is repository content. --}}
+            <p class="s-meta">{!! __('ai_benchmark.leb300_note', ['link' => '<a href="'.e(lroute('ai-benchmark.leb-300')).'">'.e(__('ai_benchmark.leb300_link')).'</a>']) !!}</p>
 
             @php
                 // The first instance's leaders, for a reader who stops at the fold. The full

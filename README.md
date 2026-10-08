@@ -28,6 +28,7 @@ The site speaks English and Brazilian Portuguese, and **the URL decides which**.
 | downloads | `/downloads` | `/pt-br/downloads` |
 | project | `/p/{slug}` | `/pt-br/p/{slug}` |
 | AI benchmark | `/ai-benchmark` | `/pt-br/ai-benchmark` |
+| LEB-300 (status) | `/ai-benchmark/leb-300` | `/pt-br/ai-benchmark/leb-300` |
 
 A visitor arriving at a bare URL is negotiated: a browser asking for Portuguese
 is sent to `/pt-br` (302, `Vary: Accept-Language, Cookie`), anyone else stays on
@@ -80,6 +81,10 @@ results. The numbers are not written here: they come from
 refreshed with `tools/sync-ai-benchmark-results.sh` (`--check` compares it with
 upstream). What is written here is the reading of those numbers and the caveats,
 in `lang/*/ai_benchmark.php` — reread them whenever a sync changes the results.
+
+`/ai-benchmark/leb-300` is the page of the second level. While LEB-300 has no published results it is a short, hand-written
+`Route::view` (copy in `lang/*/leb_300.php`, no database, no results file) that says the level exists and what will
+appear when there are results; it names nothing of the instance. `Leb300PageTest` covers it in both languages.
 
 ## Admin
 
