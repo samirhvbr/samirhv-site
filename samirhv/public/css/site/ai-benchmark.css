@@ -73,6 +73,9 @@
 /* ── Isolation ── */
 .ab-isolation .s-term__body{ font-size:.78rem; }
 
+/* The LEB-300 status note, under the hero while the instance has no aggregate. */
+.ab-status{ max-width:46em; margin-top:2.2rem; padding:22px; }
+
 /* ── Results ── */
 .ab-instance + .ab-instance{ margin-top:4rem; }
 .ab-instance__head{ margin-bottom:1.6rem; }

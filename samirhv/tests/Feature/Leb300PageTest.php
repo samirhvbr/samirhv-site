@@ -92,77 +92,49 @@ class Leb300PageTest extends TestCase
             ->assertSee('An exploratory pilot.')
             ->assertSee('A line that rests on fewer runs is not official')
             ->assertSee('What the record does not have')
+            ->assertSee('ab-caveats', false)
+            // The page is built like the LEB-100 page: the hero with the leaders, the facts, the filter and the order.
+            ->assertSee('The second level of LEB')
+            ->assertSee('See the results')
+            ->assertSee('Top 1 so far')
+            ->assertSee('Full leaderboard')
+            ->assertSee('key private')
+            ->assertSee('data-ab-filter', false)
+            ->assertSee('Filter by vendor')
+            ->assertSee('Order by')
+            ->assertSee('data-rank="#1 · "', false)
             ->assertDontSee('There are no LEB-300 results yet.');
     }
 
-    public function test_with_an_aggregate_the_portuguese_page_shows_the_scoreboard(): void
+    public function test_without_an_aggregate_the_page_keeps_the_hero_and_the_closing_and_no_board(): void
     {
-        $this->withAggregate();
+        $this->withoutAggregate();
 
-        $this->get(self::PT)
+        $this->get(self::EN, self::EN_HEADER)
             ->assertOk()
-            ->assertSee('ab-board', false)
-            ->assertSee('Model X')
-            ->assertSee('227')
-            ->assertSee(trans('ai_benchmark.out_of', [], 'pt_BR'))
-            ->assertSee(trans('ai_benchmark.runs_label', ['count' => 1], 'pt_BR'))
-            ->assertSee('Um piloto exploratório.')
-            ->assertSee('Uma linha que se apoia em menos execuções não é oficial')
-            ->assertSee('O que o registro não tem')
-            ->assertDontSee('Ainda não há resultados do LEB-300.');
+            ->assertSee('The second level of LEB')
+            ->assertSee('Method on GitHub')
+            ->assertSee('What will be published')
+            ->assertSee('LEB-100 results')
+            ->assertDontSee('See the results')
+            ->assertDontSee('ab-top__list', false)
+            ->assertDontSee('Full leaderboard')
+            ->assertDontSee('data-ab-filter', false)
+            ->assertDontSee('What the record does not have');
     }
 
-    public function test_each_category_shows_its_score_over_its_weight(): void
+    /** One order chip per category plus "Overall", and one filter chip per vendor plus "All", as on the LEB-100 page. */
+    public function test_the_order_chips_cover_the_seven_categories_and_the_filter_each_vendor(): void
     {
-        $this->withAggregate();
-        $weights = ['SEC' => 250, 'ARCH' => 200, 'BUG' => 150, 'PERF' => 150, 'CLN' => 100, 'COMP' => 100, 'EXPL' => 50];
-
-        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()->getContent();
-        foreach (self::CATEGORIES as $cat => $score) {
-            $this->assertMatchesRegularExpression('#data-cat="'.$cat.'".*?'.$score.'<small>/'.$weights[$cat].'</small>#s', $html, $cat);
-        }
-    }
-
-    public function test_three_runs_are_no_longer_marked_not_official(): void
-    {
-        $this->withAggregate(3);
-
-        $this->get(self::EN, self::EN_HEADER)->assertOk()
-            ->assertSee('3 of 3 runs')
-            ->assertDontSee('not official</span>', false)
-            ->assertSee('Each score is the median of three runs of an agent, as the protocol asks.')
-            ->assertSee('its difficulty has not been homologated')
-            ->assertDontSee('A line that rests on fewer runs is not official');
-    }
-
-    // ── what the page must never do ──────────────────────────────────────────────────────────────
-
-    /** Agents on different numbers of runs share one board: each line says its own count, and only the short ones are unofficial. */
-    public function test_agents_on_different_numbers_of_runs_each_say_their_own_count(): void
-    {
-        $agent = fn (string $id, int $score, int $runs) => ['agent' => $id, 'score' => $score, 'grade' => 'Reprovada', 'runs_count' => $runs,
-            'categories' => self::CATEGORIES, 'cost_usd' => 0.5, 'wall_minutes' => 10.0];
-        AiBenchmark::fake([
-            'instances' => [['entries' => [
-                ['agent' => 'agent-a', 'model' => ['name' => 'Model A', 'provider' => 'Maker', 'reasoning_effort' => 'high']],
-                ['agent' => 'agent-b', 'model' => ['name' => 'Model B', 'provider' => 'Maker', 'reasoning_effort' => 'default']],
-            ]]],
-            'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'edition' => '2026',
-                'agents' => [$agent('agent-a', 649, 1), $agent('agent-b', 242, 3)]]],
-        ]);
+        $this->withReading();
 
         $html = $this->get(self::EN, self::EN_HEADER)->assertOk()
-            ->assertSee('Model A')->assertSee('Model B')
-            ->assertSee('1 of 3 runs')->assertSee('3 of 3 runs')
-            ->assertSee('The results so far')
-            ->assertSee('A line that rests on fewer runs is not official')
-            ->assertDontSee('Each score is the median of three runs of an agent')
-            ->assertSee('did not all run in the same client')
+            ->assertSee('Showing 1 of 1 agents')
+            ->assertSee('<button type="button" class="ab-chip" data-vendor="Maker" aria-pressed="false">Maker <span class="ab-chip__n">1</span></button>', false)
+            ->assertSee('data-vendor="Maker" data-scores="SEC:56 ARCH:25 BUG:29 PERF:0 CLN:0 COMP:100 EXPL:32"', false)
             ->getContent();
-        $this->assertSame(1, preg_match_all('#ab-row__runs">[^<]*not official#', $html), 'only the line with fewer than three runs is not official');
-
-        $this->get(self::PT)->assertOk()->assertSee('Os resultados até agora')->assertSee('Uma linha que se apoia em menos execuções não é oficial')
-            ->assertSee('não rodaram todos no mesmo cliente');
+        $this->assertSame(8, substr_count($html, 'class="ab-chip" data-sort="'));
+        $this->assertSame(2, substr_count($html, 'class="ab-chip" data-vendor="'));
     }
 
     /** @return array<string, mixed> */
@@ -325,5 +297,12 @@ class Leb300PageTest extends TestCase
             $this->assertStringContainsString('ab-grade--'.strtolower($agent['grade']), $html);
         }
         $this->assertDoesNotMatchRegularExpression('/\b(?:SEC|ARCH|PERF|BUG|CLN)-\d{3}/', $html);
+
+        // The facts and the leaders come from the same aggregate.
+        $agents = $aggregate['agents'];
+        $this->assertStringContainsString('mode '.$aggregate['mode'].' · '.$aggregate['turn_budget'].' turns', $html);
+        $this->assertStringContainsString('edition '.$aggregate['edition'], $html);
+        $this->assertStringContainsString('matrix '.substr($aggregate['matrix_sha256'], 0, 12), $html);
+        $this->assertStringContainsString('Top '.min(AiBenchmark::HERO_TOP, count($agents)).' so far', $html);
     }
 }
