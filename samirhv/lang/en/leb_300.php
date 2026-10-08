@@ -31,6 +31,7 @@ return [
     'result_note_body' => 'An official score is the median of three runs of an agent. A line that rests on fewer runs is not official: it says how many it has, and is listed all the same, as on the LEB-100 page. The instance itself is still a pilot: its difficulty has not been homologated. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
     'result_note_body_three' => 'Each score is the median of three runs of an agent, as the protocol asks. The instance itself is still a pilot: its difficulty has not been homologated. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
     'session_time' => 'Session :min min',
+    'more_note' => 'A written reading of the aggregate; it is not part of the score, and it names no flaw.',
     'session_time_help' => 'From the first message to the end of the session, as the run record has it.',
 
     'stands_title' => 'Where it stands',

@@ -31,6 +31,7 @@ return [
     'result_note_body' => 'A nota oficial é a mediana de três execuções de um agente. Uma linha que se apoia em menos execuções não é oficial: ela diz quantas tem, e é listada do mesmo jeito, como na página do LEB-100. A instância ainda é um piloto: a dificuldade dela não foi homologada. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
     'result_note_body_three' => 'Cada nota é a mediana de três execuções de um agente, como o protocolo pede. A instância ainda é um piloto: a dificuldade dela não foi homologada. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
     'session_time' => 'Sessão de :min min',
+    'more_note' => 'Uma leitura escrita do agregado; não faz parte da nota e não cita nenhuma falha.',
     'session_time_help' => 'Da primeira mensagem ao fim da sessão, como consta no registro da execução.',
 
     'stands_title' => 'Em que pé está',

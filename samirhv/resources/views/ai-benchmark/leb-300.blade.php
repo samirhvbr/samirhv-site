@@ -17,6 +17,10 @@
     @push('styles')
         <link rel="stylesheet" href="{{ vasset('css/site/ai-benchmark.css') }}">
     @endpush
+    {{-- A click anywhere on a card opens its comment and details, as on the LEB-100 page. --}}
+    @push('scripts')
+        <script defer src="{{ vasset('js/site/ai-benchmark.js') }}"></script>
+    @endpush
 @endif
 
 @section('content')
@@ -60,7 +64,7 @@
                             <div class="ab-row__id">
                                 <strong>{{ $model['name'] ?? $a['agent'] }}</strong>
                                 <small>{{ $model ? $model['provider'].' · '.$effort : $a['agent'] }}</small>
-                                <span class="ab-row__runs">{{ __('ai_benchmark.runs_label', ['count' => $a['runs_count']]) }}@if($a['runs_count'] < 3) · {{ __('ai_benchmark.unofficial') }}@endif</span>
+                                <span class="ab-row__runs">{{ __('ai_benchmark.runs_label', ['count' => $a['runs_count']]) }}@if(count($a['runs'] ?? []) > 1) ({{ collect($a['runs'])->pluck('total')->implode(' · ') }})@endif @if($a['runs_count'] < 3) · {{ __('ai_benchmark.unofficial') }}@endif</span>
                             </div>
 
                             <div class="ab-row__total">
@@ -87,6 +91,50 @@
                                     <span title="{{ __('leb_300.session_time_help') }}">{{ __('leb_300.session_time', ['min' => number_format($a['wall_minutes'], 1)]) }}</span>
                                 @endif
                             </p>
+
+                            {{-- Opened by its summary or by a click anywhere on the card. The reading is written (it travels in the
+                                 aggregate, see comments.json of the private archive); the rest is read from the aggregate, so it never
+                                 disagrees with the table. An ACTIVE instance has no flaw to list: only categories, runs, cost and time. --}}
+                            @php
+                                $comment = $a['comment'][app()->getLocale() === 'pt_BR' ? 'pt_BR' : 'en'] ?? null;
+                                $full = collect($a['categories'])->filter(fn ($score, $cat) => $score === $weights[$cat]);
+                                $zero = collect($a['categories'])->filter(fn ($score) => $score === 0);
+                                $catNames = fn ($cats) => $cats->keys()->map(fn ($c) => __("ai_benchmark.categories.$c"))->implode(', ');
+                            @endphp
+                            <details class="ab-row__more">
+                                <summary>{{ __('ai_benchmark.more_open') }}</summary>
+                                @if($comment)
+                                    <p class="ab-more__comment">{{ $comment }}</p>
+                                    <p class="ab-more__note s-meta">{{ __('leb_300.more_note') }}</p>
+                                @endif
+                                @if($full->isNotEmpty() || $zero->isNotEmpty())
+                                    <dl class="ab-more__facts">
+                                        @if($full->isNotEmpty())
+                                            <dt>{{ __('ai_benchmark.more_full') }}</dt><dd>{{ $catNames($full) }}</dd>
+                                        @endif
+                                        @if($zero->isNotEmpty())
+                                            <dt>{{ __('ai_benchmark.more_zero') }}</dt><dd>{{ $catNames($zero) }}</dd>
+                                        @endif
+                                    </dl>
+                                @endif
+                                @if(! empty($a['runs']))
+                                    <h5 class="ab-more__title">{{ __('ai_benchmark.more_runs') }}</h5>
+                                    <ul class="ab-more__runs">
+                                        @foreach($a['runs'] as $r)
+                                            <li>
+                                                <strong>{{ __('ai_benchmark.more_run', ['n' => $r['run']]) }} · {{ $r['total'] }}</strong>
+                                                @if(($r['wall_minutes'] ?? null) !== null)
+                                                    @php $m = (int) round($r['wall_minutes']); @endphp
+                                                    <span title="{{ __('ai_benchmark.more_time_help') }}">{{ $m < 60 ? __('ai_benchmark.more_time_min', ['m' => $m]) : ($m % 60 === 0 ? __('ai_benchmark.more_time_h_only', ['h' => intdiv($m, 60)]) : __('ai_benchmark.more_time_h', ['h' => intdiv($m, 60), 'm' => $m % 60])) }}</span>
+                                                @endif
+                                                @if(($r['cost_usd'] ?? null) !== null)
+                                                    <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_usd'], 2)]) }}</span>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </details>
                         </li>
                     @endforeach
                 </ol>

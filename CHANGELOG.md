@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.119 - A LEB-300 card opens on a written reading, as a LEB-100 card does
+
+ai-benchmark 0.2.131 puts two things in each agent of the LEB-300-A aggregate: the total, cost and time of each run, and a short written reading in English and Brazilian Portuguese. The LEB-300 page shows them the way the LEB-100 page does: a click anywhere on a card, or on "Comment and details", opens below it the reading, the categories at full marks and at zero, and "Run by run" with each run's total, session time and cost. The line "2 of 3 runs" now lists the totals of the runs, as on LEB-100, and the page loads the script that opens a card on a click. The readings talk of categories, scores, runs, cost and time and name no flaw: LEB-300 is an active instance, so the data has no field for one and the exporter refuses a flaw id or a text of the matrix in a reading. A file synced before 0.2.131, without `runs` or `comment`, still renders (the card opens on what it has). `Leb300PageTest` gains two tests (253 in all).
+
 ## 1.0.118 - The LEB-300 page lists three agents, each with the runs it rests on
 
 ai-benchmark 0.2.130 publishes the LEB-300-A aggregate with three agents: DeepSeek V4.1 Flash (649 of 1000, Silver, one run of three), MiniMax-M3 (388, Reprovada, two runs of three) and Claude Haiku 4.5 (242, Reprovada, three). `samirhv/resources/data/ai-benchmark/results.json` is synced from it, and the Benchmark page's card now says three agents are ranked and who leads.

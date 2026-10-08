@@ -159,10 +159,60 @@ class Leb300PageTest extends TestCase
             ->assertDontSee('Each score is the median of three runs of an agent')
             ->assertSee('did not all run in the same client')
             ->getContent();
-        $this->assertSame(1, substr_count($html, '<span class="ab-row__runs">') - substr_count($html, 'ab-row__runs">3 of 3 runs</span>'));
+        $this->assertSame(1, preg_match_all('#ab-row__runs">[^<]*not official#', $html), 'only the line with fewer than three runs is not official');
 
         $this->get(self::PT)->assertOk()->assertSee('Os resultados até agora')->assertSee('Uma linha que se apoia em menos execuções não é oficial')
             ->assertSee('não rodaram todos no mesmo cliente');
+    }
+
+    /** @return array<string, mixed> */
+    private function withReading(): array
+    {
+        $agent = ['agent' => 'agent-x', 'score' => 388, 'grade' => 'Reprovada', 'runs_count' => 2, 'categories' => self::CATEGORIES, 'cost_usd' => 1.21, 'wall_minutes' => 43.7,
+            'runs' => [['run' => 1, 'total' => 388, 'cost_usd' => 1.21, 'wall_minutes' => 43.7], ['run' => 2, 'total' => 398, 'cost_usd' => 0.81, 'wall_minutes' => 66.1]],
+            'comment' => ['en' => 'Two steady runs, strong on compatibility.', 'pt_BR' => 'Duas execuções estáveis, fortes em compatibilidade.']];
+        AiBenchmark::fake([
+            'instances' => [['entries' => [['agent' => 'agent-x', 'model' => ['name' => 'Model X', 'provider' => 'Maker', 'reasoning_effort' => 'default']]]]],
+            'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'edition' => '2026', 'agents' => [$agent]]],
+        ]);
+
+        return $agent;
+    }
+
+    /** A click on the card opens its comment and details, as on the LEB-100 page: the reading, the categories, and the runs. */
+    public function test_a_card_opens_on_its_reading_and_the_details_read_from_the_aggregate(): void
+    {
+        $this->withReading();
+
+        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('<details class="ab-row__more">', false)
+            ->assertSee('Comment and details')
+            ->assertSee('Two steady runs, strong on compatibility.')
+            ->assertSee('A written reading of the aggregate; it is not part of the score, and it names no flaw.')
+            ->assertSee('2 of 3 runs (388 · 398)')
+            ->assertSee('Run 1 · 388')->assertSee('Run 2 · 398')
+            ->assertSee('44min')->assertSee('1h 6min')->assertSee('US$ 1.21')->assertSee('US$ 0.81')
+            ->assertSee('Compatibility')
+            ->assertSee('js/site/ai-benchmark.js', false)
+            ->getContent();
+        $this->assertSame(1, substr_count($html, '<details class="ab-row__more">'));
+
+        $this->get(self::PT)->assertOk()
+            ->assertSee('Duas execuções estáveis, fortes em compatibilidade.')
+            ->assertDontSee('Two steady runs')
+            ->assertSee('Run 1 · 388')->assertSee('Comentário e ficha');
+    }
+
+    public function test_a_card_without_a_reading_still_opens_on_its_runs_and_a_file_without_runs_still_renders(): void
+    {
+        $agent = $this->withReading();
+        unset($agent['comment']);
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'agents' => [$agent]]]]);
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Run 2 · 398')->assertDontSee('A written reading of the aggregate');
+
+        unset($agent['runs']);
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'agents' => [$agent]]]]);
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Comment and details')->assertDontSee('Run by run');
     }
 
     public function test_neither_state_names_a_flaw_or_carries_a_flaw_table(): void

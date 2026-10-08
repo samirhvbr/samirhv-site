@@ -89,7 +89,7 @@ in `lang/*/ai_benchmark.php` (highlights, caveats) — reread them whenever a sy
 runs, the cost and the time of each agent): never a flaw, a verdict, the code under test or the answer key. The page is a controller (`Leb300Controller`, no database) that reads the
 aggregate from the same synced `results.json` as the LEB-100 page. Until that file carries one it is a status page; once it does, it shows the scoreboard, with the same card as LEB-100,
 and says whether the score is official (the median of three runs) and what the record does not have. The copy is `lang/*/leb_300.php`, and shvia.org renders this same copy.
-`Leb300PageTest` covers both states and the real file.
+Each card opens on click (as on the LEB-100 page) to a written reading of the agent, the categories at full marks and at zero, and the total, cost and time of each run; the reading travels in the aggregate (`agents[].comment`, English and Brazilian Portuguese) and names no flaw. `Leb300PageTest` covers both states, the reading and the real file.
 
 ## Admin
 
