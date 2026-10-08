@@ -55,6 +55,41 @@ final class AiBenchmark
         return self::$cache = $data;
     }
 
+    /**
+     * The aggregate published for an ACTIVE instance (only its totals, per agent), or null while it has none.
+     *
+     * @return array<string, mixed>|null
+     */
+    public static function aggregate(string $instance): ?array
+    {
+        foreach (self::results()['aggregate_instances'] ?? [] as $aggregate) {
+            if (($aggregate['instance'] ?? null) === $instance) {
+                return $aggregate;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The model of an agent id, from the instances that publish per-flaw results: an aggregate names
+     * its agents by id only, and the same agent has run on those instances before.
+     *
+     * @return array<string, mixed>|null
+     */
+    public static function modelOf(string $agent): ?array
+    {
+        foreach (self::results()['instances'] ?? [] as $instance) {
+            foreach ($instance['entries'] ?? [] as $entry) {
+                if (($entry['agent'] ?? null) === $agent) {
+                    return $entry['model'] ?? null;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /** Forget the per-request copy (tests swap the file between cases). */
     public static function flush(): void
     {

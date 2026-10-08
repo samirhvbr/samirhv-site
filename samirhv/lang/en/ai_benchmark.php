@@ -232,4 +232,5 @@ return [
 
     'leb300_note' => 'The next level, :link, is in preparation: it has no results yet.',
     'leb300_link' => 'LEB-300',
+    'leb300_note_result' => 'The next level, :link, is an exploratory pilot: its first aggregate result is published.',
 ];

@@ -82,9 +82,11 @@ refreshed with `tools/sync-ai-benchmark-results.sh` (`--check` compares it with
 upstream). What is written here is the reading of those numbers and the caveats,
 in `lang/*/ai_benchmark.php` — reread them whenever a sync changes the results.
 
-`/ai-benchmark/leb-300` is the page of the second level. While LEB-300 has no published results it is a short, hand-written
-`Route::view` (copy in `lang/*/leb_300.php`, no database, no results file) that says the level exists and what will
-appear when there are results; it names nothing of the instance. `Leb300PageTest` covers it in both languages.
+`/ai-benchmark/leb-300` is the page of the second level. LEB-300 is an active instance, so only its aggregate is published (the total, the grade, the category scores, the number of
+runs, the cost and the time of each agent): never a flaw, a verdict, the code under test or the answer key. The page is a controller (`Leb300Controller`, no database) that reads the
+aggregate from the same synced `results.json` as the LEB-100 page. Until that file carries one it is a status page; once it does, it shows the scoreboard, with the same card as LEB-100,
+and says whether the score is official (the median of three runs) and what the record does not have. The copy is `lang/*/leb_300.php`, and shvia.org renders this same copy.
+`Leb300PageTest` covers both states and the real file.
 
 ## Admin
 

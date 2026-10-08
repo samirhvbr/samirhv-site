@@ -37,7 +37,7 @@
             </nav>
             {{-- The next level, in preparation, has a page of its own. `{!! !!}` is safe: markup of this
                  file plus lang/ text, which is repository content. --}}
-            <p class="s-meta">{!! __('ai_benchmark.leb300_note', ['link' => '<a href="'.e(lroute('ai-benchmark.leb-300')).'">'.e(__('ai_benchmark.leb300_link')).'</a>']) !!}</p>
+            <p class="s-meta">{!! __(AiBenchmark::aggregate('LEB-300-A') ? 'ai_benchmark.leb300_note_result' : 'ai_benchmark.leb300_note', ['link' => '<a href="'.e(lroute('ai-benchmark.leb-300')).'">'.e(__('ai_benchmark.leb300_link')).'</a>']) !!}</p>
 
             @php
                 // The first instance's leaders, for a reader who stops at the fold. The full

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AiBenchmarkController;
+use App\Http\Controllers\Leb300Controller;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LegacyEnglishPrefix;
@@ -56,8 +57,8 @@ $publico = function (): void {
     // LEB: the benchmark explained, then its results (a synced file, no database).
     Route::get('/ai-benchmark', AiBenchmarkController::class)->name('ai-benchmark');
 
-    // LEB-300: the second level. A static page while it has no published results (no database, no synced file).
-    Route::view('/ai-benchmark/leb-300', 'ai-benchmark.leb-300')->name('ai-benchmark.leb-300');
+    // LEB-300: the second level. A status page until its aggregate is published, then a scoreboard (no database).
+    Route::get('/ai-benchmark/leb-300', Leb300Controller::class)->name('ai-benchmark.leb-300');
 };
 
 /* Prefixed languages first: a prefixed path must never be shadowed by a bare

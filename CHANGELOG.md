@@ -12,6 +12,15 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.115 - The LEB-300 page shows the first aggregate result, as LEB-100 shows its own
+
+`/ai-benchmark/leb-300` and `/pt-br/ai-benchmark/leb-300` were a static status page. They are now served by `Leb300Controller`, which reads the aggregate that ai-benchmark 0.2.129 published for LEB-300-A
+(three runs of Claude Haiku 4.5, total 242 of 1000, grade Reprovada) from the synced `results.json`, and the view shows it with the LEB-100 card: rank, name and provider, runs, the score and grade, the seven
+categories over their weights, cost and session time. LEB-300 is an active instance, so the page never shows a flaw, a flaw table or the per-flaw files. It still falls back to the status text when the file has
+no aggregate. The copy says that the instance is an exploratory pilot whose difficulty has not been homologated, whether the score rests on three runs (official) or fewer (not official), and what the record
+does not have: no checkpoint between the two stages in any run, and the matrix hash named by the task text (`3331a107`) against the one scored (`c42c8287`), which differ only by a header field. The LEB-100 page's
+note says which state LEB-300 is in. `AiBenchmark` gains `aggregate()` and `modelOf()`; `Leb300PageTest` is rewritten to cover both states with fakes, plus the real file (235 tests).
+
 ## 1.0.114 - A LEB-300 page says the second level exists and has no results yet
 
 `/ai-benchmark/leb-300` and `/pt-br/ai-benchmark/leb-300` are new: a `Route::view` with its copy in `lang/en/leb_300.php`
