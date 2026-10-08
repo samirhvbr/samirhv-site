@@ -101,6 +101,7 @@
                     <ul>
                         <li>{{ __('leb_300.caveat_checkpoint') }}</li>
                         <li>{{ __('leb_300.caveat_matrix') }}</li>
+                        <li>{{ __('leb_300.caveat_client') }}</li>
                     </ul>
                 @endif
 

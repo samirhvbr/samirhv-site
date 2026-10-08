@@ -272,5 +272,5 @@ return [
 
     'leb300_note' => 'O próximo nível, o :link, está em preparação: ainda não tem resultados.',
     'leb300_link' => 'LEB-300',
-    'leb300_note_result' => 'O próximo nível, o :link, está em piloto exploratório: o primeiro resultado agregado já foi publicado.',
+    'leb300_note_result' => 'O próximo nível, o :link, está em piloto exploratório: os resultados agregados já foram publicados.',
 ];

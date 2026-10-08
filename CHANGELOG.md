@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.118 - The LEB-300 page lists three agents, each with the runs it rests on
+
+ai-benchmark 0.2.130 publishes the LEB-300-A aggregate with three agents: DeepSeek V4.1 Flash (649 of 1000, Silver, one run of three), MiniMax-M3 (388, Reprovada, two runs of three) and Claude Haiku 4.5 (242, Reprovada, three). `samirhv/resources/data/ai-benchmark/results.json` is synced from it, and the Benchmark page's card now says three agents are ranked and who leads.
+
+The copy that assumed one agent is rewritten in `lang/{en,pt_BR}/leb_300.php`: the note says that a line resting on fewer than three runs is not official, says it is listed all the same as on the LEB-100 page, and says each score is the median of three runs only when every line has three; the title is "The results so far"; and the instance is described as being in an exploratory pilot whose results are "the ones published so far". A third caveat says the agents did not all run in the same client (Claude Code or OpenCode, each with its own tools). The note on the LEB-100 page says the aggregate results are published, not the first one. `Leb300PageTest` gains a test with two agents on different numbers of runs (251 tests).
+
 ## 1.0.117 - AI Benchmark is a menu: a Benchmark page, then LEB-100-A and LEB-300-A
 
 The `AI Benchmark` entry of the header opens a dropdown, built like Projects (a button that opens on hover, focus and click, `aria-expanded`, the same script), with three pages:

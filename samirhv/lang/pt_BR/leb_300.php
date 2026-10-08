@@ -15,7 +15,7 @@
 return [
     'title' => 'LEB-300 · AI Benchmark',
     'meta_description' => 'O LEB-300 é o próximo nível do benchmark de engenharia LEB, uma aplicação de cerca de 3.000 linhas. Está em preparação: ainda não há resultados publicados.',
-    'meta_description_result' => 'O LEB-300 é o próximo nível do benchmark de engenharia LEB, uma aplicação de cerca de 3.000 linhas. Um piloto exploratório: o primeiro resultado agregado está publicado.',
+    'meta_description_result' => 'O LEB-300 é o próximo nível do benchmark de engenharia LEB, uma aplicação de cerca de 3.000 linhas. Um piloto exploratório: os resultados agregados até agora estão publicados.',
 
     'back' => 'AI Benchmark',
     'kicker' => 'AI Benchmark · LEB',
@@ -26,20 +26,22 @@ return [
     'note_title' => 'Ainda não há resultados do LEB-300.',
     'note_body' => 'Esta página diz em que pé ele está e o que vai aparecer aqui. Nada nela é uma nota.',
 
-    'result_title' => 'O primeiro resultado',
+    'result_title' => 'Os resultados até agora',
     'result_note_title' => 'Um piloto exploratório.',
-    'result_note_body' => 'É uma execução de um agente. A nota oficial é a mediana de três execuções de um agente, então esta não é oficial. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
-    'result_note_body_three' => 'É a mediana de três execuções de um agente, como o protocolo pede. A instância ainda é um piloto: a dificuldade dela não foi homologada. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
+    'result_note_body' => 'A nota oficial é a mediana de três execuções de um agente. Uma linha que se apoia em menos execuções não é oficial: ela diz quantas tem, e é listada do mesmo jeito, como na página do LEB-100. A instância ainda é um piloto: a dificuldade dela não foi homologada. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
+    'result_note_body_three' => 'Cada nota é a mediana de três execuções de um agente, como o protocolo pede. A instância ainda é um piloto: a dificuldade dela não foi homologada. Só o agregado é publicado: os defeitos plantados, o veredito, o código avaliado e o gabarito ficam privados.',
     'session_time' => 'Sessão de :min min',
     'session_time_help' => 'Da primeira mensagem ao fim da sessão, como consta no registro da execução.',
 
     'stands_title' => 'Em que pé está',
     'stands_body' => 'A instância está em preparação. As primeiras execuções são internas e servem para conferir o procedimento, por isso não são publicadas.',
-    'stands_body_result' => 'A instância está em piloto exploratório. O resultado acima é o primeiro publicado, e outros agentes virão. As primeiras execuções serviram também para conferir o procedimento.',
+    'stands_body_result' => 'A instância está em piloto exploratório. Os resultados acima são os publicados até agora, e outros agentes virão. As primeiras execuções serviram também para conferir o procedimento.',
 
     'caveats_title' => 'O que o registro não tem',
     'caveat_checkpoint' => 'Não foi feito o checkpoint entre as duas etapas da tarefa em nenhuma das execuções, então não consta no registro que o modelo foi o mesmo durante a primeira etapa. As transcrições mostram um único modelo.',
     'caveat_matrix' => 'O texto da tarefa que o agente leu cita o hash da matriz de pontuação anterior. A matriz com que esta execução é pontuada difere dela só por um campo do cabeçalho que marca a instância como ativa. A pontuação é a mesma.',
+
+    'caveat_client' => 'Os agentes não rodaram todos no mesmo cliente, o Claude Code ou o OpenCode, cada um com as suas ferramentas. O cliente de cada execução consta no registro dela.',
 
     'publish_title' => 'O que será publicado',
     'publish_body' => 'Quando houver resultados, esta página mostrará uma linha por agente: o total, a nota, a pontuação em cada categoria, em quantas execuções ela se baseia, e o custo e o tempo. Não mostrará a lista de defeitos plantados, o código avaliado nem o gabarito. A mesma instância precisa continuar medindo agentes novos, então isso fica privado.',

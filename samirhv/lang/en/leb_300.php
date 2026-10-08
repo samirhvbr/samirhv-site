@@ -15,7 +15,7 @@
 return [
     'title' => 'LEB-300 · AI Benchmark',
     'meta_description' => 'LEB-300 is the next level of the LEB engineering benchmark, an application of about 3,000 lines. It is in preparation: no results are published yet.',
-    'meta_description_result' => 'LEB-300 is the next level of the LEB engineering benchmark, an application of about 3,000 lines. An exploratory pilot: the first aggregate result is published.',
+    'meta_description_result' => 'LEB-300 is the next level of the LEB engineering benchmark, an application of about 3,000 lines. An exploratory pilot: the aggregate results so far are published.',
 
     'back' => 'AI Benchmark',
     'kicker' => 'AI Benchmark · LEB',
@@ -26,20 +26,22 @@ return [
     'note_title' => 'There are no LEB-300 results yet.',
     'note_body' => 'This page says where it stands and what will appear here. Nothing on it is a score.',
 
-    'result_title' => 'The first result',
+    'result_title' => 'The results so far',
     'result_note_title' => 'An exploratory pilot.',
-    'result_note_body' => 'This is one run of one agent. An official score is the median of three runs of an agent, so this one is not official. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
-    'result_note_body_three' => 'This is the median of three runs of one agent, as the protocol asks. The instance itself is still a pilot: its difficulty has not been homologated. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
+    'result_note_body' => 'An official score is the median of three runs of an agent. A line that rests on fewer runs is not official: it says how many it has, and is listed all the same, as on the LEB-100 page. The instance itself is still a pilot: its difficulty has not been homologated. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
+    'result_note_body_three' => 'Each score is the median of three runs of an agent, as the protocol asks. The instance itself is still a pilot: its difficulty has not been homologated. Only the aggregate is published: the planted defects, the verdict, the code under test and the answer key stay private.',
     'session_time' => 'Session :min min',
     'session_time_help' => 'From the first message to the end of the session, as the run record has it.',
 
     'stands_title' => 'Where it stands',
     'stands_body' => 'The instance is being prepared. Its first runs are internal, and they are there to check the procedure, so they are not published.',
-    'stands_body_result' => 'The instance is in an exploratory pilot. The result above is the first one published, and other agents follow. Its first runs also served to check the procedure.',
+    'stands_body_result' => 'The instance is in an exploratory pilot. The results above are the ones published so far, and other agents follow. Its first runs also served to check the procedure.',
 
     'caveats_title' => 'What the record does not have',
     'caveat_checkpoint' => 'No checkpoint was taken between the two stages of the task in any of the runs, so it is not on record that the model stayed the same through the first stage. The transcripts show a single model.',
     'caveat_matrix' => 'The task text the agent read names the previous scoring-matrix hash. The matrix this run is scored against differs from it only by a header field that marks the instance as active. The scoring is the same.',
+
+    'caveat_client' => 'The agents did not all run in the same client, Claude Code or OpenCode, each with its own tools. The client of every run is in its record.',
 
     'publish_title' => 'What will be published',
     'publish_body' => 'When there are results, this page will show one line per agent: the total, the grade, the score in each category, how many runs it rests on, and the cost and the time. It will not show the list of planted defects, the code under test or the answer key. The same instance has to keep measuring new agents, so those stay private.',

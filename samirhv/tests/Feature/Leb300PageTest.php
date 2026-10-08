@@ -90,7 +90,7 @@ class Leb300PageTest extends TestCase
             ->assertSee('Cost US$ 0.96 a run')
             ->assertSee('Session 13.4 min')
             ->assertSee('An exploratory pilot.')
-            ->assertSee('so this one is not official')
+            ->assertSee('A line that rests on fewer runs is not official')
             ->assertSee('What the record does not have')
             ->assertDontSee('There are no LEB-300 results yet.');
     }
@@ -107,7 +107,7 @@ class Leb300PageTest extends TestCase
             ->assertSee(trans('ai_benchmark.out_of', [], 'pt_BR'))
             ->assertSee(trans('ai_benchmark.runs_label', ['count' => 1], 'pt_BR'))
             ->assertSee('Um piloto exploratório.')
-            ->assertSee('então esta não é oficial')
+            ->assertSee('Uma linha que se apoia em menos execuções não é oficial')
             ->assertSee('O que o registro não tem')
             ->assertDontSee('Ainda não há resultados do LEB-300.');
     }
@@ -130,12 +130,40 @@ class Leb300PageTest extends TestCase
         $this->get(self::EN, self::EN_HEADER)->assertOk()
             ->assertSee('3 of 3 runs')
             ->assertDontSee('not official</span>', false)
-            ->assertSee('This is the median of three runs of one agent, as the protocol asks.')
+            ->assertSee('Each score is the median of three runs of an agent, as the protocol asks.')
             ->assertSee('its difficulty has not been homologated')
-            ->assertDontSee('so this one is not official');
+            ->assertDontSee('A line that rests on fewer runs is not official');
     }
 
     // ── what the page must never do ──────────────────────────────────────────────────────────────
+
+    /** Agents on different numbers of runs share one board: each line says its own count, and only the short ones are unofficial. */
+    public function test_agents_on_different_numbers_of_runs_each_say_their_own_count(): void
+    {
+        $agent = fn (string $id, int $score, int $runs) => ['agent' => $id, 'score' => $score, 'grade' => 'Reprovada', 'runs_count' => $runs,
+            'categories' => self::CATEGORIES, 'cost_usd' => 0.5, 'wall_minutes' => 10.0];
+        AiBenchmark::fake([
+            'instances' => [['entries' => [
+                ['agent' => 'agent-a', 'model' => ['name' => 'Model A', 'provider' => 'Maker', 'reasoning_effort' => 'high']],
+                ['agent' => 'agent-b', 'model' => ['name' => 'Model B', 'provider' => 'Maker', 'reasoning_effort' => 'default']],
+            ]]],
+            'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'edition' => '2026',
+                'agents' => [$agent('agent-a', 649, 1), $agent('agent-b', 242, 3)]]],
+        ]);
+
+        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('Model A')->assertSee('Model B')
+            ->assertSee('1 of 3 runs')->assertSee('3 of 3 runs')
+            ->assertSee('The results so far')
+            ->assertSee('A line that rests on fewer runs is not official')
+            ->assertDontSee('Each score is the median of three runs of an agent')
+            ->assertSee('did not all run in the same client')
+            ->getContent();
+        $this->assertSame(1, substr_count($html, '<span class="ab-row__runs">') - substr_count($html, 'ab-row__runs">3 of 3 runs</span>'));
+
+        $this->get(self::PT)->assertOk()->assertSee('Os resultados até agora')->assertSee('Uma linha que se apoia em menos execuções não é oficial')
+            ->assertSee('não rodaram todos no mesmo cliente');
+    }
 
     public function test_neither_state_names_a_flaw_or_carries_a_flaw_table(): void
     {
