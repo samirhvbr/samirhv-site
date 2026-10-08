@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.123 - The LEB-300 page lists six agents: Kimi K3 is second
+
+ai-benchmark 0.2.133 publishes the LEB-300-A aggregate with six agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: Claude Sonnet 5.5 (860 of 1000, Gold, one run of three), Kimi K3 at high effort (737, Silver, one run, served by Novita AI, not by Moonshot's own API as in LEB-100), DeepSeek V4.1 Flash (649, one run), GPT-5.6-terra (625, one run), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). A line on fewer than three runs says so and is not official. Nothing in the views, the copy or the styles changes: the page keeps the visual of the last versions, with six lines, and the menu's second line and the Benchmark page's card read the count and the top score from the same file.
+
 ## 1.0.122 - The LEB-300 page lists five agents: Claude Sonnet 5.5 leads, GPT-5.6-terra is third
 
 ai-benchmark 0.2.132 publishes the LEB-300-A aggregate with five agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: Claude Sonnet 5.5 at xhigh (860 of 1000, Gold, one run of three), DeepSeek V4.1 Flash (649, one run), GPT-5.6-terra at xhigh (625, one run, from Codex CLI, which records no cost, so its line has none), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). A line on fewer than three runs says so and is not official. Nothing in the views, the copy or the styles changes: the page is the one the last two versions built, with five lines instead of three, and the menu's second line ("5 agents · top 860") and the Benchmark page's card read the count and the top score from the same file. The written readings travel in the aggregate, as before.
