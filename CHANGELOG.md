@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.122 - The LEB-300 page lists five agents: Claude Sonnet 5.5 leads, GPT-5.6-terra is third
+
+ai-benchmark 0.2.132 publishes the LEB-300-A aggregate with five agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: Claude Sonnet 5.5 at xhigh (860 of 1000, Gold, one run of three), DeepSeek V4.1 Flash (649, one run), GPT-5.6-terra at xhigh (625, one run, from Codex CLI, which records no cost, so its line has none), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). A line on fewer than three runs says so and is not official. Nothing in the views, the copy or the styles changes: the page is the one the last two versions built, with five lines instead of three, and the menu's second line ("5 agents · top 860") and the Benchmark page's card read the count and the top score from the same file. The written readings travel in the aggregate, as before.
+
 ## 1.0.121 - The AI Benchmark menu says how many agents each instance ranks and its top score
 
 Under each instance of the AI Benchmark menu, a second line says how many agents it ranks and the top score: "37 agents · top 809" under LEB-100-A and "3 agents · top 649" under LEB-300-A today, from the same synced results file the pages read. A view composer (`shareNavBenchmark` in `AppServiceProvider`) hands the layout the count and the leader of each instance, and `shell.ai_benchmark_state` writes the line in both languages, singular and plural. An instance with nothing published gets no line, so the menu never shows a zero that means "no data". The menu is the way into the results, and now says what they hold before the click. `BenchmarkMenuTest` pins the line in both languages, with a faked file and with the real one, on every public page that needs no database row.
