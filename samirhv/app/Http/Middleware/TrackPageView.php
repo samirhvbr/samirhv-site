@@ -28,7 +28,7 @@ class TrackPageView
      * nada; só faz a próxima pessoa acreditar que a rota existe.
      */
     private const SKIP_PREFIXES = [
-        'admin', 'login', 'logout', 'lang', 'd', 'en', 'up',
+        'admin', 'login', 'logout', 'lang', 'd', 'en', 'up', 'tura',
         'js', 'img', 'vendor', 'storage',
     ];
 
