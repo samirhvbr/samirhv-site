@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.121 - The AI Benchmark menu says how many agents each instance ranks and its top score
+
+Under each instance of the AI Benchmark menu, a second line says how many agents it ranks and the top score: "37 agents · top 809" under LEB-100-A and "3 agents · top 649" under LEB-300-A today, from the same synced results file the pages read. A view composer (`shareNavBenchmark` in `AppServiceProvider`) hands the layout the count and the leader of each instance, and `shell.ai_benchmark_state` writes the line in both languages, singular and plural. An instance with nothing published gets no line, so the menu never shows a zero that means "no data". The menu is the way into the results, and now says what they hold before the click. `BenchmarkMenuTest` pins the line in both languages, with a faked file and with the real one, on every public page that needs no database row.
+
 ## 1.0.120 - The LEB-300 page is built like the LEB-100 page: the leaders, the facts, the filters and the caveats
 
 The LEB-300 page had the structure of a status page dressed as a results page: a smaller title with inline styles and the accent on the same line, no lead, no call to action, no leaders beside the title, no facts, no vendor filter or category order, the caveats as a plain list, section titles a size smaller, and a container narrower than the LEB-100 page's, so its cards came out narrower too. On a phone the position of each card was missing, because the LEB-100 cards carry it in `data-rank` and the LEB-300 cards did not.

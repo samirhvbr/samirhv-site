@@ -23,6 +23,8 @@ return [
     'ai_benchmark_overview_hint' => 'The project and its levels',
     'ai_benchmark_leb100_hint' => 'About 300 lines',
     'ai_benchmark_leb300_hint' => 'About 3,000 lines',
+    // The second line of each instance in the menu: how many agents it ranks and the top score, from the results file.
+    'ai_benchmark_state' => '{1} :count agent · top :score|[2,*] :count agents · top :score',
     'explore_releases' => 'Browse releases',
 
     'title_suffix' => 'Projects',

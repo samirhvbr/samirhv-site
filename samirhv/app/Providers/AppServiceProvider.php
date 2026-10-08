@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\AiBenchmarkController;
 use App\Models\AuthEvent;
 use App\Models\Project;
 use App\Services\AiMemory\AiMemoryDatabase;
 use App\Services\TuraCredentials;
+use App\Support\AiBenchmark;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -41,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiters();
         $this->registerAuthEventListeners();
         $this->shareNavProjects();
+        $this->shareNavBenchmark();
         $this->shareAppVersion();
         $this->useAdminPagination();
     }
@@ -126,6 +129,27 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('navProjects', $projects);
+        });
+    }
+
+    /**
+     * The state of each LEB instance for the AI Benchmark menu: how many agents it ranks and the top score.
+     *
+     * Read from the synced results file (App\Support\AiBenchmark, memoized per request), never from the
+     * database. An instance with nothing published gets no state line, so the menu never shows a zero that
+     * means "no data". The LEB-300 page and the Benchmark page read the same file, so the three agree.
+     */
+    private function shareNavBenchmark(): void
+    {
+        View::composer('layouts.app', function ($view) {
+            $leb100 = collect(AiBenchmark::results()['instances'] ?? [])->firstWhere('id', AiBenchmarkController::LEB100);
+            $agents100 = $leb100['entries'] ?? [];
+            $agents300 = AiBenchmark::aggregate(AiBenchmarkController::LEB300)['agents'] ?? [];
+
+            $view->with('navBenchmark', [
+                'leb100' => $agents100 ? ['count' => count($agents100), 'score' => $agents100[0]['score']] : null,
+                'leb300' => $agents300 ? ['count' => count($agents300), 'score' => $agents300[0]['score']] : null,
+            ]);
         });
     }
 

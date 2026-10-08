@@ -22,6 +22,8 @@ return [
     'ai_benchmark_overview_hint' => 'O projeto e seus níveis',
     'ai_benchmark_leb100_hint' => 'Cerca de 300 linhas',
     'ai_benchmark_leb300_hint' => 'Cerca de 3.000 linhas',
+    // A segunda linha de cada instância no menu: quantos agentes ela classifica e a maior nota, do arquivo de resultados.
+    'ai_benchmark_state' => '{1} :count agente · melhor :score|[2,*] :count agentes · melhor :score',
     'explore_releases' => 'Explorar releases',
 
     'title_suffix' => 'Projetos',
