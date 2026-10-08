@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.116 - The route imports follow the code-style order
+
+1.0.115 put `use App\Http\Controllers\Leb300Controller;` out of the alphabetical order Pint enforces, so the "Check code style" step of CI failed on that commit while the tests passed. `routes/web.php` is reordered by Pint and nothing else changes.
+
 ## 1.0.115 - The LEB-300 page shows the first aggregate result, as LEB-100 shows its own
 
 `/ai-benchmark/leb-300` and `/pt-br/ai-benchmark/leb-300` were a static status page. They are now served by `Leb300Controller`, which reads the aggregate that ai-benchmark 0.2.129 published for LEB-300-A

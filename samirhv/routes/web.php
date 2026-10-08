@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AiBenchmarkController;
-use App\Http\Controllers\Leb300Controller;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\Leb300Controller;
 use App\Http\Controllers\LegacyEnglishPrefix;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\SiteController;
