@@ -6,18 +6,20 @@ use App\Support\AiBenchmark;
 use Tests\TestCase;
 
 /**
- * `/ai-benchmark`: LEB explained, then the results synced from ai-benchmark.
+ * `/ai-benchmark/leb-100`: the results of the first level, synced from ai-benchmark.
+ *
+ * What LEB is, how a run works and how it is scored moved to `/ai-benchmark` (BenchmarkPageTest).
  *
  * The numbers are not asserted here — they belong to results.json, which is a
  * copy (tools/sync-ai-benchmark-results.sh). What is asserted is that the page
  * can read that copy, renders every entry in it, speaks one language at a
  * time, and that every id the file carries has a name in both languages.
  */
-class AiBenchmarkPageTest extends TestCase
+class Leb100PageTest extends TestCase
 {
-    private const EN = '/ai-benchmark';
+    private const EN = '/ai-benchmark/leb-100';
 
-    private const PT = '/pt-br/ai-benchmark';
+    private const PT = '/pt-br/ai-benchmark/leb-100';
 
     private const EN_HEADER = ['Accept-Language' => 'en-US,en;q=0.9'];
 
@@ -47,14 +49,16 @@ class AiBenchmarkPageTest extends TestCase
         }
     }
 
-    public function test_the_english_page_explains_and_lists_every_entry(): void
+    public function test_the_english_page_lists_every_entry_and_leaves_the_explanation_to_the_benchmark_page(): void
     {
         $response = $this->get(self::EN, self::EN_HEADER)
             ->assertOk()
             ->assertSee('lang="en"', false)
-            ->assertSee('Can an AI maintain legacy code')
-            ->assertSee('How a run works')
-            ->assertSee('Read this before quoting a number');
+            ->assertSee('the reference instance')
+            ->assertSee('Read this before quoting a number')
+            ->assertSee('href="'.url('/ai-benchmark').'"', false)
+            ->assertDontSee('Why another benchmark')
+            ->assertDontSee('Runs happen where the answer key is out of reach');
 
         foreach (AiBenchmark::results()['instances'] as $inst) {
             foreach ($inst['entries'] as $e) {
@@ -68,8 +72,9 @@ class AiBenchmarkPageTest extends TestCase
         $response = $this->get(self::PT)
             ->assertOk()
             ->assertSee('lang="pt-BR"', false)
-            ->assertSee('Uma IA consegue manter código legado')
-            ->assertSee('Leia isto antes de citar um número');
+            ->assertSee('a instância de referência')
+            ->assertSee('Leia isto antes de citar um número')
+            ->assertDontSee('Por que mais um benchmark');
 
         foreach (['Can an AI maintain', 'How a run works', 'Read this before quoting', 'See the results', 'Flaw by flaw',
             'effort xhigh', 'effort default', 'default effort', 'not configurable', 'matrix 68088', 'the same names', 'not official',
@@ -219,7 +224,7 @@ class AiBenchmarkPageTest extends TestCase
     public function test_no_translation_key_renders_raw_on_either_page(): void
     {
         foreach ([self::EN => self::EN_HEADER, self::PT => []] as $url => $headers) {
-            $this->get($url, $headers)->assertOk()->assertDontSee('ai_benchmark.', false);
+            $this->get($url, $headers)->assertOk()->assertDontSee('ai_benchmark.', false)->assertDontSee('leb_100.', false);
         }
     }
 

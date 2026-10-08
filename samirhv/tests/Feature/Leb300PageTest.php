@@ -185,29 +185,42 @@ class Leb300PageTest extends TestCase
         }
     }
 
-    public function test_it_links_to_the_leb_100_page_in_its_own_language(): void
+    public function test_it_links_to_the_leb_100_and_benchmark_pages_in_its_own_language(): void
     {
         $this->withAggregate();
 
         $this->get(self::EN, self::EN_HEADER)
+            ->assertSee('href="'.url('/ai-benchmark/leb-100').'"', false)
             ->assertSee('href="'.url('/ai-benchmark').'"', false)
+            ->assertDontSee('href="'.url('/pt-br/ai-benchmark/leb-100').'"', false)
             ->assertDontSee('href="'.url('/pt-br/ai-benchmark').'"', false);
 
         $this->get(self::PT)
+            ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-100').'"', false)
             ->assertSee('href="'.url('/pt-br/ai-benchmark').'"', false)
+            ->assertDontSee('href="'.url('/ai-benchmark/leb-100').'"', false)
             ->assertDontSee('href="'.url('/ai-benchmark').'"', false);
+    }
+
+    /** The general explanation of LEB (and of the two levels) is on the Benchmark page; this one keeps the instance. */
+    public function test_it_leaves_the_general_explanation_to_the_benchmark_page(): void
+    {
+        $this->withAggregate();
+
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertDontSee('What it is')->assertDontSee('is handed a working system');
+        $this->get(self::PT)->assertOk()->assertDontSee('recebe um sistema funcionando');
     }
 
     public function test_the_leb_100_page_points_to_it_and_says_which_state_it_is_in(): void
     {
         $this->withoutAggregate();
-        $this->get('/ai-benchmark', self::EN_HEADER)->assertOk()->assertSee('href="'.url(self::EN).'"', false)->assertSee('is in preparation');
-        $this->get('/pt-br/ai-benchmark')->assertOk()->assertSee('href="'.url(self::PT).'"', false)->assertSee('está em preparação');
+        $this->get('/ai-benchmark/leb-100', self::EN_HEADER)->assertOk()->assertSee('href="'.url(self::EN).'"', false)->assertSee('is in preparation');
+        $this->get('/pt-br/ai-benchmark/leb-100')->assertOk()->assertSee('href="'.url(self::PT).'"', false)->assertSee('está em preparação');
 
         // The LEB-100 view needs whole instances; only the aggregate matters to the note, so no instance is faked.
         AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'agents' => []]]]);
-        $this->get('/ai-benchmark', self::EN_HEADER)->assertOk()->assertSee('is an exploratory pilot');
-        $this->get('/pt-br/ai-benchmark')->assertOk()->assertSee('está em piloto exploratório');
+        $this->get('/ai-benchmark/leb-100', self::EN_HEADER)->assertOk()->assertSee('is an exploratory pilot');
+        $this->get('/pt-br/ai-benchmark/leb-100')->assertOk()->assertSee('está em piloto exploratório');
     }
 
     public function test_the_switcher_points_at_the_twin_of_the_page(): void

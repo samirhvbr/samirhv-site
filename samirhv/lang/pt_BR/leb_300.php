@@ -33,9 +33,6 @@ return [
     'session_time' => 'Sessão de :min min',
     'session_time_help' => 'Da primeira mensagem ao fim da sessão, como consta no registro da execução.',
 
-    'what_title' => 'O que é',
-    'what_body' => 'O LEB é o LLM Engineering Benchmark: um agente recebe um sistema funcionando com defeitos plantados e é avaliado pelo que encontra, explica e corrige sem quebrar o que já funcionava. O LEB-100 é o primeiro nível, uma aplicação de cerca de 300 linhas. O LEB-300 é o nível acima, uma aplicação de cerca de 3.000 linhas.',
-
     'stands_title' => 'Em que pé está',
     'stands_body' => 'A instância está em preparação. As primeiras execuções são internas e servem para conferir o procedimento, por isso não são publicadas.',
     'stands_body_result' => 'A instância está em piloto exploratório. O resultado acima é o primeiro publicado, e outros agentes virão. As primeiras execuções serviram também para conferir o procedimento.',
@@ -50,7 +47,8 @@ return [
     'publish_body_result' => 'Esta página mostra uma linha por agente: o total, a nota, a pontuação em cada categoria, em quantas execuções ela se baseia, e o custo e o tempo. Nunca mostra a lista de defeitos plantados, o código avaliado nem o gabarito. A mesma instância precisa continuar medindo agentes novos, então isso fica privado.',
 
     'more_title' => 'Onde ler mais',
-    'more_body' => 'O protocolo, a pontuação e as ferramentas são públicos no :repo. Os resultados do primeiro nível estão na :leb100.',
+    'more_body' => 'O protocolo, a pontuação e as ferramentas são públicos no :repo. Como um run funciona e no que os dois níveis diferem está na página :benchmark, e os resultados do primeiro nível estão na :leb100.',
     'repo_link' => 'repositório ai-benchmark',
+    'benchmark_link' => 'Benchmark',
     'leb100_link' => 'página do LEB-100',
 ];

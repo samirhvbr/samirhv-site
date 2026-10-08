@@ -160,7 +160,35 @@
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.projects') }}</div></a></li>
                                 @endif
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.downloads') }}</div></a></li>
-                                <li class="menu-item"><a class="menu-link" href="{{ lroute('ai-benchmark') }}"><div>{{ __('shell.ai_benchmark') }}</div></a></li>
+                                {{-- AI Benchmark is a menu of its own: the page that explains the project, then the page of each
+                                     instance. Same markup and the same script as Projects above (a button that
+                                     opens on hover, on focus and on click). --}}
+                                @php $navRoute = \App\Support\Locales::stripRoutePrefix((string) request()->route()?->getName()); @endphp
+                                <li class="menu-item s-dd-parent">
+                                    <button type="button" class="menu-link s-dd-trigger" aria-expanded="false" aria-controls="nav-ai-benchmark" data-dd-trigger>
+                                        <div>{{ __('shell.ai_benchmark') }} <i class="bi-chevron-down s-caret" aria-hidden="true"></i></div>
+                                    </button>
+                                    <ul class="s-dd" id="nav-ai-benchmark">
+                                        <li>
+                                            <a href="{{ lroute('ai-benchmark') }}" @if($navRoute === 'ai-benchmark') aria-current="page" @endif>
+                                                <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                                                <span class="s-dd-text"><strong>{{ __('shell.ai_benchmark_overview') }}</strong><small>{{ __('shell.ai_benchmark_overview_hint') }}</small></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ lroute('ai-benchmark.leb-100') }}" @if($navRoute === 'ai-benchmark.leb-100') aria-current="page" @endif>
+                                                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                                                <span class="s-dd-text"><strong>LEB-100-A</strong><small>{{ __('shell.ai_benchmark_leb100_hint') }}</small></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ lroute('ai-benchmark.leb-300') }}" @if($navRoute === 'ai-benchmark.leb-300') aria-current="page" @endif>
+                                                <i class="fa-solid fa-cubes" aria-hidden="true"></i>
+                                                <span class="s-dd-text"><strong>LEB-300-A</strong><small>{{ __('shell.ai_benchmark_leb300_hint') }}</small></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </nav>
 

@@ -33,9 +33,6 @@ return [
     'session_time' => 'Session :min min',
     'session_time_help' => 'From the first message to the end of the session, as the run record has it.',
 
-    'what_title' => 'What it is',
-    'what_body' => 'LEB is the LLM Engineering Benchmark: an agent is handed a working system with defects planted in it, and is scored on what it finds, explains and fixes without breaking what already worked. LEB-100 is the first level, an application of about 300 lines. LEB-300 is the level above, an application of about 3,000 lines.',
-
     'stands_title' => 'Where it stands',
     'stands_body' => 'The instance is being prepared. Its first runs are internal, and they are there to check the procedure, so they are not published.',
     'stands_body_result' => 'The instance is in an exploratory pilot. The result above is the first one published, and other agents follow. Its first runs also served to check the procedure.',
@@ -50,7 +47,8 @@ return [
     'publish_body_result' => 'This page shows one line per agent: the total, the grade, the score in each category, how many runs it rests on, and the cost and the time. It never shows the list of planted defects, the code under test or the answer key. The same instance has to keep measuring new agents, so those stay private.',
 
     'more_title' => 'Where to read more',
-    'more_body' => 'The protocol, the scoring and the tools are public in the :repo. The results of the first level are on the :leb100.',
+    'more_body' => 'The protocol, the scoring and the tools are public in the :repo. How a run works and how the two levels differ is on the :benchmark page, and the results of the first level are on the :leb100.',
     'repo_link' => 'ai-benchmark repository',
+    'benchmark_link' => 'Benchmark',
     'leb100_link' => 'LEB-100 page',
 ];

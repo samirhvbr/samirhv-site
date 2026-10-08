@@ -43,8 +43,8 @@ class SitemapTest extends TestCase
     {
         $response = $this->get('/sitemap.xml')->assertOk();
 
-        foreach (['/', '/downloads', '/ai-benchmark', '/ai-benchmark/leb-300', '/projects/github-desktop',
-            '/pt-br', '/pt-br/downloads', '/pt-br/ai-benchmark', '/pt-br/ai-benchmark/leb-300', '/pt-br/projects/github-desktop'] as $path) {
+        foreach (['/', '/downloads', '/ai-benchmark', '/ai-benchmark/leb-100', '/ai-benchmark/leb-300', '/projects/github-desktop',
+            '/pt-br', '/pt-br/downloads', '/pt-br/ai-benchmark', '/pt-br/ai-benchmark/leb-100', '/pt-br/ai-benchmark/leb-300', '/pt-br/projects/github-desktop'] as $path) {
             $response->assertSee('<loc>'.url($path).'</loc>', false);
         }
     }

@@ -93,10 +93,7 @@
             @endif
 
             <div class="s-body" style="color:var(--s-ink-2); line-height:1.8;">
-                <h2 class="s-h3" style="margin:0 0 8px;">{{ __('leb_300.what_title') }}</h2>
-                <p>{{ __('leb_300.what_body') }}</p>
-
-                <h2 class="s-h3" style="margin:28px 0 8px;">{{ __('leb_300.stands_title') }}</h2>
+                <h2 class="s-h3" style="margin:0 0 8px;">{{ __('leb_300.stands_title') }}</h2>
                 <p>{{ __($hasResult ? 'leb_300.stands_body_result' : 'leb_300.stands_body') }}</p>
 
                 @if($hasResult)
@@ -115,7 +112,8 @@
                      text comes from lang/, which is repository content — no user input. --}}
                 <p>{!! __('leb_300.more_body', [
                     'repo' => '<a href="https://github.com/samirhvbr/ai-benchmark" target="_blank" rel="noopener">'.e(__('leb_300.repo_link')).'</a>',
-                    'leb100' => '<a href="'.e(lroute('ai-benchmark')).'">'.e(__('leb_300.leb100_link')).'</a>',
+                    'benchmark' => '<a href="'.e(lroute('ai-benchmark')).'">'.e(__('leb_300.benchmark_link')).'</a>',
+                    'leb100' => '<a href="'.e(lroute('ai-benchmark.leb-100')).'">'.e(__('leb_300.leb100_link')).'</a>',
                 ]) !!}</p>
             </div>
 

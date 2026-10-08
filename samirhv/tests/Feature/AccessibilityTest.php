@@ -44,7 +44,7 @@ class AccessibilityTest extends TestCase
         $html = $this->get('/projects/github-desktop', self::EN)->assertOk()->getContent();
 
         // The nav only renders with projects in the database; skip when empty.
-        if (! str_contains($html, 's-dd-parent')) {
+        if (! str_contains($html, 'id="nav-projects"')) {
             $this->markTestSkipped('No projects in the nav on this environment.');
         }
 
@@ -52,6 +52,27 @@ class AccessibilityTest extends TestCase
         $this->assertStringContainsString('aria-expanded="false"', $html);
         $this->assertStringContainsString('aria-controls="nav-projects"', $html);
         $this->assertStringNotContainsString('onclick="return false;"', $html);
+    }
+
+    /**
+     * AI Benchmark is a menu of its own, and it needs no project in the database. Same contract as the projects menu: a
+     * button that says what it does and carries its state, with the three pages as links in the current language.
+     */
+    public function test_the_ai_benchmark_menu_is_a_button_with_the_three_pages_in_the_current_language(): void
+    {
+        foreach (['/projects/github-desktop' => ['', self::EN], '/pt-br/projects/github-desktop' => ['/pt-br', []]] as $page => [$prefix, $headers]) {
+            $html = $this->get($page, $headers)->assertOk()->getContent();
+
+            $this->assertMatchesRegularExpression('#<button type="button" class="menu-link s-dd-trigger" aria-expanded="false" aria-controls="nav-ai-benchmark" data-dd-trigger>\s*<div>AI Benchmark#', $html);
+
+            preg_match('#<ul class="s-dd" id="nav-ai-benchmark">(.*?)</ul>#s', $html, $menu);
+            $this->assertNotEmpty($menu, 'The AI Benchmark menu list is missing.');
+            foreach (['/ai-benchmark', '/ai-benchmark/leb-100', '/ai-benchmark/leb-300'] as $path) {
+                $this->assertStringContainsString('href="'.url($prefix.$path).'"', $menu[1]);
+            }
+            $this->assertStringContainsString('LEB-100-A', $menu[1]);
+            $this->assertStringContainsString('LEB-300-A', $menu[1]);
+        }
     }
 
     /** An image with no alt is invisible to a reader; one with a bad alt is worse. */

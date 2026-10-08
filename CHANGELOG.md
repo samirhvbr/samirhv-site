@@ -12,6 +12,16 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.117 - AI Benchmark is a menu: a Benchmark page, then LEB-100-A and LEB-300-A
+
+The `AI Benchmark` entry of the header opens a dropdown, built like Projects (a button that opens on hover, focus and click, `aria-expanded`, the same script), with three pages:
+
+- **Benchmark** (`/ai-benchmark`) is new. It holds the explanation that used to sit at the top of the LEB-100 page (why another benchmark, how a run works, how it is scored, where the agents run), a table that sets LEB-100-A and LEB-300-A side by side (size, what each tests, difficulty, the run, the answer key, what is published, where it stands) and a card for each instance with the number of agents ranked, the top score and a link. What the table says of LEB-300-A is what the public repository already says of its level; nothing of the active instance is added.
+- **LEB-100-A** (`/ai-benchmark/leb-100`) is the page that was at `/ai-benchmark`, without the explanation: hero, leaderboard, flaw table, reading, caveats and the audit downloads.
+- **LEB-300-A** (`/ai-benchmark/leb-300`) loses its "What it is" paragraph, which the Benchmark page now says, and links to both other pages.
+
+`/ai-benchmark` no longer shows the leaderboard: a link to the old address lands on the Benchmark page, one click from the results. The sitemap lists the new page in both languages, `lang/{en,pt_BR}/leb_100.php` is new, and the explanation keeps its keys in `ai_benchmark.php`. 250 tests pass (`BenchmarkPageTest` is new; `AiBenchmarkPageTest` became `Leb100PageTest`).
+
 ## 1.0.116 - The route imports follow the code-style order
 
 1.0.115 put `use App\Http\Controllers\Leb300Controller;` out of the alphabetical order Pint enforces, so the "Check code style" step of CI failed on that commit while the tests passed. `routes/web.php` is reordered by Pint and nothing else changes.

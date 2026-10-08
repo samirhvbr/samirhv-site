@@ -27,8 +27,9 @@ The site speaks English and Brazilian Portuguese, and **the URL decides which**.
 | home | `/` | `/pt-br` |
 | downloads | `/downloads` | `/pt-br/downloads` |
 | project | `/p/{slug}` | `/pt-br/p/{slug}` |
-| AI benchmark | `/ai-benchmark` | `/pt-br/ai-benchmark` |
-| LEB-300 (status) | `/ai-benchmark/leb-300` | `/pt-br/ai-benchmark/leb-300` |
+| AI benchmark (Benchmark) | `/ai-benchmark` | `/pt-br/ai-benchmark` |
+| LEB-100 (results) | `/ai-benchmark/leb-100` | `/pt-br/ai-benchmark/leb-100` |
+| LEB-300 (pilot) | `/ai-benchmark/leb-300` | `/pt-br/ai-benchmark/leb-300` |
 
 A visitor arriving at a bare URL is negotiated: a browser asking for Portuguese
 is sent to `/pt-br` (302, `Vary: Accept-Language, Cookie`), anyone else stays on
@@ -74,15 +75,17 @@ its files grouped by operating system and version, a recommended build picked
 from the User-Agent, and its changelog. `/d/{file}` is the only way to fetch a
 file: the disk is private, and every hit is counted and audited.
 
-`/ai-benchmark` explains LEB, the LLM Engineering Benchmark, and shows its
-results. The numbers are not written here: they come from
+AI Benchmark is a menu of three pages (the `AI Benchmark` entry of the header, a dropdown built like Projects). `/ai-benchmark` is the first, "Benchmark": it explains LEB, the LLM
+Engineering Benchmark (why, how a run works, how it is scored, where the agents run), sets LEB-100 and LEB-300 side by side and links the page of each instance (`AiBenchmarkController`,
+copy in `lang/*/ai_benchmark.php`, `BenchmarkPageTest`). `/ai-benchmark/leb-100` shows the results of the first level (`Leb100Controller`, copy in `lang/*/leb_100.php`,
+`Leb100PageTest`). The numbers are not written here: they come from
 `samirhv/resources/data/ai-benchmark/results.json`, a byte-identical copy of
 `results/results.json` in [samirhvbr/ai-benchmark](https://github.com/samirhvbr/ai-benchmark),
 refreshed with `tools/sync-ai-benchmark-results.sh` (`--check` compares it with
 upstream). What is written here is the reading of those numbers and the caveats,
-in `lang/*/ai_benchmark.php` — reread them whenever a sync changes the results.
+in `lang/*/ai_benchmark.php` (highlights, caveats) — reread them whenever a sync changes the results.
 
-`/ai-benchmark/leb-300` is the page of the second level. LEB-300 is an active instance, so only its aggregate is published (the total, the grade, the category scores, the number of
+`/ai-benchmark/leb-300` is the page of the second level, and keeps only what belongs to that instance: the general explanation is on the Benchmark page. LEB-300 is an active instance, so only its aggregate is published (the total, the grade, the category scores, the number of
 runs, the cost and the time of each agent): never a flaw, a verdict, the code under test or the answer key. The page is a controller (`Leb300Controller`, no database) that reads the
 aggregate from the same synced `results.json` as the LEB-100 page. Until that file carries one it is a status page; once it does, it shows the scoreboard, with the same card as LEB-100,
 and says whether the score is official (the median of three runs) and what the record does not have. The copy is `lang/*/leb_300.php`, and shvia.org renders this same copy.

@@ -18,6 +18,10 @@ return [
     'projects' => 'Projetos',
     'downloads' => 'Downloads',
     'ai_benchmark' => 'AI Benchmark',
+    'ai_benchmark_overview' => 'Benchmark',
+    'ai_benchmark_overview_hint' => 'O projeto e seus níveis',
+    'ai_benchmark_leb100_hint' => 'Cerca de 300 linhas',
+    'ai_benchmark_leb300_hint' => 'Cerca de 3.000 linhas',
     'explore_releases' => 'Explorar releases',
 
     'title_suffix' => 'Projetos',

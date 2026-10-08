@@ -39,7 +39,7 @@ class SitemapController extends Controller
     {
         $urls = [];
 
-        foreach (['home' => '1.0', 'downloads' => '0.9', 'ai-benchmark' => '0.7', 'ai-benchmark.leb-300' => '0.5', 'project.github-desktop' => '0.6'] as $name => $priority) {
+        foreach (['home' => '1.0', 'downloads' => '0.9', 'ai-benchmark' => '0.7', 'ai-benchmark.leb-100' => '0.6', 'ai-benchmark.leb-300' => '0.5', 'project.github-desktop' => '0.6'] as $name => $priority) {
             $urls[] = $this->entry($name, [], $priority);
         }
 
