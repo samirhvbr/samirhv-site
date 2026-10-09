@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.126 - The LEB-300 page lists nine agents: Claude Opus 5.5 leads, Claude Sonnet 5.5 is second
+
+ai-benchmark 0.2.135 publishes the LEB-300-A aggregate with nine agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: Claude Opus 5.5 at xhigh (886 of 1000, Gold, one run of three), Claude Sonnet 5.5 (860), Kimi K3 (737), GLM-5.3 at high effort (688, served by OpenRouter), DeepSeek V4.1 Flash (649), GPT-5.6-terra (625), GLM-5.2 at high effort (390, served by Novita AI), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). A line on fewer than three runs says so and is not official. Nothing in the views, the copy or the styles changes: the page keeps the visual of the last versions, with nine lines, and the menu's second line and the Benchmark page's card read the count and the top score from the same file.
+
 ## 1.0.125 - The Tura Notes application can sign in through the site: a consent screen and a code exchange
 
 The Tura Notes application gets its connection to the cloud today by someone minting a credential on `/admin/tura`, downloading a file and pointing the application at its path. On a phone there is no file to point at, and typing a sixty-character secret on a touch keyboard is how one ends up in a note or a screenshot. The owner asked that signing in bring the connection with it. This is the site's half of that, as specified in `docs/PAIRING.md` of the Tura repository (ADR-105 there): an OAuth 2.0 authorization code flow with PKCE, with this site as the authorization server.
