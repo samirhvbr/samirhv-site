@@ -9,6 +9,7 @@ use App\Http\Controllers\LegacyEnglishPrefix;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TuraPairController;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
 
@@ -108,3 +109,16 @@ Route::post('/login', [LoginController::class, 'login'])
     ->middleware('throttle:login')
     ->name('login.attempt');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// ── Tura Notes: signing in to the application through the site ──
+// Outside the bilingual surface, like the login: it is an application's door, not
+// a page. The contract (flow, parameters, what must never go in a URL or a log) is
+// docs/PAIRING.md in the Tura repository.
+Route::middleware(['auth', 'admin', 'password.changed'])->group(function () {
+    Route::get('/tura/pair', [TuraPairController::class, 'show'])->name('tura.pair');
+    Route::post('/tura/pair', [TuraPairController::class, 'decide'])->name('tura.pair.decide');
+});
+// No session: the caller is the application, and what authenticates it is the `verifier`.
+Route::post('/tura/pair/exchange', [TuraPairController::class, 'exchange'])
+    ->middleware('throttle:tura-pair')
+    ->name('tura.pair.exchange');

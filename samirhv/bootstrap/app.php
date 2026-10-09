@@ -31,6 +31,13 @@ return Application::configure(basePath: dirname(__DIR__))
             TrackPageView::class,
         ]);
 
+        // The Tura application trades the code for a credential with no session and
+        // no form, so it has no CSRF token to send. This is the only exempt route,
+        // and what protects it is what CSRF would otherwise protect: the code is
+        // single-use and lives two minutes, and the exchange needs the `verifier`
+        // that only the application that started the flow holds.
+        $middleware->validateCsrfTokens(except: ['tura/pair/exchange']);
+
         $middleware->alias([
             'admin' => EnsureIsAdmin::class,
             'password.changed' => EnsurePasswordChanged::class,

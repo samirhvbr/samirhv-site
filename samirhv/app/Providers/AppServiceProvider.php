@@ -158,6 +158,11 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('login', fn (Request $r) => Limit::perMinute(5)
             ->by($r->ip().'|'.Str::lower((string) $r->input('email'))));
+
+        // The Tura code exchange: no session, so by IP. A person trades one code at
+        // a time; thirty a minute is far more than that and still stops anyone
+        // trying to guess.
+        RateLimiter::for('tura-pair', fn (Request $r) => Limit::perMinute(30)->by((string) $r->ip()));
     }
 
     /** Trilha de autenticação do painel (login/falha/logout) → auth_events. */

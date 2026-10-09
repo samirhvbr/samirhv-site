@@ -28,4 +28,31 @@ return [
     // uma opção que fica errada.
     'workspace' => env('TURA_WORKSPACE', 'personal'),
 
+    /*
+    | Signing in to the application through the site (docs/PAIRING.md in the Tura
+    | repository).
+    |
+    | The application opens /tura/pair in the browser, the admin signs in and
+    | allows the device, and the application trades a single-use code for the
+    | credential.
+    */
+
+    // The server's public address, handed to the application with the credential.
+    // The application validates it (https, and never a private address without its
+    // own consent); here it only has to be the right one.
+    'origin' => env('TURA_ORIGIN', 'https://tura.samirhv.com.br'),
+
+    'pair' => [
+        // How long the code lives between "Allow" and the exchange. Two minutes:
+        // the time for the browser to hand control back to the application, and
+        // nothing more.
+        'ttl' => 120,
+
+        // The six permissions the Tura remote folder uses (ADR-099), including
+        // `search`, which the /admin/tura screen does not offer. `devices` is left
+        // out on purpose: a device that manages the others is a credential the
+        // owner mints by hand.
+        'permissions' => ['read', 'create', 'update', 'move', 'delete', 'search'],
+    ],
+
 ];
