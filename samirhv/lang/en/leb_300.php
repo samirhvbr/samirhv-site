@@ -41,7 +41,7 @@ return [
     'facts_key' => 'key private',
     'session_time' => 'Session :min min',
     'more_note' => 'A written reading of the aggregate; it is not part of the score, and it names no flaw.',
-    'session_time_help' => 'From the first message to the end of the session, as the run record has it.',
+    'session_time_help' => 'From the first message to the end of the session, without the minutes the operator took between the two stages.',
 
     'stands_body' => 'The instance is being prepared. Its first runs are internal, and they are there to check the procedure, so they are not published.',
     'stands_body_result' => 'The instance is in an exploratory pilot. The results above are the ones published so far, and other agents follow. Its first runs also served to check the procedure.',

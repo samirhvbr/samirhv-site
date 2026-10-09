@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.124 - The session time on the LEB-300 page leaves out the operator's wait between the stages
+
+The operator's wait between the end of stage 1 and the stage 2 message is not the agent's time, and the LEB-300 session times had it inside them (20 minutes in GPT-5.6-terra's, 10 in Kimi K3's). ai-benchmark 0.2.134 subtracts it, measured for all nine runs from their own logs, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: the lines now read Claude Sonnet 5.5 42.1 minutes (was 54.8), Kimi K3 69.4 (79.8), DeepSeek V4.1 Flash 35.6 (38.6), GPT-5.6-terra 32.1 (52.2), MiniMax-M3 42.3 (43.7) and Claude Haiku 4.5 12.4 (13.4); the runs listed under each card follow. Scores, grades and costs do not move. The tooltip of the session time, on the card and in the run list, now says what it leaves out ("without the minutes the operator took between the two stages"); the run list used the LEB-100 wording and uses the LEB-300 one. Nothing else in the views, the copy or the styles changes.
+
 ## 1.0.123 - The LEB-300 page lists six agents: Kimi K3 is second
 
 ai-benchmark 0.2.133 publishes the LEB-300-A aggregate with six agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it: Claude Sonnet 5.5 (860 of 1000, Gold, one run of three), Kimi K3 at high effort (737, Silver, one run, served by Novita AI, not by Moonshot's own API as in LEB-100), DeepSeek V4.1 Flash (649, one run), GPT-5.6-terra (625, one run), MiniMax-M3 (388, two runs) and Claude Haiku 4.5 (242, three). A line on fewer than three runs says so and is not official. Nothing in the views, the copy or the styles changes: the page keeps the visual of the last versions, with six lines, and the menu's second line and the Benchmark page's card read the count and the top score from the same file.

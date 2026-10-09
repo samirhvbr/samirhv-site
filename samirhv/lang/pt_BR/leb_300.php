@@ -41,7 +41,7 @@ return [
     'facts_key' => 'gabarito privado',
     'session_time' => 'Sessão de :min min',
     'more_note' => 'Uma leitura escrita do agregado; não faz parte da nota e não cita nenhuma falha.',
-    'session_time_help' => 'Da primeira mensagem ao fim da sessão, como consta no registro da execução.',
+    'session_time_help' => 'Da primeira mensagem ao fim da sessão, sem os minutos que o operador levou entre as duas etapas.',
 
     'stands_body' => 'A instância está em preparação. As primeiras execuções são internas e servem para conferir o procedimento, por isso não são publicadas.',
     'stands_body_result' => 'A instância está em piloto exploratório. Os resultados acima são os publicados até agora, e outros agentes virão. As primeiras execuções serviram também para conferir o procedimento.',

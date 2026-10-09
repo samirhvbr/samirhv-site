@@ -238,7 +238,7 @@
                                                     <strong>{{ __('ai_benchmark.more_run', ['n' => $r['run']]) }} · {{ $r['total'] }}</strong>
                                                     @if(($r['wall_minutes'] ?? null) !== null)
                                                         @php $m = (int) round($r['wall_minutes']); @endphp
-                                                        <span title="{{ __('ai_benchmark.more_time_help') }}">{{ $m < 60 ? __('ai_benchmark.more_time_min', ['m' => $m]) : ($m % 60 === 0 ? __('ai_benchmark.more_time_h_only', ['h' => intdiv($m, 60)]) : __('ai_benchmark.more_time_h', ['h' => intdiv($m, 60), 'm' => $m % 60])) }}</span>
+                                                        <span title="{{ __('leb_300.session_time_help') }}">{{ $m < 60 ? __('ai_benchmark.more_time_min', ['m' => $m]) : ($m % 60 === 0 ? __('ai_benchmark.more_time_h_only', ['h' => intdiv($m, 60)]) : __('ai_benchmark.more_time_h', ['h' => intdiv($m, 60), 'm' => $m % 60])) }}</span>
                                                     @endif
                                                     @if(($r['cost_usd'] ?? null) !== null)
                                                         <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_usd'], 2)]) }}</span>
