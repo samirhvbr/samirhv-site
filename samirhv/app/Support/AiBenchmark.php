@@ -72,8 +72,8 @@ final class AiBenchmark
     }
 
     /**
-     * The model of an agent id, from the instances that publish per-flaw results: an aggregate names
-     * its agents by id only, and the same agent has run on those instances before.
+     * The model of an agent id, from the instances that publish per-flaw results (the same agent has
+     * run on those instances before), else from the model block its own aggregate line carries.
      *
      * @return array<string, mixed>|null
      */
@@ -83,6 +83,15 @@ final class AiBenchmark
             foreach ($instance['entries'] ?? [] as $entry) {
                 if (($entry['agent'] ?? null) === $agent) {
                     return $entry['model'] ?? null;
+                }
+            }
+        }
+
+        // An agent with no run on those instances yet: the aggregate says who it is itself.
+        foreach (self::results()['aggregate_instances'] ?? [] as $aggregate) {
+            foreach ($aggregate['agents'] ?? [] as $entry) {
+                if (($entry['agent'] ?? null) === $agent && ! empty($entry['model'])) {
+                    return $entry['model'];
                 }
             }
         }

@@ -187,6 +187,20 @@ class Leb300PageTest extends TestCase
         $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Comment and details')->assertDontSee('Run by run');
     }
 
+    /** An agent with no run on LEB-100 is named by the model block its aggregate line carries, not by its raw id. */
+    public function test_an_agent_with_no_leb_100_run_is_named_from_its_aggregate_line(): void
+    {
+        $agent = ['agent' => 'claude-haiku-9.9-xhigh', 'score' => 700, 'grade' => 'Silver', 'runs_count' => 2, 'categories' => self::CATEGORIES,
+            'model' => ['name' => 'Claude Haiku 9.9', 'id' => 'claude-haiku-9-9', 'provider' => 'Anthropic', 'reasoning_effort' => 'xhigh']];
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'edition' => '2026', 'agents' => [$agent]]]]);
+
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('Claude Haiku 9.9')->assertSee('Anthropic')->assertSee('effort xhigh')->assertDontSee('claude-haiku-9.9-xhigh');
+
+        unset($agent['model']);
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['instance' => 'LEB-300-A', 'publication' => 'aggregate', 'edition' => '2026', 'agents' => [$agent]]]]);
+        $this->get(self::EN, self::EN_HEADER)->assertOk()->assertSee('claude-haiku-9.9-xhigh');   // a file without the block still renders, by the id
+    }
+
     public function test_neither_state_names_a_flaw_or_carries_a_flaw_table(): void
     {
         foreach (['withoutAggregate', 'withAggregate'] as $state) {
