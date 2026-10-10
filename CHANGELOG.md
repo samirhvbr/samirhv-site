@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.129 - The LEB-300 page lists Claude Fable 5.1 at high effort
+
+ai-benchmark 0.2.138 publishes the LEB-300-A aggregate with thirteen agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Fable 5.1 at high effort is new (836 of 1000, Gold, one run of three). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons, none of them the LEB-300 tests.
+
 ## 1.0.128 - The LEB-300 page lists Claude Opus 5.5 at high effort and a second run of Claude Sonnet 5.5 at high effort and of GPT-5.6-terra
 
 ai-benchmark 0.2.137 publishes the LEB-300-A aggregate with twelve agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Opus 5.5 at high effort is new (848 of 1000, Gold, one run of three). Claude Sonnet 5.5 at high effort now has two runs (897 and 763) and is published at the lower, 763; GPT-5.6-terra at xhigh has two (625 and 574) and is published at 574 (Bronze). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons (no pdo_sqlite, running as root, no projects in the nav), none of them the LEB-300 tests.
