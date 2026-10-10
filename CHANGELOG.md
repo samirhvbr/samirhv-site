@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.130 - The LEB-300 page lists Gemma 4 26B A4B at high effort
+
+ai-benchmark 0.2.140 publishes the LEB-300-A aggregate with fourteen agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Gemma 4 26B A4B at high effort is new (232 of 1000, Reprovada, one run of three). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons, none of them the LEB-300 tests.
+
 ## 1.0.129 - The LEB-300 page lists Claude Fable 5.1 at high effort
 
 ai-benchmark 0.2.138 publishes the LEB-300-A aggregate with thirteen agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Fable 5.1 at high effort is new (836 of 1000, Gold, one run of three). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons, none of them the LEB-300 tests.
