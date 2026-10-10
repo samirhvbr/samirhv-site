@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.132 - The LEB-300 page lists GLM-5.3-FlashX at high effort, and two agents gain a second run
+
+ai-benchmark 0.2.142 publishes the LEB-300-A aggregate with sixteen agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GLM-5.3-FlashX at high effort is new (648 of 1000, Silver, one run of three). Two published scores change because each agent gained a second run and the published score is the lower of the runs: Claude Opus 5.5 at xhigh goes from 886 to 822 (1st to 4th) and Kimi K3 at high from 737 to 712 (stays 6th). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons, none of them the LEB-300 tests.
+
 ## 1.0.131 - The LEB-300 page lists GPT-5.6-luna at xhigh effort
 
 ai-benchmark 0.2.141 publishes the LEB-300-A aggregate with fifteen agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GPT-5.6-luna at xhigh effort is new (638 of 1000, Silver, one run of three). Data only: no view, copy, style or code changes. 298 tests run, 289 pass and 9 skip for environment reasons, none of them the LEB-300 tests.
