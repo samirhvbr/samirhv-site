@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.135 - The LEB-300 page lists MiniMax-M2.7
+
+ai-benchmark 0.2.145 publishes the LEB-300-A aggregate with twenty-one agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. MiniMax-M2.7 scores 202 of 1000 (Reprovada, 21st) with one run of three, so it is not official yet. The top five of the board is unchanged. No page text, template or test changes.
+
 ## 1.0.134 - The LEB-300 page lists GPT-6-luna at xhigh effort and MiniMax-M2.7-highspeed
 
 ai-benchmark 0.2.144 publishes the LEB-300-A aggregate with twenty agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GPT-6-luna at xhigh effort scores 471 of 1000 (Bronze, 15th) and MiniMax-M2.7-highspeed scores 291 (Reprovada, 18th); each has one run of three, so neither is official yet. The top five of the board is unchanged. No page text, template or test changes.
