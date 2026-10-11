@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.136 - The LEB-300 page adds more runs of Claude Opus 5.5 (high), GPT-6-astra, GPT-5.6-luna and GPT-5.6-terra
+
+ai-benchmark 0.2.146 publishes the LEB-300-A aggregate with the same twenty-one agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Four agents get another run: Claude Opus 5.5 at high effort stays at 848 (runs 848 and 866) and GPT-6-astra at 717 (717 and 729), each with two runs of three; GPT-5.6-luna falls from 638 to 512 (638 and 512, 14th); GPT-5.6-terra now has three runs (625, 574 and 657) and its score is the median, 625 (13th, up from 574). The top five of the board is unchanged. No page text, template or test changes.
+
 ## 1.0.135 - The LEB-300 page lists MiniMax-M2.7
 
 ai-benchmark 0.2.145 publishes the LEB-300-A aggregate with twenty-one agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. MiniMax-M2.7 scores 202 of 1000 (Reprovada, 21st) with one run of three, so it is not official yet. The top five of the board is unchanged. No page text, template or test changes.
