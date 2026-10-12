@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.138 - The LEB-300 page adds GPT-6.1-sol at high effort, Claude Sonnet 5.5 at medium effort and GLM-5.3-Flash at high effort
+
+ai-benchmark 0.2.148 publishes the LEB-300-A aggregate with twenty-five agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Three agents are new and none is official yet: GPT-6.1-sol at high effort scores 779 of 1000 (Gold, 8th) with one run of three; Claude Sonnet 5.5 at medium effort has two runs (659 and 717) and is published at the lower, 659 (Silver, 13th); GLM-5.3-Flash at high effort scores 568 (Bronze, 17th) with one run of three. The first seven places of the board are unchanged. No page text, template or test changes.
+
 ## 1.0.137 - The LEB-300 page adds GPT-6.1-sol at ultra effort and more runs of Claude Sonnet 5.5 (xhigh and high) and Claude Haiku 5.5 (xhigh)
 
 ai-benchmark 0.2.147 publishes the LEB-300-A aggregate with twenty-two agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GPT-6.1-sol at ultra effort is new: 797 of 1000 (Gold, 7th) with one run of three, so it is not official yet. Three agents get another run: Claude Sonnet 5.5 at xhigh stays at 860 (runs 860 and 911, 2/3) and still leads; Claude Sonnet 5.5 at high, now with three runs (897, 763, 855), is published at its median, 855, up from 763 (2nd, was 6th); Claude Haiku 5.5 at xhigh, now with three runs (708, 732, 824), is published at its median, 732, up from 708 (8th, was 9th). No page text, template or test changes.
