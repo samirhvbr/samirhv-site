@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.141 - The LEB-300 page adds Claude Sonnet 5.5 at max effort, which leads the board with 932 (Platinum)
+
+ai-benchmark 0.2.152 publishes the LEB-300-A aggregate with twenty-six agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Sonnet 5.5 at max effort is new and goes straight to the top: 932 of 1000 (Platinum, 1st) with one run of three, so it is not official yet. It is the first Platinum on the board and the highest score of any run so far; Claude Sonnet 5.5 at xhigh effort (860) is now 2nd, and every other agent moves down one place. Its card shows the `LEB Platinum` grade, a style that was already in the stylesheet but had not been used on any page before. Data only: no page copy, template or test changes.
+
 ## 1.0.140 - The LEB-300 page adds a second run of GPT-6.1-sol at xhigh effort
 
 ai-benchmark 0.2.151 publishes the LEB-300-A aggregate with the same twenty-five agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GPT-6.1-sol at xhigh effort gets its second run (830) next to the first (800): with fewer than three runs the published score is the lowest, so it stays 800 (Gold, 6th, 2 of 3 runs) and no place on the board changes. Its run list now shows both runs with their session time and tokens. The reading of the agent is rewritten for two runs. Data only: no page copy, template or test changes.
