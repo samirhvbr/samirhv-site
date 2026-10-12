@@ -141,7 +141,9 @@ class Leb300PageTest extends TestCase
     private function withReading(): array
     {
         $agent = ['agent' => 'agent-x', 'score' => 388, 'grade' => 'Reprovada', 'runs_count' => 2, 'categories' => self::CATEGORIES, 'cost_usd' => 1.21, 'wall_minutes' => 43.7,
-            'runs' => [['run' => 1, 'total' => 388, 'cost_usd' => 1.21, 'wall_minutes' => 43.7], ['run' => 2, 'total' => 398, 'cost_usd' => 0.81, 'wall_minutes' => 66.1]],
+            'tokens' => ['input' => 354573, 'output' => 63518, 'cache' => 6653440, 'total' => 7071531],
+            'runs' => [['run' => 1, 'total' => 388, 'cost_usd' => 1.21, 'wall_minutes' => 43.7, 'tokens' => ['input' => 354573, 'output' => 63518, 'cache' => 6653440, 'total' => 7071531]],
+                ['run' => 2, 'total' => 398, 'cost_usd' => 0.81, 'wall_minutes' => 66.1, 'tokens' => null]],
             'comment' => ['en' => 'Two steady runs, strong on compatibility.', 'pt_BR' => 'Duas execuções estáveis, fortes em compatibilidade.']];
         AiBenchmark::fake([
             'instances' => [['entries' => [['agent' => 'agent-x', 'model' => ['name' => 'Model X', 'provider' => 'Maker', 'reasoning_effort' => 'default']]]]],
@@ -173,6 +175,22 @@ class Leb300PageTest extends TestCase
             ->assertSee('Duas execuções estáveis, fortes em compatibilidade.')
             ->assertDontSee('Two steady runs')
             ->assertSee('Run 1 · 388')->assertSee('Comentário e ficha');
+    }
+
+    /** The agent's line and each run that has them show input, output, cache and total; a run whose record has none shows nothing. */
+    public function test_the_tokens_show_on_the_card_and_on_each_run_that_has_them(): void
+    {
+        $this->withReading();
+
+        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('Tokens: 354,573 in · 63,518 out · 6,653,440 cache · 7,071,531 total')
+            ->assertSee('Input is what was not served from the cache')
+            ->getContent();
+        $this->assertSame(2, substr_count($html, 'class="ab-tokens"'));   // the card line and run 1; run 2 has none
+
+        $this->get(self::PT)->assertOk()
+            ->assertSee('Tokens: 354.573 de entrada · 63.518 de saída · 6.653.440 de cache · 7.071.531 no total')
+            ->assertSee('Entrada é o que não veio do cache');
     }
 
     public function test_a_card_without_a_reading_still_opens_on_its_runs_and_a_file_without_runs_still_renders(): void

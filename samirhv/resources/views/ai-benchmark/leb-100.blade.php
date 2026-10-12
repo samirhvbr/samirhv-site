@@ -233,6 +233,9 @@
                                                 @if(($r['cost_time']['usd_estimate'] ?? null) !== null)
                                                     <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_time']['usd_estimate'], 2)]) }}</span>
                                                 @endif
+                                                @if(! empty($r['cost_time']['tokens']))
+                                                    @include('ai-benchmark._tokens', ['tokens' => $r['cost_time']['tokens']])
+                                                @endif
                                                 <a href="{{ $r['scorecard_url'] }}" target="_blank" rel="noopener">{{ __('ai_benchmark.scorecard') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                                             </li>
                                         @endforeach

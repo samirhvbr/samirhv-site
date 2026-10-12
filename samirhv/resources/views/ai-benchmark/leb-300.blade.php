@@ -203,11 +203,14 @@
                                     @if(($a['wall_minutes'] ?? null) !== null)
                                         <span title="{{ __('leb_300.session_time_help') }}">{{ __('leb_300.session_time', ['min' => number_format($a['wall_minutes'], 1)]) }}</span>
                                     @endif
+                                    @if(! empty($a['tokens']))
+                                        @include('ai-benchmark._tokens', ['tokens' => $a['tokens']])
+                                    @endif
                                 </p>
 
                                 {{-- Opened by its summary or by a click anywhere on the card. The reading is written (it travels in the
                                      aggregate, see comments.json of the private archive); the rest is read from the aggregate, so it never
-                                     disagrees with the table. An ACTIVE instance has no flaw to list: only categories, runs, cost and time. --}}
+                                     disagrees with the table. An ACTIVE instance has no flaw to list: only categories, runs, cost, time and tokens. --}}
                                 @php
                                     $comment = $a['comment'][app()->getLocale() === 'pt_BR' ? 'pt_BR' : 'en'] ?? null;
                                     $full = collect($a['categories'])->filter(fn ($score, $cat) => $score === $weights[$cat]);
@@ -242,6 +245,9 @@
                                                     @endif
                                                     @if(($r['cost_usd'] ?? null) !== null)
                                                         <span>{{ __('ai_benchmark.more_cost', ['cost' => number_format($r['cost_usd'], 2)]) }}</span>
+                                                    @endif
+                                                    @if(! empty($r['tokens']))
+                                                        @include('ai-benchmark._tokens', ['tokens' => $r['tokens']])
                                                     @endif
                                                 </li>
                                             @endforeach

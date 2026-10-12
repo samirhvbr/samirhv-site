@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.139 - The LEB pages show the tokens of each run, and Claude Sonnet 5.5 at medium becomes official on LEB-300
+
+ai-benchmark 0.2.150 publishes the LEB-300-A aggregate with the same twenty-five agents, and `samirhv/resources/data/ai-benchmark/results.json` (with the two CSV downloads) is synced from it. Each run now shows the client's own token counts: input (without the part served from the cache), output (with the reasoning tokens), cache (read plus written) and their total, as exact figures grouped by the language (`354,573` in English, `354.573` in Portuguese), with a tooltip that says what each one counts. On the LEB-300 page they sit on the agent's line (the run its score is) and in each line of the run list; on the LEB-100 page they sit in each line of the run list, because the card there shows the average cost of the runs and a single run's tokens would not match it. A run whose record has none shows nothing. The LEB-100 data already carried them in all ninety-two runs; the LEB-300 aggregate carries them since ai-benchmark 0.2.149, for all forty-one runs.
+
+Claude Sonnet 5.5 at medium effort gets its third run (734) and becomes official: runs 659, 717 and 734, published at the median, 717 (Silver), 10th instead of 13th. It ties GPT-6-astra at 717 and is listed ahead of it by agent id, so GPT-6-astra, Moonshot Kimi K3 and GLM-5.3 each move down one place; the first nine places do not change. One partial view `ai-benchmark/_tokens.blade.php`, two language strings in each language, and one new test on each page; 300 tests, 291 passing and 9 skipped.
+
 ## 1.0.138 - The LEB-300 page adds GPT-6.1-sol at high effort, Claude Sonnet 5.5 at medium effort and GLM-5.3-Flash at high effort
 
 ai-benchmark 0.2.148 publishes the LEB-300-A aggregate with twenty-five agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Three agents are new and none is official yet: GPT-6.1-sol at high effort scores 779 of 1000 (Gold, 8th) with one run of three; Claude Sonnet 5.5 at medium effort has two runs (659 and 717) and is published at the lower, 659 (Silver, 13th); GLM-5.3-Flash at high effort scores 568 (Bronze, 17th) with one run of three. The first seven places of the board are unchanged. No page text, template or test changes.

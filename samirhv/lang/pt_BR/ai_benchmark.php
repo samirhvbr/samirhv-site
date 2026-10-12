@@ -98,6 +98,8 @@ return [
     'more_comp' => '{0} contrato mantido|{1} 1 valor de negócio alterado|[2,*] :count valores de negócio alterados',
     'more_checks' => ':passed/:total checagens',
     'more_cost' => 'US$ :cost',
+    'tokens_line' => 'Tokens: :input de entrada · :output de saída · :cache de cache · :total no total',
+    'tokens_help' => 'Contagem do próprio cliente. Entrada é o que não veio do cache; saída inclui os tokens de raciocínio; cache é o que foi lido ou gravado nele.',
     'more_time_min' => ':mmin',
     'more_time_h' => ':hh :mmin',
     'more_time_h_only' => ':hh',

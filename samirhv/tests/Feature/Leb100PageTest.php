@@ -370,6 +370,23 @@ class Leb100PageTest extends TestCase
         }
     }
 
+    /** The tokens of every run the file records, in the run list of each card: the exact figures, grouped as the language groups them. */
+    public function test_every_run_with_tokens_shows_them_in_its_card(): void
+    {
+        $entries = AiBenchmark::results()['instances'][0]['entries'];
+        $runs = array_merge(...array_map(fn ($e) => $e['runs'], $entries));
+        $recorded = array_values(array_filter($runs, fn ($r) => ! empty($r['cost_time']['tokens'])));
+        $this->assertNotEmpty($recorded);
+
+        $html = $this->get(self::EN, self::EN_HEADER)->assertOk()->getContent();
+        $this->assertSame(count($recorded), substr_count($html, 'class="ab-tokens"'));
+        $t = $recorded[0]['cost_time']['tokens'];
+        $this->assertStringContainsString(sprintf('Tokens: %s in · %s out · %s cache · %s total', number_format($t['input']), number_format($t['output']), number_format($t['cache']), number_format($t['total'])), $html);
+
+        $pt = $this->get(self::PT)->assertOk()->getContent();
+        $this->assertStringContainsString(sprintf('Tokens: %s de entrada · %s de saída · %s de cache · %s no total', number_format($t['input'], 0, ',', '.'), number_format($t['output'], 0, ',', '.'), number_format($t['cache'], 0, ',', '.'), number_format($t['total'], 0, ',', '.')), $pt);
+    }
+
     public function test_a_card_without_a_comment_still_opens_on_its_details(): void
     {
         $data = AiBenchmark::results();

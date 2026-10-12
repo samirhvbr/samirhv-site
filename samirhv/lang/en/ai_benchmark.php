@@ -103,6 +103,8 @@ return [
     'more_comp' => '{0} contract kept|{1} 1 business value changed|[2,*] :count business values changed',
     'more_checks' => ':passed/:total checks',
     'more_cost' => 'US$ :cost',
+    'tokens_line' => 'Tokens: :input in · :output out · :cache cache · :total total',
+    'tokens_help' => "The client's own count. Input is what was not served from the cache; output includes the reasoning tokens; cache is what was read from or written to it.",
     'more_time_min' => ':mmin',
     'more_time_h' => ':hh :mmin',
     'more_time_h_only' => ':hh',
