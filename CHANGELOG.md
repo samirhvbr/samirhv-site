@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.144 - The LEB-300 page adds a second run of Claude Sonnet 5.5 at max effort, which lowers its score from 932 to 864
+
+ai-benchmark 0.2.163 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Sonnet 5.5 at max effort gets its second run (864) next to 932; with fewer than three runs the published score is the lowest, so the agent moves from 932 (Platinum) to 864 (Gold). It stays 1st, 4 points ahead of Claude Sonnet 5.5 at xhigh effort (860), and no agent shows Platinum for now. The card shows the categories, cost, time and tokens of the run whose score is published (run 2), and its reading is rewritten for two runs. Data only: no page copy, template or test changes.
+
 ## 1.0.143 - The LEB-300 page adds a third run of Claude Opus 5.5 at xhigh effort, which makes the agent official
 
 ai-benchmark 0.2.159 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Opus 5.5 at xhigh effort gets its third run (845) next to 886 and 822 and becomes official: its score is the median, 845 (Gold), 5th instead of 6th. It passes Claude Fable 5.1 at high effort (836), which moves to 6th, and the first four places do not change. The card shows the categories, cost, time and tokens of the median run, and its reading is rewritten for three runs. Data only: no page copy, template or test changes.
