@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.142 - The LEB-300 page adds GLM-5.3-Flash at max effort
+
+ai-benchmark 0.2.154 publishes the LEB-300-A aggregate with twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. GLM-5.3-Flash at max effort is new: 693 of 1000 (Silver, 14th) with one run of three, so it is not official yet. Agents below it move down one place and the first thirteen places do not change. It ran through Novita AI, while the same model at high effort (568) ran through Z.ai's own API, so the gap between them mixes the effort and the host; the card's reading says so. Data only: no page copy, template or test changes.
+
 ## 1.0.141 - The LEB-300 page adds Claude Sonnet 5.5 at max effort, which leads the board with 932 (Platinum)
 
 ai-benchmark 0.2.152 publishes the LEB-300-A aggregate with twenty-six agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Sonnet 5.5 at max effort is new and goes straight to the top: 932 of 1000 (Platinum, 1st) with one run of three, so it is not official yet. It is the first Platinum on the board and the highest score of any run so far; Claude Sonnet 5.5 at xhigh effort (860) is now 2nd, and every other agent moves down one place. Its card shows the `LEB Platinum` grade, a style that was already in the stylesheet but had not been used on any page before. Data only: no page copy, template or test changes.
