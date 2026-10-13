@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.147 - The LEB-300 page withdraws a run of Claude Sonnet 5.5 at high effort that ran at medium: the agent keeps 855 with two runs
+
+ai-benchmark 0.2.180 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The second run of Claude Sonnet 5.5 at high effort was filed as high, but its session log shows it ran at medium (all 40 of its responses carry that effort), so PROTOCOL §4 item 5 withdraws it. The agent goes from three runs (897, 763 and 855) to two (897 and 855), still numbered 1 and 3: the published score is the lowest of two, 855, the same number as before because it was the median of three, and the agent keeps its place, 3rd, but it is no longer official (2 of 3 runs). No other agent's score or place moves.
+
+The written reading of the agent is rewritten for two runs and says that a run was withdrawn. No code, template or copy of the page changes: the card, the run list and the "not official" tag follow the file.
+
 ## 1.0.146 - Two pages for the next series, LEB Default and LEB Security, join the AI Benchmark menu and the Benchmark page
 
 The next LEB series (`docs/new-series-design.md` of ai-benchmark, status PROPOSED) splits the benchmark into two independent tracks, and each now has a status page: `/ai-benchmark/leb-default` and `/ai-benchmark/leb-security`, with their `/pt-br` twins. The series has no results, so the pages say where it stands and publish no score. Both come from one controller (`LebTrackController`, no database) and one view (`ai-benchmark/leb-track.blade.php`), with the copy written once in `lang/*/leb_series.php` (what the two say alike) and `lang/*/leb_default.php` / `leb_security.php` (what each track measures).
