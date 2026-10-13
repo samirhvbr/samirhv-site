@@ -98,7 +98,7 @@ class Leb300PageTest extends TestCase
             ->assertSee('See the results')
             ->assertSee('Top 1 so far')
             ->assertSee('Full leaderboard')
-            ->assertSee('key private')
+            ->assertSee('key public')
             ->assertSee('data-ab-filter', false)
             ->assertSee('Filter by vendor')
             ->assertSee('Order by')
@@ -121,6 +121,38 @@ class Leb300PageTest extends TestCase
             ->assertDontSee('Full leaderboard')
             ->assertDontSee('data-ab-filter', false)
             ->assertDontSee('What the record does not have');
+    }
+
+    /**
+     * LEB-300-A's instance and answer key are on GitHub (ai-benchmark 0.2.171, MATRIX §4 item 1). The page says so in both
+     * states and both languages, says the bench machines cannot reach GitHub, and never calls the key private or hidden. What
+     * stays in a private archive is each run's delivery, verdict and flaw-by-flaw results.
+     */
+    public function test_the_page_says_the_answer_key_is_public_and_never_that_it_is_private(): void
+    {
+        foreach ([true, false] as $withResult) {
+            $withResult ? $this->withAggregate(3) : $this->withoutAggregate();
+
+            $this->get(self::EN, self::EN_HEADER)
+                ->assertOk()
+                ->assertSee('answer key is public on GitHub')
+                ->assertSee('cannot reach GitHub')
+                ->assertSee('stay in a private archive')
+                ->assertDontSee('key private')
+                ->assertDontSee('stays private')
+                ->assertDontSee('stay private')
+                ->assertDontSee('the code under test');
+
+            $this->get(self::PT)
+                ->assertOk()
+                ->assertSee('público no GitHub')
+                ->assertSee('não alcançam o GitHub')
+                ->assertSee('arquivo privado')
+                ->assertDontSee('gabarito privado')
+                ->assertDontSee('fica privado')
+                ->assertDontSee('ficam privados')
+                ->assertDontSee('o código avaliado');
+        }
     }
 
     /** One order chip per category plus "Overall", and one filter chip per vendor plus "All", as on the LEB-100 page. */

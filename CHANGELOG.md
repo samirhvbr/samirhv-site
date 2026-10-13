@@ -12,6 +12,14 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.145 - The LEB pages stop calling the LEB-300 answer key private: it has been public on GitHub since 12 October 2026
+
+ai-benchmark 0.2.171 committed LEB-300-A with its answer key, by the owner's order, and the rule it came with (MATRIX §4, items 1 and 2; spec 1.5.0, worded consistently across the documents by 1.5.1 in 0.2.179) is that an instance's key is public on GitHub before its first run while the bench machines cannot reach GitHub, so the agent never sees it during a run. Several sentences on this site still said the opposite. The LEB-300 page said the answer key "stays private", tagged the results "key private", and said the planted defects, the code under test and the key "stay private" so that the instance could keep measuring new agents; the Benchmark page's comparison table said "Private. The instance is active, so only the SHA-256 of its key is published" and its closing paragraph said LEB-300-A "keeps its key private"; and the fourth step of the method called the key "hidden".
+
+They now say what the repository says, in both languages. The key is public on GitHub with the instance (since 12 October 2026, after the first runs), the machines that run the agents cannot reach GitHub, and every run records its model's training cutoff. What stays in a private archive is each run's delivery, verdict and flaw-by-flaw results, so the page still publishes an aggregate only, and that is now said of the runs and not of the key. The tag over the results reads "key public". The matrix hash tag, the pilot note and the "What the record does not have" caveats are unchanged.
+
+`Leb300PageTest` pins the new wording in both states (with and without an aggregate) and both languages and rejects the old phrases; `BenchmarkPageTest` does the same for the comparison table. The README, the page's language-file comment and the view comment that described the key as private are corrected too.
+
 ## 1.0.144 - The LEB-300 page adds a second run of Claude Sonnet 5.5 at max effort, which lowers its score from 932 to 864
 
 ai-benchmark 0.2.163 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. Claude Sonnet 5.5 at max effort gets its second run (864) next to 932; with fewer than three runs the published score is the lowest, so the agent moves from 932 (Platinum) to 864 (Gold). It stays 1st, 4 points ahead of Claude Sonnet 5.5 at xhigh effort (860), and no agent shows Platinum for now. The card shows the categories, cost, time and tokens of the run whose score is published (run 2), and its reading is rewritten for two runs. Data only: no page copy, template or test changes.

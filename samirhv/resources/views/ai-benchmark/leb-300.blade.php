@@ -117,8 +117,8 @@
                     <header class="ab-instance__head">
                         <h3 class="ab-instance__title" id="inst-{{ $instance }}">{{ __('ai_benchmark.instance_title', ['id' => $instance.(isset($aggregate['version']) ? ' v'.$aggregate['version'] : ''), 'name' => __('leb_300.instance_name')]) }}</h3>
                         <p class="s-body s-muted"><strong>{{ __('leb_300.result_note_title') }}</strong> {{ __($allThree ? 'leb_300.result_note_body_three' : 'leb_300.result_note_body') }}</p>
-                        {{-- The facts the aggregate carries. An ACTIVE instance has no evaluation date and no public
-                             answer key: the key stays private, and the matrix hash is what proves which key scored it. --}}
+                        {{-- The facts the aggregate carries. An ACTIVE instance has no evaluation date; its answer key
+                             is public on GitHub with the instance, and the matrix hash is what proves which key scored it. --}}
                         <div class="ab-facts">
                             @if(isset($aggregate['mode'], $aggregate['turn_budget']))
                                 <span class="s-tag">{{ __('ai_benchmark.facts_mode', ['mode' => $aggregate['mode'], 'turns' => $aggregate['turn_budget']]) }}</span>

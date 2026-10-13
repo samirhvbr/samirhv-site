@@ -133,6 +133,28 @@ class BenchmarkPageTest extends TestCase
             ->assertSeeInOrder(['Tamanho', 'Cerca de 300 linhas', 'Cerca de 3.000 linhas', 'A execução', 'Modo A, 30 turnos.', 'Modo A, 60 turnos, em duas etapas.']);
     }
 
+    /** The answer key of LEB-300-A has been on GitHub since 2026-10-12: the page says so, and never that it is private or hidden. */
+    public function test_the_comparison_says_the_key_of_the_second_instance_is_public(): void
+    {
+        $this->withBothInstances();
+
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('Public on GitHub since 12 October 2026')
+            ->assertSee('its answer key is public too')
+            ->assertDontSee('Private. The instance is active')
+            ->assertDontSee('keeps its key private')
+            ->assertDontSee('hidden answer key');
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSee('Público no GitHub desde 12 de outubro de 2026')
+            ->assertSee('o gabarito dele também é público')
+            ->assertDontSee('Privado. A instância está ativa')
+            ->assertDontSee('mantém o gabarito privado')
+            ->assertDontSee('gabarito oculto');
+    }
+
     public function test_the_cards_say_how_many_agents_are_ranked_and_who_leads_and_open_each_page(): void
     {
         $this->withBothInstances();
@@ -194,7 +216,7 @@ class BenchmarkPageTest extends TestCase
 
     /**
      * LEB-300-A is active. What the page says of it is what the public repository says of its level (size, files, the
-     * mode and turns of a run, that its key is private); no stack, no count of flaws or decoys, no name of a flaw.
+     * mode and turns of a run, that its key is public); no stack, no count of flaws or decoys, no name of a flaw.
      */
     public function test_it_names_nothing_of_the_active_instance_beyond_what_the_repository_says(): void
     {
