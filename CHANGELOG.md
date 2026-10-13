@@ -12,6 +12,12 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.148 - The LEB-300 page voids the second run of Claude Sonnet 5.5 at max, which brings it back to 932 with one run
+
+ai-benchmark 0.2.181 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. In the second run of Claude Sonnet 5.5 at max effort the agent launched four reviewer subagents on Claude Opus 5.5 of its own accord, and they wrote 122 of the session's 543 responses, so the run is void: a delivery with another model in it does not count as the requested model's work. The agent goes from two runs (932 and 864) back to one: the published score rises from 864 to 932 (Platinum), it stays 1st, its lead over Claude Sonnet 5.5 at xhigh (860) goes from 4 points to 72, and it is still not official (1 of 3 runs). No other agent's score or place moves, and the board has a Platinum again.
+
+The written reading of the agent is rewritten for one run and says that a second run was voided. No code, template or copy of the page changes: the card, the run list and the "not official" tag follow the file.
+
 ## 1.0.147 - The LEB-300 page withdraws a run of Claude Sonnet 5.5 at high effort that ran at medium: the agent keeps 855 with two runs
 
 ai-benchmark 0.2.180 publishes the LEB-300-A aggregate with the same twenty-seven agents, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The second run of Claude Sonnet 5.5 at high effort was filed as high, but its session log shows it ran at medium (all 40 of its responses carry that effort), so PROTOCOL §4 item 5 withdraws it. The agent goes from three runs (897, 763 and 855) to two (897 and 855), still numbered 1 and 3: the published score is the lowest of two, 855, the same number as before because it was the median of three, and the agent keeps its place, 3rd, but it is no longer official (2 of 3 runs). No other agent's score or place moves.
