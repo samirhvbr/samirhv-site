@@ -23,6 +23,9 @@ return [
     'ai_benchmark_overview_hint' => 'The project and its levels',
     'ai_benchmark_leb100_hint' => 'About 300 lines',
     'ai_benchmark_leb300_hint' => 'About 3,000 lines',
+    // The two tracks of the next series: nothing is published yet, so they have no second line with agents and a score.
+    'ai_benchmark_default_hint' => 'Next series · maintenance',
+    'ai_benchmark_security_hint' => 'Next series · vulnerabilities',
     // The second line of each instance in the menu: how many agents it ranks and the top score, from the results file.
     'ai_benchmark_state' => '{1} :count agent · top :score|[2,*] :count agents · top :score',
     'explore_releases' => 'Browse releases',

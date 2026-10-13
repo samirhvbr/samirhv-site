@@ -155,6 +155,28 @@ class BenchmarkPageTest extends TestCase
             ->assertDontSee('gabarito oculto');
     }
 
+    /** The section after the instances: a card per track of the next series, opening its status page, and no result on them. */
+    public function test_the_next_series_has_a_card_per_track_that_opens_its_page_and_no_result(): void
+    {
+        $this->withBothInstances();
+
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSeeInOrder(['The instances', 'The next series', 'LEB Default', 'Open LEB Default', 'LEB Security', 'Open LEB Security', '1000 points, and how they are lost'])
+            ->assertSee('It is a proposal, and no results are published yet.')
+            ->assertSee('A score of the next series is never set beside one of LEB-100 or LEB-300.')
+            ->assertSee('href="'.url('/ai-benchmark/leb-default').'"', false)
+            ->assertSee('href="'.url('/ai-benchmark/leb-security').'"', false);
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSeeInOrder(['As instâncias', 'A próxima série', 'LEB Default', 'Abrir o LEB Default', 'LEB Security', 'Abrir o LEB Security'])
+            ->assertSee('É uma proposta, e ainda não há resultados publicados.')
+            ->assertSee('Uma nota da próxima série nunca é posta ao lado de uma do LEB-100 ou do LEB-300.')
+            ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-default').'"', false)
+            ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-security').'"', false);
+    }
+
     public function test_the_cards_say_how_many_agents_are_ranked_and_who_leads_and_open_each_page(): void
     {
         $this->withBothInstances();

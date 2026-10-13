@@ -56,9 +56,9 @@ class AccessibilityTest extends TestCase
 
     /**
      * AI Benchmark is a menu of its own, and it needs no project in the database. Same contract as the projects menu: a
-     * button that says what it does and carries its state, with the three pages as links in the current language.
+     * button that says what it does and carries its state, with the five pages as links in the current language.
      */
-    public function test_the_ai_benchmark_menu_is_a_button_with_the_three_pages_in_the_current_language(): void
+    public function test_the_ai_benchmark_menu_is_a_button_with_the_five_pages_in_the_current_language(): void
     {
         foreach (['/projects/github-desktop' => ['', self::EN], '/pt-br/projects/github-desktop' => ['/pt-br', []]] as $page => [$prefix, $headers]) {
             $html = $this->get($page, $headers)->assertOk()->getContent();
@@ -67,11 +67,13 @@ class AccessibilityTest extends TestCase
 
             preg_match('#<ul class="s-dd" id="nav-ai-benchmark">(.*?)</ul>#s', $html, $menu);
             $this->assertNotEmpty($menu, 'The AI Benchmark menu list is missing.');
-            foreach (['/ai-benchmark', '/ai-benchmark/leb-100', '/ai-benchmark/leb-300'] as $path) {
+            foreach (['/ai-benchmark', '/ai-benchmark/leb-100', '/ai-benchmark/leb-300', '/ai-benchmark/leb-default', '/ai-benchmark/leb-security'] as $path) {
                 $this->assertStringContainsString('href="'.url($prefix.$path).'"', $menu[1]);
             }
             $this->assertStringContainsString('LEB-100-A', $menu[1]);
             $this->assertStringContainsString('LEB-300-A', $menu[1]);
+            $this->assertStringContainsString('LEB Default', $menu[1]);
+            $this->assertStringContainsString('LEB Security', $menu[1]);
         }
     }
 

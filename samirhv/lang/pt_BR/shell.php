@@ -22,6 +22,9 @@ return [
     'ai_benchmark_overview_hint' => 'O projeto e seus níveis',
     'ai_benchmark_leb100_hint' => 'Cerca de 300 linhas',
     'ai_benchmark_leb300_hint' => 'Cerca de 3.000 linhas',
+    // As duas trilhas da próxima série: nada foi publicado ainda, então elas não têm a segunda linha com agentes e nota.
+    'ai_benchmark_default_hint' => 'Próxima série · manutenção',
+    'ai_benchmark_security_hint' => 'Próxima série · vulnerabilidades',
     // A segunda linha de cada instância no menu: quantos agentes ela classifica e a maior nota, do arquivo de resultados.
     'ai_benchmark_state' => '{1} :count agente · melhor :score|[2,*] :count agentes · melhor :score',
     'explore_releases' => 'Explorar releases',

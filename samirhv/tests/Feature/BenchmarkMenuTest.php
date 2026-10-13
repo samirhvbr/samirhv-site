@@ -77,6 +77,40 @@ class BenchmarkMenuTest extends TestCase
             ->assertDontSee('agents · top');
     }
 
+    /** The two tracks of the next series have no results, so they carry the hint line and never an agents-and-score line. */
+    public function test_the_menu_lists_the_two_tracks_of_the_next_series_with_no_agents_line(): void
+    {
+        $this->fake([['agent-a', 649]], withLeb100: true);
+
+        $this->get(self::EN, self::EN_HEADER)->assertOk()
+            ->assertSee('<strong>LEB Default</strong><small>Next series · maintenance</small></span>', false)
+            ->assertSee('<strong>LEB Security</strong><small>Next series · vulnerabilities</small></span>', false)
+            ->assertSee('href="'.url('/ai-benchmark/leb-default').'"', false)
+            ->assertSee('href="'.url('/ai-benchmark/leb-security').'"', false);
+
+        $this->get(self::PT)->assertOk()
+            ->assertSee('<strong>LEB Default</strong><small>Próxima série · manutenção</small></span>', false)
+            ->assertSee('<strong>LEB Security</strong><small>Próxima série · vulnerabilidades</small></span>', false)
+            ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-default').'"', false)
+            ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-security').'"', false);
+    }
+
+    /** On the page of a track the menu marks that track, and only it, as the current page. */
+    public function test_the_page_of_a_track_marks_its_own_entry_in_the_menu(): void
+    {
+        $this->fake([['agent-a', 649]], withLeb100: true);
+
+        $current = fn (string $html, string $path): bool => preg_match('#<a href="'.preg_quote(url($path), '#').'"\s+aria-current="page"#', $html) === 1;
+
+        $html = $this->get('/ai-benchmark/leb-security', self::EN_HEADER)->assertOk()->getContent();
+        $this->assertTrue($current($html, '/ai-benchmark/leb-security'));
+        $this->assertFalse($current($html, '/ai-benchmark/leb-default'));
+
+        $html = $this->get('/pt-br/ai-benchmark/leb-default')->assertOk()->getContent();
+        $this->assertTrue($current($html, '/pt-br/ai-benchmark/leb-default'));
+        $this->assertFalse($current($html, '/pt-br/ai-benchmark/leb-security'));
+    }
+
     /** The real synced file: the line under each instance matches the count and the leader the pages show. */
     public function test_the_real_synced_file_feeds_the_menu_on_every_public_page(): void
     {
@@ -90,7 +124,7 @@ class BenchmarkMenuTest extends TestCase
         $line300 = count($aggregate['agents']).' agents · top '.$aggregate['agents'][0]['score'];
 
         // Pages that need no database row: the suite runs without one (the home and the downloads page do not).
-        foreach (['/projects/github-desktop', '/ai-benchmark', '/ai-benchmark/leb-100', self::EN] as $page) {
+        foreach (['/projects/github-desktop', '/ai-benchmark', '/ai-benchmark/leb-100', '/ai-benchmark/leb-default', self::EN] as $page) {
             $this->get($page, self::EN_HEADER)->assertOk()
                 ->assertSee('<small>'.$line100.'</small>', false)
                 ->assertSee('<small>'.$line300.'</small>', false);

@@ -160,6 +160,32 @@
         </div>
     </section>
 
+    {{-- ═══ THE NEXT SERIES ═══ --}}
+    {{-- Two tracks, a status page each (App\Http\Controllers\LebTrackController). Nothing is published yet, so a card has no
+         agents and no score, and the section says that a score of this series is never set beside the other two. --}}
+    <section class="s-section s-section--tight s-bg-2" id="next-series">
+        <div class="container ab-wrap">
+            <h2 class="s-h2 ab-h2">{{ __('ai_benchmark.next_title') }}</h2>
+            <p class="s-body ab-intro">{{ __('ai_benchmark.next_intro') }}</p>
+
+            <ul class="ab-cards">
+                @foreach(['default' => 'LEB Default', 'security' => 'LEB Security'] as $track => $name)
+                    <li class="s-card ab-card ab-card--series">
+                        <div class="ab-card__tags">
+                            <span class="s-tag">{{ __('ai_benchmark.next_card_series') }}</span>
+                            <span class="s-tag">{{ __('ai_benchmark.next_card_status') }}</span>
+                        </div>
+                        <h3 class="ab-card__title">{{ $name }}</h3>
+                        <p class="s-body s-muted">{{ __("ai_benchmark.next_{$track}_desc") }}</p>
+                        <p class="ab-card__stat s-meta">{{ __('ai_benchmark.card_no_results') }}</p>
+                        <a href="{{ lroute("ai-benchmark.leb-$track") }}" class="s-btn">{{ __("ai_benchmark.next_open_$track") }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    </li>
+                @endforeach
+            </ul>
+            <p class="s-body ab-levels__note">{{ __('ai_benchmark.next_not_compared') }}</p>
+        </div>
+    </section>
+
     {{-- ═══ SCORING ═══ --}}
     <section class="s-section s-section--tight">
         <div class="container ab-wrap ab-scoring">

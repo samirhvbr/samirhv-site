@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Leb100Controller;
 use App\Http\Controllers\Leb300Controller;
+use App\Http\Controllers\LebTrackController;
 use App\Http\Controllers\LegacyEnglishPrefix;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\SiteController;
@@ -64,6 +65,10 @@ $publico = function (): void {
 
     // LEB-300: the second level. A status page until its aggregate is published, then a scoreboard (no database).
     Route::get('/ai-benchmark/leb-300', Leb300Controller::class)->name('ai-benchmark.leb-300');
+
+    // LEB Default and LEB Security: the two tracks of the next series, a status page each until it publishes results (no database).
+    Route::get('/ai-benchmark/leb-default', [LebTrackController::class, 'show'])->defaults('track', 'default')->name('ai-benchmark.leb-default');
+    Route::get('/ai-benchmark/leb-security', [LebTrackController::class, 'show'])->defaults('track', 'security')->name('ai-benchmark.leb-security');
 };
 
 /* Prefixed languages first: a prefixed path must never be shadowed by a bare

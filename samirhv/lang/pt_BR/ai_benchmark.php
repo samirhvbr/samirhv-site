@@ -269,6 +269,16 @@ return [
     'card_no_results' => 'Nenhum resultado publicado ainda.',
     'card_open_100' => 'Abrir o LEB-100-A',
     'card_open_300' => 'Abrir o LEB-300-A',
+    // A próxima série: a seção depois das instâncias, com um cartão por trilha que abre a página de status dela.
+    'next_title' => 'A próxima série',
+    'next_intro' => 'A próxima série do LEB divide o benchmark em duas trilhas independentes, Default e Security, medidas em vários sistemas de referência. É uma proposta, e ainda não há resultados publicados. Cada trilha tem uma página que diz em que pé ela está.',
+    'next_not_compared' => 'Uma nota da próxima série nunca é posta ao lado de uma do LEB-100 ou do LEB-300.',
+    'next_card_series' => 'Próxima série',
+    'next_card_status' => 'Proposta',
+    'next_default_desc' => 'A manutenção do dia a dia de um sistema que funciona: arquitetura, bugs, desempenho, qualidade de código e compatibilidade, sem vulnerabilidade plantada.',
+    'next_security_desc' => 'Achar e corrigir vulnerabilidades num sistema que funciona, sem quebrá-lo. Uma correção só conta quando o ataque e as variações dele deixam de funcionar e o sistema continua funcionando.',
+    'next_open_default' => 'Abrir o LEB Default',
+    'next_open_security' => 'Abrir o LEB Security',
     'method_title' => 'Onde o método está',
     'method_body' => 'A especificação, a pontuação e as ferramentas são públicas no repositório ai-benchmark. Os runs do primeiro nível também estão lá, com os scorecards, e em duas planilhas na página do LEB-100.',
 
