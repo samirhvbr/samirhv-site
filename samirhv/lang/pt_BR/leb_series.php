@@ -3,8 +3,8 @@
 /*
 | As páginas da próxima série do LEB: LEB Default e LEB Security (uma página por trilha).
 |
-| A série é uma proposta (docs/new-series-design.md do samirhvbr/ai-benchmark, status PROPOSED) e não tem
-| resultados, então as duas páginas são de status. Este arquivo guarda o que as duas dizem igual: o estado, os
+| A série é uma proposta (docs/new-series-design.md do samirhvbr/ai-benchmark, status PROPOSED), então as duas
+| páginas são de status; a Default mostra também o primeiro caso quando os resultados sincronizados trazem o agregado dela. Este arquivo guarda o que as duas dizem igual: o estado, os
 | sistemas, como um caso roda, o que será publicado, o gabarito, a comparação e os links. `leb_default` e
 | `leb_security` guardam o que cada trilha mede. Tudo o que está escrito aqui é o que o repositório público
 | diz (docs/new-series-design.md, systems/, instances/LEB-D-300-A/ e instances/LEB-S-300-A/), e nada além:
@@ -76,4 +76,25 @@ return [
     'link_design' => 'O desenho da série',
     'link_system' => 'O sistema A',
     'link_instance' => 'A pasta da instância',
+
+    // Quando os resultados sincronizados trazem o agregado da instância de uma trilha (a trilha Default desde 15 de outubro de 2026), a página diz isso e
+    // mostra o primeiro caso. Estas chaves substituem as de mesmo nome sem `_results`; a página Security mantém o texto de status acima.
+    'note_title_results' => 'Os primeiros resultados saíram.',
+    'note_body_results' => 'Uma configuração rodou em um sistema. É a primeira medição do piloto, não um placar.',
+    'state_body_results' => 'A próxima série é uma proposta: o desenho dela foi decidido em 12 de outubro de 2026, e os textos normativos (a especificação, o protocolo, a pontuação e os níveis) são escritos depois que um piloto validar o processo. O piloto começou no sistema A, e o primeiro caso dele está acima. Ela não muda nada no LEB-100 nem no LEB-300, cujos resultados continuam como foram publicados. Ainda não há placar: ele pede mais configurações e mais sistemas.',
+    'system_a_status_results' => 'Primeiro caso rodado',
+
+    'results_title' => 'O primeiro caso',
+    'results_intro' => 'Cada configuração fez :runs execuções agendadas no sistema A, de :minutes minutos no máximo cada uma. Enquanto uma instância está ativa só o agregado dela é publicado: nenhum resultado por falha, nenhum veredito, nenhuma entrega.',
+    'results_col_agent' => 'Configuração',
+    'results_col_estimate' => 'Estimativa',
+    'results_col_interval' => 'Intervalo de 95%',
+    'results_col_grade' => 'Grau',
+    'results_col_runs' => 'Execuções',
+    'results_completion' => ':completed de :scheduled tentativas agendadas terminaram com o modelo pedido. Sistemas em que todas as tentativas terminaram: :all de :systems.',
+    'results_expected' => 'Nota esperada por tentativa agendada: :mean (:low a :high).',
+    'results_outcomes' => 'Bloqueadas: :blocked (no início :start, durante o trabalho :work). Orçamento esgotado: :budget. Trocas de modelo: :switched. Falhas de laboratório refeitas: :lab.',
+    'results_cost' => 'Por execução, em média: US$ :cost e :minutes minutos.',
+    'results_method' => 'A estimativa é a média das execuções terminadas, em 1000. O intervalo é um bootstrap por percentis de 95% sobre sistemas e execuções; com um sistema só, ele reflete apenas a variação entre as execuções desse sistema. As colunas de categoria mostram a média das execuções contra o máximo que a categoria pode dar.',
+    'results_key' => 'SHA-256 do gabarito (matriz) :matrix · do pacote :package.',
 ];

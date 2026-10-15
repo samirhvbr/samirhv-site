@@ -3,7 +3,7 @@
 /*
 | The LEB Default page: the everyday-maintenance track of the next LEB series.
 |
-| A status page (the series has no results). What the two track pages say alike is in `leb_series`; this file
+| A status page; once the synced results carry the track's aggregate it also shows the first case. What the two track pages say alike is in `leb_series`; this file
 | holds only what the Default track measures, as the design (docs/new-series-design.md §4.1) and the instance
 | (instances/LEB-D-300-A/README.md) say it. shvia.org renders this same copy (tools/sync-ai-benchmark.py).
 */
@@ -17,4 +17,6 @@ return [
 
     'measures_body' => 'Architecture, bugs, performance, code quality and compatibility. No vulnerability is planted, and the task asks for no security work.',
     'measures_base' => 'The code it starts from is described as "no known vulnerabilities within the reviewed scope", never as free of them.',
+
+    'meta_description_result' => 'LEB Default is one of the two tracks of the next LEB series: the everyday maintenance of a working system, with no planted vulnerability. A proposal in its pilot: the first case, one configuration on one system, is published as an aggregate.',
 ];

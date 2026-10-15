@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Support\AiBenchmark;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -9,7 +10,7 @@ use Tests\TestCase;
 /**
  * LEB Default and LEB Security: the two tracks of the next LEB series.
  *
- * The series is a proposal and has no results, so each track has a status page (App\Http\Controllers\LebTrackController, no
+ * The series is a proposal, so each track has a status page (App\Http\Controllers\LebTrackController, no
  * database), written from lang/*\/leb_series.php, leb_default.php and leb_security.php. What these tests pin is what was decided:
  * one page per track; nothing beyond what the public repository says (no number the series has not published, no date it has
  * not set); the answer key described as public on GitHub with the instance and never as private, secret or hidden; and no
@@ -20,6 +21,45 @@ class LebTrackPagesTest extends TestCase
     private const EN_HEADER = ['Accept-Language' => 'en-US,en;q=0.9'];
 
     private const REPO = 'https://github.com/samirhvbr/ai-benchmark';
+
+    /** The status pages are tested with no results at all: the synced file carries the Default track's aggregate now. */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        AiBenchmark::fake(['instances' => []]);
+    }
+
+    protected function tearDown(): void
+    {
+        AiBenchmark::flush();
+        parent::tearDown();
+    }
+
+    /** The aggregate of the first case, in the shape tools/export-results.py publishes it. */
+    private function firstCase(): array
+    {
+        return [
+            'instance' => 'LEB-D-300-A', 'publication' => 'aggregate', 'edition' => '2026', 'version' => '1.1', 'track' => 'default', 'mode' => 'A',
+            'turn_budget' => null, 'budget_minutes' => 90, 'matrix_sha256' => str_repeat('a', 64), 'package_sha256' => str_repeat('b', 64),
+            'notes' => ['en' => 'The runs received the earlier package.', 'pt_BR' => 'As execuções receberam o pacote anterior.'],
+            'agents' => [[
+                'agent' => 'claude-haiku-5.5-high', 'score' => 547, 'grade' => 'Bronze', 'runs_count' => 5,
+                'categories' => ['ARCH' => 96, 'BUG' => 173, 'PERF' => 125, 'CLN' => 10, 'COMP' => 100, 'EXPL' => 42],
+                'category_max' => ['ARCH' => 283, 'BUG' => 213, 'PERF' => 213, 'CLN' => 141, 'COMP' => 100, 'EXPL' => 50],
+                'cost_usd' => 1.13, 'wall_minutes' => 26.6,
+                'model' => ['name' => 'Claude Haiku 5.5', 'id' => 'claude-haiku-5-5', 'provider' => 'Anthropic', 'reasoning_effort' => 'high'],
+                'comment' => ['en' => 'Five runs between 524 and 580.', 'pt_BR' => 'Cinco execuções entre 524 e 580.'],
+                'statistics' => [
+                    'scheduled' => 5, 'quality' => ['n' => 5, 'systems' => 1, 'mean' => 546.8, 'low' => 530.0, 'high' => 565.0],
+                    'expected_per_scheduled_attempt' => ['n' => 5, 'systems' => 1, 'mean' => 546.8, 'low' => 530.0, 'high' => 565.0],
+                    'completion' => ['rate' => 1.0, 'completed' => 5, 'scheduled' => 5, 'systems_all_completed' => 1, 'systems' => 1],
+                    'outcomes' => ['completed' => 5, 'blocked' => 0, 'blocked_at_the_start' => 0, 'blocked_during_the_work' => 0, 'budget_exhausted' => 0, 'switched' => 0],
+                    'lab_failures_rerun' => 1, 'median' => 536, 'min' => 524, 'max' => 580,
+                ],
+                'runs' => array_map(fn ($t, $i) => ['run' => $i + 1, 'total' => $t], [524, 533, 580, 561, 536], range(0, 4)),
+            ]],
+        ];
+    }
 
     private function visit(string $track, string $locale): TestResponse
     {
@@ -213,6 +253,83 @@ class LebTrackPagesTest extends TestCase
                 ->assertDontSee('leb_default.', false)
                 ->assertDontSee('leb_security.', false)
                 ->assertDontSee('shell.', false);
+        }
+    }
+
+    // ── the first case, once the synced results carry the Default track's aggregate ──────────────
+
+    public function test_the_default_page_shows_the_first_case_in_both_languages(): void
+    {
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$this->firstCase()]]);
+
+        $this->visit('default', 'en')
+            ->assertSee('The first results are in.')
+            ->assertDontSee('There are no results yet.')
+            ->assertSeeInOrder(['The first case', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283', '173/213', '524 · 533 · 580 · 561 · 536'])
+            ->assertSee('5 of 5 scheduled attempts completed with the requested model.')
+            ->assertSee('Systems on which every attempt completed: 1 of 1.')
+            ->assertSee('Expected score per scheduled attempt: 546.8 (530.0 to 565.0).')
+            ->assertSee('Lab failures rerun: 1.')
+            ->assertSee('Per run, on average: US$ 1.13 and 27 minutes.')
+            ->assertSee('with one system it reflects only the variation among that system')
+            ->assertSee('Five runs between 524 and 580.')
+            ->assertSee('The runs received the earlier package.')
+            ->assertSee('The pilot has begun on system A')
+            ->assertSee('There is no scoreboard yet')
+            ->assertSee('First case run')
+            ->assertDontSee('In authoring')
+            ->assertDontSee('ab-board', false);
+
+        $this->visit('default', 'pt_BR')
+            ->assertSee('Os primeiros resultados saíram.')
+            ->assertDontSee('Ainda não há resultados.')
+            ->assertSeeInOrder(['O primeiro caso', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283'])
+            ->assertSee('5 de 5 tentativas agendadas terminaram com o modelo pedido.')
+            ->assertSee('Nota esperada por tentativa agendada: 546,8 (530,0 a 565,0).')
+            ->assertSee('Por execução, em média: US$ 1,13 e 27 minutos.')
+            ->assertSee('Cinco execuções entre 524 e 580.')
+            ->assertSee('As execuções receberam o pacote anterior.')
+            ->assertSee('Primeiro caso rodado');
+    }
+
+    public function test_the_security_page_stays_a_status_page_when_only_the_default_track_has_results(): void
+    {
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$this->firstCase()]]);
+
+        $this->visit('security', 'en')
+            ->assertSee('There are no results yet.')
+            ->assertSee('In authoring')
+            ->assertDontSee('The first case')
+            ->assertDontSee('Claude Haiku 5.5');
+        $this->visit('security', 'pt_BR')
+            ->assertSee('Ainda não há resultados.')
+            ->assertDontSee('O primeiro caso');
+    }
+
+    public function test_an_aggregate_of_another_track_does_not_make_the_default_page_show_results(): void
+    {
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['track' => 'security'] + $this->firstCase()]]);
+
+        $this->visit('default', 'en')->assertSee('There are no results yet.')->assertDontSee('The first case');
+    }
+
+    public function test_the_first_case_names_no_flaw_and_sets_no_score_beside_the_other_levels(): void
+    {
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$this->firstCase()]]);
+
+        foreach (['en', 'pt_BR'] as $locale) {
+            $text = $this->visible($this->visit('default', $locale));
+            $this->assertDoesNotMatchRegularExpression('/\b(?:SEC|ARCH|BUG|PERF|CLN)-\d{3}\b/', $text);
+            $this->assertMatchesRegularExpression('/A score of the next series is never set beside|Uma nota da próxima série nunca é posta ao lado/', $text);
+        }
+    }
+
+    public function test_the_synced_results_file_still_renders_the_default_page(): void
+    {
+        AiBenchmark::flush();   // the file the site ships, not the fake: whatever it carries must render without a raw key
+
+        foreach (['en', 'pt_BR'] as $locale) {
+            $this->visit('default', $locale)->assertDontSee('leb_series.', false)->assertDontSee('leb_default.', false);
         }
     }
 
