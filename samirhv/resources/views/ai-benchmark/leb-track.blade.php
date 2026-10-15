@@ -16,7 +16,7 @@
     $agents = ($aggregate['track'] ?? null) === $track ? ($aggregate['agents'] ?? []) : [];
     $hasResult = ! empty($agents);
     $pt = app()->getLocale() === 'pt_BR';
-    $num = fn (int|float $v, int $d = 0): string => number_format($v, $d, $pt ? ',' : '.', '');
+    $num = fn (int|float $v, int $d = 0): string => number_format($v, $d, '.', '');   // the site's own convention: a dot in both languages, like every other page
     $cats = ['ARCH', 'BUG', 'PERF', 'CLN', 'COMP', 'EXPL'];
     $suffix = $hasResult ? '_results' : '';
     $link = fn (string $label, string $href, bool $external = false): string => '<a href="'.e($href).'"'.($external ? ' target="_blank" rel="noopener"' : '').'>'.e($label).'</a>';
@@ -68,7 +68,7 @@
                 <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['runs' => $agents[0]['statistics']['scheduled'], 'minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
 
                 <div class="ab-table-wrap" tabindex="0" role="region" aria-label="{{ __('leb_series.results_title') }}">
-                    <table class="ab-levels">
+                    <table class="ab-levels ab-levels--results">
                         <thead>
                             <tr>
                                 @foreach(['agent', 'estimate', 'interval', 'grade'] as $column)

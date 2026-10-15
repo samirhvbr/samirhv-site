@@ -285,8 +285,8 @@ class LebTrackPagesTest extends TestCase
             ->assertDontSee('Ainda não há resultados.')
             ->assertSeeInOrder(['O primeiro caso', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283'])
             ->assertSee('5 de 5 tentativas agendadas terminaram com o modelo pedido.')
-            ->assertSee('Nota esperada por tentativa agendada: 546,8 (530,0 a 565,0).')
-            ->assertSee('Por execução, em média: US$ 1,13 e 27 minutos.')
+            ->assertSee('Nota esperada por tentativa agendada: 546.8 (530.0 a 565.0).')
+            ->assertSee('Por execução, em média: US$ 1.13 e 27 minutos.')
             ->assertSee('Cinco execuções entre 524 e 580.')
             ->assertSee('As execuções receberam o pacote anterior.')
             ->assertSee('Primeiro caso rodado');

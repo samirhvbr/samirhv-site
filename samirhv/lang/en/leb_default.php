@@ -18,5 +18,5 @@ return [
     'measures_body' => 'Architecture, bugs, performance, code quality and compatibility. No vulnerability is planted, and the task asks for no security work.',
     'measures_base' => 'The code it starts from is described as "no known vulnerabilities within the reviewed scope", never as free of them.',
 
-    'meta_description_result' => 'LEB Default is one of the two tracks of the next LEB series: the everyday maintenance of a working system, with no planted vulnerability. A proposal in its pilot: the first case, one configuration on one system, is published as an aggregate.',
+    'meta_description_result' => 'LEB Default, a track of the next LEB series: the everyday maintenance of a working system, with no planted vulnerability. A proposal in its pilot; the first case is published as an aggregate.',
 ];

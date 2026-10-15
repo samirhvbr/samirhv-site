@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.150 - The first case on the LEB Default page uses the site's dot for decimals, and its meta description and key line match the other site
+
+Three corrections to 1.0.149, found when shvia.org rendered the same copy. The numbers of the first case use a dot for decimals in both languages, as every other page of the benchmark does (546.8, US$ 1.13), instead of the Portuguese comma. The meta description of the page with a result is shortened to 191 and 198 characters, inside the 200 that shvia.org's harness allows. The Portuguese key line says "SHA-256" for the key and for the package, as the English one does, so the two pages carry the same numbers. The results table also gets the class `ab-levels--results`, which no stylesheet defines: it only lets a test tell it from the systems table.
+
 ## 1.0.149 - The LEB Default page shows the first case of the next series: Claude Haiku 5.5 at high effort, 547 over five runs
 
 ai-benchmark 0.2.225 publishes the aggregate of LEB-D-300-A, the first case of the next series, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The LEB Default page, which was a status page, reads that aggregate through `AiBenchmark::aggregate()` and, once it carries one, adds a section "The first case" ahead of "What this track measures": a table with the configuration, the estimate, its 95% interval, the grade, the six categories against their maxima and the five runs, then the completion, the expected score per scheduled attempt, the outcomes counted apart, the cost and time per run, the written reading of the agent, the notes of the aggregate (which package the runs received and which key scored them) and the two hashes. It uses the page's own classes: no CSS changes.

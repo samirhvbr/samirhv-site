@@ -96,5 +96,5 @@ return [
     'results_outcomes' => 'Bloqueadas: :blocked (no início :start, durante o trabalho :work). Orçamento esgotado: :budget. Trocas de modelo: :switched. Falhas de laboratório refeitas: :lab.',
     'results_cost' => 'Por execução, em média: US$ :cost e :minutes minutos.',
     'results_method' => 'A estimativa é a média das execuções terminadas, em 1000. O intervalo é um bootstrap por percentis de 95% sobre sistemas e execuções; com um sistema só, ele reflete apenas a variação entre as execuções desse sistema. As colunas de categoria mostram a média das execuções contra o máximo que a categoria pode dar.',
-    'results_key' => 'SHA-256 do gabarito (matriz) :matrix · do pacote :package.',
+    'results_key' => 'SHA-256 do gabarito (matriz) :matrix · SHA-256 do pacote :package.',
 ];
