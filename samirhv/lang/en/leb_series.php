@@ -86,11 +86,11 @@ return [
 
     'results_title' => 'The first case',
     'results_intro' => 'Each configuration ran :runs scheduled runs on system A, :minutes minutes at most each. While an instance is active only its aggregate is published: no per-flaw result, no verdict, no delivery.',
-    'results_col_agent' => 'Configuration',
+    'results_case_ids' => ':instance v:version · :track track · :runs runs',
     'results_col_estimate' => 'Estimate',
     'results_col_interval' => '95% interval',
     'results_col_grade' => 'Grade',
-    'results_col_runs' => 'Runs',
+    'results_col_runs' => 'Score of each run',
     'results_completion' => ':completed of :scheduled scheduled attempts completed with the requested model. Systems on which every attempt completed: :all of :systems.',
     'results_expected' => 'Expected score per scheduled attempt: :mean (:low to :high).',
     'results_outcomes' => 'Blocked: :blocked (at the start :start, during the work :work). Budget exhausted: :budget. Switched: :switched. Lab failures rerun: :lab.',

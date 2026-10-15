@@ -86,11 +86,11 @@ return [
 
     'results_title' => 'O primeiro caso',
     'results_intro' => 'Cada configuração fez :runs execuções agendadas no sistema A, de :minutes minutos no máximo cada uma. Enquanto uma instância está ativa só o agregado dela é publicado: nenhum resultado por falha, nenhum veredito, nenhuma entrega.',
-    'results_col_agent' => 'Configuração',
+    'results_case_ids' => ':instance v:version · trilha :track · :runs execuções',
     'results_col_estimate' => 'Estimativa',
     'results_col_interval' => 'Intervalo de 95%',
     'results_col_grade' => 'Grau',
-    'results_col_runs' => 'Execuções',
+    'results_col_runs' => 'Nota de cada execução',
     'results_completion' => ':completed de :scheduled tentativas agendadas terminaram com o modelo pedido. Sistemas em que todas as tentativas terminaram: :all de :systems.',
     'results_expected' => 'Nota esperada por tentativa agendada: :mean (:low a :high).',
     'results_outcomes' => 'Bloqueadas: :blocked (no início :start, durante o trabalho :work). Orçamento esgotado: :budget. Trocas de modelo: :switched. Falhas de laboratório refeitas: :lab.',

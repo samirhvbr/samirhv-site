@@ -60,72 +60,87 @@
         </div>
     </section>
 
-    {{-- ═══ THE FIRST CASE (only once the synced results carry this track's aggregate) ═══ --}}
+    {{-- ═══ THE FIRST CASE (only once the synced results carry this track's aggregate) ═══
+         One card per configuration: who it is, the score, the categories and the runs, the facts, the reading and the notes.
+         Everything a reader needs to tell the numbers belong to that case is inside the card. --}}
     @if($hasResult)
         <section class="s-section s-section--tight">
             <div class="container ab-wrap">
                 <h2 class="s-h2 ab-h2">{{ __('leb_series.results_title') }}</h2>
                 <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['runs' => $agents[0]['statistics']['scheduled'], 'minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
 
-                <div class="ab-table-wrap" tabindex="0" role="region" aria-label="{{ __('leb_series.results_title') }}">
-                    <table class="ab-levels ab-levels--results">
-                        <thead>
-                            <tr>
-                                @foreach(['agent', 'estimate', 'interval', 'grade'] as $column)
-                                    <th scope="col">{{ __("leb_series.results_col_$column") }}</th>
-                                @endforeach
-                                @foreach($cats as $cat)
-                                    <th scope="col">{{ $cat }}</th>
-                                @endforeach
-                                <th scope="col">{{ __('leb_series.results_col_runs') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($agents as $agent)
-                                @php
-                                    $model = $agent['model'] ?? [];
-                                    $effort = AiBenchmark::effortLevel($model);
-                                    $quality = $agent['statistics']['quality'];
-                                @endphp
-                                <tr>
-                                    <th scope="row">{{ ($model['name'] ?? $agent['agent']).($effort !== '' ? " · {$effort}" : '') }}</th>
-                                    <td><strong>{{ $num($agent['score']) }}</strong></td>
-                                    <td>{{ $num($quality['low']) }} – {{ $num($quality['high']) }}</td>
-                                    <td>{{ $agent['grade'] }}</td>
-                                    @foreach($cats as $cat)
-                                        <td>{{ $num($agent['categories'][$cat]) }}/{{ $num($agent['category_max'][$cat]) }}</td>
-                                    @endforeach
-                                    <td>{{ collect($agent['runs'])->pluck('total')->implode(' · ') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
                 @foreach($agents as $agent)
                     @php
+                        $model = $agent['model'] ?? [];
+                        $effort = AiBenchmark::effortLevel($model);
+                        $name = ($model['name'] ?? $agent['agent']).($effort !== '' ? " · {$effort}" : '');
                         $st = $agent['statistics'];
+                        $quality = $st['quality'];
                         $expected = $st['expected_per_scheduled_attempt'];
                         $comment = $agent['comment'][$pt ? 'pt_BR' : 'en'] ?? null;
                     @endphp
-                    <ul class="ab-list">
-                        <li>{{ __('leb_series.results_completion', ['completed' => $st['completion']['completed'], 'scheduled' => $st['scheduled'], 'all' => $st['completion']['systems_all_completed'], 'systems' => $st['completion']['systems']]) }}</li>
-                        <li>{{ __('leb_series.results_expected', ['mean' => $num($expected['mean'], 1), 'low' => $num($expected['low'], 1), 'high' => $num($expected['high'], 1)]) }}</li>
-                        <li>{{ __('leb_series.results_outcomes', ['blocked' => $st['outcomes']['blocked'], 'start' => $st['outcomes']['blocked_at_the_start'], 'work' => $st['outcomes']['blocked_during_the_work'], 'budget' => $st['outcomes']['budget_exhausted'], 'switched' => $st['outcomes']['switched'], 'lab' => $st['lab_failures_rerun']]) }}</li>
-                        @if(isset($agent['cost_usd'], $agent['wall_minutes']))
-                            <li>{{ __('leb_series.results_cost', ['cost' => $num($agent['cost_usd'], 2), 'minutes' => $num($agent['wall_minutes'])]) }}</li>
-                        @endif
-                    </ul>
-                    @if($comment)
-                        <p class="s-body">{{ $comment }}</p>
-                    @endif
-                @endforeach
+                    <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}">
+                        <header class="ab-case__head">
+                            <h3 class="ab-case__name" id="ab-case-{{ $loop->index }}">{{ $name }}</h3>
+                            <p class="ab-case__ids">{{ __('leb_series.results_case_ids', ['instance' => $aggregate['instance'], 'version' => $aggregate['version'], 'track' => ucfirst($track), 'runs' => $st['scheduled']]) }}</p>
+                        </header>
 
-                <p class="s-body">{{ __('leb_series.results_method') }}</p>
-                @if(isset($aggregate['notes']))
-                    <p class="s-body">{{ $aggregate['notes'][$pt ? 'pt_BR' : 'en'] ?? $aggregate['notes']['en'] }}</p>
-                @endif
-                <p class="s-meta">{{ __('leb_series.results_key', ['matrix' => $aggregate['matrix_sha256'], 'package' => $aggregate['package_sha256'] ?? '']) }}</p>
+                        <dl class="ab-case__stats">
+                            <div class="ab-case__stat">
+                                <dt>{{ __('leb_series.results_col_estimate') }}</dt>
+                                <dd class="ab-case__score">{{ $num($agent['score']) }}</dd>
+                            </div>
+                            <div class="ab-case__stat">
+                                <dt>{{ __('leb_series.results_col_interval') }}</dt>
+                                <dd>{{ $num($quality['low']) }} – {{ $num($quality['high']) }}</dd>
+                            </div>
+                            <div class="ab-case__stat">
+                                <dt>{{ __('leb_series.results_col_grade') }}</dt>
+                                <dd>{{ $agent['grade'] }}</dd>
+                            </div>
+                        </dl>
+
+                        <div class="ab-table-wrap" tabindex="0" role="region" aria-label="{{ $name }}">
+                            <table class="ab-levels ab-levels--results">
+                                <thead>
+                                    <tr>
+                                        @foreach($cats as $cat)
+                                            <th scope="col">{{ $cat }}</th>
+                                        @endforeach
+                                        <th scope="col">{{ __('leb_series.results_col_runs') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @foreach($cats as $cat)
+                                            <td>{{ $num($agent['categories'][$cat]) }}/{{ $num($agent['category_max'][$cat]) }}</td>
+                                        @endforeach
+                                        <td>{{ collect($agent['runs'])->pluck('total')->implode(' · ') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="ab-case__body">
+                            <ul class="ab-list">
+                                <li>{{ __('leb_series.results_completion', ['completed' => $st['completion']['completed'], 'scheduled' => $st['scheduled'], 'all' => $st['completion']['systems_all_completed'], 'systems' => $st['completion']['systems']]) }}</li>
+                                <li>{{ __('leb_series.results_expected', ['mean' => $num($expected['mean'], 1), 'low' => $num($expected['low'], 1), 'high' => $num($expected['high'], 1)]) }}</li>
+                                <li>{{ __('leb_series.results_outcomes', ['blocked' => $st['outcomes']['blocked'], 'start' => $st['outcomes']['blocked_at_the_start'], 'work' => $st['outcomes']['blocked_during_the_work'], 'budget' => $st['outcomes']['budget_exhausted'], 'switched' => $st['outcomes']['switched'], 'lab' => $st['lab_failures_rerun']]) }}</li>
+                                @if(isset($agent['cost_usd'], $agent['wall_minutes']))
+                                    <li>{{ __('leb_series.results_cost', ['cost' => $num($agent['cost_usd'], 2), 'minutes' => $num($agent['wall_minutes'])]) }}</li>
+                                @endif
+                            </ul>
+                            @if($comment)
+                                <p class="s-body">{{ $comment }}</p>
+                            @endif
+                            <p class="s-body ab-case__fine">{{ __('leb_series.results_method') }}</p>
+                            @if(isset($aggregate['notes']))
+                                <p class="s-body ab-case__fine">{{ $aggregate['notes'][$pt ? 'pt_BR' : 'en'] ?? $aggregate['notes']['en'] }}</p>
+                            @endif
+                            <p class="s-meta ab-case__hash">{{ __('leb_series.results_key', ['matrix' => $aggregate['matrix_sha256'], 'package' => $aggregate['package_sha256'] ?? '']) }}</p>
+                        </div>
+                    </article>
+                @endforeach
             </div>
         </section>
     @endif

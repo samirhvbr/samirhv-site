@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.151 - The first case on the LEB Default page is one card, so its numbers read as that case's
+
+On 1.0.150 the section was a heading, a paragraph, a table and a bulleted list, and the owner saw the result as detached from the case above it. The section now keeps its heading and its sentence and puts everything that belongs to one configuration in a single card: a header with its name and its identity (`LEB-D-300-A v1.1 · Default track · 5 runs`), three figures side by side (the estimate large, the 95% interval, the grade), the categories against their maxima and the score of each run in one table row, and below them the facts, the written reading, the method, the notes of the aggregate and the two hashes. The "Configuration" column is gone, since the card's header says it. A new block of `ab-case` rules in `ai-benchmark.css` builds it from the page's own tokens; on a phone the three figures stack. The copy loses `results_col_agent`, gains `results_case_ids`, and the last column is now "Score of each run". No data changes.
+
 ## 1.0.150 - The first case on the LEB Default page uses the site's dot for decimals, and its meta description and key line match the other site
 
 Three corrections to 1.0.149, found when shvia.org rendered the same copy. The numbers of the first case use a dot for decimals in both languages, as every other page of the benchmark does (546.8, US$ 1.13), instead of the Portuguese comma. The meta description of the page with a result is shortened to 191 and 198 characters, inside the 200 that shvia.org's harness allows. The Portuguese key line says "SHA-256" for the key and for the package, as the English one does, so the two pages carry the same numbers. The results table also gets the class `ab-levels--results`, which no stylesheet defines: it only lets a test tell it from the systems table.

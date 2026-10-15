@@ -229,3 +229,26 @@
 }
 .ab-downloads{ margin-top:12px; align-items:center; }
 .ab-downloads__dict{ font-size:.85rem; color:var(--s-accent-ink-2); text-decoration:none; }
+
+/* The first case of a track (LEB Default): one card holds who the configuration is, its score, the categories and runs, the facts and the notes,
+   so the numbers read as belonging to that case. Built from the page's own tokens. */
+.ab-case{ margin-top:1.4rem; border:1px solid var(--s-line); border-radius:var(--s-r); background:var(--s-surface); overflow:hidden; }
+.ab-case__head{ padding:18px 22px 14px; border-bottom:1px solid var(--s-line); }
+.ab-case__name{ margin:0 0 4px; font-size:clamp(1.1rem,2vw,1.3rem); font-weight:700; color:var(--s-ink); letter-spacing:-.015em; }
+.ab-case__ids{ margin:0; font-family:var(--s-mono); font-size:.72rem; color:var(--s-muted); }
+.ab-case__stats{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:0; border-bottom:1px solid var(--s-line); }
+.ab-case__stat{ padding:16px 22px; }
+.ab-case__stat + .ab-case__stat{ border-left:1px solid var(--s-line); }
+.ab-case__stat dt{ font-family:var(--s-mono); font-size:.68rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--s-muted); }
+.ab-case__stat dd{ margin:6px 0 0; font-size:1.25rem; font-weight:600; color:var(--s-ink); line-height:1.15; }
+.ab-case__stat dd.ab-case__score{ font-size:2rem; font-weight:700; letter-spacing:-.02em; }
+.ab-case .ab-table-wrap{ border:0; border-radius:0; border-bottom:1px solid var(--s-line); background:transparent; }
+.ab-case .ab-levels{ min-width:560px; }
+.ab-case__body{ padding:18px 22px 20px; }
+.ab-case__body .ab-list{ margin-top:0; }
+.ab-case__fine{ font-size:.85rem; color:var(--s-muted); max-width:62em; }
+.ab-case__hash{ margin:12px 0 0; word-break:break-all; }
+@media (max-width:600px){
+    .ab-case__stats{ grid-template-columns:1fr; }
+    .ab-case__stat + .ab-case__stat{ border-left:0; border-top:1px solid var(--s-line); }
+}
