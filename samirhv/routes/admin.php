@@ -46,27 +46,6 @@ Route::prefix('admin')->name('admin.')
         Route::get('/auditoria', [AuditController::class, 'index'])->name('audit.index');
         Route::get('/auditoria-acesso', [AccessAuditController::class, 'index'])->name('access-audit.index');
 
-        // AI-MEMORY — consulta SOMENTE LEITURA ao SQLite do ai-memory (ver docs/AI-MEMORY.md).
-        // {hexId} = lower(hex(id)) de 32 chars (os ids do ai-memory são BLOB/UUIDv7).
-        Route::prefix('ai-memory')->name('ai-memory.')->controller(AiMemoryController::class)
-            ->where(['hexId' => '[0-9a-fA-F]{32}'])
-            ->group(function () {
-                Route::get('/', 'dashboard')->name('dashboard');
-                Route::get('/live', 'live')->name('live');   // JSON do "ao vivo" do Dashboard
-                Route::get('/projetos', 'projects')->name('projects');
-                Route::get('/projetos/{hexId}', 'projectShow')->name('projects.show');
-                Route::get('/workspaces', 'workspaces')->name('workspaces');
-                Route::get('/paginas', 'pages')->name('pages');
-                Route::get('/paginas/{hexId}', 'pageShow')->name('pages.show');
-                Route::get('/sessoes', 'sessions')->name('sessions');
-                Route::get('/sessoes/{hexId}', 'sessionShow')->name('sessions.show');
-                Route::get('/observacoes', 'observations')->name('observations');
-                Route::get('/observacoes/{hexId}', 'observationShow')->name('observations.show');
-                Route::get('/handoffs', 'handoffs')->name('handoffs');
-                Route::get('/handoffs/{hexId}', 'handoffShow')->name('handoffs.show');
-                Route::get('/busca', 'search')->name('search');
-            });
-
         // GitHub View — dashboard de visualização animada de repositórios do GitHub
         // (porte do github-visualize). Sync síncrono (sem queue:work). Ver
         // .continue/migracao-github-visualize.md (§7).
@@ -90,4 +69,31 @@ Route::prefix('admin')->name('admin.')
         // Perfil / troca de senha
         Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile');
         Route::post('/perfil/senha', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    });
+
+Route::prefix('admin')->name('admin.')
+    ->middleware('ai-memory.access')
+    ->group(function () {
+        // AI-MEMORY — fora do grupo acima: o acesso é decidido por AiMemoryAccess
+        // (IP do monitoramento sem login; os demais passam por auth+admin+password.changed).
+        // Consulta SOMENTE LEITURA ao SQLite do ai-memory (ver docs/AI-MEMORY.md).
+        // {hexId} = lower(hex(id)) de 32 chars (os ids do ai-memory são BLOB/UUIDv7).
+        Route::prefix('ai-memory')->name('ai-memory.')->controller(AiMemoryController::class)
+            ->where(['hexId' => '[0-9a-fA-F]{32}'])
+            ->group(function () {
+                Route::get('/', 'dashboard')->name('dashboard');
+                Route::get('/live', 'live')->name('live');   // JSON do "ao vivo" do Dashboard
+                Route::get('/projetos', 'projects')->name('projects');
+                Route::get('/projetos/{hexId}', 'projectShow')->name('projects.show');
+                Route::get('/workspaces', 'workspaces')->name('workspaces');
+                Route::get('/paginas', 'pages')->name('pages');
+                Route::get('/paginas/{hexId}', 'pageShow')->name('pages.show');
+                Route::get('/sessoes', 'sessions')->name('sessions');
+                Route::get('/sessoes/{hexId}', 'sessionShow')->name('sessions.show');
+                Route::get('/observacoes', 'observations')->name('observations');
+                Route::get('/observacoes/{hexId}', 'observationShow')->name('observations.show');
+                Route::get('/handoffs', 'handoffs')->name('handoffs');
+                Route::get('/handoffs/{hexId}', 'handoffShow')->name('handoffs.show');
+                Route::get('/busca', 'search')->name('search');
+            });
     });

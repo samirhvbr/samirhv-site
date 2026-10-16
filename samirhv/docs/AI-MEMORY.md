@@ -82,6 +82,16 @@ Guarantees in the code:
 > embeddings) are **Phase 2** and must go through ai-memory's read-only HTTP API
 > / MCP, never through this SQLite file. See §7.
 
+## 3.1 Who can open the screens
+
+Logged-in admins, and the monitoring host without a login. The routes use the
+`ai-memory.access` middleware (`App\Http\Middleware\AiMemoryAccess`): a GET/HEAD
+whose REMOTE_ADDR is in `config('aimemory.monitor_ips')` (env
+`AI_MEMORY_MONITOR_IPS`, comma-separated, default `170.233.230.254`) passes; any
+other request runs `auth`, `admin`, `password.changed`. Empty list = no pass.
+`X-Forwarded-For` is never read. If a proxy/CDN is ever put in front of the app,
+revisit this: the check would see the proxy's address.
+
 ## 4. Permissions (the #1 cause of "it stopped working")
 
 **Read permission on `memory.sqlite` is not enough.** This is the single most

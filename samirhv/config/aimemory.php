@@ -40,6 +40,14 @@ return [
     // AI_MEMORY_SQLITE_PATH in .env. Empty/missing => the module degrades.
     'path' => env('AI_MEMORY_SQLITE_PATH', '/opt/ai-memory/data/db/memory.sqlite'),
 
+    // Addresses (comma-separated in AI_MEMORY_MONITOR_IPS) that may open the
+    // AI-MEMORY screens WITHOUT a login — the monitoring host. GET/HEAD only.
+    // Matched against REMOTE_ADDR (see App\Http\Middleware\AiMemoryAccess).
+    'monitor_ips' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('AI_MEMORY_MONITOR_IPS', '170.233.230.254'))
+    ))),
+
     // Name of the connection declared in config/database.php (read-only).
     'connection' => 'aimemory',
 

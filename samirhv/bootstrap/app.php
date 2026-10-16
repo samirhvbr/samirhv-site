@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AiMemoryAccess;
 use App\Http\Middleware\EnsureIsAdmin;
 use App\Http\Middleware\EnsurePasswordChanged;
 use App\Http\Middleware\NegotiateLocale;
@@ -40,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => EnsureIsAdmin::class,
+            'ai-memory.access' => AiMemoryAccess::class,
             'password.changed' => EnsurePasswordChanged::class,
         ]);
     })
