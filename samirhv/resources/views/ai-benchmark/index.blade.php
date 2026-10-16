@@ -161,23 +161,25 @@
     </section>
 
     {{-- ═══ THE NEXT SERIES ═══ --}}
-    {{-- Two tracks, a status page each (App\Http\Controllers\LebTrackController). Nothing is published yet, so a card has no
-         agents and no score, and the section says that a score of this series is never set beside the other two. --}}
+    {{-- Two tracks, a status page each (App\Http\Controllers\LebTrackController). A track whose instance has an aggregate in the
+         synced results (the Default track since 15 October 2026) says how many configurations it measured and how many runs
+         completed — never a score: a score of this series is never set beside the other two, and the section closes on that. --}}
     <section class="s-section s-section--tight s-bg-2" id="next-series">
         <div class="container ab-wrap">
             <h2 class="s-h2 ab-h2">{{ __('ai_benchmark.next_title') }}</h2>
-            <p class="s-body ab-intro">{{ __('ai_benchmark.next_intro') }}</p>
+            <p class="s-body ab-intro">{{ __(array_filter($tracks) ? 'ai_benchmark.next_intro_results' : 'ai_benchmark.next_intro') }}</p>
 
             <ul class="ab-cards">
                 @foreach(['default' => 'LEB Default', 'security' => 'LEB Security'] as $track => $name)
+                    @php $trackAggregate = $tracks[$track] ?? null; @endphp
                     <li class="s-card ab-card ab-card--series">
                         <div class="ab-card__tags">
                             <span class="s-tag">{{ __('ai_benchmark.next_card_series') }}</span>
-                            <span class="s-tag">{{ __('ai_benchmark.next_card_status') }}</span>
+                            <span class="s-tag">{{ __($trackAggregate ? 'ai_benchmark.next_card_pilot' : 'ai_benchmark.next_card_status') }}</span>
                         </div>
                         <h3 class="ab-card__title">{{ $name }}</h3>
                         <p class="s-body s-muted">{{ __("ai_benchmark.next_{$track}_desc") }}</p>
-                        <p class="ab-card__stat s-meta">{{ __('ai_benchmark.card_no_results') }}</p>
+                        <p class="ab-card__stat s-meta">{{ $trackAggregate ? trans_choice('ai_benchmark.next_card_cases', count($trackAggregate['agents']), ['instance' => $trackAggregate['instance'], 'runs' => array_sum(array_map(fn ($a) => $a['statistics']['completion']['completed'] ?? 0, $trackAggregate['agents']))]) : __('ai_benchmark.card_no_results') }}</p>
                         <a href="{{ lroute("ai-benchmark.leb-$track") }}" class="s-btn">{{ __("ai_benchmark.next_open_$track") }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </li>
                 @endforeach

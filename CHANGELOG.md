@@ -12,6 +12,26 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.156 - The Benchmark page says the Default track has its first cases, counted and never scored
+
+The owner, 16/10/2026: the Benchmark page (`/ai-benchmark`) still said the next series had no results, and its LEB Default
+card said "No results published yet", while the LEB Default page has shown seven configurations since 15/10.
+
+- **The section's intro** switches to `next_intro_results` once a track's instance has an aggregate in the synced results:
+  the series is a proposal in its pilot, the Default track has its first cases, published as aggregates, Security has none.
+- **The track's card** carries the tag "Pilot under way" (`next_card_pilot`) and counts what the aggregate gives
+  (`next_card_cases`: the instance, configurations measured, runs completed) instead of "No results published yet". Never a score: the
+  sentence that closes the section says a score of this series is never set beside LEB-100 or LEB-300, and the card obeys
+  it. Security keeps the status copy.
+- **Where it reads it.** `AiBenchmark::trackAggregate()` is what the track page already decided (the instance's aggregate,
+  of that track, with agents); the controller hands both tracks to the view. shvia.org renders the same copy through its
+  sync, in the same change there.
+- **Measured.** `BenchmarkPageTest` gains a fixture with the Default track's aggregate (two configurations, 712 and 655,
+  five and three runs) and asserts the intro, the tag, "LEB-D-300-A · 2 configurations measured · 8 runs completed", Security's card
+  unchanged, and that neither score appears on the page, in both languages. The existing no-result test still holds for
+  the fixtures without the aggregate.
+- **Not measured:** the live site, which the owner deploys.
+
 ## 1.0.155 - The LEB Default page shows the Codex cases, GPT-6-astra, GPT-6.1-sol and GPT-5.6-terra at xhigh, three of five runs each
 
 ai-benchmark 0.2.232 publishes three Codex CLI cases as interim aggregates (GPT-6-astra 706, GPT-6.1-sol 699, GPT-5.6-terra 420, all with three runs) beside the four of Claude, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, best score first, so it now has seven cards with no change in markup; the Codex cards show `xhigh (permissions bypassed)` as the effort, the way the page already shows `max (ultracode)`, and their written readings and the notes under the cards say that the Codex cases ran with the client's approvals and sandbox bypassed, the one exception of the series. Their cost is in tokens, which the readings give.
