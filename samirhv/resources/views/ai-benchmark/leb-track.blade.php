@@ -60,14 +60,14 @@
         </div>
     </section>
 
-    {{-- ═══ THE FIRST CASE (only once the synced results carry this track's aggregate) ═══
+    {{-- ═══ THE CASES SO FAR (only once the synced results carry this track's aggregate) ═══
          One card per configuration: who it is, the score, the categories and the runs, the facts, the reading and the notes.
          Everything a reader needs to tell the numbers belong to that case is inside the card. --}}
     @if($hasResult)
         <section class="s-section s-section--tight">
             <div class="container ab-wrap">
                 <h2 class="s-h2 ab-h2">{{ __('leb_series.results_title') }}</h2>
-                <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['runs' => $agents[0]['statistics']['scheduled'], 'minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
+                <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
 
                 @foreach($agents as $agent)
                     @php
@@ -137,7 +137,7 @@
                             @if(isset($aggregate['notes']))
                                 <p class="s-body ab-case__fine">{{ $aggregate['notes'][$pt ? 'pt_BR' : 'en'] ?? $aggregate['notes']['en'] }}</p>
                             @endif
-                            <p class="s-meta ab-case__hash">{{ __('leb_series.results_key', ['matrix' => $aggregate['matrix_sha256'], 'package' => $aggregate['package_sha256'] ?? '']) }}</p>
+                            <p class="s-meta ab-case__hash">{{ __('leb_series.results_key', ['matrix' => $aggregate['matrix_sha256'], 'package' => $agent['package_sha256'] ?? $aggregate['package_sha256'] ?? '']) }}</p>
                         </div>
                     </article>
                 @endforeach

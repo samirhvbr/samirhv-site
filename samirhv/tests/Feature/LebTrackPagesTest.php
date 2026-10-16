@@ -35,15 +35,36 @@ class LebTrackPagesTest extends TestCase
         parent::tearDown();
     }
 
-    /** The aggregate of the first case, in the shape tools/export-results.py publishes it. */
+    /** A second configuration whose case is still being run: three runs, its own package. */
+    private function interimCase(): array
+    {
+        return [
+            'agent' => 'claude-sonnet-5.5-xhigh', 'score' => 785, 'grade' => 'Gold', 'runs_count' => 3, 'package_sha256' => str_repeat('d', 64),
+            'categories' => ['ARCH' => 182, 'BUG' => 197, 'PERF' => 175, 'CLN' => 89, 'COMP' => 100, 'EXPL' => 44],
+            'category_max' => ['ARCH' => 283, 'BUG' => 213, 'PERF' => 213, 'CLN' => 141, 'COMP' => 100, 'EXPL' => 50],
+            'cost_usd' => 6.05, 'wall_minutes' => 35.5,
+            'model' => ['name' => 'Claude Sonnet 5.5', 'id' => 'claude-sonnet-5-5', 'provider' => 'Anthropic', 'reasoning_effort' => 'xhigh'],
+            'comment' => ['en' => 'Three runs of a case of five.', 'pt_BR' => 'Três execuções de um caso de cinco.'],
+            'statistics' => [
+                'scheduled' => 3, 'quality' => ['n' => 3, 'systems' => 1, 'mean' => 785.3, 'low' => 750.0, 'high' => 835.0],
+                'expected_per_scheduled_attempt' => ['n' => 3, 'systems' => 1, 'mean' => 785.3, 'low' => 750.0, 'high' => 835.0],
+                'completion' => ['rate' => 1.0, 'completed' => 3, 'scheduled' => 3, 'systems_all_completed' => 1, 'systems' => 1],
+                'outcomes' => ['completed' => 3, 'blocked' => 0, 'blocked_at_the_start' => 0, 'blocked_during_the_work' => 0, 'budget_exhausted' => 0, 'switched' => 0],
+                'lab_failures_rerun' => 1, 'median' => 771, 'min' => 750, 'max' => 835,
+            ],
+            'runs' => array_map(fn ($t, $i) => ['run' => $i + 2, 'total' => $t], [750, 771, 835], range(0, 2)),
+        ];
+    }
+
+    /** The aggregate of the Haiku case, in the shape tools/export-results.py publishes it. */
     private function firstCase(): array
     {
         return [
             'instance' => 'LEB-D-300-A', 'publication' => 'aggregate', 'edition' => '2026', 'version' => '1.1', 'track' => 'default', 'mode' => 'A',
-            'turn_budget' => null, 'budget_minutes' => 90, 'matrix_sha256' => str_repeat('a', 64), 'package_sha256' => str_repeat('b', 64),
+            'turn_budget' => null, 'budget_minutes' => 90, 'matrix_sha256' => str_repeat('a', 64),
             'notes' => ['en' => 'The runs received the earlier package.', 'pt_BR' => 'As execuções receberam o pacote anterior.'],
-            'agents' => [[
-                'agent' => 'claude-haiku-5.5-high', 'score' => 547, 'grade' => 'Bronze', 'runs_count' => 5,
+            'agents' => [$this->interimCase(), [
+                'agent' => 'claude-haiku-5.5-high', 'package_sha256' => str_repeat('c', 64), 'score' => 547, 'grade' => 'Bronze', 'runs_count' => 5,
                 'categories' => ['ARCH' => 96, 'BUG' => 173, 'PERF' => 125, 'CLN' => 10, 'COMP' => 100, 'EXPL' => 42],
                 'category_max' => ['ARCH' => 283, 'BUG' => 213, 'PERF' => 213, 'CLN' => 141, 'COMP' => 100, 'EXPL' => 50],
                 'cost_usd' => 1.13, 'wall_minutes' => 26.6,
@@ -258,38 +279,47 @@ class LebTrackPagesTest extends TestCase
 
     // ── the first case, once the synced results carry the Default track's aggregate ──────────────
 
-    public function test_the_default_page_shows_the_first_case_in_both_languages(): void
+    public function test_the_default_page_shows_the_cases_so_far_in_both_languages(): void
     {
         AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$this->firstCase()]]);
 
         $this->visit('default', 'en')
             ->assertSee('The first results are in.')
             ->assertDontSee('There are no results yet.')
-            ->assertSeeInOrder(['The first case', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283', '173/213', '524 · 533 · 580 · 561 · 536'])
+            ->assertSeeInOrder(['The cases so far', 'Claude Sonnet 5.5 · xhigh', '785', '750 – 835', 'Gold', '182/283', '750 · 771 · 835',
+                'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283', '173/213', '524 · 533 · 580 · 561 · 536'])
+            ->assertSee('Each configuration is run on system A, 90 minutes at most per run.')
             ->assertSee('5 of 5 scheduled attempts completed with the requested model.')
+            ->assertSee('3 of 3 scheduled attempts completed with the requested model.')
             ->assertSee('Systems on which every attempt completed: 1 of 1.')
             ->assertSee('Expected score per scheduled attempt: 546.8 (530.0 to 565.0).')
-            ->assertSee('Lab failures rerun: 1.')
+            ->assertSee('Lost to the lab or the operator, rerun: 1.')
             ->assertSee('Per run, on average: US$ 1.13 and 27 minutes.')
+            ->assertSee('Per run, on average: US$ 6.05 and 36 minutes.')
             ->assertSee('with one system it reflects only the variation among that system')
             ->assertSee('Five runs between 524 and 580.')
+            ->assertSee('Three runs of a case of five.')
             ->assertSee('The runs received the earlier package.')
+            ->assertSee(str_repeat('c', 64))
+            ->assertSee(str_repeat('d', 64))
+            ->assertSee('Two configurations have run on one system.')
             ->assertSee('The pilot has begun on system A')
             ->assertSee('There is no scoreboard yet')
-            ->assertSee('First case run')
+            ->assertSee('Pilot cases under way')
             ->assertDontSee('In authoring')
             ->assertDontSee('ab-board', false);
 
         $this->visit('default', 'pt_BR')
             ->assertSee('Os primeiros resultados saíram.')
             ->assertDontSee('Ainda não há resultados.')
-            ->assertSeeInOrder(['O primeiro caso', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283'])
+            ->assertSeeInOrder(['Os casos até agora', 'Claude Sonnet 5.5 · xhigh', '785', '750 – 835', 'Gold', 'Claude Haiku 5.5 · high', '547', '530 – 565', 'Bronze', '96/283'])
             ->assertSee('5 de 5 tentativas agendadas terminaram com o modelo pedido.')
             ->assertSee('Nota esperada por tentativa agendada: 546.8 (530.0 a 565.0).')
+            ->assertSee('Perdidas para o laboratório ou o operador, refeitas: 1.')
             ->assertSee('Por execução, em média: US$ 1.13 e 27 minutos.')
             ->assertSee('Cinco execuções entre 524 e 580.')
             ->assertSee('As execuções receberam o pacote anterior.')
-            ->assertSee('Primeiro caso rodado');
+            ->assertSee('Casos do piloto em andamento');
     }
 
     public function test_the_security_page_stays_a_status_page_when_only_the_default_track_has_results(): void
@@ -299,18 +329,18 @@ class LebTrackPagesTest extends TestCase
         $this->visit('security', 'en')
             ->assertSee('There are no results yet.')
             ->assertSee('In authoring')
-            ->assertDontSee('The first case')
+            ->assertDontSee('The cases so far')
             ->assertDontSee('Claude Haiku 5.5');
         $this->visit('security', 'pt_BR')
             ->assertSee('Ainda não há resultados.')
-            ->assertDontSee('O primeiro caso');
+            ->assertDontSee('Os casos até agora');
     }
 
     public function test_an_aggregate_of_another_track_does_not_make_the_default_page_show_results(): void
     {
         AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [['track' => 'security'] + $this->firstCase()]]);
 
-        $this->visit('default', 'en')->assertSee('There are no results yet.')->assertDontSee('The first case');
+        $this->visit('default', 'en')->assertSee('There are no results yet.')->assertDontSee('The cases so far');
     }
 
     public function test_the_first_case_names_no_flaw_and_sets_no_score_beside_the_other_levels(): void
