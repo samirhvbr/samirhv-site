@@ -80,7 +80,7 @@ return [
     // Quando os resultados sincronizados trazem o agregado da instância de uma trilha (a trilha Default desde 15 de outubro de 2026), a página diz isso e
     // mostra os casos até agora. Estas chaves substituem as de mesmo nome sem `_results`; a página Security mantém o texto de status acima.
     'note_title_results' => 'Os primeiros resultados saíram.',
-    'note_body_results' => 'Duas configurações rodaram em um sistema. É a medição do piloto até agora, não um placar.',
+    'note_body_results' => 'Estas configurações rodaram em um sistema. É a medição do piloto até agora, não um placar.',
     'state_body_results' => 'A próxima série é uma proposta: o desenho dela foi decidido em 12 de outubro de 2026, e os textos normativos (a especificação, o protocolo, a pontuação e os níveis) são escritos depois que um piloto validar o processo. O piloto começou no sistema A, e os casos dele até agora estão acima. Ela não muda nada no LEB-100 nem no LEB-300, cujos resultados continuam como foram publicados. Ainda não há placar: ele pede mais configurações e mais sistemas.',
     'system_a_status_results' => 'Casos do piloto em andamento',
 

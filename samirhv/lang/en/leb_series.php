@@ -80,7 +80,7 @@ return [
     // Once the synced results carry the aggregate of a track's instance (the Default track since 15 October 2026), its page says so and shows
     // the cases so far. These replace the keys of the same name without `_results`; the Security page keeps the status copy above.
     'note_title_results' => 'The first results are in.',
-    'note_body_results' => 'Two configurations have run on one system. This is the pilot\'s measurement so far, not a scoreboard.',
+    'note_body_results' => 'These configurations have run on one system. This is the pilot\'s measurement so far, not a scoreboard.',
     'state_body_results' => 'The next series is a proposal: its design was decided on 12 October 2026, and its normative texts (the spec, the protocol, the scoring and the levels) are written after a pilot has validated the process. The pilot has begun on system A, and its cases so far are above. It changes nothing in LEB-100 or LEB-300, whose results stay as published. There is no scoreboard yet: it needs more configurations and more systems.',
     'system_a_status_results' => 'Pilot cases under way',
 

@@ -302,7 +302,7 @@ class LebTrackPagesTest extends TestCase
             ->assertSee('The runs received the earlier package.')
             ->assertSee(str_repeat('c', 64))
             ->assertSee(str_repeat('d', 64))
-            ->assertSee('Two configurations have run on one system.')
+            ->assertSee('These configurations have run on one system.')
             ->assertSee('The pilot has begun on system A')
             ->assertSee('There is no scoreboard yet')
             ->assertSee('Pilot cases under way')

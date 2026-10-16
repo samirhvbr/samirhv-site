@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.154 - The LEB Default page shows Claude Sonnet 5.5 at xhigh and high and Claude Opus 5.5 at high next to Claude Haiku 5.5, five runs each
+
+ai-benchmark 0.2.231 publishes three more cases of the next series with their five runs (Claude Sonnet 5.5 at xhigh: 785, Gold; Claude Opus 5.5 at high: 732, Silver; Claude Sonnet 5.5 at high: 713, Silver), replacing the interim figures of the second case, and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section already draws one card per configuration, best score first, so it now has four cards with no change in markup. The sentence under the cards no longer says how many configurations ran ("These configurations have run on one system") and its test follows.
+
 ## 1.0.153 - The meta description of the LEB Default page with results fits the 200 characters shvia.org allows
 
 The Portuguese meta description written for 1.0.152 had 204 characters, four over the limit of shvia.org's harness. It now has 197 and says "os primeiros casos saem como agregados". Nothing else changes.
