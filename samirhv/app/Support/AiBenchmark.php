@@ -72,6 +72,19 @@ final class AiBenchmark
     }
 
     /**
+     * The aggregate of a track's instance once the synced results carry one that is that track's, with agents (the Default
+     * track since 15 October 2026), else null: the overview's series card and the track page read the same thing.
+     *
+     * @return array<string, mixed>|null
+     */
+    public static function trackAggregate(string $instance, string $track): ?array
+    {
+        $aggregate = self::aggregate($instance);
+
+        return $aggregate && ($aggregate['track'] ?? null) === $track && ! empty($aggregate['agents']) ? $aggregate : null;
+    }
+
+    /**
      * The model of an agent id, from the instances that publish per-flaw results (the same agent has
      * run on those instances before), else from the model block its own aggregate line carries.
      *

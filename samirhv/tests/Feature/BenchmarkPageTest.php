@@ -50,6 +50,18 @@ class BenchmarkPageTest extends TestCase
         ]);
     }
 
+    /** Both instances, and the Default track's aggregate: two configurations, five and three runs completed. */
+    private function withDefaultTrack(): void
+    {
+        $this->withBothInstances();
+        $data = AiBenchmark::results();
+        $agent = fn (string $id, int $score, int $completed) => ['agent' => $id, 'score' => $score, 'grade' => 'Silver', 'runs_count' => $completed,
+            'statistics' => ['scheduled' => $completed, 'completion' => ['completed' => $completed, 'scheduled' => $completed]]];
+        $data['aggregate_instances'][] = ['instance' => 'LEB-D-300-A', 'publication' => 'aggregate', 'track' => 'default',
+            'agents' => [$agent('agent-a', 712, 5), $agent('agent-b', 655, 3)]];
+        AiBenchmark::fake($data);
+    }
+
     private function withoutPilot(): void
     {
         AiBenchmark::fake(['instances' => [[
@@ -175,6 +187,32 @@ class BenchmarkPageTest extends TestCase
             ->assertSee('Uma nota da próxima série nunca é posta ao lado de uma do LEB-100 ou do LEB-300.')
             ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-default').'"', false)
             ->assertSee('href="'.url('/pt-br/ai-benchmark/leb-security').'"', false);
+    }
+
+    /** Once the Default track's instance has an aggregate, its card counts the configurations and the runs, the intro says the
+     *  pilot has begun, and no score of the series appears on this page: Security keeps the status copy. */
+    public function test_with_the_default_track_aggregate_the_series_counts_its_cases_and_shows_no_score(): void
+    {
+        $this->withDefaultTrack();
+
+        $this->get(self::EN, self::EN_HEADER)
+            ->assertOk()
+            ->assertSee('It is a proposal in its pilot: the Default track has its first cases, published as aggregates, and Security has no results yet.')
+            ->assertDontSee('It is a proposal, and no results are published yet.')
+            // The card's tags come before its title: "Next series" (the h2 says "The next series") then the state, then the name.
+            ->assertSeeInOrder(['Next series', 'Pilot under way', 'LEB Default', 'LEB-D-300-A · 2 configurations measured · 8 runs completed', 'Open LEB Default',
+                'Next series', 'Proposal', 'LEB Security', 'No results published yet.', 'Open LEB Security'])
+            ->assertSee('A score of the next series is never set beside one of LEB-100 or LEB-300.')
+            ->assertDontSee('712 of 1000')
+            ->assertDontSee('655 of 1000');
+
+        $this->get(self::PT)
+            ->assertOk()
+            ->assertSee('É uma proposta em piloto: a trilha Default já tem os primeiros casos, publicados como agregados, e a Security ainda não tem resultados.')
+            ->assertSeeInOrder(['Próxima série', 'Piloto em andamento', 'LEB Default', 'LEB-D-300-A · 2 configurações medidas · 8 execuções terminadas', 'Abrir o LEB Default',
+                'Próxima série', 'Proposta', 'LEB Security', 'Nenhum resultado publicado ainda.', 'Abrir o LEB Security'])
+            ->assertDontSee('712 de 1000')
+            ->assertDontSee('655 de 1000');
     }
 
     public function test_the_cards_say_how_many_agents_are_ranked_and_who_leads_and_open_each_page(): void

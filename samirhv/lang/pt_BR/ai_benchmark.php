@@ -269,12 +269,17 @@ return [
     'card_no_results' => 'Nenhum resultado publicado ainda.',
     'card_open_100' => 'Abrir o LEB-100-A',
     'card_open_300' => 'Abrir o LEB-300-A',
-    // A próxima série: a seção depois das instâncias, com um cartão por trilha que abre a página de status dela.
+    // A próxima série: a seção depois das instâncias, com um cartão por trilha que abre a página de status dela. Uma trilha cuja
+    // instância tem agregado nos resultados sincronizados (a Default desde 15 de outubro de 2026) diz quantas configurações mediu e
+    // quantas execuções terminaram, nunca uma nota: a frase que fecha a seção diz por quê.
     'next_title' => 'A próxima série',
     'next_intro' => 'A próxima série do LEB divide o benchmark em duas trilhas independentes, Default e Security, medidas em vários sistemas de referência. É uma proposta, e ainda não há resultados publicados. Cada trilha tem uma página que diz em que pé ela está.',
     'next_not_compared' => 'Uma nota da próxima série nunca é posta ao lado de uma do LEB-100 ou do LEB-300.',
     'next_card_series' => 'Próxima série',
     'next_card_status' => 'Proposta',
+    'next_intro_results' => 'A próxima série do LEB divide o benchmark em duas trilhas independentes, Default e Security, medidas em vários sistemas de referência. É uma proposta em piloto: a trilha Default já tem os primeiros casos, publicados como agregados, e a Security ainda não tem resultados. Cada trilha tem uma página que diz em que pé ela está.',
+    'next_card_pilot' => 'Piloto em andamento',
+    'next_card_cases' => '{1} :instance · :count configuração medida · :runs execuções terminadas|[2,*] :instance · :count configurações medidas · :runs execuções terminadas',
     'next_default_desc' => 'A manutenção do dia a dia de um sistema que funciona: arquitetura, bugs, desempenho, qualidade de código e compatibilidade, sem vulnerabilidade plantada.',
     'next_security_desc' => 'Achar e corrigir vulnerabilidades num sistema que funciona, sem quebrá-lo. Uma correção só conta quando o ataque e as variações dele deixam de funcionar e o sistema continua funcionando.',
     'next_open_default' => 'Abrir o LEB Default',
