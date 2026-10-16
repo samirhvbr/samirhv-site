@@ -19,6 +19,9 @@ class AiBenchmarkController extends Controller
 
     public const LEB300 = 'LEB-300-A';
 
+    /** The two tracks of the next series and their instances, as LebTrackController names them. */
+    public const TRACKS = ['default' => 'LEB-D-300-A', 'security' => 'LEB-S-300-A'];
+
     public function __invoke(): View
     {
         $results = AiBenchmark::results();
@@ -27,6 +30,7 @@ class AiBenchmarkController extends Controller
         return view('ai-benchmark.index', [
             'leb100' => $leb100,
             'aggregate' => AiBenchmark::aggregate(self::LEB300),
+            'tracks' => collect(self::TRACKS)->map(fn ($instance, $track) => AiBenchmark::trackAggregate($instance, $track))->all(),
         ]);
     }
 }
