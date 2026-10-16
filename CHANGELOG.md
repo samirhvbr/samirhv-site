@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.153 - The meta description of the LEB Default page with results fits the 200 characters shvia.org allows
+
+The Portuguese meta description written for 1.0.152 had 204 characters, four over the limit of shvia.org's harness. It now has 197 and says "os primeiros casos saem como agregados". Nothing else changes.
+
 ## 1.0.152 - The LEB Default page shows Claude Sonnet 5.5 at xhigh next to Claude Haiku 5.5: 785 over three of five runs, Gold
 
 ai-benchmark 0.2.228 publishes the second case of the next series as an interim aggregate (Claude Sonnet 5.5 at xhigh effort: 750, 771 and 835, mean 785, Gold, three of five runs done, a fourth attempt lost to the operator and one still to be made) beside the first (Claude Haiku 5.5 at high effort, 547, Bronze), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's section, now "The cases so far", draws one card per configuration, best score first; the cards need no new rules. Copy that said "the first case" or "one configuration" now says what is true: the note ("Two configurations have run on one system"), the state of the series, the status of system A ("Pilot cases under way"), the intro (no longer a single count of runs, since the cases have five and three) and the meta description. The outcomes line says "Lost to the lab or the operator, rerun", which is what the aggregate counts. Each card shows the package its own configuration received, since the two cases ran on different packages of the instance. The test fixture gains the second, interim configuration.
