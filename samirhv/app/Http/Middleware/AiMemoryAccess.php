@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class AiMemoryAccess
         return (new Pipeline(app()))
             ->send($request)
             ->through([
-                \Illuminate\Auth\Middleware\Authenticate::class,
+                Authenticate::class,
                 EnsureIsAdmin::class,
                 EnsurePasswordChanged::class,
             ])
