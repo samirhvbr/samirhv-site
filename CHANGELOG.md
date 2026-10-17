@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.158 - The LEB Default page shows 18 configurations: the Codex and OpenCode cases settled so far and Claude Opus 5.5 at xhigh
+
+ai-benchmark 0.2.239 publishes the Codex cases with their runs (GPT-6-astra 726 and GPT-5.6-terra 421 with five, GPT-6.1-sol 699, GPT-5.6-sol 552 and GPT-6-luna 455 with three, and, at the ultra effort, GPT-6-astra 690 with one run and GPT-6.1-sol 635 with two), the first OpenCode cases (Kimi K3 at max 512, DeepSeek V4.1 Flash at max 500 and at high 452, MiniMax-M3 283, GLM-5.3 541 and DeepSeek V4 Pro 498 with one run each) and Claude Opus 5.5 at xhigh (831, one run), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, best score first, so it now has eighteen cards with no change in markup; the notes under the cards name the exception for OpenCode next to Codex's, the client's own cost estimate and what ultra is, and the readings of the OpenCode cards say their cost is that estimate.
+
 ## 1.0.157 - The Benchmark page says the Default track has its first cases, counted and never scored
 
 The owner, 16/10/2026: the Benchmark page (`/ai-benchmark`) still said the next series had no results, and its LEB Default
