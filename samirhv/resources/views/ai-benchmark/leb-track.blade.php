@@ -82,7 +82,7 @@
                     <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}">
                         <header class="ab-case__head">
                             <h3 class="ab-case__name" id="ab-case-{{ $loop->index }}">{{ $name }}</h3>
-                            <p class="ab-case__ids">{{ __('leb_series.results_case_ids', ['instance' => $aggregate['instance'], 'version' => $aggregate['version'], 'track' => ucfirst($track), 'runs' => $st['scheduled']]) }}</p>
+                            <p class="ab-case__ids">{{ trans_choice('leb_series.results_case_ids', $st['scheduled'], ['instance' => $aggregate['instance'], 'version' => $aggregate['version'], 'track' => ucfirst($track), 'runs' => $st['scheduled']]) }}</p>
                         </header>
 
                         <dl class="ab-case__stats">
@@ -123,7 +123,7 @@
 
                         <div class="ab-case__body">
                             <ul class="ab-list">
-                                <li>{{ __('leb_series.results_completion', ['completed' => $st['completion']['completed'], 'scheduled' => $st['scheduled'], 'all' => $st['completion']['systems_all_completed'], 'systems' => $st['completion']['systems']]) }}</li>
+                                <li>{{ trans_choice('leb_series.results_completion', $st['scheduled'], ['completed' => $st['completion']['completed'], 'scheduled' => $st['scheduled'], 'all' => $st['completion']['systems_all_completed'], 'systems' => $st['completion']['systems']]) }}</li>
                                 <li>{{ __('leb_series.results_expected', ['mean' => $num($expected['mean'], 1), 'low' => $num($expected['low'], 1), 'high' => $num($expected['high'], 1)]) }}</li>
                                 <li>{{ __('leb_series.results_outcomes', ['blocked' => $st['outcomes']['blocked'], 'start' => $st['outcomes']['blocked_at_the_start'], 'work' => $st['outcomes']['blocked_during_the_work'], 'budget' => $st['outcomes']['budget_exhausted'], 'switched' => $st['outcomes']['switched'], 'lab' => $st['lab_failures_rerun']]) }}</li>
                                 @if(isset($agent['cost_usd'], $agent['wall_minutes']))

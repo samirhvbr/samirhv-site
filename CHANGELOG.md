@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.159 - The LEB Default page reads "1 run" and "1 attempt" for a configuration with a single run
+
+The card of a configuration with one run said "1 runs" (and, in Portuguese, "1 execuções"), and its fact line said "1 of 1 scheduled attempts completed". `leb_series.results_case_ids` and `leb_series.results_completion` now take the singular and the plural in both languages (Laravel's `{1} … |[2,*] …` form, as `next_card_cases` already did), and the track view calls `trans_choice` with the scheduled count. Text only: no change in markup or CSS. A test pins the singular in both languages with a one-run configuration.
+
 ## 1.0.158 - The LEB Default page shows 18 configurations: the Codex and OpenCode cases settled so far and Claude Opus 5.5 at xhigh
 
 ai-benchmark 0.2.239 publishes the Codex cases with their runs (GPT-6-astra 726 and GPT-5.6-terra 421 with five, GPT-6.1-sol 699, GPT-5.6-sol 552 and GPT-6-luna 455 with three, and, at the ultra effort, GPT-6-astra 690 with one run and GPT-6.1-sol 635 with two), the first OpenCode cases (Kimi K3 at max 512, DeepSeek V4.1 Flash at max 500 and at high 452, MiniMax-M3 283, GLM-5.3 541 and DeepSeek V4 Pro 498 with one run each) and Claude Opus 5.5 at xhigh (831, one run), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, best score first, so it now has eighteen cards with no change in markup; the notes under the cards name the exception for OpenCode next to Codex's, the client's own cost estimate and what ultra is, and the readings of the OpenCode cards say their cost is that estimate.

@@ -56,6 +56,27 @@ class LebTrackPagesTest extends TestCase
         ];
     }
 
+    /** A configuration with a single run and a client mode: the cards must read in the singular, and the mode is the amber tag next to the effort. */
+    private function singleRunCase(): array
+    {
+        return [
+            'agent' => 'kimi-k3-max', 'score' => 512, 'grade' => 'Bronze', 'runs_count' => 1, 'package_sha256' => str_repeat('e', 64),
+            'categories' => ['ARCH' => 101, 'BUG' => 166, 'PERF' => 104, 'CLN' => 0, 'COMP' => 100, 'EXPL' => 42],
+            'category_max' => ['ARCH' => 283, 'BUG' => 213, 'PERF' => 213, 'CLN' => 141, 'COMP' => 100, 'EXPL' => 50],
+            'cost_usd' => 4.09, 'wall_minutes' => 52.0,
+            'model' => ['name' => 'Kimi K3', 'id' => 'kimi-k3', 'provider' => 'Moonshot AI', 'reasoning_effort' => 'max', 'client_mode' => 'permissions auto-approved'],
+            'comment' => ['en' => 'One run of a case of five scored 512.', 'pt_BR' => 'Uma execução de um caso de cinco fez 512.'],
+            'statistics' => [
+                'scheduled' => 1, 'quality' => ['n' => 1, 'systems' => 1, 'mean' => 512.0, 'low' => 512.0, 'high' => 512.0],
+                'expected_per_scheduled_attempt' => ['n' => 1, 'systems' => 1, 'mean' => 512.0, 'low' => 512.0, 'high' => 512.0],
+                'completion' => ['rate' => 1.0, 'completed' => 1, 'scheduled' => 1, 'systems_all_completed' => 1, 'systems' => 1],
+                'outcomes' => ['completed' => 1, 'blocked' => 0, 'blocked_at_the_start' => 0, 'blocked_during_the_work' => 0, 'budget_exhausted' => 0, 'switched' => 0],
+                'lab_failures_rerun' => 0, 'median' => 512, 'min' => 512, 'max' => 512,
+            ],
+            'runs' => [['run' => 1, 'total' => 512]],
+        ];
+    }
+
     /** The aggregate of the Haiku case, in the shape tools/export-results.py publishes it. */
     private function firstCase(): array
     {
@@ -320,6 +341,31 @@ class LebTrackPagesTest extends TestCase
             ->assertSee('Cinco execuções entre 524 e 580.')
             ->assertSee('As execuções receberam o pacote anterior.')
             ->assertSee('Casos do piloto em andamento');
+    }
+
+    public function test_a_configuration_of_one_run_reads_in_the_singular_and_shows_its_client_mode(): void
+    {
+        $aggregate = $this->firstCase();
+        $aggregate['agents'][] = $this->singleRunCase();
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$aggregate]]);
+
+        $en = $this->visible($this->visit('default', 'en'));
+        $this->assertStringContainsString('Default track · 1 run', $en);
+        $this->assertStringNotContainsString('1 runs', $en);
+        $this->assertStringContainsString('1 of 1 scheduled attempt completed with the requested model.', $en);
+        $this->assertStringNotContainsString('1 of 1 scheduled attempts', $en);
+        $this->assertStringContainsString('Default track · 5 runs', $en);
+        $this->assertStringContainsString('3 of 3 scheduled attempts completed with the requested model.', $en);
+        $this->assertStringContainsString('permissions auto-approved', $en);
+
+        $pt = $this->visible($this->visit('default', 'pt_BR'));
+        $this->assertStringContainsString('trilha Default · 1 execução', $pt);
+        $this->assertStringNotContainsString('1 execuções', $pt);
+        $this->assertStringContainsString('1 de 1 tentativa agendada terminou com o modelo pedido.', $pt);
+        $this->assertStringNotContainsString('1 de 1 tentativas', $pt);
+        $this->assertStringContainsString('trilha Default · 5 execuções', $pt);
+        $this->assertStringContainsString('3 de 3 tentativas agendadas terminaram com o modelo pedido.', $pt);
+        $this->assertStringContainsString('permissions auto-approved', $pt);
     }
 
     public function test_the_security_page_stays_a_status_page_when_only_the_default_track_has_results(): void
