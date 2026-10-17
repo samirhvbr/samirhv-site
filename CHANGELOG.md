@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.161 - The LEB Default page shows 23 configurations: Gemini 3.7 Flash, Grok 4.7, Kimi K3 at high and DeepSeek V4 Flash 0731 join the OpenCode cases
+
+ai-benchmark 0.2.242 adds five OpenCode configurations (Grok 4.7 at high 603, Kimi K3 at high 538, Gemini 3.7 Flash at high 455, DeepSeek V4 Flash 0731 at max 463 and at high 357 with one run), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-three cards with no change in markup; the readings of the new cards say that Grok and Gemini were reached through OpenRouter (whose only upstreams for them are the vendors' own) and that V4 Flash 0731 was served by Novita AI.
+
 ## 1.0.160 - The LEB Default page shows the auto-approval mode next to the effort of the OpenCode cases that ran with it
 
 ai-benchmark 0.2.240 gives Kimi K3, DeepSeek V4.1 Flash, GLM-5.3 and DeepSeek V4 Pro at max `model.client_mode: permissions auto-approved` (every attempt ran with `opencode run --auto`), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The cards show it as the amber tag and in the heading next to the effort, the way they show Codex's `permissions bypassed`. No change in markup or CSS.
