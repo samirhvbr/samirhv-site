@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.160 - The LEB Default page shows the auto-approval mode next to the effort of the OpenCode cases that ran with it
+
+ai-benchmark 0.2.240 gives Kimi K3, DeepSeek V4.1 Flash, GLM-5.3 and DeepSeek V4 Pro at max `model.client_mode: permissions auto-approved` (every attempt ran with `opencode run --auto`), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The cards show it as the amber tag and in the heading next to the effort, the way they show Codex's `permissions bypassed`. No change in markup or CSS.
+
 ## 1.0.159 - The LEB Default page reads "1 run" and "1 attempt" for a configuration with a single run
 
 The card of a configuration with one run said "1 runs" (and, in Portuguese, "1 execuções"), and its fact line said "1 of 1 scheduled attempts completed". `leb_series.results_case_ids` and `leb_series.results_completion` now take the singular and the plural in both languages (Laravel's `{1} … |[2,*] …` form, as `next_card_cases` already did), and the track view calls `trans_choice` with the scheduled count. Text only: no change in markup or CSS. A test pins the singular in both languages with a one-run configuration.
