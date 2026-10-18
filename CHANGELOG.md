@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.162 - The LEB Default page shows 24 configurations: Claude Sonnet 5.5 at max joins, and GPT-6.1-sol at ultra and Claude Opus 5.5 at xhigh grow
+
+ai-benchmark 0.2.243 adds Claude Sonnet 5.5 at max (one run, 793) and more runs of two configurations (GPT-6.1-sol at ultra, four runs, mean 636; Claude Opus 5.5 at xhigh, two runs, mean 839), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-four cards with no change in markup.
+
 ## 1.0.161 - The LEB Default page shows 23 configurations: Gemini 3.7 Flash, Grok 4.7, Kimi K3 at high and DeepSeek V4 Flash 0731 join the OpenCode cases
 
 ai-benchmark 0.2.242 adds five OpenCode configurations (Grok 4.7 at high 603, Kimi K3 at high 538, Gemini 3.7 Flash at high 455, DeepSeek V4 Flash 0731 at max 463 and at high 357 with one run), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-three cards with no change in markup; the readings of the new cards say that Grok and Gemini were reached through OpenRouter (whose only upstreams for them are the vendors' own) and that V4 Flash 0731 was served by Novita AI.
