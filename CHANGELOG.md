@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.163 - The LEB Default page shows 27 configurations: Kimi K2.7 Code (two variants) and Claude Sonnet 5.5 at medium join, and four configurations grow
+
+ai-benchmark 0.2.244 adds Kimi K2.7 Code at its default effort (two runs, mean 410) and at highspeed (one run, 323), Claude Sonnet 5.5 at medium (one run, 535, on an Anthropic API key) and grows GPT-6.1-sol at ultra to five runs (638), GPT-6-luna at xhigh to five (455), Claude Opus 5.5 at xhigh to three (830) and DeepSeek V4.1 Flash at max to four (538); `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-seven cards with no change in markup.
+
 ## 1.0.162 - The LEB Default page shows 24 configurations: Claude Sonnet 5.5 at max joins, and GPT-6.1-sol at ultra and Claude Opus 5.5 at xhigh grow
 
 ai-benchmark 0.2.243 adds Claude Sonnet 5.5 at max (one run, 793) and more runs of two configurations (GPT-6.1-sol at ultra, four runs, mean 636; Claude Opus 5.5 at xhigh, two runs, mean 839), and `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-four cards with no change in markup.
