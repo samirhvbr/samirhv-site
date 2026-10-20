@@ -6,7 +6,12 @@
    ordering by a category adds the card's position in that category, counted
    over every agent, so it does not change with the filter either.
    The bar is rendered hidden, so without JavaScript the page is the plain
-   leaderboard and no control is left that does nothing. */
+   leaderboard and no control is left that does nothing.
+
+   The board is any element with the class ab-board whose children carry
+   data-vendor (the leaderboards' <li> rows, or the <article> cards of a track
+   page). The bar's data-ab-page sets the page size; 0 means no pages, which is
+   how the track pages show every configuration at once. */
 (function () {
   "use strict";
 
@@ -15,7 +20,7 @@
     while (board && !board.classList.contains("ab-board")) board = board.nextElementSibling;
     if (!board) return;
 
-    var rows = Array.prototype.slice.call(board.querySelectorAll(":scope > li[data-vendor]"));
+    var rows = Array.prototype.slice.call(board.querySelectorAll(":scope > [data-vendor]"));
     var vendorChips = Array.prototype.slice.call(bar.querySelectorAll(".ab-chip[data-vendor]"));
     var sortChips = Array.prototype.slice.call(bar.querySelectorAll(".ab-chip[data-sort]"));
     var status = bar.querySelector(".ab-filter__status");
@@ -24,7 +29,9 @@
     var pagerTpl = text(bar.querySelector(".ab-pager__tpl"));
     var selected = {};
     var sortKey = "";
-    var PAGE = 25;
+    // Rows per page: 25 unless the bar says otherwise; 0 shows every row that matches.
+    var PAGE = bar.hasAttribute("data-ab-page") ? Number(bar.getAttribute("data-ab-page")) : 25;
+    if (!(PAGE >= 0)) PAGE = 25;
     var page = 1;
     var pager = null;
 
@@ -94,11 +101,11 @@
       var kept = Array.prototype.filter.call(board.children, function (row) {
         return row.getAttribute("data-match") !== "0";
       });
-      var pages = Math.max(1, Math.ceil(kept.length / PAGE));
+      var pages = PAGE === 0 ? 1 : Math.max(1, Math.ceil(kept.length / PAGE));
       if (page > pages) page = pages;
       rows.forEach(function (row) { row.hidden = true; row.classList.remove("ab-row--alt"); });
       // The alternate shade follows the cards on screen, not their place in the full list.
-      kept.slice((page - 1) * PAGE, page * PAGE).forEach(function (row, i) {
+      (PAGE === 0 ? kept : kept.slice((page - 1) * PAGE, page * PAGE)).forEach(function (row, i) {
         row.hidden = false;
         row.classList.toggle("ab-row--alt", i % 2 === 1);
       });
@@ -175,7 +182,7 @@
     });
 
     bar.hidden = false;
-    buildPager();
+    if (PAGE > 0) buildPager();
     applyFilter();
     applySort();
     paginate();

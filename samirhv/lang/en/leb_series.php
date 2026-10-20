@@ -86,6 +86,7 @@ return [
 
     'results_title' => 'The cases so far',
     'results_intro' => 'Each configuration is run on system A, :minutes minutes at most per run. While an instance is active only its aggregate is published: no per-flaw result, no verdict, no delivery.',
+    'filter_shown' => 'Showing :shown of :total configurations.',
     'results_case_ids' => '{1} :instance v:version · :track track · :runs run|[2,*] :instance v:version · :track track · :runs runs',
     'results_col_estimate' => 'Estimate',
     'results_col_interval' => '95% interval',

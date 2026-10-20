@@ -29,6 +29,13 @@
     <link rel="stylesheet" href="{{ vasset('css/site/ai-benchmark.css') }}">
 @endpush
 
+{{-- The vendor filter and the category order of the cases (only drawn once the page has results). --}}
+@if($hasResult)
+    @push('scripts')
+        <script defer src="{{ vasset('js/site/ai-benchmark.js') }}"></script>
+    @endpush
+@endif
+
 @section('content')
 
     {{-- ═══ HERO ═══ --}}
@@ -69,6 +76,31 @@
                 <h2 class="s-h2 ab-h2">{{ __('leb_series.results_title') }}</h2>
                 <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
 
+                {{-- Vendor filter and category order, as on the leaderboards (js/site/ai-benchmark.js). The filter only hides cards and the order only
+                     moves them; ordering by a category adds the card's position in that category, counted over every configuration. Every card
+                     stays on the page (data-ab-page="0": no pages). Rendered hidden, so without JavaScript the page is the plain list of cards. --}}
+                @php $vendors = collect($agents)->map(fn ($a) => $a['model']['provider'] ?? null)->filter()->unique()->values(); @endphp
+                <div class="ab-filter" data-ab-filter data-ab-page="0" hidden>
+                    <div class="ab-filter__chips" role="group" aria-label="{{ __('ai_benchmark.filter_label') }}">
+                        <span class="ab-filter__label">{{ __('ai_benchmark.filter_label') }}</span>
+                        <button type="button" class="ab-chip" data-vendor="" aria-pressed="true">{{ __('ai_benchmark.filter_all') }}</button>
+                        @foreach($vendors as $vendor)
+                            <button type="button" class="ab-chip" data-vendor="{{ $vendor }}" aria-pressed="false">{{ $vendor }} <span class="ab-chip__n">{{ collect($agents)->where('model.provider', $vendor)->count() }}</span></button>
+                        @endforeach
+                    </div>
+                    <div class="ab-filter__chips ab-sort" role="group" aria-label="{{ __('ai_benchmark.sort_label') }}">
+                        <span class="ab-filter__label">{{ __('ai_benchmark.sort_label') }}</span>
+                        <button type="button" class="ab-chip" data-sort="" aria-pressed="true">{{ __('ai_benchmark.sort_overall') }}</button>
+                        @foreach($cats as $cat)
+                            <button type="button" class="ab-chip" data-sort="{{ $cat }}" aria-pressed="false">{{ __("ai_benchmark.categories.$cat") }}</button>
+                        @endforeach
+                    </div>
+                    <span class="ab-sort__tpl" hidden>{{ __('ai_benchmark.sort_position', ['pos' => ':pos', 'cat' => ':cat']) }}</span>
+                    <span class="ab-filter__tpl" hidden>{{ __('leb_series.filter_shown', ['shown' => ':shown', 'total' => ':total']) }}</span>
+                    <p class="ab-filter__status s-meta" aria-live="polite">{{ __('leb_series.filter_shown', ['shown' => count($agents), 'total' => count($agents)]) }}</p>
+                </div>
+
+                <div class="ab-board ab-board--cases">
                 @foreach($agents as $agent)
                     @php
                         $model = $agent['model'] ?? [];
@@ -79,9 +111,10 @@
                         $expected = $st['expected_per_scheduled_attempt'];
                         $comment = $agent['comment'][$pt ? 'pt_BR' : 'en'] ?? null;
                     @endphp
-                    <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}">
+                    <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}" data-vendor="{{ $model['provider'] ?? '' }}" data-scores="{{ collect($cats)->map(fn ($c) => $c.':'.($agent['categories'][$c] ?? 0))->implode(' ') }}">
                         <header class="ab-case__head">
                             <h3 class="ab-case__name" id="ab-case-{{ $loop->index }}">{{ $name }}</h3>
+                            <span class="ab-row__catpos" hidden></span>
                             <p class="ab-case__ids">{{ trans_choice('leb_series.results_case_ids', $st['scheduled'], ['instance' => $aggregate['instance'], 'version' => $aggregate['version'], 'track' => ucfirst($track), 'runs' => $st['scheduled']]) }}</p>
                         </header>
 
@@ -105,7 +138,7 @@
                                 <thead>
                                     <tr>
                                         @foreach($cats as $cat)
-                                            <th scope="col">{{ $cat }}</th>
+                                            <th scope="col" data-cat="{{ $cat }}">{{ $cat }}</th>
                                         @endforeach
                                         <th scope="col">{{ __('leb_series.results_col_runs') }}</th>
                                     </tr>
@@ -113,7 +146,7 @@
                                 <tbody>
                                     <tr>
                                         @foreach($cats as $cat)
-                                            <td>{{ $num($agent['categories'][$cat]) }}/{{ $num($agent['category_max'][$cat]) }}</td>
+                                            <td data-cat="{{ $cat }}">{{ $num($agent['categories'][$cat]) }}/{{ $num($agent['category_max'][$cat]) }}</td>
                                         @endforeach
                                         <td>{{ collect($agent['runs'])->pluck('total')->implode(' · ') }}</td>
                                     </tr>
@@ -141,6 +174,7 @@
                         </div>
                     </article>
                 @endforeach
+                </div>
             </div>
         </section>
     @endif

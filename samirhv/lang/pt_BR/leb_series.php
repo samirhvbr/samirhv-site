@@ -86,6 +86,7 @@ return [
 
     'results_title' => 'Os casos até agora',
     'results_intro' => 'Cada configuração roda no sistema A, com :minutes minutos no máximo por execução. Enquanto uma instância está ativa só o agregado dela é publicado: nenhum resultado por falha, nenhum veredito, nenhuma entrega.',
+    'filter_shown' => 'Mostrando :shown de :total configurações.',
     'results_case_ids' => '{1} :instance v:version · trilha :track · :runs execução|[2,*] :instance v:version · trilha :track · :runs execuções',
     'results_col_estimate' => 'Estimativa',
     'results_col_interval' => 'Intervalo de 95%',

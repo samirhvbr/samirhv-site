@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.165 - The LEB Default page filters its cases by vendor and orders them by category, as the leaderboards do
+
+The "The cases so far" section of the Default page now has the vendor filter ("Filter by vendor", one chip per vendor with its count) and the order by category (Overall, Architecture, Bugs, Performance, Clean code, Compatibility, Explanation) that the LEB-100 and LEB-300 pages have, because 28 cards were too many to scan. The filter only hides cards and the order only moves them; ordering by a category adds the card's position in that category ("#1 in Bugs") and lights up that column in the card's table. Every card stays on one page (`data-ab-page="0"`: no pager). The same `js/site/ai-benchmark.js` serves it: the board is now any `.ab-board` whose children carry `data-vendor`, not only the `<li>` rows, and the bar sets the page size. The bar is rendered hidden and revealed by the script, so without JavaScript the page is the plain list of cards. `leb_series.filter_shown` says "configurations" where the leaderboards say "agents". Rendered at desktop and phone width in both languages before this commit; phpunit passes (335 tests).
+
 ## 1.0.164 - The LEB Default page shows 28 configurations: DeepSeek V4 Pro at high joins, and four configurations grow
 
 ai-benchmark 0.2.245 adds DeepSeek V4 Pro at high (two runs, mean 337) and grows Gemini 3.7 Flash at high to five runs (451), GPT-5.6-sol at xhigh to five (540), Claude Sonnet 5.5 at max to three (802) and DeepSeek V4.1 Flash at max to five (549); `samirhv/resources/data/ai-benchmark/results.json` is synced from it. The Default page's "The cases so far" section draws one card per configuration, so it now has twenty-eight cards with no change in markup.

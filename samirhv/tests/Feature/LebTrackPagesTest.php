@@ -328,7 +328,7 @@ class LebTrackPagesTest extends TestCase
             ->assertSee('There is no scoreboard yet')
             ->assertSee('Pilot cases under way')
             ->assertDontSee('In authoring')
-            ->assertDontSee('ab-board', false);
+            ->assertDontSee('<ol class="ab-board">', false);   // the cards are filterable and orderable (div.ab-board--cases), never a ranked leaderboard
 
         $this->visit('default', 'pt_BR')
             ->assertSee('Os primeiros resultados saíram.')
@@ -366,6 +366,37 @@ class LebTrackPagesTest extends TestCase
         $this->assertStringContainsString('trilha Default · 5 execuções', $pt);
         $this->assertStringContainsString('3 de 3 tentativas agendadas terminaram com o modelo pedido.', $pt);
         $this->assertStringContainsString('permissions auto-approved', $pt);
+    }
+
+    public function test_the_default_page_filters_its_cases_by_vendor_and_orders_them_by_category_in_both_languages(): void
+    {
+        $aggregate = $this->firstCase();
+        $aggregate['agents'][] = $this->singleRunCase();
+        AiBenchmark::fake(['instances' => [], 'aggregate_instances' => [$aggregate]]);
+        $agents = $aggregate['agents'];
+        $vendors = collect($agents)->pluck('model.provider')->unique()->values();
+
+        foreach ([['en', 'Filter by vendor', 'Order by', 'Showing :shown of :total configurations.', 'Showing 3 of 3 configurations.'],
+                  ['pt_BR', 'Filtrar por fornecedor', 'Ordenar por', 'Mostrando :shown de :total configurações.', 'Mostrando 3 de 3 configurações.']] as [$locale, $filter, $sort, $tpl, $status]) {
+            $html = $this->visit('default', $locale)->getContent();
+            $this->assertStringContainsString('<div class="ab-filter" data-ab-filter data-ab-page="0" hidden>', $html);
+            $this->assertStringContainsString($filter, $html);
+            $this->assertStringContainsString('<span class="ab-filter__tpl" hidden>'.$tpl, $html);
+            $this->assertStringContainsString($status, $html);
+            foreach ($vendors as $vendor) {
+                $n = collect($agents)->where('model.provider', $vendor)->count();
+                $this->assertStringContainsString('data-vendor="'.$vendor.'" aria-pressed="false">'.$vendor.' <span class="ab-chip__n">'.$n.'</span>', $html);
+            }
+            foreach (['ARCH', 'BUG', 'PERF', 'CLN', 'COMP', 'EXPL'] as $cat) {
+                $this->assertStringContainsString('data-sort="'.$cat.'" aria-pressed="false">', $html);
+                $this->assertStringContainsString('<td data-cat="'.$cat.'">', $html);
+            }
+            $this->assertStringNotContainsString('data-sort="SEC"', $html);
+            // one filterable card per configuration, inside the board the script reads, each with the scores it orders by
+            $this->assertStringContainsString('<div class="ab-board ab-board--cases">', $html);
+            $this->assertSame(count($agents), preg_match_all('/<article class="ab-case"[^>]* data-vendor="[^"]*" data-scores="ARCH:[\d.]+ BUG:[\d.]+ PERF:[\d.]+ CLN:[\d.]+ COMP:[\d.]+ EXPL:[\d.]+"/', $html));
+            $this->assertStringContainsString('data-scores="ARCH:96 BUG:173 PERF:125 CLN:10 COMP:100 EXPL:42"', $html);
+        }
     }
 
     public function test_the_security_page_stays_a_status_page_when_only_the_default_track_has_results(): void
