@@ -368,7 +368,7 @@ class LebTrackPagesTest extends TestCase
         $this->assertStringContainsString('permissions auto-approved', $pt);
     }
 
-    public function test_the_default_page_filters_its_cases_by_vendor_and_orders_them_by_category_in_both_languages(): void
+    public function test_the_default_page_filters_its_cases_by_vendor_effort_seal_and_permissions_and_orders_them_by_category_in_both_languages(): void
     {
         $aggregate = $this->firstCase();
         $aggregate['agents'][] = $this->singleRunCase();
@@ -376,8 +376,8 @@ class LebTrackPagesTest extends TestCase
         $agents = $aggregate['agents'];
         $vendors = collect($agents)->pluck('model.provider')->unique()->values();
 
-        foreach ([['en', 'Filter by vendor', 'Order by', 'Showing :shown of :total configurations.', 'Showing 3 of 3 configurations.'],
-                  ['pt_BR', 'Filtrar por fornecedor', 'Ordenar por', 'Mostrando :shown de :total configurações.', 'Mostrando 3 de 3 configurações.']] as [$locale, $filter, $sort, $tpl, $status]) {
+        foreach ([['en', 'Filter by vendor', 'Order by', 'Showing :shown of :total configurations.', 'Showing 3 of 3 configurations.', ['Filter by effort', 'Filter by seal', 'Filter by permissions'], 'standard'],
+                  ['pt_BR', 'Filtrar por fornecedor', 'Ordenar por', 'Mostrando :shown de :total configurações.', 'Mostrando 3 de 3 configurações.', ['Filtrar por esforço', 'Filtrar por selo', 'Filtrar por permissões'], 'padrão']] as [$locale, $filter, $sort, $tpl, $status, $facetLabels, $standard]) {
             $html = $this->visit('default', $locale)->getContent();
             $this->assertStringContainsString('<div class="ab-filter" data-ab-filter data-ab-page="0" hidden>', $html);
             $this->assertStringContainsString($filter, $html);
@@ -387,6 +387,20 @@ class LebTrackPagesTest extends TestCase
                 $n = collect($agents)->where('model.provider', $vendor)->count();
                 $this->assertStringContainsString('data-vendor="'.$vendor.'" aria-pressed="false">'.$vendor.' <span class="ab-chip__n">'.$n.'</span>', $html);
             }
+            // the other facets: a group of chips with an "all" chip and one chip per value on screen, with its count
+            foreach ($facetLabels as $label) {
+                $this->assertStringContainsString('aria-label="'.$label.'"', $html);
+            }
+            foreach (['effort' => fn ($a) => $a['model']['reasoning_effort'] ?? '',
+                      'seal' => fn ($a) => $a['grade'] ?? '',
+                      'mode' => fn ($a) => $a['model']['client_mode'] ?? 'standard'] as $facet => $of) {
+                $this->assertStringContainsString('<button type="button" class="ab-chip" data-'.$facet.'="" aria-pressed="true">', $html);
+                foreach (collect($agents)->map($of)->unique() as $value) {
+                    $n = collect($agents)->filter(fn ($a) => $of($a) === $value)->count();
+                    $this->assertMatchesRegularExpression('/data-'.$facet.'="'.preg_quote($value, '/').'" aria-pressed="false">[^<]*<span class="ab-chip__n">'.$n.'<\/span>/', $html);
+                }
+            }
+            $this->assertStringContainsString('data-mode="standard" aria-pressed="false">'.$standard.' <span', $html);
             foreach (['ARCH', 'BUG', 'PERF', 'CLN', 'COMP', 'EXPL'] as $cat) {
                 $this->assertStringContainsString('data-sort="'.$cat.'" aria-pressed="false">', $html);
                 $this->assertStringContainsString('<td data-cat="'.$cat.'">', $html);
@@ -394,7 +408,7 @@ class LebTrackPagesTest extends TestCase
             $this->assertStringNotContainsString('data-sort="SEC"', $html);
             // one filterable card per configuration, inside the board the script reads, each with the scores it orders by
             $this->assertStringContainsString('<div class="ab-board ab-board--cases">', $html);
-            $this->assertSame(count($agents), preg_match_all('/<article class="ab-case"[^>]* data-vendor="[^"]*" data-scores="ARCH:[\d.]+ BUG:[\d.]+ PERF:[\d.]+ CLN:[\d.]+ COMP:[\d.]+ EXPL:[\d.]+"/', $html));
+            $this->assertSame(count($agents), preg_match_all('/<article class="ab-case"[^>]* data-vendor="[^"]*" data-effort="[^"]*" data-seal="[^"]*" data-mode="[^"]*" data-scores="ARCH:[\d.]+ BUG:[\d.]+ PERF:[\d.]+ CLN:[\d.]+ COMP:[\d.]+ EXPL:[\d.]+"/', $html));
             $this->assertStringContainsString('data-scores="ARCH:96 BUG:173 PERF:125 CLN:10 COMP:100 EXPL:42"', $html);
         }
     }

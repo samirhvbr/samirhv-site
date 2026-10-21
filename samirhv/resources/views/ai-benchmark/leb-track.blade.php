@@ -76,10 +76,26 @@
                 <h2 class="s-h2 ab-h2">{{ __('leb_series.results_title') }}</h2>
                 <p class="s-body ab-intro">{{ __('leb_series.results_intro', ['minutes' => $aggregate['budget_minutes'] ?? '']) }}</p>
 
-                {{-- Vendor filter and category order, as on the leaderboards (js/site/ai-benchmark.js). The filter only hides cards and the order only
+                {{-- Vendor filter and category order, as on the leaderboards (js/site/ai-benchmark.js), and three more facets over the cards: effort, seal and the
+                     client's permission mode. A card must match every facet that has a chip on; within one facet any chip on matches. The filter only hides cards and the order only
                      moves them; ordering by a category adds the card's position in that category, counted over every configuration. Every card
                      stays on the page (data-ab-page="0": no pages). Rendered hidden, so without JavaScript the page is the plain list of cards. --}}
-                @php $vendors = collect($agents)->map(fn ($a) => $a['model']['provider'] ?? null)->filter()->unique()->values(); @endphp
+                @php
+                    $vendors = collect($agents)->map(fn ($a) => $a['model']['provider'] ?? null)->filter()->unique()->values();
+                    // The other facets: effort (on its ladder, then any level the ladder does not know), the seal (the aggregate is in rank order, so Gold comes first)
+                    // and the client's permission mode ("standard" when the run needed no exception).
+                    $effortLadder = ['default', 'thinking', 'medium', 'high', 'xhigh', 'max', 'ultra'];
+                    $efforts = collect($agents)->map(fn ($a) => $a['model']['reasoning_effort'] ?? null)->filter()->unique()
+                        ->sortBy(fn ($e) => ($i = array_search($e, $effortLadder, true)) === false ? count($effortLadder) : $i)->values();
+                    $seals = collect($agents)->pluck('grade')->filter()->unique()->values();
+                    $modeOf = fn ($a) => $a['model']['client_mode'] ?? 'standard';
+                    $modes = collect($agents)->map($modeOf)->unique()->sortBy(fn ($m) => $m === 'standard' ? 0 : 1)->values();
+                    $facets = [
+                        'effort' => [__('ai_benchmark.filter_effort'), $efforts->mapWithKeys(fn ($e) => [$e => [$e, $e]])->all(), fn ($a) => $a['model']['reasoning_effort'] ?? ''],
+                        'seal' => [__('ai_benchmark.filter_seal'), $seals->mapWithKeys(fn ($g) => [$g => [$g, __("ai_benchmark.grades.$g")]])->all(), fn ($a) => $a['grade'] ?? ''],
+                        'mode' => [__('ai_benchmark.filter_mode'), $modes->mapWithKeys(fn ($m) => [$m => [$m, $m === 'standard' ? __('ai_benchmark.filter_mode_standard') : $m]])->all(), $modeOf],
+                    ];
+                @endphp
                 <div class="ab-filter" data-ab-filter data-ab-page="0" hidden>
                     <div class="ab-filter__chips" role="group" aria-label="{{ __('ai_benchmark.filter_label') }}">
                         <span class="ab-filter__label">{{ __('ai_benchmark.filter_label') }}</span>
@@ -88,6 +104,15 @@
                             <button type="button" class="ab-chip" data-vendor="{{ $vendor }}" aria-pressed="false">{{ $vendor }} <span class="ab-chip__n">{{ collect($agents)->where('model.provider', $vendor)->count() }}</span></button>
                         @endforeach
                     </div>
+                    @foreach($facets as $facet => [$facetLabel, $facetValues, $facetOf])
+                        <div class="ab-filter__chips ab-facet" role="group" aria-label="{{ $facetLabel }}">
+                            <span class="ab-filter__label">{{ $facetLabel }}</span>
+                            <button type="button" class="ab-chip" data-{{ $facet }}="" aria-pressed="true">{{ __('ai_benchmark.filter_all') }}</button>
+                            @foreach($facetValues as [$value, $text])
+                                <button type="button" class="ab-chip" data-{{ $facet }}="{{ $value }}" aria-pressed="false">{{ $text }} <span class="ab-chip__n">{{ collect($agents)->filter(fn ($a) => $facetOf($a) === $value)->count() }}</span></button>
+                            @endforeach
+                        </div>
+                    @endforeach
                     <div class="ab-filter__chips ab-sort" role="group" aria-label="{{ __('ai_benchmark.sort_label') }}">
                         <span class="ab-filter__label">{{ __('ai_benchmark.sort_label') }}</span>
                         <button type="button" class="ab-chip" data-sort="" aria-pressed="true">{{ __('ai_benchmark.sort_overall') }}</button>
@@ -111,7 +136,7 @@
                         $expected = $st['expected_per_scheduled_attempt'];
                         $comment = $agent['comment'][$pt ? 'pt_BR' : 'en'] ?? null;
                     @endphp
-                    <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}" data-vendor="{{ $model['provider'] ?? '' }}" data-scores="{{ collect($cats)->map(fn ($c) => $c.':'.($agent['categories'][$c] ?? 0))->implode(' ') }}">
+                    <article class="ab-case" aria-labelledby="ab-case-{{ $loop->index }}" data-vendor="{{ $model['provider'] ?? '' }}" data-effort="{{ $model['reasoning_effort'] ?? '' }}" data-seal="{{ $agent['grade'] ?? '' }}" data-mode="{{ $model['client_mode'] ?? 'standard' }}" data-scores="{{ collect($cats)->map(fn ($c) => $c.':'.($agent['categories'][$c] ?? 0))->implode(' ') }}">
                         <header class="ab-case__head">
                             <h3 class="ab-case__name" id="ab-case-{{ $loop->index }}">{{ $name }}</h3>
                             <span class="ab-row__catpos" hidden></span>

@@ -96,7 +96,7 @@
 .ab-chip[aria-pressed="true"] .ab-chip__n{ color:inherit; }
 .ab-filter__status{ margin:.7rem 0 0; }
 .ab-row[hidden]{ display:none; }
-.ab-sort{ margin-top:10px; }
+.ab-sort, .ab-facet{ margin-top:10px; }
 .ab-pager{ display:flex; align-items:center; justify-content:center; gap:14px; margin:16px 0 0; }
 .ab-pager[hidden]{ display:none; }
 .ab-pager__label{ font-family:var(--s-mono); font-size:.8rem; color:var(--s-muted); font-variant-numeric:tabular-nums; }

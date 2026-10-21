@@ -1,7 +1,8 @@
-/* AI Benchmark page: the vendor filter, the category order, the pages of
-   each leaderboard and the card that opens on a click. The same file runs on samirhv.com.br and shvia.org.
+/* AI Benchmark page: the vendor filter (and, on the track pages, the effort, seal and
+   permission-mode filters), the category order, the pages of each leaderboard and the
+   card that opens on a click. The same file runs on samirhv.com.br and shvia.org.
 
-   The filter only hides rows and the order only moves them. The number on each
+   The filters only hide rows and the order only moves them. The number on each
    card stays its rank in the full leaderboard, because the rank is the result;
    ordering by a category adds the card's position in that category, counted
    over every agent, so it does not change with the filter either.
@@ -11,7 +12,13 @@
    The board is any element with the class ab-board whose children carry
    data-vendor (the leaderboards' <li> rows, or the <article> cards of a track
    page). The bar's data-ab-page sets the page size; 0 means no pages, which is
-   how the track pages show every configuration at once. */
+   how the track pages show every configuration at once.
+
+   A facet is a group of chips that carry the same data attribute (data-vendor,
+   data-effort, data-seal, data-mode); the rows carry the matching attribute, and a
+   chip with an empty value means "all" for its facet. Within one facet any chip that
+   is on matches; a row must match every facet that has a chip on. The leaderboards
+   only have the vendor facet. */
 (function () {
   "use strict";
 
@@ -21,13 +28,19 @@
     if (!board) return;
 
     var rows = Array.prototype.slice.call(board.querySelectorAll(":scope > [data-vendor]"));
-    var vendorChips = Array.prototype.slice.call(bar.querySelectorAll(".ab-chip[data-vendor]"));
+    var facets = ["vendor", "effort", "seal", "mode"].map(function (name) {
+      return {
+        name: name,
+        attr: "data-" + name,
+        chips: Array.prototype.slice.call(bar.querySelectorAll(".ab-chip[data-" + name + "]")),
+        selected: {}
+      };
+    }).filter(function (facet) { return facet.chips.length > 0; });
     var sortChips = Array.prototype.slice.call(bar.querySelectorAll(".ab-chip[data-sort]"));
     var status = bar.querySelector(".ab-filter__status");
     var shownTpl = text(bar.querySelector(".ab-filter__tpl"));
     var posTpl = text(bar.querySelector(".ab-sort__tpl"));
     var pagerTpl = text(bar.querySelector(".ab-pager__tpl"));
-    var selected = {};
     var sortKey = "";
     // Rows per page: 25 unless the bar says otherwise; 0 shows every row that matches.
     var PAGE = bar.hasAttribute("data-ab-page") ? Number(bar.getAttribute("data-ab-page")) : 25;
@@ -48,16 +61,20 @@
     });
 
     function applyFilter() {
-      var any = Object.keys(selected).length > 0;
       var shown = 0;
       rows.forEach(function (row) {
-        var match = !any || selected[row.getAttribute("data-vendor")] === true;
+        var match = facets.every(function (facet) {
+          return Object.keys(facet.selected).length === 0 || facet.selected[row.getAttribute(facet.attr)] === true;
+        });
         row.setAttribute("data-match", match ? "1" : "0");
         if (match) shown++;
       });
-      vendorChips.forEach(function (chip) {
-        var vendor = chip.getAttribute("data-vendor");
-        chip.setAttribute("aria-pressed", (vendor === "" ? !any : selected[vendor] === true) ? "true" : "false");
+      facets.forEach(function (facet) {
+        var any = Object.keys(facet.selected).length > 0;
+        facet.chips.forEach(function (chip) {
+          var value = chip.getAttribute(facet.attr);
+          chip.setAttribute("aria-pressed", (value === "" ? !any : facet.selected[value] === true) ? "true" : "false");
+        });
       });
       if (status && shownTpl) {
         status.textContent = shownTpl.replace(":shown", String(shown)).replace(":total", String(rows.length));
@@ -142,19 +159,21 @@
       board.parentNode.insertBefore(pager, board.nextSibling);
     }
 
-    vendorChips.forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        var vendor = chip.getAttribute("data-vendor");
-        if (vendor === "") {
-          selected = {};
-        } else if (selected[vendor]) {
-          delete selected[vendor]; // the last one off means "all" again
-        } else {
-          selected[vendor] = true;
-        }
-        applyFilter();
-        page = 1;
-        paginate();
+    facets.forEach(function (facet) {
+      facet.chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          var value = chip.getAttribute(facet.attr);
+          if (value === "") {
+            facet.selected = {};
+          } else if (facet.selected[value]) {
+            delete facet.selected[value]; // the last one off means "all" again
+          } else {
+            facet.selected[value] = true;
+          }
+          applyFilter();
+          page = 1;
+          paginate();
+        });
       });
     });
 
