@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.168 - The LEB Default page shows 30 configurations: GPT-5.6-luna at xhigh joins and four configurations grow
+
+The data of ai-benchmark 0.2.247: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`, so the Default page now draws thirty cards. GPT-5.6-luna at xhigh (five runs, mean 400, Bronze, on Codex CLI with approvals and sandbox bypassed) joins in 26th place. Four cards change: Claude Sonnet 5.5 at medium goes from one run to five (535 to 560), DeepSeek V4.1 Flash at high from two runs to five (452 to 519), MiniMax M3.1 Flash at high from one run to three (543 to 497) and DeepSeek V4 Flash 0731 at high from one run to two (357 to 372). The owner settled the held disagreements of these runs on 22/10/2026; runs that still wait for a person stay out of the page. No change in markup or copy: the card, the vendor chip (OpenAI now 8 of 30), the effort, seal and permission-mode chips and their counts follow the data.
+
 ## 1.0.167 - The LEB Default page shows 29 configurations: MiniMax M3.1 Flash at high joins
 
 The data of ai-benchmark 0.2.246: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`, so the Default page now draws twenty-nine cards. MiniMax M3.1 Flash at high (one run, 543, Bronze), reached through OpenRouter's free variant of the model, whose only endpoint is MiniMax's own, joins in 13th place; the account's credit usage did not move across nine attempts. The judges disagreed on eight items of that run and the owner settled them on 21/10/2026 by taking the second judge's reading. Four more runs wait for a person to settle a point and stay out of the page. No change in markup or copy: the card, the vendor chip (MiniMax now 2 of 29), the effort, seal and permission-mode chips and their counts follow the data.
