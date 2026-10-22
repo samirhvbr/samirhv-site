@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.169 - The LEB Default page grows the Claude Sonnet 5.5 at max card to four runs
+
+The data of ai-benchmark 0.2.248: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`. Claude Sonnet 5.5 at max goes from three runs to four (the new run scored 874, Gold, with the judges agreeing on every item) and its mean moves from 802 to 820; the Portuguese reading of the card also loses a verb typo. Still thirty cards. No change in markup or copy.
+
 ## 1.0.168 - The LEB Default page shows 30 configurations: GPT-5.6-luna at xhigh joins and four configurations grow
 
 The data of ai-benchmark 0.2.247: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`, so the Default page now draws thirty cards. GPT-5.6-luna at xhigh (five runs, mean 400, Bronze, on Codex CLI with approvals and sandbox bypassed) joins in 26th place. Four cards change: Claude Sonnet 5.5 at medium goes from one run to five (535 to 560), DeepSeek V4.1 Flash at high from two runs to five (452 to 519), MiniMax M3.1 Flash at high from one run to three (543 to 497) and DeepSeek V4 Flash 0731 at high from one run to two (357 to 372). The owner settled the held disagreements of these runs on 22/10/2026; runs that still wait for a person stay out of the page. No change in markup or copy: the card, the vendor chip (OpenAI now 8 of 30), the effort, seal and permission-mode chips and their counts follow the data.
