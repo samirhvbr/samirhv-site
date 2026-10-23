@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.172 - The LEB-300-A page adds Claude Haiku 5.5 at high and shows three more agents with three runs
+
+The data of ai-benchmark 0.2.251: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`. The LEB-300-A table grows from 27 to 28 agents: Claude Haiku 5.5 at high joins with three runs (777, 770 and 713; median 770, Gold), and Claude Opus 5.5 at high (median 866), Claude Sonnet 5.5 at max (886) and Claude Sonnet 5.5 at high (855) reach three runs and become official, all Gold. The page and the readings follow the data: no change in markup or copy.
+
 ## 1.0.171 - The LEB Default page grows the Claude Sonnet 5.5 at max card to five runs
 
 The data of ai-benchmark 0.2.250, synced by `tools/sync-ai-benchmark-results.sh`: Claude Sonnet 5.5 at max goes from four runs to five (the new run scored 849, Gold) and its mean moves from 820 to 826. Still thirty-one cards. No change in markup or copy.
