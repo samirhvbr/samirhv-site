@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.0.170 - The LEB Default page shows 31 configurations: GPT-6.1-sol at high joins and two configurations grow
+
+The data of ai-benchmark 0.2.249: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`, so the Default page now draws thirty-one cards. GPT-6.1-sol at high (five runs, mean 661, Silver, on Codex CLI with approvals and sandbox bypassed) joins in 9th place. Two cards change: GPT-6-astra at ultra goes from one run to five (690 to 698) and GPT-6.1-sol at xhigh from three runs to five (699 to 684). The owner settled on 23/10/2026 the point that had held three of these runs back (a new defect no test covers is charged); runs that still wait for a person stay out of the page. No change in markup or copy: the card, the vendor chip (OpenAI now 9 of 31), the effort, seal and permission-mode chips and their counts follow the data.
+
 ## 1.0.169 - The LEB Default page grows the Claude Sonnet 5.5 at max card to four runs
 
 The data of ai-benchmark 0.2.248: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`. Claude Sonnet 5.5 at max goes from three runs to four (the new run scored 874, Gold, with the judges agreeing on every item) and its mean moves from 802 to 820; the Portuguese reading of the card also loses a verb typo. Still thirty cards. No change in markup or copy.
