@@ -12,6 +12,10 @@ file was first written; their commit subjects were in Portuguese and stay that
 way in the history, so the descriptions here are translations, not the original
 subjects.
 
+## 1.1.0 - The AI Benchmark moves to shvia.org: every old address redirects to its Benchmark page and the menu keeps one link
+
+The benchmark is published on shvia.org, so this site stops rendering it. `/ai-benchmark`, its four sub-pages (`leb-100`, `leb-300`, `leb-default`, `leb-security`) and the same addresses under `/en` and `/pt-br` answer one permanent redirect (301) to the Benchmark page of shvia.org, `/en/ai-benchmark.html` or `/pt-br/ai-benchmark.html` by the language of the address (`BenchmarkMoved`, unnamed, so the locale negotiation never touches it). The old CSV addresses (`/downloads/ai-benchmark/` and `/data/ai-benchmark/`, `runs.csv` and `flaws.csv`) redirect to the same files on shvia.org. The header's AI Benchmark dropdown becomes a single link, with the footer's, to that page in the language of the page being read (`App\Support\BenchmarkSite`), and the sitemap lists no benchmark page. Removed: the four controllers, the results reader (`App\Support\AiBenchmark`), the views, the five page tests and the nav-state composer of the provider; `BenchmarkMovedTest` pins the redirects and the two links. `lang/*/{ai_benchmark,leb_*}.php` and the `ai_benchmark_*` keys of `shell.php` stay, because `tools/sync-ai-benchmark.py` of shvia-site still reads the page copy from them.
+
 ## 1.0.173 - The LEB-300-A page adds GPT-6-astra at ultra and shows six GPT agents with three runs
 
 The data of ai-benchmark 0.2.262: `resources/data/ai-benchmark/results.json` and `UPSTREAM.json` synced by `tools/sync-ai-benchmark-results.sh`. The LEB-300-A table grows from 28 to 29 agents: GPT-6-astra at ultra joins with three runs (715, 781 and 721; median 721, Silver), and GPT-6.1-sol at xhigh, at ultra and at high, GPT-6-astra at xhigh, GPT-5.6-luna at xhigh and GPT-6-luna at xhigh reach three runs. No change in markup or copy.

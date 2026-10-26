@@ -160,51 +160,8 @@
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.projects') }}</div></a></li>
                                 @endif
                                 <li class="menu-item"><a class="menu-link" href="{{ lroute('downloads') }}"><div>{{ __('shell.downloads') }}</div></a></li>
-                                {{-- AI Benchmark is a menu of its own: the page that explains the project, then the page of each
-                                     instance, then the two tracks of the next series. Same markup and the same script as Projects above (a button that
-                                     opens on hover, on focus and on click). Under each instance, a second line says
-                                     how many agents it ranks and the top score (`$navBenchmark`, shared by
-                                     AppServiceProvider from the synced results file), so the menu is the way into
-                                     the results and says what they hold before the click. --}}
-                                @php $navRoute = \App\Support\Locales::stripRoutePrefix((string) request()->route()?->getName()); @endphp
-                                <li class="menu-item s-dd-parent">
-                                    <button type="button" class="menu-link s-dd-trigger" aria-expanded="false" aria-controls="nav-ai-benchmark" data-dd-trigger>
-                                        <div>{{ __('shell.ai_benchmark') }} <i class="bi-chevron-down s-caret" aria-hidden="true"></i></div>
-                                    </button>
-                                    <ul class="s-dd" id="nav-ai-benchmark">
-                                        <li>
-                                            <a href="{{ lroute('ai-benchmark') }}" @if($navRoute === 'ai-benchmark') aria-current="page" @endif>
-                                                <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
-                                                <span class="s-dd-text"><strong>{{ __('shell.ai_benchmark_overview') }}</strong><small>{{ __('shell.ai_benchmark_overview_hint') }}</small></span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ lroute('ai-benchmark.leb-100') }}" @if($navRoute === 'ai-benchmark.leb-100') aria-current="page" @endif>
-                                                <i class="fa-solid fa-cube" aria-hidden="true"></i>
-                                                <span class="s-dd-text"><strong>LEB-100-A</strong><small>{{ __('shell.ai_benchmark_leb100_hint') }}</small>@if($navBenchmark['leb100'] ?? null)<small>{{ trans_choice('shell.ai_benchmark_state', $navBenchmark['leb100']['count'], $navBenchmark['leb100']) }}</small>@endif</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ lroute('ai-benchmark.leb-300') }}" @if($navRoute === 'ai-benchmark.leb-300') aria-current="page" @endif>
-                                                <i class="fa-solid fa-cubes" aria-hidden="true"></i>
-                                                <span class="s-dd-text"><strong>LEB-300-A</strong><small>{{ __('shell.ai_benchmark_leb300_hint') }}</small>@if($navBenchmark['leb300'] ?? null)<small>{{ trans_choice('shell.ai_benchmark_state', $navBenchmark['leb300']['count'], $navBenchmark['leb300']) }}</small>@endif</span>
-                                            </a>
-                                        </li>
-                                        {{-- The next series: no agents and no score yet, so only the hint line. --}}
-                                        <li>
-                                            <a href="{{ lroute('ai-benchmark.leb-default') }}" @if($navRoute === 'ai-benchmark.leb-default') aria-current="page" @endif>
-                                                <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
-                                                <span class="s-dd-text"><strong>LEB Default</strong><small>{{ __('shell.ai_benchmark_default_hint') }}</small></span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ lroute('ai-benchmark.leb-security') }}" @if($navRoute === 'ai-benchmark.leb-security') aria-current="page" @endif>
-                                                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                                                <span class="s-dd-text"><strong>LEB Security</strong><small>{{ __('shell.ai_benchmark_security_hint') }}</small></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                {{-- The AI Benchmark lives on shvia.org since 1.1.0: one link, in the language of the page. --}}
+                                <li class="menu-item"><a class="menu-link" href="{{ \App\Support\BenchmarkSite::page() }}" rel="noopener"><div>{{ __('shell.ai_benchmark') }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" style="font-size:.7em"></i></div></a></li>
                             </ul>
                         </nav>
 
@@ -266,7 +223,7 @@
                             <ul class="list-unstyled mb-0" style="display: flex; flex-direction: column; gap: 10px;">
                                 <li><a href="{{ lroute('home') }}" class="s-flink">{{ __('shell.home') }}</a></li>
                                 <li><a href="{{ lroute('downloads') }}" class="s-flink">{{ __('shell.downloads') }}</a></li>
-                                <li><a href="{{ lroute('ai-benchmark') }}" class="s-flink">{{ __('shell.ai_benchmark') }}</a></li>
+                                <li><a href="{{ \App\Support\BenchmarkSite::page() }}" rel="noopener" class="s-flink">{{ __('shell.ai_benchmark') }}</a></li>
                                 <li><a href="{{ route('admin.dashboard') }}" class="s-flink">{{ __('shell.admin_panel') }}</a></li>
                                 @foreach(\App\Support\Locales::SUPPORTED as $langOption)
                                     @if($langOption !== app()->getLocale())

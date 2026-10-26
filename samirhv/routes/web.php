@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\AiBenchmarkController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BenchmarkMoved;
 use App\Http\Controllers\DownloadController;
-use App\Http\Controllers\Leb100Controller;
-use App\Http\Controllers\Leb300Controller;
-use App\Http\Controllers\LebTrackController;
 use App\Http\Controllers\LegacyEnglishPrefix;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TuraPairController;
+use App\Support\BenchmarkSite;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
 
@@ -25,15 +23,23 @@ use Illuminate\Support\Facades\Route;
 | the first rule then 301s to the PORTUGUESE page — an English link landing
 | silently in Portuguese, with a 200 and no error anywhere.
 */
+// The AI Benchmark moved to shvia.org in 1.1.0. Every address it had, in either
+// language, answers a permanent redirect to the Benchmark page there. Before the
+// `/en/{path?}` rule below, so `/en/ai-benchmark` is one hop, not two.
+foreach (['', '/en', '/pt-br'] as $prefix) {
+    Route::get($prefix.'/ai-benchmark/{page?}', BenchmarkMoved::class)->where('page', '[a-z0-9-]*');
+}
+
 Route::permanentRedirect('/projetos/github-desktop', '/pt-br/projects/github-desktop');
 Route::permanentRedirect('/en/projetos/github-desktop', '/projects/github-desktop');
 Route::get('/en/{path?}', LegacyEnglishPrefix::class)->where('path', '.*');
 
-// The benchmark CSVs lived under public/downloads/ from 1.0.47 to 1.0.68. That
-// folder shadowed the /downloads page on Apache (a real directory is never
-// rewritten to index.php), so they moved to public/data/; old links still land.
-Route::permanentRedirect('/downloads/ai-benchmark/runs.csv', '/data/ai-benchmark/runs.csv');
-Route::permanentRedirect('/downloads/ai-benchmark/flaws.csv', '/data/ai-benchmark/flaws.csv');
+// The benchmark CSVs lived under public/downloads/ (1.0.47 to 1.0.68), then under
+// public/data/. Both addresses now land on the same files at shvia.org.
+foreach (['runs.csv', 'flaws.csv'] as $csv) {
+    Route::permanentRedirect('/downloads/ai-benchmark/'.$csv, BenchmarkSite::data($csv));
+    Route::permanentRedirect('/data/ai-benchmark/'.$csv, BenchmarkSite::data($csv));
+}
 
 /*
 | ── Public pages, in both languages ─────────────────────────────────────────
@@ -56,19 +62,6 @@ $publico = function (): void {
 
     // Static project pages (a description, with no database row).
     Route::view('/projects/github-desktop', 'projects.github-desktop')->name('project.github-desktop');
-
-    // LEB: the benchmark explained, and the way into the pages of its two instances (no database).
-    Route::get('/ai-benchmark', AiBenchmarkController::class)->name('ai-benchmark');
-
-    // LEB-100: the first level, with every result (a synced file, no database).
-    Route::get('/ai-benchmark/leb-100', Leb100Controller::class)->name('ai-benchmark.leb-100');
-
-    // LEB-300: the second level. A status page until its aggregate is published, then a scoreboard (no database).
-    Route::get('/ai-benchmark/leb-300', Leb300Controller::class)->name('ai-benchmark.leb-300');
-
-    // LEB Default and LEB Security: the two tracks of the next series, a status page each until it publishes results (no database).
-    Route::get('/ai-benchmark/leb-default', [LebTrackController::class, 'show'])->defaults('track', 'default')->name('ai-benchmark.leb-default');
-    Route::get('/ai-benchmark/leb-security', [LebTrackController::class, 'show'])->defaults('track', 'security')->name('ai-benchmark.leb-security');
 };
 
 /* Prefixed languages first: a prefixed path must never be shadowed by a bare
