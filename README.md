@@ -27,11 +27,6 @@ The site speaks English and Brazilian Portuguese, and **the URL decides which**.
 | home | `/` | `/pt-br` |
 | downloads | `/downloads` | `/pt-br/downloads` |
 | project | `/p/{slug}` | `/pt-br/p/{slug}` |
-| AI benchmark (Benchmark) | `/ai-benchmark` | `/pt-br/ai-benchmark` |
-| LEB-100 (results) | `/ai-benchmark/leb-100` | `/pt-br/ai-benchmark/leb-100` |
-| LEB-300 (pilot) | `/ai-benchmark/leb-300` | `/pt-br/ai-benchmark/leb-300` |
-| LEB Default (next series, status) | `/ai-benchmark/leb-default` | `/pt-br/ai-benchmark/leb-default` |
-| LEB Security (next series, status) | `/ai-benchmark/leb-security` | `/pt-br/ai-benchmark/leb-security` |
 
 A visitor arriving at a bare URL is negotiated: a browser asking for Portuguese
 is sent to `/pt-br` (302, `Vary: Accept-Language, Cookie`), anyone else stays on
@@ -77,26 +72,12 @@ its files grouped by operating system and version, a recommended build picked
 from the User-Agent, and its changelog. `/d/{file}` is the only way to fetch a
 file: the disk is private, and every hit is counted and audited.
 
-AI Benchmark is a menu of five pages (the `AI Benchmark` entry of the header, a dropdown built like Projects). `/ai-benchmark` is the first, "Benchmark": it explains LEB, the LLM
-Engineering Benchmark (why, how a run works, how it is scored, where the agents run), sets LEB-100 and LEB-300 side by side and links the page of each instance (`AiBenchmarkController`,
-copy in `lang/*/ai_benchmark.php`, `BenchmarkPageTest`). `/ai-benchmark/leb-100` shows the results of the first level (`Leb100Controller`, copy in `lang/*/leb_100.php`,
-`Leb100PageTest`). The numbers are not written here: they come from
-`samirhv/resources/data/ai-benchmark/results.json`, a byte-identical copy of
-`results/results.json` in [samirhvbr/ai-benchmark](https://github.com/samirhvbr/ai-benchmark),
-refreshed with `tools/sync-ai-benchmark-results.sh` (`--check` compares it with
-upstream). What is written here is the reading of those numbers and the caveats,
-in `lang/*/ai_benchmark.php` (highlights, caveats) — reread them whenever a sync changes the results.
+The AI Benchmark is not on this site any more: it lives on [shvia.org](https://shvia.org/en/ai-benchmark.html). Since 1.1.0 the header and the footer carry one link to the Benchmark page there
+(`App\Support\BenchmarkSite`, in the language of the page), and every address the benchmark ever had here (`/ai-benchmark`, its four sub-pages, the same under `/en` and `/pt-br`) answers a
+permanent redirect to that one page (`BenchmarkMoved`, `BenchmarkMovedTest`). The two CSV files (`/downloads/ai-benchmark/*.csv`, `/data/ai-benchmark/*.csv`) redirect to the same files on shvia.org.
 
-`/ai-benchmark/leb-300` is the page of the second level, and keeps only what belongs to that instance: the general explanation is on the Benchmark page. LEB-300 is an active instance, so only its aggregate is published (the total, the grade, the category scores, the number of
-runs, the cost and the time of each agent): never a run's delivery, verdict or flaw-by-flaw results (the instance and its answer key are public on GitHub). The page is a controller (`Leb300Controller`, no database) that reads the
-aggregate from the same synced `results.json` as the LEB-100 page. Until that file carries one it is a status page; once it does, it shows the scoreboard, with the same card as LEB-100,
-and says whether the score is official (the median of three runs) and what the record does not have. The copy is `lang/*/leb_300.php`, and shvia.org renders this same copy.
-Each card opens on click (as on the LEB-100 page) to a written reading of the agent, the categories at full marks and at zero, and the total, cost and time of each run; the reading travels in the aggregate (`agents[].comment`, English and Brazilian Portuguese) and names no flaw. `Leb300PageTest` covers both states, the reading and the real file.
-
-`/ai-benchmark/leb-default` and `/ai-benchmark/leb-security` are the two tracks of the next LEB series, a proposal with no results: a status page each, from one controller (`LebTrackController`, no database) and one view
-(`ai-benchmark/leb-track.blade.php`). The copy is written once, in `lang/*/leb_series.php` (what the two say alike) and `lang/*/leb_default.php` / `leb_security.php` (what each track measures), and shvia.org renders this same copy.
-Everything on them is what `docs/new-series-design.md`, `systems/` and `instances/` of samirhvbr/ai-benchmark say, and nothing more. The answer key of every instance is public on GitHub with the instance, before its first
-run, and the bench machines cannot reach GitHub; no page calls a key private, secret or hidden, and the Security page names no planted vulnerability, not even by class. `LebTrackPagesTest` pins all of it.
+What is still here is `lang/{en,pt_BR}/{ai_benchmark,leb_100,leb_300,leb_series,leb_default,leb_security}.php` and the `ai_benchmark_*` keys of `lang/*/shell.php`: nothing renders them on this site, but
+shvia.org's `tools/sync-ai-benchmark.py` still reads the page copy (headings, highlights, caveats) from here, exported to JSON through `php`. Moving that copy into the shvia-site repository is what lets these files go.
 
 ## Admin
 
