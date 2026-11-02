@@ -282,6 +282,8 @@ return [
     'next_card_series' => 'Próxima série',
     'next_card_status' => 'Proposta',
     'next_intro_results' => 'A próxima série do LEB divide o benchmark em duas trilhas independentes, Default e Security, medidas em vários sistemas de referência. É uma proposta em piloto: a trilha Default já tem os primeiros casos, publicados como agregados, e a Security ainda não tem resultados. Cada trilha tem uma página que diz em que pé ela está.',
+    // As duas trilhas têm agregado: a frase deixa de dizer que a Security não tem resultados.
+    'next_intro_results_both' => 'A próxima série do LEB divide o benchmark em duas trilhas independentes, Default e Security, medidas em vários sistemas de referência. É uma proposta em piloto: as duas trilhas já têm os primeiros casos, publicados como agregados. Cada trilha tem uma página que diz em que pé ela está.',
     'next_card_pilot' => 'Piloto em andamento',
     'next_card_cases' => '{1} :instance · :count configuração medida · :runs execuções terminadas|[2,*] :instance · :count configurações medidas · :runs execuções terminadas',
     'next_default_desc' => 'A manutenção do dia a dia de um sistema que funciona: arquitetura, bugs, desempenho, qualidade de código e compatibilidade, sem vulnerabilidade plantada.',

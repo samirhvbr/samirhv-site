@@ -287,6 +287,8 @@ return [
     'next_card_series' => 'Next series',
     'next_card_status' => 'Proposal',
     'next_intro_results' => 'The next LEB series splits the benchmark into two independent tracks, Default and Security, measured on several reference systems. It is a proposal in its pilot: the Default track has its first cases, published as aggregates, and Security has no results yet. Each track has a page that says where it stands.',
+    // Both tracks have an aggregate: the sentence no longer says that Security has no results.
+    'next_intro_results_both' => 'The next LEB series splits the benchmark into two independent tracks, Default and Security, measured on several reference systems. It is a proposal in its pilot: both tracks have their first cases, published as aggregates. Each track has a page that says where it stands.',
     'next_card_pilot' => 'Pilot under way',
     'next_card_cases' => '{1} :instance · :count configuration measured · :runs runs completed|[2,*] :instance · :count configurations measured · :runs runs completed',
     'next_default_desc' => 'The everyday maintenance of a working system: architecture, bugs, performance, code quality and compatibility, with no planted vulnerability.',

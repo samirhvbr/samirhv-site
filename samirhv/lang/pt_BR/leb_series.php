@@ -4,7 +4,7 @@
 | As páginas da próxima série do LEB: LEB Default e LEB Security (uma página por trilha).
 |
 | A série é uma proposta (docs/new-series-design.md do samirhvbr/ai-benchmark, status PROPOSED), então as duas
-| páginas são de status; a Default mostra também os casos até agora quando os resultados sincronizados trazem o agregado dela. Este arquivo guarda o que as duas dizem igual: o estado, os
+| páginas são de status; cada uma mostra também os casos até agora quando os resultados sincronizados trazem o agregado da instância da trilha. Este arquivo guarda o que as duas dizem igual: o estado, os
 | sistemas, como um caso roda, o que será publicado, o gabarito, a comparação e os links. `leb_default` e
 | `leb_security` guardam o que cada trilha mede. Tudo o que está escrito aqui é o que o repositório público
 | diz (docs/new-series-design.md, systems/, instances/LEB-D-300-A/ e instances/LEB-S-300-A/), e nada além:
@@ -77,8 +77,8 @@ return [
     'link_system' => 'O sistema A',
     'link_instance' => 'A pasta da instância',
 
-    // Quando os resultados sincronizados trazem o agregado da instância de uma trilha (a trilha Default desde 15 de outubro de 2026), a página diz isso e
-    // mostra os casos até agora. Estas chaves substituem as de mesmo nome sem `_results`; a página Security mantém o texto de status acima.
+    // Quando os resultados sincronizados trazem o agregado da instância de uma trilha (a trilha Default desde 15 de outubro de 2026, a Security depois dela), a página diz isso e
+    // mostra os casos até agora. Estas chaves substituem as de mesmo nome sem `_results`; a trilha sem agregado mantém o texto de status acima.
     'note_title_results' => 'Os primeiros resultados saíram.',
     'note_body_results' => 'Estas configurações rodaram em um sistema. É a medição do piloto até agora, não um placar.',
     'state_body_results' => 'A próxima série é uma proposta: o desenho dela foi decidido em 12 de outubro de 2026, e os textos normativos (a especificação, o protocolo, a pontuação e os níveis) são escritos depois que um piloto validar o processo. O piloto começou no sistema A, e os casos dele até agora estão acima. Ela não muda nada no LEB-100 nem no LEB-300, cujos resultados continuam como foram publicados. Ainda não há placar: ele pede mais configurações e mais sistemas.',
